@@ -1,0 +1,29 @@
+{
+  "name": "space",
+  "version": "1.0.0",
+  "description": ">\r ### 第一次使用操作\r 1. 安装 node.js。（由于前端的一些工具是构建在node.js 之上，请确保 已经安装了node.js 和 npm。没有可以去 <http://nodejs.org/download/> 下载）\r 2. 安装 grunt工具。运行命令：npm install webpack -g && npm install grunt -g\r 3. 安装 npm相关的包。运行命令：npm install\r 4. 至此，我们所有的工具、及 包都安装成功，以后不需要进行第1、2步了。可以运行下面相应的命令。",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.12.8",
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^2.0.8",
+    "gulp-concat": "^2.6.0",
+    "gulp-copy": "0.0.2",
+    "gulp-htmlmin": "^2.0.0",
+    "gulp-inject": "^4.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-requirejs-optimize": "^1.0.0",
+    "gulp-sass": "^2.3.1",
+    "gulp-sequence": "^0.4.5",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.3",
+    "yargs": "^4.7.1"
+  }
+}

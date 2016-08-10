@@ -1,0 +1,21 @@
+#Node
+logs
+*.log
+npm-debug.log*
+# Dependency directories
+node_modules
+# Optional npm cache directory
+.npm
+#doc
+doc
+
+#build
+dist
+
+#webstorm
+.idea
+
+#sass
+*.css.map
+
+src/www/css/base.css

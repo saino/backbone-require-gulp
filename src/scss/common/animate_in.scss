@@ -1,0 +1,297 @@
+$duration1:.5s;
+$duration03:.3s;
+$fillMode:forwards;
+//从上移入
+.slideInFromTop{-webkit-animation-name:slideInFromTop;animation-name:slideInFromTop;
+  -webkit-animation-duration: $duration1;
+  animation-duration: $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideInFromTop{
+  0% {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes slideInFromTop{
+  0% {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+//移出
+.slideOutToTop{-webkit-animation-name:slideOutToTop; animation-name:slideOutToTop;
+  -webkit-animation-duration: $duration1;
+  animation-duration: $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideOutToTop{
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: hidden;
+  }
+}
+@keyframes slideOutToTop{
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: hidden;
+  }
+}
+//从右移入
+.slideInFromRight{-webkit-animation-name:slideInFromRight;animation-name:slideInFromRight;
+  -webkit-animation-duration:  $duration1;
+  animation-duration: $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideInFromRight{
+  0%{
+    -webkit-transform:translate3d(100%,0,0);
+    transform:translate3d(100%,0,0);
+    visibility: visible;
+  }
+  to{
+    -webkit-transform:translate3d(0,0,0);
+    transform:translate3d(0,0,0);
+  }
+}
+@keyframes slideInFromRight{
+  0%{
+    -webkit-transform:translate3d(100%,0,0);
+    transform:translate3d(100%,0,0);
+    visibility: visible;
+  }
+  to{
+    -webkit-transform:translate3d(0,0,0);
+    transform:translate3d(0,0,0);
+  }
+}
+//移出
+.slideOutToRight{-webkit-animation-name:slideOutToRight; animation-name:slideOutToRight;
+  -webkit-animation-duration: $duration1;
+  animation-duration:  $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideOutToRight{
+  0%{
+    -webkit-transform:translate3d(0,0,0); transform:translate3d(0,0,0);
+  }
+  to{
+    -webkit-transform:translate3d(100%,0,0);transform:translate3d(100%,0,0); visibility: hidden;
+  }
+}
+@keyframes slideOutToRight{
+  0%{
+    -webkit-transform:translate3d(0,0,0); transform:translate3d(0,0,0);
+  }
+  to{
+    -webkit-transform:translate3d(100%,0,0);transform:translate3d(100%,0,0); visibility: hidden;
+  }
+}
+//从底部移入
+.slideInFromBottom{-webkit-animation-name:slideInFromBottom; animation-name:slideInFromBottom;
+  -webkit-animation-duration:$duration1; animation-duration: $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}//-webkit-animation-fill-mode: both; animation-fill-mode: both;}
+@-webkit-keyframes slideInFromBottom{
+  0%{
+    -webkit-transform:translate3d(0,100%,0);
+    transform:translate3d(0,100%,0);
+    visibility: visible;
+  }
+  to{
+    -webkit-transform:translate3d(0,0,0);
+    transform:translate3d(0,0,0);
+  }
+}
+@keyframes slideInFromBottom{
+  0%{
+    -webkit-transform:translate3d(0,100%,0);
+    transform:translate3d(0,100%,0);
+    visibility: visible;
+  }
+  to{
+    -webkit-transform:translate3d(0,0,0);
+    transform:translate3d(0,0,0);
+  }
+}
+//移出
+.slideOutToBottom{-webkit-animation-name:slideOutToBottom; animation-name:slideOutToBottom;
+  -webkit-animation-duration: $duration1;
+  animation-duration:  $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideOutToBottom{
+  0%{
+    -webkit-transform:translate3d(0,0,0);
+    transform:translate3d(0,0,0);
+  }
+  to{
+    -webkit-transform:translate3d(0,100%,0);
+    tansform:translate3d(0,100%,0);
+    visibility: hidden;
+  }
+}
+@keyframes slideOutToBottom{
+  0%{
+    -webkit-transform:translate3d(0,0,0);
+    transform:translate3d(0,0,0);
+  }
+  to{
+    -webkit-transform:translate3d(0,100%,0);
+    tansform:translate3d(0,100%,0);
+    visibility: hidden;
+  }
+}
+//从左移入
+.slideInFromLeft{-webkit-animation-name:slideInFromLeft; animation-name:slideInFromLeft;
+  -webkit-animation-duration:  $duration1;
+  animation-duration: $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideInFromLeft{
+  0%{
+    -webkit-transform:translate3d(-100%,0,0);transform:translate3d(-100%,0,0);visibility: visible;
+  }
+  to{
+    -webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);
+  }
+}
+@keyframes slideInFromLeft{
+  0%{
+    -webkit-transform:translate3d(-100%,0,0);transform:translate3d(-100%,0,0);visibility: visible;
+  }
+  to{
+    -webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);
+  }
+}
+.slideOutToLeft{-webkit-animation-name:slideOutToLeft; animation-name:slideOutToLeft;
+  -webkit-animation-duration: $duration1;
+  animation-duration:  $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideOutToLeft{
+  0%{
+    -webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);
+  }
+  to{
+    -webkit-transform:translate3d(-100%,0,0);transform:translate3d(-100%,0,0);visibility: hidden;
+  }
+}
+@keyframes slideOutToLeft{
+  0%{
+    -webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);
+  }
+  to{
+    -webkit-transform:translate3d(-100%,0,0);transform:translate3d(-100%,0,0);visibility: hidden;
+  }
+}
+//淡入.3
+.slideInFade_03{-webkit-animation-name:slideInFade_03; animation-name:slideInFade_03;
+  -webkit-animation-duration: $duration1;
+  animation-duration:  $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideInFade_03{
+  0%{opacity: 0;}
+  100%{opacity: 0.3;}
+}
+@keyframes slideInFade_03{
+  0%{opacity: 0;}
+  100%{opacity: 0.3;}
+}
+//淡出.3
+.slideOutFade_03{-webkit-animation-name:slideOutFade_03; animation-name:slideOutFade_03;
+  -webkit-animation-duration: $duration1;
+  animation-duration:  $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideOutFade_03{
+  0%{opacity:0.3;}
+  100%{opacity:0;}
+}
+@keyframes slideOutFade_03 {
+  0%{opacity: 0.3;}
+  100%{opacity:0;}
+}
+//淡入0.5
+.slideInFade_05{-webkit-animation-name:slideInFade_05; animation-name:slideInFade_05;
+  -webkit-animation-duration: $duration1;
+  animation-duration:  $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideInFade_05{
+  0%{opacity: 0;}
+  100%{opacity: 0.5;}
+}
+@keyframes slideInFade_05{
+  0%{opacity: 0;}
+  100%{opacity: 0.5;}
+}
+//淡出0.5
+.slideOutFade_05{-webkit-animation-name:slideOutFade_05; animation-name:slideOutFade_05;
+  -webkit-animation-duration: $duration1;
+  animation-duration:  $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideOutFade_05{
+  0%{opacity: 0.5;}
+  100%{opacity:0;}
+}
+@keyframes slideOutFade_05 {
+  0%{opacity: 0.5;}
+  100%{opacity:0;}
+}
+//淡入1
+.slideInFade_10{-webkit-animation-name:slideInFade_10; animation-name:slideInFade_10;
+  -webkit-animation-duration: $duration1;
+  animation-duration:  $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideInFade_10{
+  0%{opacity: 0;}
+  100%{opacity: 1;}
+}
+@keyframes slideInFade_10{
+  0%{opacity: 0;}
+  100%{opacity: 1;}
+}
+//淡出1
+.slideOutFade_10{-webkit-animation-name:slideOutFade_10; animation-name:slideOutFade_10;
+-webkit-animation-duration: $duration1;
+animation-duration:  $duration1;
+  -webkit-animation-fill-mode:$fillMode;
+  animation-fill-mode:$fillMode;}
+@-webkit-keyframes slideOutFade_10{
+  0%{opacity: 1;}
+  100%{opacity:0;}
+}
+@keyframes slideOutFade_10 {
+  0%{opacity: 1;}
+  100%{opacity:0;}
+}
+
+
+//**以下动画执行时间
+.animate_in_duration300{
+  -webkit-animation-duration: $duration03;animation-duration: $duration03;
+}
