@@ -18,12 +18,8 @@ define([
 
         //事件添加
         events : {
-            "tap #back":"_clickBackHandler"
-        },
-        _clickBackHandler:function(e){
-            e.preventDefault();
-            e.stopPropagation();
-            app.goBack();
+            "tap #back":"_clickBackHandler",
+            "tap #btnBuy":"_clickBuyHandler"
         },
         /**初始化**/
         initialize : function(){
@@ -46,50 +42,20 @@ define([
         pageIn : function(){
 
         },
-        /**
-         * 忘记密码事件
-         * @param e
-         */
-        onBtnFindPasswordHandler : function(e){
+        _clickBackHandler:function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            app.goBack();
+        },
+        _clickBuyHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-
+            MsgBox.ask("你认定删除该条浏览记录吗？确定确定确定要删除吗？你认定删除该条浏览记录吗？确定确定确定要删除吗？","bbbbbbb",function(type){
+                if(type == 2) { //确定  0=取消
+                    console.log("cccccc" + type);
+                }
+            });
         },
-
-        /**
-         * 注册事件
-         */
-        onBtnRegisterHandler : function(e){
-            e.stopPropagation();
-            e.preventDefault();
-        },
-
-        /**
-         * qq登录
-         */
-        onBtnLoginQQHandler : function(e){
-            e.stopPropagation();
-            e.preventDefault();
-        },
-
-        /**
-         * 微信登陆
-         */
-        onBtnLoginWXHandler : function(e){
-            e.stopPropagation();
-            e.preventDefault();
-        },
-
-        /**
-         * 微博登录
-         * @param e
-         */
-        onBtnLoginWBHandler : function(e){
-            e.stopPropagation();
-            e.preventDefault();
-
-        },
-
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
             if(MsgBox && MsgBox.isShow()){

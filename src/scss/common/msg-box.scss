@@ -7,10 +7,8 @@
   margin: 0 auto;
 
   .app-msg-box-bg{
-    width: 540px;
-    height: 250px;
-    //background: #FFFFFF;
-//    border-radius: 12px;
+    width: 560px;
+    height: 230px;//原250
     margin: 0 auto;
     position: relative;
     top: calc(50% - 123px);
@@ -27,9 +25,9 @@
     }
 
     .app-msg-box-content{
-      font-size: 2.8em;
+      font-size: 3.2em;
       position: relative;
-      width: 540px;
+      width: 560px;
       height: 160px;
 //      margin: 0 auto;
 //      top: calc(50% - 78px);
@@ -43,7 +41,7 @@
     }
 
     .app-msg-box-button-container{
-      height: 90px;
+      height: 70px;//原90
       position: absolute;
       bottom: 0;
       border-top: 1px solid #d3d3d7;
@@ -64,6 +62,8 @@
         width: 50%;
         border-right: 1px solid #d3d3d7;
         border-bottom-right-radius: 0px;
+        background:#bababa; //以下新加 by guYY 2016/8/17
+        color:white;
       }
 
       .app-msg-box-no:active{
@@ -73,6 +73,8 @@
       .app-msg-box-yes{
         width: 50%;
         border-bottom-left-radius: 0px;
+        background: #E6464C;
+        color:white;
       }
 
       .app-msg-box-yes:active{
