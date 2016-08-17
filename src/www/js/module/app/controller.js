@@ -5,7 +5,8 @@
 // 描    述: app总控制器，只能导入控制器
 define([
     'module/insurance/controller',
-    'module/plan/controller'
+    'module/plan/controller',
+    'module/browseRecords/controller'
 ],function(){
     var controllers = {
     };

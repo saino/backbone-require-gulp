@@ -17,7 +17,8 @@ define([
             "": "insurance",
 
             /*登陆注册*/
-            "in/plan": "plan"
+            "in/plan": "plan",
+            "home/browseRecords": "browseRecords"
         },
 
         /**未登陆时需要过滤的路由**/

@@ -14,15 +14,22 @@ define([
         _mouseLock : false,
         _isShow : false,
         ui : {
-            btnOpenPlan : "#btnOpenPlan"
+            btnOpenPlan : "#btnOpenPlan",
+            btnOpenBrowseRecords: "#btnOpenBrowseRecords"
         },
         //事件添加
         events : {
-            "tap @ui.btnOpenPlan" : "clickPlanHandler"
+            "tap @ui.btnOpenPlan" : "clickPlanHandler",
+            "tap @ui.btnOpenBrowseRecords": "clickBrowseRecordsHandler"
         },
         clickPlanHandler : function(){
             console.log(123);
             app.navigate("in/plan", {replace: true, trigger: true});
+        },
+        clickBrowseRecordsHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            app.navigate("home/browseRecords", {replace: true, trigger: true});
         },
 
         /**初始化**/
