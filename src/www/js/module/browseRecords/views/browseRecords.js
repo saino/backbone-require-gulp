@@ -2,17 +2,21 @@ define([
     'common/base/base_view',
     'marionette',
     'text!module/browseRecords/templates/browseRecords.html',
-], function(BaseView, mn, tpl) {
-
+    'msgbox'
+], function(BaseView, mn, tpl, MsgBox) {
     return BaseView.extend({
         id: "browseRecordsPage",
         template : _.template(tpl),
+        forever : false,
+
         ui: {
-            back: "#back"
+            back: "#browse-records-title-left"
         },
+
         events: {
             "tap @ui.back": "clickBackHandler"
         },
+
         clickBackHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
@@ -44,7 +48,7 @@ define([
             console.log("close!!!");
         },
 
-        destroy: function(){
+        onDestroy: function(){
             console.log("destroy!!!");
         }
 
