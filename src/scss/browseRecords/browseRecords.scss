@@ -5,3 +5,58 @@
   background: #f5f5f5;
 
 }
+#browse-records-title{
+  height: 84px;
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+}
+#browse-records-title-left{
+  float: left;
+  background: url("../images/goBack.png") no-repeat 30px center;
+  height: 84px;
+  width: 130px;
+}
+#browse-records-title-center{
+  float: left;
+  height: 84px;
+  width: calc(100% - 260px);
+  text-align: center;
+  color: #000;
+  font-size: 3.4em;
+  line-height: 84px;
+}
+#browse-records-title-right{
+  float: right;
+  background: url("../images/recycleBin.png") no-repeat right 30px center;
+  height: 84px;
+  width: 130px;
+}
+#browse-records-content{
+  position: relative;
+  height: calc(100% - 84px);
+  width: 100%;
+  overflow: scroll;
+}
+#browse-records-noting{
+  position: absolute;
+  height: 100px;
+  width: 100%;
+  font-size: 3.6em;
+  color: #666;
+  text-align: center;
+  line-height: 100px;
+  top: calc(50% - 50px);
+}
+.insurance-product-card{
+  height: 470px;
+  width: 96.266667%;
+  background: #fff;
+  margin: 12px auto 4px;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px #eee;
+  padding: auto 6px;
+}
+.insurance-product-card-up{
+  width: 100%;
+}
