@@ -16,13 +16,17 @@ define([
         ui : {
             btnOpenPlan : "#btnOpenPlan",
             btnOpenBrowseRecords: "#btnOpenBrowseRecords",
-            btnOpenAdditional: "#btnOpenAdditional"
+            btnOpenAdditional: "#btnOpenAdditional",
+            btnOpenDisease: "#btnOpenDisease",
+            btnOpenClause: "#btnOpenClause"
         },
         //事件添加
         events : {
             "tap @ui.btnOpenPlan" : "clickPlanHandler",
             "tap @ui.btnOpenBrowseRecords": "clickBrowseRecordsHandler",
-            "tap @ui.btnOpenAdditional": "clickAdditionalHandler"
+            "tap @ui.btnOpenAdditional": "clickAdditionalHandler",
+            "tap @ui.btnOpenDisease": "clickDiseaseHandler",
+            "tap @ui.btnOpenClause": "clickClauseHandler"
         },
         clickPlanHandler : function(){
             console.log(123);
@@ -37,6 +41,16 @@ define([
             event.stopPropagation();
             event.preventDefault();
             app.navigate("in/additional", {replace: true, trigger: true});
+        },
+        clickDiseaseHandler:function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            app.navigate("in/disease", {replace: true, trigger: true});
+        },
+        clickClauseHandler:function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            app.navigate("in/clause", {replace: true, trigger: true});
         },
         /**初始化**/
         initialize : function(){

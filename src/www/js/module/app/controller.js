@@ -8,7 +8,8 @@ define([
     'module/plan/controller',
     'module/browseRecords/controller',
     'module/additional/controller',
-    'module/disease/controller'
+    'module/disease/controller',
+    'module/clause/controller'
 ],function(){
     var controllers = {
     };
