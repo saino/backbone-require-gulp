@@ -1,0 +1,27 @@
+#top-title{
+    height: 84px;
+    width: 100%;
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+}
+#top-title-left{
+    float: left;
+    background: url("../images/goBack.png") no-repeat 30px center;
+    height: 84px;
+    width: 130px;
+}
+#top-title-center{
+    float: left;
+    height: 84px;
+    width: calc(100% - 260px);
+    text-align: center;
+    color: #000;
+    font-size: 3.4em;
+    line-height: 84px;
+}
+#top-title-right{
+    float: right;
+    background: url("../images/recycleBin.png") no-repeat right 30px center;
+    height: 84px;
+    width: 130px;
+}
