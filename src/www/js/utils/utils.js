@@ -6,7 +6,8 @@
 (function(window){
     var utils = {};
     window.utils = utils;
-
+    //IOS顶部工具栏高度
+  utils.toolHeight = 40;
     /**
      * 检测是否是正确的邮箱
      * @param val

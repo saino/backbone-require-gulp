@@ -1,16 +1,17 @@
 /**
  * Created by GYY on 2016/8/22.
- * 添加附加险页面
+ * 病种详情页面
  */
 define([
     'common/base/base_view',
-    'text!module/additional/templates/additional.html'
-],function(BaseView, AdditionalTpl){
-    var AdditionalView = BaseView.extend({
-        template: _.template(AdditionalTpl),
-        id:"additional-container",
+    'text!module/disease/templates/disease.html'
+],function(BaseView, DiseaseTpl){
+    var DiseaseView = BaseView.extend({
+        template: _.template(DiseaseTpl),
+        id:"disease-container",
         ui:{
             "topCon":"#top-title",
+            "diseaseContent":"#disease-main",
             "btnBack":"#top-title-left" //点击返回
         },
         events:{
@@ -23,6 +24,7 @@ define([
             var self = this;
             if(device.ios()){
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
+                self.ui.diseaseContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
             }
         },
         pageIn:function(){},
@@ -36,5 +38,5 @@ define([
 
         }
     });
-    return AdditionalView;
+    return DiseaseView;
 });

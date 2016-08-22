@@ -16,9 +16,9 @@ define([
         appRoutes: {
             "": "insurance",
 
-            /*登陆注册*/
-            "in/plan": "plan",
-            "in/additional":"additional",
+            "in/plan": "plan",  //计划书页
+            "in/additional":"additional",   //附加险列表
+            "in/disease":"disease",   //病种详情
             "home/browseRecords": "browseRecords"
         },
 
