@@ -6,7 +6,8 @@
 define([
     'module/insurance/controller',
     'module/plan/controller',
-    'module/browseRecords/controller'
+    'module/browseRecords/controller',
+    'module/additional/controller'
 ],function(){
     var controllers = {
     };

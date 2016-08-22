@@ -15,12 +15,14 @@ define([
         _isShow : false,
         ui : {
             btnOpenPlan : "#btnOpenPlan",
-            btnOpenBrowseRecords: "#btnOpenBrowseRecords"
+            btnOpenBrowseRecords: "#btnOpenBrowseRecords",
+            btnOpenAdditional: "#btnOpenAdditional"
         },
         //事件添加
         events : {
             "tap @ui.btnOpenPlan" : "clickPlanHandler",
-            "tap @ui.btnOpenBrowseRecords": "clickBrowseRecordsHandler"
+            "tap @ui.btnOpenBrowseRecords": "clickBrowseRecordsHandler",
+            "tap @ui.btnOpenAdditional": "clickAdditionalHandler"
         },
         clickPlanHandler : function(){
             console.log(123);
@@ -31,7 +33,11 @@ define([
             event.preventDefault();
             app.navigate("home/browseRecords", {replace: true, trigger: true});
         },
-
+        clickAdditionalHandler:function(events){
+            event.stopPropagation();
+            event.preventDefault();
+            app.navigate("in/additional", {replace: true, trigger: true});
+        },
         /**初始化**/
         initialize : function(){
         },

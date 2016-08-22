@@ -18,6 +18,7 @@ define([
 
             /*登陆注册*/
             "in/plan": "plan",
+            "in/additional":"additional",
             "home/browseRecords": "browseRecords"
         },
 

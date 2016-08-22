@@ -7,7 +7,7 @@ define([
     'module/additional/views/additionalView'
 ],function(AdditionalView){
     return {
-        plan : function(){
+        additional : function(){
             app.page.show(AdditionalView);
         }
     };
