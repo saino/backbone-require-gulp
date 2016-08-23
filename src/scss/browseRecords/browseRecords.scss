@@ -20,8 +20,8 @@
 #browse-records-title-center{
   float: left;
   height: 84px;
-  width: calc(100% - 260px);
-  text-align: center;
+  width:  calc(100% - 260px);
+  text-align: center; 
   color: #000;
   font-size: 3.4em;
   line-height: 84px;
@@ -36,7 +36,8 @@
   position: relative;
   height: calc(100% - 84px);
   width: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 #browse-records-noting{
   position: absolute;
@@ -49,14 +50,79 @@
   top: calc(50% - 50px);
 }
 .insurance-product-card{
-  height: 470px;
-  width: 96.266667%;
-  background: #fff;
-  margin: 12px auto 4px;
+  position: relative;
+  width: calc(100% - 28px);
+  margin: 12px auto 0;
   border-radius: 4px;
   box-shadow: 0 5px 5px #eee;
-  padding: auto 6px;
+  background:  no-repeat right top #fff;
+  //background: url("../images/new.png");
 }
 .insurance-product-card-up{
+  position: relative;
   width: 100%;
+  height: 158px;
+  padding-top: 40px;
+  padding-left: 36px;
+}
+.insurance-product-card-name{
+  font-size: 3.0em;
+  color: #666;
+}
+.insurance-product-card-look-pv{
+  position: absolute;
+  top: 120px;
+  right: 40px;
+}
+.insurance-product-card-eye{
+  height: 28px;
+  width: 48px;
+  background: url("../images/pv.png") no-repeat left top;
+  float: right;
+  margin-right: 14px;
+}
+.insurance-product-card-pv{
+  font-size: 3.0em;
+  color: #e39b2a;
+  float: right;
+  margin-top: -4px;
+}
+.insurance-product-card-down{
+  position: relative;
+  //padding-top: 40px;
+  //padding-left: 30px;
+  //padding-right: 30px;
+  //padding-bottom: 68px;
+  padding: 40px 30px 68px;
+  width: calc(100% - 12px);
+  border-top: 2px solid rgb(221, 221, 221);
+  margin: 0 auto;
+}
+.equity-label{
+  display: inline-block;
+  width: 33.3333333333333%;
+  margin-bottom: 30px;
+}
+.equity-label-name{
+  font-size: 2.6em;
+  float: left;
+  margin-top: 3px;
+  margin-left: 20px;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.equity-label-select{
+  height: 35px;
+  width: 35px;
+  background: url("../images/redSelected.png") no-repeat left top;
+  float: left;
+}
+.insurance-product-delete{
+  position: absolute;
+  height: 48px;
+  width: 48px;
+  right: 16px;
+  bottom: 20px;
+  background: url("../images/delete.png") no-repeat right top;
 }
