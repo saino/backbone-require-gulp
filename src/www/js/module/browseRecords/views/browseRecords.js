@@ -10,9 +10,9 @@ define([
         forever : false,
 
         ui: {
-            back: "#browse-records-title-left",
+            back: "#top-title-left",
             browseRecordsContent: "#browse-records-content",
-            browseRecordsTitleRight: "#browse-records-title-right"
+            browseRecordsTitleRight: "#top-title-right"
         },
 
         events: {

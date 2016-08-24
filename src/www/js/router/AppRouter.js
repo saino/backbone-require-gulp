@@ -20,7 +20,8 @@ define([
             "in/additional":"additional",   //附加险列表
             "in/disease":"disease",   //病种详情
             "in/clause":"clause",   //条款
-            "home/browseRecords": "browseRecords"
+            "home/browseRecords": "browseRecords", //浏览记录
+            "home/detailsDescription/:detailsDescriptionId": "detailsDescription"   //详情说明
         },
 
         /**未登陆时需要过滤的路由**/

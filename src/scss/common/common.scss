@@ -9,12 +9,12 @@
     float: left;
     background: url("../images/goBack.png") no-repeat 30px center;
     height: 84px;
-    width: 130px;
+    width: 138px;
 }
 #top-title-center{
     float: left;
     height: 84px;
-    width: calc(100% - 260px);
+    width: calc(100% - 276px);
     text-align: center;
     color: #000;
     font-size: 3.4em;
@@ -24,5 +24,17 @@
     float: right;
     background: url("../images/recycleBin.png") no-repeat right 30px center;
     height: 84px;
-    width: 130px;
+    width: 138px;
+}
+#top-title-right-1{
+    float: right;
+    background: url("../images/share.png") no-repeat right 12px center;
+    height: 84px;
+    width: 60px;
+}
+#top-title-right-2{
+    float: right;
+    background: url("../images/noCollection.png") no-repeat right 30px center;
+    height: 84px;
+    width: 78px;
 }
