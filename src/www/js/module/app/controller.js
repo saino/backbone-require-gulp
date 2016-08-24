@@ -9,7 +9,8 @@ define([
     'module/browseRecords/controller',
     'module/additional/controller',
     'module/disease/controller',
-    'module/clause/controller'
+    'module/clause/controller',
+    'module/detailsDescription/controller'
 ],function(){
     var controllers = {
     };

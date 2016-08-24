@@ -18,7 +18,8 @@ define([
             btnOpenBrowseRecords: "#btnOpenBrowseRecords",
             btnOpenAdditional: "#btnOpenAdditional",
             btnOpenDisease: "#btnOpenDisease",
-            btnOpenClause: "#btnOpenClause"
+            btnOpenClause: "#btnOpenClause",
+            btnOpenDetailsDescription: "#btnOpenDetailsDescription"
         },
         //事件添加
         events : {
@@ -26,7 +27,8 @@ define([
             "tap @ui.btnOpenBrowseRecords": "clickBrowseRecordsHandler",
             "tap @ui.btnOpenAdditional": "clickAdditionalHandler",
             "tap @ui.btnOpenDisease": "clickDiseaseHandler",
-            "tap @ui.btnOpenClause": "clickClauseHandler"
+            "tap @ui.btnOpenClause": "clickClauseHandler",
+            "tap @ui.btnOpenDetailsDescription": "clickDetailsDescriptionHandler"
         },
         clickPlanHandler : function(){
             console.log(123);
@@ -51,6 +53,11 @@ define([
             event.stopPropagation();
             event.preventDefault();
             app.navigate("in/clause", {replace: true, trigger: true});
+        },
+        clickDetailsDescriptionHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            app.navigate("home/detailsDescription/lkaj3121", {replace: true, trigger: true});
         },
         /**初始化**/
         initialize : function(){

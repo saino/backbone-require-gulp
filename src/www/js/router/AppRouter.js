@@ -21,8 +21,9 @@ define([
             "in/disease":"disease",   //病种详情
             "in/increment":"increment", //增值服务详情
             "in/clause":"clause",   //条款
-            "in/companyIntro":"companyIntro",   //条款
-            "home/browseRecords": "browseRecords"
+            "in/companyIntro":"companyIntro",   //寿险 公司简介
+            "home/browseRecords": "browseRecords", //浏览记录
+            "home/detailsDescription/:detailsDescriptionId": "detailsDescription"   //详情说明
         },
 
         /**未登陆时需要过滤的路由**/
