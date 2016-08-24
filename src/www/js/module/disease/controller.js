@@ -4,11 +4,19 @@
 // 创建日期: 2016/8/22
 // 描    述: controllers.js
 define([
-    'module/disease/views/diseaseView'
-],function(DiseaseView){
+    'module/disease/views/diseaseView',
+    'module/disease/views/incrementView',
+    'module/disease/views/companyIntroView'
+],function(DiseaseView,IncrementView,CompanyIntroView){
     return {
-        disease : function(){
+        disease : function(){       //病种详情
             app.page.show(DiseaseView);
+        },
+        increment: function(){      //增值服务详情
+            app.page.show(IncrementView);
+        },
+        companyIntro:function(){    //寿险-公司简介
+            app.page.show(CompanyIntroView);
         }
     };
 });

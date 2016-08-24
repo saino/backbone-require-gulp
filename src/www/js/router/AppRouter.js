@@ -19,7 +19,9 @@ define([
             "in/plan": "plan",  //计划书页
             "in/additional":"additional",   //附加险列表
             "in/disease":"disease",   //病种详情
+            "in/increment":"increment", //增值服务详情
             "in/clause":"clause",   //条款
+            "in/companyIntro":"companyIntro",   //条款
             "home/browseRecords": "browseRecords"
         },
 
