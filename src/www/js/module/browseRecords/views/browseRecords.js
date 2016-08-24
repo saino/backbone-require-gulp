@@ -30,12 +30,20 @@ define([
         clickDeleteHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            var self = this;
 
             if(event.target.getAttribute("class") == "insurance-product-delete"){
-                MsgBox.ask("你认定删除该条浏览记录吗？确定确定确定要删除吗？你认定删除该条浏览记录吗？确定确定确定要删除吗？","bbbbbbb",function(type){
+                MsgBox.ask("你认定删除该条浏览记录吗？","bbbbbbb",function(type){
                     if(type == 2) { //确定  0=取消
                         console.log("删除了");
-                        $(event.target).parent().slideUp();
+                        var pparent = $(event.target).parent().parent();
+                        $(event.target).parent().slideUp(function(){
+                            $(event.target).parent().remove();
+                            if(!(pparent.children().length)){
+                                self.ui.browseRecordsContent.html('<div id="browse-records-noting">暂无浏览记录</div>');
+                            }
+                        });
+
                     }
                     if(type == 0) {
                         console.log("取消删除");
@@ -48,10 +56,10 @@ define([
             event.preventDefault();
 
             var self = this;
-            MsgBox.ask("你认定删除所有浏览记录吗？你认定删除所有浏览记录吗？你认定删除所有浏览记录吗？你认定删除所有浏览记录吗？","bbbbbbb",function(type){
+            MsgBox.ask("你认定删除所有浏览记录吗？","bbbbbbb",function(type){
                 if(type == 2) { //确定  0=取消
                     console.log("删除了");
-                    self.ui.browseRecordsContent.html("");
+                    self.ui.browseRecordsContent.html('<div id="browse-records-noting">暂无浏览记录</div>');
                 }
                 if(type == 0) {
                     console.log("取消删除");
@@ -111,6 +119,7 @@ define([
                         "疾病终末2"
                     ]
                 },{
+                    isNew: true,
                     insuranceProductCardName: "华夏贴心宝3",
                     insuranceProductCardPv: 13241,
                     equityLabelName: [
@@ -120,17 +129,6 @@ define([
                         "疾病终末3",
                         "疾病终末3",
                         "疾病终末3"
-                    ]
-                },{
-                    insuranceProductCardName: "华夏贴心宝4",
-                    insuranceProductCardPv: 13241,
-                    equityLabelName: [
-                        "被保豁免4",
-                        "轻症4",
-                        "身故4",
-                        "疾病终末4",
-                        "疾病终末4",
-                        "疾病终末4"
                     ]
                 }
             ];
@@ -167,7 +165,9 @@ define([
                                                 '<div class="insurance-product-delete"> </div>' +
                                             '</div>';
             }
-
+            if(!insuranceProductCard.length){
+                insuranceProductCardHtml = '<div id="browse-records-noting">暂无浏览记录</div>';
+            }
             this.ui.browseRecordsContent.html(insuranceProductCardHtml);
 
         },
