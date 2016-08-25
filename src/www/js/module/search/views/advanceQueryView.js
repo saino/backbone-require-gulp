@@ -1,29 +1,30 @@
 /**
- * 产品搜索页
+ * 产品高级筛选页
  * add by guYY 2016/8/25
  */
 define([
     'common/base/base_view',
-    'text!module/search/templates/search.html'
-],function(BaseView,searchTpl){
-    var SearchView = BaseView.extend({
-        id:"search-container",
-        template: _.template(searchTpl),
+    'text!module/search/templates/advanceQuery.html'
+],function(BaseView,queryTpl){
+    var AdvanceQueryView = BaseView.extend({
+        id:"advance-query-container",
+        template: _.template(queryTpl),
         ui:{
            "topCon":"#top-title",
-           "historyContent":"#history-main"
+           "advanceQueryContent":"#advanceQuery-main"
         },
         events:{
-            "tap #top-title-left-2":"_clickBackHandler"
+            "tap #top-title-left":"_clickBackHandler"
         },
         onRender:function(){
             var self = this;
             if(device.ios()){
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
-                self.ui.historyContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
+                self.ui.advanceQueryContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
             }
         },
-        pageIn:function(){           
+        pageIn:function(){
+           
         },
         //点击返回
         _clickBackHandler:function(e){
@@ -32,5 +33,5 @@ define([
             app.goBack();
         },
     });
-    return SearchView;
+    return AdvanceQueryView;
 });
