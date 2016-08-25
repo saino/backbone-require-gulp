@@ -1,0 +1,48 @@
+/**
+*   功能：产品详情样式
+*   概述：产品详情页的所有style
+*   时间：2016/8/24
+*   人物：fishYu
+*/
+#product-details-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: white;
+    .top-title {
+        height: 84px;
+        width: 100%;
+        background: #fff;
+        border-bottom: 1px solid #ccc;
+        box-sizing: content-box;
+    }
+    .top-title-left {
+        float: left;
+        background: url("../images/goBack.png") no-repeat 30px center;
+        height: 84px;
+        width: 138px;
+    }
+    .top-title-center {
+        float: left;
+        height: 84px;
+        width: calc(100% - 276px);
+        text-align: center;
+        color: #000;
+        font-size: 3.4em;
+        line-height: 84px;
+    }
+    .top-title-right-1 {
+        float: right;
+        background: url("../images/share.png") no-repeat right 12px center;
+        height: 84px;
+        width: 60px;
+    }
+    .top-title-right-2 {
+        float: right;
+        background: url("../images/noCollection.png") no-repeat right 30px center;
+        height: 84px;
+        width: 78px;
+    }
+}

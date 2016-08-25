@@ -23,7 +23,10 @@ define([
             "in/clause":"clause",   //条款
             "in/companyIntro":"companyIntro",   //寿险 公司简介
             "home/browseRecords": "browseRecords", //浏览记录
-            "home/detailsDescription/:detailsDescriptionId": "detailsDescription"   //详情说明
+            "home/detailsDescription/:detailsDescriptionId": "detailsDescription",   //详情说明
+            "in/productDetails":"productDetails",   //寿险 产品详情
+            "in/productDetails/:productId":"productDetails"   //寿险 产品详情
+
         },
 
         /**未登陆时需要过滤的路由**/
