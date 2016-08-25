@@ -4,11 +4,11 @@
  */
 define([
     'common/base/base_view',
-    'module/disease/model/detailModel',
+    'module/disease/model/companyIntroModel',
     'text!module/disease/templates/companyIntro.html'
-],function(BaseView, detailModel, companyIntroTpl){
+],function(BaseView, companyIntroModel, companyIntroTpl){
     var companyIntroView = BaseView.extend({
-         id:'disease-container',
+         id:'companyIntro-container',
          template: _.template(companyIntroTpl),
          ui:{
             "topCon":"#top-title",
@@ -19,7 +19,7 @@ define([
             "tap #top-title-left":"_clickBackHandler"
         },
         initialize:function(){
-            this.model = new detailModel();
+            this.model = new companyIntroModel();
             this.model.on("change",this.render,this);
             this.model.setTitle("公司简介");
             this.model.setDetail("<p>长城人寿保险股份有限公司（简称）“长城人寿”是一家经中国保险监督管理委员会批准设立的全国性人寿保险公司。以“打造服务最好的保险品牌”为目标，倡导“让服务成为我们的生活方式 ”，致力于为客户提供适合的保险产品和便捷的服务，为员工提供良好的工作环境和成长空间</p>"+

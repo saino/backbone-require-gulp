@@ -16,7 +16,9 @@ define([
             "btnBack":"#top-title-left" //点击返回
         },
         events:{
-            "tap #top-title-left":"_clickBackHandler"
+            "tap #top-title-left":"_clickBackHandler",
+            "tap #top-title-right-1":"_clickShareHandler",  //点击分享
+            "tap #top-title-right-2":"_clickCollectHandler"   //点击收藏
         },
         initialize:function(){
             this.model = new detailModel();
@@ -33,6 +35,7 @@ define([
                                 "<p>4.重大器官移植术和造血干细胞移植术</p>"+
                                 "<p>4.重大器官移植术和造血干细胞移植术</p>"+
                                 "<p>4.重大器官移植术和造血干细胞移植.重大器官移植术和造血干细胞移植.重大器官移植术和造血干细胞移植术</p>");
+            this.model.setHasShare(true);
         },
         render: function() {
             this.$el.html(this.template(this.model.attributes));
@@ -51,6 +54,18 @@ define([
             e.stopPropagation();
             e.preventDefault();
             app.goBack();
+        },
+        //点击分享
+        _clickShareHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            alert("点击分享");
+        },
+        //点击收藏
+        _clickCollectHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            alert("点击收藏");
         },
         close:function(){
 

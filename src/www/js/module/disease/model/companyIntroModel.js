@@ -5,7 +5,7 @@
 define([
     'backbone'
 ],function(){
-    var detailModel = Backbone.Model.extend({
+    var companyIntroModel = Backbone.Model.extend({
         constructor:function(){
             Backbone.Model.apply(this,arguments);
         },
@@ -13,7 +13,7 @@ define([
             var self = this;
             self.set({"title":"","detailContent":"","hasShare":false,"isIos":device.ios()});//是否函分享按钮
             if(device.ios()){
-                self.set({"paddingTop":'style="padding-top:'+utils.toolHeight+'px"',"conHeight":'style="height:-webkit-calc(100% - '+(utils.toolHeight+85+130)+'px)"'});
+                self.set({"paddingTop":'style="padding-top:'+utils.toolHeight+'px"',"conHeight":'style="height:-webkit-calc(100% - '+(utils.toolHeight+235)+'px)"'});
             }else{
                 self.set({"paddingTop":"","conHeight":""});
             }
@@ -42,5 +42,5 @@ define([
             this.set({"hasShare":share});
         }    
     });
-    return detailModel;
+    return companyIntroModel;
 });
