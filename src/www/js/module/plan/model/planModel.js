@@ -19,7 +19,7 @@ define([
             
         setTimeout(function(){
             cb_ok && cb_ok(arr);
-        },1500);
+        },800);
         
     }
     var planModel = new PlanModel();
