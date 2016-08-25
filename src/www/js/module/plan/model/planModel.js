@@ -3,7 +3,7 @@ define([
 ],function(){
     var PlanModel = function(){};
     //获取公司信息集合 服务商、承保商
-    PlanModel.prototype.getCompanyInfo = function(){
+    PlanModel.prototype.getCompanyInfo = function(cb_ok){        
         var arr = [{"logo":"images/logo01.png","content":'<p>大童旗下有大童保险销售服务有限公司、北京大童保险经纪。有限公司等企业， 其中大童保险销售服务有限公司是经中国保。</p>'+
         '<p>大童旗下有大童保险销售服务有限公司、北京大童保险经纪。有限公司等企业， 其中大童保险销售服务有限公司是经中国保。</p>'+
         '<p>大童旗下有大童保险销售服务有限公司、北京大童保险经纪。有限公司等企业， 其中大童保险销售服务有限公司是经中国保。</p>'+
@@ -17,7 +17,10 @@ define([
             '<p>成立时间：2005年8月30日</p>'+
             '<p>成立时间：2005年8月30日</p>',"vipContent":'<img src="images/temp/icon02.png" alt="" style="display:block; margin:0 auto;">',"vipStandard":'<img src="images/temp/icon02.png" alt="" style="display:block; margin:0 auto;">'}];
             
-        return arr;
+        setTimeout(function(){
+            cb_ok && cb_ok(arr);
+        },1500);
+        
     }
     var planModel = new PlanModel();
     return planModel;
