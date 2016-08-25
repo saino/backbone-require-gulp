@@ -52,8 +52,12 @@ define([
                 self.ui.productDetailsMain.css({height: "calc(100% - " + height + "px)"});
             }, 0)
 
+            self.productId = self.getOption("productId");   //获取产品ID
+            console.log(self.productId);
+
         },
         pageIn:function(){
+            var self = this;
 
         },
         /**
