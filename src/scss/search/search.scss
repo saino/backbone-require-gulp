@@ -1,0 +1,31 @@
+#top-title-search .search-bg{ width:100%; height:70px; margin-top:7px; border:1px solid #e9e9e9; border-radius: 10px;
+    background:#fbf9fa; 
+    .search-key{width:-webkit-calc(100% - 82px); font-size:3em; text-indent: 18px;border: none; background: none; height: 100%; float: left;}
+    .search-btn{width:82px; height:70px; display:inline-block; background:url(../images/search.png) no-repeat center;}
+}
+#search-container{width:100%; height:100%; position:absolute; top:0; left:0; overflow: hidden; background:#f5f5f5;}
+#history-main{width:100%; height:-webkit-calc(100% - 85px); overflow-y: auto;}
+//热搜词
+#hot-word-con{width:-webkit-calc(100% - 28px); margin: 14px 14px 0 14px; box-shadow: 0 5px 5px 0 rgba(231,231,231,.75);
+            padding:30px 16px 4px 16px;    background: #ffffff; overflow: hidden;
+    .title{font-size: 3em; color: rgb(102, 102, 102); margin-bottom: 32px;}             
+    #hot-word-list{width:-webkit-calc(100% - 32px);
+        .hot-word-item{border-radius: 10px; background-color: rgb(230, 70, 76); height: 50px; line-height: 50px; float:left; padding:0 45px;  color: #ffffff;
+                    font-size: 2.6em; margin-right: 10px; margin-bottom: 26px;}
+     }
+}
+//历史记录
+#history-con{ width:-webkit-calc(100% - 28px); margin:17px 14px; box-shadow: 0 5px 5px 0 rgba(231,231,231,.75);background: #ffffff; overflow: hidden;
+    .title{width:-webkit-calc(100% - 12px); margin:0 auto; height:72px; line-height: 72px;  border-bottom: 2px solid rgb(221, 221, 221); 
+        text-indent: 28px; font-size:2.6em;color: rgb(102, 102, 102);}
+    #history-list{ overflow: hidden;
+        .history-item{width:-webkit-calc(100% - 72px); margin:0 auto; height: 73px; border-bottom: 2px solid rgb(221, 221, 221); font-size: 2.6em;
+                        color: rgb(162, 162, 162);}
+            .history-item-name{width:-webkit-calc(100% - 48px); height:73px; line-height: 73px; float:left;
+                                text-overflow: ellipsis; overflow: hidden;white-space:nowrap; display: block; }
+            .history-item-del{margin-top: 12px;}
+    }
+    #clear-history{ border-radius: 4px; background-color: rgb(230, 69, 74); width: 314px;height: 78px; line-height: 78px; text-align: center; font-size:2.6em; color:#ffffff; 
+                 margin:40px auto; }
+
+}
