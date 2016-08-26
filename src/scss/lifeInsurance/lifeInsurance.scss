@@ -77,10 +77,10 @@
 .life-insurance-name{
   width: 100%;
   height:110px;
-  border-bottom: 2px solid #dddddd;
+  //border-bottom: 2px solid #dddddd;
   font-size: 3.0em;
   line-height: 110px;
-  padding-left: 36px;
+  //padding-left: 36px;
   margin-bottom: 10px;
 }
 .life-insurance-flag{
@@ -98,6 +98,12 @@
 #life-insurance-label-3{
   background: url("../images/recomment.png") no-repeat center;
 }
+.life-insurance-name-title{
+  width: calc(100% - 12px);
+  border-bottom: 2px solid #dddddd;
+  margin: 0 auto;
+  padding-left: 30px;
+}
 .life-insurance-label{
   padding-top: 30px;
   padding-left: 36px;
@@ -109,21 +115,10 @@
 }
 .life-insurance-label-message{
   font-size: 3.0em;
-  color: grey
-}
-.life-insurance-time{
-
-}
-.life-insurance-time-label{
-  font-size: 3.0em;
-  color: rgb(0, 0, 0);
-}
-.life-insurance-time-around{
-  font-size: 3.0em;
-  color: rgb(102, 102, 102);
+  color: #a2a2a2;
 }
 .life-insurance-equity-label{
-
+  padding: 30px 36px;
 }
 //.年龄：_28天_60周岁_保障期间：_终身_ {
 //  font-size: 30px;
