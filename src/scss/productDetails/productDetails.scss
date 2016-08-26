@@ -67,7 +67,7 @@
             width: 100%;
             height: 90px;
             line-height: 90px;
-            background: url('../images/temp/hx-logo.png') 100% center no-repeat;
+            //background: url('../images/temp/hx-logo.png') 100% center no-repeat;
             font-size: 3.0em;
             color: #333;
             margin-bottom: 16px;
@@ -164,7 +164,7 @@
                 background: url("../images/redSelected.png") 0px center no-repeat;
                 float: left;
                 width: 33.33%;
-                margin-bottom: 26px;
+                margin-bottom: 30px;
                 text-indent: 64px;
                 height: 44px;
                 font-size: 2.6em;
@@ -225,79 +225,6 @@
             }
             .insure-feature-item:nth-child(even){
                 text-align: right;
-            }
-        }
-    }
-
-    /**
-    *保险责任
-    */
-    .product-insure-duty {
-        width: 100%;
-        background: #fff;
-        margin-top: 17px;
-        .insure-duty-title {
-            width: 98.4%;
-            height: 110px;
-            line-height: 110px;
-            margin: 0 auto;
-            color: #666;
-            font-size: 3.4em;
-            text-align: center;
-            box-sizing: border-box;
-            border-bottom: 2px solid #ddd;
-            .pull-icon-big{
-                float: right;
-                height: 100%;
-                width: 107px;
-                background: url("../images/insurance/down-big.png") no-repeat center;
-            }
-        }
-        .insure-duty-title.on {
-            .pull-icon-big{
-                background: url("../images/insurance/up-big.png") no-repeat center;
-            }
-        }
-        .insure-duty-title.on + .insure-duty-content{
-            display: block;
-        }
-        .insure-duty-content {
-            width: 95.734%;
-            margin: 0 auto;
-            display: none;
-            .insure-duty-item{
-                width: 100%;
-                .duty-item-title{
-                    width: 100%;
-                    height: 98px;
-                    line-height: 98px;
-                    border-bottom: 2px solid #ddd;
-                    box-sizing: border-box;
-                    padding: 0 14px;
-                    font-size: 3.0em;
-                    color: #666;
-                    .pull-icon-small{
-                        float: right;
-                        height: 100%;
-                        width: 70px;
-                        background: url("../images/insurance/down-small.png") no-repeat center;
-                    }
-                }
-                .duty-item-title.on{
-                    .pull-icon-small{
-                        background: url("../images/insurance/up-small.png") no-repeat center;
-                    }
-                }
-                .duty-item-title.on + .duty-item-content{
-                    display: block;
-                }
-                .duty-item-content{
-                    display: none;
-                    padding: 0 14px;
-                    font-size: 2.6em;
-                    color: #a2a2a2;
-                    line-height: 43px;
-                }
             }
         }
     }
@@ -432,4 +359,77 @@
 }
 .clear{
     clear: both;
+}
+
+/**
+    *保险责任
+    */
+.product-insure-duty {
+    width: 100%;
+    background: #fff;
+    margin-top: 17px;
+    .insure-duty-title {
+        width: 98.4%;
+        height: 110px;
+        line-height: 110px;
+        margin: 0 auto;
+        color: #666;
+        font-size: 3.4em;
+        text-align: center;
+        box-sizing: border-box;
+        border-bottom: 2px solid #ddd;
+        .pull-icon-big{
+            float: right;
+            height: 100%;
+            width: 107px;
+            background: url("../images/insurance/down-big.png") no-repeat center;
+        }
+    }
+    .insure-duty-title.on {
+        .pull-icon-big{
+            background: url("../images/insurance/up-big.png") no-repeat center;
+        }
+    }
+    .insure-duty-title.on + .insure-duty-content{
+        display: block;
+    }
+    .insure-duty-content {
+        width: 95.734%;
+        margin: 0 auto;
+        display: none;
+        .insure-duty-item{
+            width: 100%;
+            .duty-item-title{
+                width: 100%;
+                height: 98px;
+                line-height: 98px;
+                border-bottom: 2px solid #ddd;
+                box-sizing: border-box;
+                padding: 0 14px;
+                font-size: 3.0em;
+                color: #666;
+                .pull-icon-small{
+                    float: right;
+                    height: 100%;
+                    width: 70px;
+                    background: url("../images/insurance/down-small.png") no-repeat center;
+                }
+            }
+            .duty-item-title.on{
+                .pull-icon-small{
+                    background: url("../images/insurance/up-small.png") no-repeat center;
+                }
+            }
+            .duty-item-title.on + .duty-item-content{
+                display: block;
+            }
+            .duty-item-content{
+                display: none;
+                padding: 0 14px;
+                font-size: 2.6em;
+                color: #a2a2a2;
+                line-height: 43px;
+            }
+        }
+    }
 }
