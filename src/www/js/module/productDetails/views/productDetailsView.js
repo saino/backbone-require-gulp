@@ -35,7 +35,8 @@ define([
             planContent : ".insure-plan-content",           //产品组合计划列表
             subjoinTitle : ".insure-subjoin-title",         //附加标题
             subjoinTitleBtn : ".insure-subjoin-title .pull-icon-big",   //附加下拉按钮
-            subjoinContent : ".insure-subjoin-content"     //推荐附加险
+            subjoinContent : ".insure-subjoin-content",     //推荐附加险
+            insureMake : ".product-insure-make"        //制作企划书
         },
         events:{
             "tap @ui.backBtn":"onBackBtnHandler",
@@ -46,7 +47,8 @@ define([
             "tap @ui.planTitleBtn":"onTogglePlanContentHandler",
             "tap @ui.planContent" :  "onGoToPlanItemHandler",
             "tap @ui.subjoinTitleBtn":"onToggleSubjoinContentHandler",
-            "tap @ui.subjoinContent" : "onGoToSubjoinItemHandler"
+            "tap @ui.subjoinContent" : "onGoToSubjoinItemHandler",
+            "tap @ui.insureMake" : "onGoToInsureMakeHandler"        //去制作
         },
         initialize:function(){
 
@@ -370,6 +372,16 @@ define([
             if(dataType){
                 MsgBox.alert("推荐附加险列表");
             }
+        },
+        /**
+         * 跳转到附加险列表的选项页
+         * @param e
+         */
+        onGoToInsureMakeHandler : function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var self = this;
+            MsgBox.alert("去制作");
         },
         close:function(){
             var self = this;
