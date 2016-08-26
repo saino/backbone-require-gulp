@@ -67,6 +67,7 @@ define([
             console.log(self.productId);
             //根据用户ID 和保险售卖ID查询数据
             self._initView = self.initView.bind(self);
+            //TODO 需要真实的接口和数据
             productDetailsModel.getProductInfo(self.currentUserId, self.productId, self._initView, function(err){
                 console.log(err);
             });
@@ -390,6 +391,7 @@ define([
         },
         close:function(){
             var self = this;
+            self._initView = null;
             self.remove();
             if(MsgBox && MsgBox.isShow()) {
                 MsgBox.clear();
