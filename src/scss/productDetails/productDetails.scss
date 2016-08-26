@@ -258,9 +258,9 @@
                 background: url("../images/insurance/up-big.png") no-repeat center;
             }
         }
-        .insure-plan-title.on + .insure-plan-content {
-            display: block;
-        }
+        //.insure-plan-title.on + .insure-plan-content {
+        //    display: block;
+        //}
         .insure-plan-content {
             width: 95.734%;
             margin: 0 auto;
@@ -313,9 +313,9 @@
                 background: url("../images/insurance/up-big.png") no-repeat center;
             }
         }
-        .insure-subjoin-title.on + .insure-subjoin-content {
-            display: block;
-        }
+        //.insure-subjoin-title.on + .insure-subjoin-content {
+        //    display: block;
+        //}
         .insure-subjoin-content {
             width: 95.734%;
             margin: 0 auto;
@@ -390,9 +390,9 @@
             background: url("../images/insurance/up-big.png") no-repeat center;
         }
     }
-    .insure-duty-title.on + .insure-duty-content{
-        display: block;
-    }
+    //.insure-duty-title.on + .insure-duty-content{
+    //    display: block;
+    //}
     .insure-duty-content {
         width: 95.734%;
         margin: 0 auto;
@@ -420,15 +420,16 @@
                     background: url("../images/insurance/up-small.png") no-repeat center;
                 }
             }
-            .duty-item-title.on + .duty-item-content{
-                display: block;
-            }
+            //.duty-item-title.on + .duty-item-content{
+            //    display: block;
+            //}
             .duty-item-content{
                 display: none;
                 padding: 0 14px;
                 font-size: 2.6em;
                 color: #a2a2a2;
                 line-height: 43px;
+                border-bottom: 2px solid #ddd;
             }
         }
     }

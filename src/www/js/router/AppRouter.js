@@ -28,7 +28,8 @@ define([
             "home/lifeInsurance": "lifeInsurance",       //寿险查询结果列表
             "home/detailsDescription/:detailsDescriptionId": "detailsDescription",   //详情说明
             "in/productDetails":"productDetails",   //寿险 产品详情
-            "in/productDetails/:productId":"productDetails"   //寿险 产品详情
+            "in/productDetails/:productId":"productDetails",   //寿险 产品详情
+            "in/attachDetails/:productId":"attachDetails"   //寿险 附加详情
         },
 
         /**未登陆时需要过滤的路由**/

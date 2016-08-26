@@ -200,7 +200,7 @@ define([
             self.ui.featureContent.html(featureStr);
         },
         /**
-         * 设置产品特色
+         * 设置保险责任
          * @param salesLiabilityList  特色列表
          * <div class="insure-duty-item">
          *<div class="duty-item-title on">
@@ -304,6 +304,7 @@ define([
             e.preventDefault();
             var self = this;
             self.ui.dutyTitle.toggleClass("on");
+            self.ui.dutyTitle.next().slideToggle();
         },
         /**
          *点击显示或者隐藏保险责任列表的简介
@@ -321,6 +322,7 @@ define([
             }
             if(parent){
                 parent.toggleClass("on");
+                parent.next().slideToggle();
             }
         },
         /**
@@ -332,6 +334,7 @@ define([
             e.preventDefault();
             var self = this;
             self.ui.planTitle.toggleClass("on");
+            self.ui.planTitle.next().slideToggle();
         },
         /**
          * 跳转到计划组合列表的选项页
@@ -357,6 +360,7 @@ define([
             e.preventDefault();
             var self = this;
             self.ui.subjoinTitle.toggleClass("on");
+            self.ui.subjoinTitle.next().slideToggle();
         },
         /**
          * 跳转到附加险列表的选项页
@@ -370,7 +374,8 @@ define([
             var $target = $(target);
             var dataType = $target.attr("data-type");
             if(dataType){
-                MsgBox.alert("推荐附加险列表");
+                //MsgBox.alert("推荐附加险列表");
+                app.navigate("#in/attachDetails/"+dataType, {replace : true, trigger : true});
             }
         },
         /**

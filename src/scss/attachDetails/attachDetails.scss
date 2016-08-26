@@ -1,0 +1,107 @@
+/**
+*   功能：附加详情样式
+*   概述：附加详情页的所有style
+*   时间：2016/8/26
+*   人物：fishYu
+*/
+#attach-details-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #f5f5f5;
+    .top-title {
+        height: 84px;
+        width: 100%;
+        background: #fff;
+        border-bottom: 2px solid #ddd;
+        box-sizing: content-box;
+    }
+    .top-title-left {
+        float: left;
+        background: url("../images/goBack.png") no-repeat 30px center;
+        height: 84px;
+        width: 138px;
+    }
+    .top-title-center {
+        float: left;
+        height: 84px;
+        width: calc(100% - 276px);
+        text-align: center;
+        color: #000;
+        font-size: 3.4em;
+        line-height: 84px;
+    }
+    .attach-details-title{
+        width: 100%;
+        height: 112px;
+        font-size: 3.4em;
+        color: #333;
+        box-sizing: border-box;
+        border-bottom: 2px solid #ddd;
+        line-height: 110px;
+        text-align: center;
+        background: #fff;
+    }
+    #attach-details-main{
+        width: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .attach-pull-item{
+        width: 100%;
+        margin-top: 12px;
+        background: #fff;
+        .attach-item-title{
+            width: 100%;
+            height: 112px;
+            line-height: 110px;
+            border-bottom: 2px solid #ddd;
+            box-sizing: border-box;
+            padding-left: 34px;
+            font-size: 3.4em;
+            color: #333;
+            .pull-icon-big{
+                float: right;
+                height: 100%;
+                width: 99px;
+                background: url("../images/insurance/down-big.png") no-repeat center;
+            }
+        }
+        .attach-item-title.on{
+            .pull-icon-big{
+                background: url("../images/insurance/up-big.png") no-repeat center;
+            }
+        }
+        //.attach-item-title.on + .attach-pull-content{
+        //    display: block;
+        //}
+        .attach-pull-content{
+            display: none;
+            padding: 30px 34px;
+            font-size: 3.0em;
+            color: #666;
+            line-height: 40px;
+            border-bottom: 2px solid #ddd;
+        }
+    }
+    .attach-next-item{
+        width: 100%;
+        height: 112px;
+        line-height: 110px;
+        border-bottom: 2px solid #ddd;
+        box-sizing: border-box;
+        padding-left: 34px;
+        font-size: 3.4em;
+        color: #333;
+        margin-top: 12px;
+        background: #fff;
+        .pull-icon-next-big {
+            float: right;
+            height: 100%;
+            width: 81px;
+            background: url("../images/insurance/next-big.png") no-repeat center;
+        }
+    }
+}

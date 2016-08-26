@@ -13,7 +13,8 @@ define([
     'module/detailsDescription/controller',
     'module/lifeInsurance/controller',
     'module/productDetails/controller',
-    'module/search/controller'
+    'module/search/controller',
+    'module/attachDetails/controller'
 ],function(){
     var controllers = {
     };
