@@ -11,7 +11,9 @@ define([
     'module/disease/controller',
     'module/clause/controller',
     'module/detailsDescription/controller',
-    'module/lifeInsurance/controller'
+    'module/lifeInsurance/controller',
+    'module/productDetails/controller',
+    'module/search/controller'
 ],function(){
     var controllers = {
     };

@@ -1,13 +1,13 @@
 /**
- * Created by GYY on 2016/8/22.
- * 病种详情页面
+ * Created by GYY on 2016/8/24.
+ * 增值服务详情页面
  */
 define([
     'common/base/base_view',
     'module/disease/model/detailModel',
     'text!module/disease/templates/disease.html'
-],function(BaseView, detailModel,DiseaseTpl){
-    var DiseaseView = BaseView.extend({
+],function(BaseView,detailModel, DiseaseTpl){
+    var IncrementView = BaseView.extend({
         template: _.template(DiseaseTpl),
         id:"disease-container",
         ui:{
@@ -16,14 +16,16 @@ define([
             "btnBack":"#top-title-left" //点击返回
         },
         events:{
-            "tap #top-title-left":"_clickBackHandler"
+            "tap #top-title-left":"_clickBackHandler",
+            "tap #top-title-right-1":"_clickShareHandler",  //点击分享
+            "tap #top-title-right-2":"_clickCollectHandler"   //点击收藏
         },
         initialize:function(){
             this.model = new detailModel();
             this.model.on("change",this.render,this);
-            this.model.setTitle("病种详情");
-            this.model.setDetail("-<p>1.恶性肿瘤</p>"+
-                                "<p>2.急性心肌</p>"+
+            this.model.setTitle("增值服务详情");
+            this.model.setDetail("<h1>增值服务介绍</h1>"+
+                                "<p>VIP增值服务内容</p>"+
                                 "<p>3.脑中风后遗症</p>"+
                                 "<p>4.重大器官移植术和造血干细胞移植术</p>"+
                                 "<p>4.重大器官移植术和造血干细胞移植术</p>"+
@@ -33,6 +35,7 @@ define([
                                 "<p>4.重大器官移植术和造血干细胞移植术</p>"+
                                 "<p>4.重大器官移植术和造血干细胞移植术</p>"+
                                 "<p>4.重大器官移植术和造血干细胞移植.重大器官移植术和造血干细胞移植.重大器官移植术和造血干细胞移植术</p>");
+            this.model.setHasShare(true);
         },
         render: function() {
             this.$el.html(this.template(this.model.attributes));
@@ -52,9 +55,21 @@ define([
             e.preventDefault();
             app.goBack();
         },
+        //点击分享
+        _clickShareHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            alert("点击分享");
+        },
+        //点击收藏
+        _clickCollectHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            alert("点击收藏");
+        },
         close:function(){
 
         }
     });
-    return DiseaseView;
+    return IncrementView;
 });

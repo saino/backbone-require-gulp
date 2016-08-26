@@ -1,28 +1,33 @@
-// 文件名称: login
+// 文件名称: 计划书页 
 //
-// 创建日期: 2015/01/08
-// 描    述: 用户登录
+// 创建日期: 2016/8/24
+// 描    述: 包含保障计划、保险理念、公司介绍
 define([
     'common/base/base_view',
     'text!module/plan/templates/plan.html',
+    'module/plan/views/planCompanyView',
     'marionette',
     "msgbox"
-],function(BaseView, tpl, mn, MsgBox) {
+],function(BaseView, tpl, planCompanyView, mn, MsgBox) {
     return BaseView.extend({
         id: "plan-container",
         template : _.template(tpl),
         _mouseLock : false,
         forever : false,
         ui : {
+            "topCon":"#top-title",
+            "planMain":"#plan-main"
         },
-
+        regions:{
+            "planMain":"#plan-main"
+        },
         //事件添加
         events : {
-            "tap #back":"_clickBackHandler",
-            "tap #btnBuy":"_clickBuyHandler"
+            "tap #top-title-left":"_clickBackHandler"
         },
         /**初始化**/
-        initialize : function(){
+        initialize : function(){            
+            this.planCompanyView = new planCompanyView();
         },
 
         //在开始渲染模板前执行，此时当前page没有添加到document
@@ -33,28 +38,22 @@ define([
         onRender : function(){
             var self = this;
             if(device.ios()){
-                utils.showTopBar();
-
-            }
+                self.ui.topCon.css("padding-top",utils.toolHeight+"px");
+                self.ui.planMain.css("height","-webkit-calc(100% - "+(183+utils.toolHeight)+"px)");
+            }            
+            this.getRegion("planMain").show(this.planCompanyView);
         },
 
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
-
+            var self = this;
+            self.planCompanyView.setHeight(self.ui.planMain[0].offsetHeight);
         },
+        //点击返回
         _clickBackHandler:function(e){
-            e.preventDefault();
             e.stopPropagation();
+            e.preventDefault();
             app.goBack();
-        },
-        _clickBuyHandler:function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            MsgBox.ask("你认定删除该条浏览记录吗？确定确定确定要删除吗？你认定删除该条浏览记录吗？确定确定确定要删除吗？","bbbbbbb",function(type){
-                if(type == 2) { //确定  0=取消
-                    console.log("cccccc" + type);
-                }
-            });
         },
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
