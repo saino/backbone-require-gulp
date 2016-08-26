@@ -11,14 +11,12 @@ define([
 
         ui: {
             back: "#top-title-left",
-            browseRecordsContent: "#browse-records-content",
-            browseRecordsTitleRight: "#top-title-right"
+            productInsureDuty: ".product-insure-duty"
         },
 
         events: {
             "tap @ui.back": "clickBackHandler",
-            "tap @ui.browseRecordsContent": "clickDeleteHandler",
-            "tap @ui.browseRecordsTitleRight": "clickDeleteAllHandler"
+            "tap @ui.productInsureDuty": "clickProductInsureDutyHandler"
         },
 
         clickBackHandler: function (event) {
@@ -26,6 +24,27 @@ define([
             event.preventDefault();
 
             app.goBack();
+        },
+        clickProductInsureDutyHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+
+            var self = this;
+            var target = event.target;
+            var $target = $(target);
+            var parent = null;
+            if($target.hasClass("pull-icon-small")){
+                parent = $target.parent();
+                parent.toggleClass("on-small");
+                //$target.css({"background-image":})
+            }
+            if($target.hasClass("pull-icon-big")){
+                parent = $target.parent();
+                parent.toggleClass("on-big");
+            }
+            if(parent){
+               parent.next().slideToggle();
+            }
         }
     });
 });
