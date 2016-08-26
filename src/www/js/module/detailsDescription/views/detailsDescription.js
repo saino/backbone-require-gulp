@@ -10,15 +10,16 @@ define([
         forever: false,
 
         ui: {
-            back: "#top-title-left"
-            //browseRecordsContent: "#browse-records-content",
-            //browseRecordsTitleRight: "#browse-records-title-right"
+            back: "#top-title-left",
+            detailsDescriptionRuleName1: ".details-description-rule-name1",
+            detailsDescriptionRuleName2: ".details-description-rule-name2",
+            detailsDescriptionRuleContent: "#details-description-rule-content"
         },
 
         events: {
-            "tap @ui.back": "clickBackHandler"
-            //"tap @ui.browseRecordsContent": "clickDeleteHandler",
-            //"tap @ui.browseRecordsTitleRight": "clickDeleteAllHandler"
+            "tap @ui.back": "clickBackHandler",
+            "tap @ui.detailsDescriptionRuleName1": "clickDetailsDescriptionRuleName1Handler",
+            "tap @ui.detailsDescriptionRuleName2": "clickDetailsDescriptionRuleName2Handler"
         },
 
         clickBackHandler: function(event){
@@ -27,7 +28,23 @@ define([
 
             app.goBack();
         },
+        clickDetailsDescriptionRuleName1Handler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
 
+            this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 details-description-rule-name-selected");
+            this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2");
+            this.ui.detailsDescriptionRuleContent.html("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+
+        },
+        clickDetailsDescriptionRuleName2Handler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+
+            this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2 details-description-rule-name-selected");
+            this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1");
+            this.ui.detailsDescriptionRuleContent.html("222222222222222222222222222222222222222");
+        },
         initialize: function(){
             console.log("initialize!!!");
             //console.log(this.getOption("detailsDescriptionId"));
@@ -42,6 +59,9 @@ define([
         },
 
         show: function(){
+            this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 details-description-rule-name-selected");
+            this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2");
+            this.ui.detailsDescriptionRuleContent.html("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
             console.log("show!!!");
 
         },

@@ -19,7 +19,8 @@ define([
             btnOpenAdditional: "#btnOpenAdditional",
             btnOpenDisease: "#btnOpenDisease",
             btnOpenClause: "#btnOpenClause",
-            btnOpenDetailsDescription: "#btnOpenDetailsDescription"
+            btnOpenDetailsDescription: "#btnOpenDetailsDescription",
+            btnLifeInsurance: "#btnLifeInsurance"
         },
         //事件添加
         events : {
@@ -28,7 +29,8 @@ define([
             "tap @ui.btnOpenAdditional": "clickAdditionalHandler",
             "tap @ui.btnOpenDisease": "clickDiseaseHandler",
             "tap @ui.btnOpenClause": "clickClauseHandler",
-            "tap @ui.btnOpenDetailsDescription": "clickDetailsDescriptionHandler"
+            "tap @ui.btnOpenDetailsDescription": "clickDetailsDescriptionHandler",
+            "tap @ui.btnLifeInsurance": "clickLifeInsuranceHandler"
         },
         clickPlanHandler : function(){
             console.log(123);
@@ -58,6 +60,11 @@ define([
             event.stopPropagation();
             event.preventDefault();
             app.navigate("home/detailsDescription/lkaj3121", {replace: true, trigger: true});
+        },
+        clickLifeInsuranceHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            app.navigate("home/lifeInsurance", {replace: true, trigger: true});
         },
         /**初始化**/
         initialize : function(){

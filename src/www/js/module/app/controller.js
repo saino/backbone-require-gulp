@@ -10,7 +10,8 @@ define([
     'module/additional/controller',
     'module/disease/controller',
     'module/clause/controller',
-    'module/detailsDescription/controller'
+    'module/detailsDescription/controller',
+    'module/lifeInsurance/controller'
 ],function(){
     var controllers = {
     };
