@@ -14,7 +14,8 @@ define([
     'module/lifeInsurance/controller',
     'module/productDetails/controller',
     'module/search/controller',
-    'module/attachDetails/controller'
+    'module/attachDetails/controller',
+    'module/makePlan/controller'
 ],function(){
     var controllers = {
     };

@@ -21,7 +21,8 @@ define([
             btnOpenClause: "#btnOpenClause",
             btnOpenDetailsDescription: "#btnOpenDetailsDescription",
             btnLifeInsurance: "#btnLifeInsurance",
-            btnOpenProductDetails : "#btnOpenProductDetails"
+            btnOpenProductDetails : "#btnOpenProductDetails",
+            btnMakePlan: "#btnMakePlan"
         },
         //事件添加
         events : {
@@ -32,7 +33,13 @@ define([
             "tap @ui.btnOpenClause": "clickClauseHandler",
             "tap @ui.btnOpenDetailsDescription": "clickDetailsDescriptionHandler",
             "tap @ui.btnLifeInsurance": "clickLifeInsuranceHandler",
-            "tap @ui.btnOpenProductDetails": "clickOpenProductDetailsHandler"
+            "tap @ui.btnOpenProductDetails": "clickOpenProductDetailsHandler",
+            "tap @ui.btnMakePlan": "clickBtnMakePlan"
+        },
+        clickBtnMakePlan: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            app.navigate("home/makePlan", {replace: true, trigger: true});
         },
         clickPlanHandler : function(){
             console.log(123);
