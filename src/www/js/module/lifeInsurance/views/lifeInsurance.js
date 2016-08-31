@@ -2,8 +2,9 @@ define([
     'common/base/base_view',
     'marionette',
     'text!module/lifeInsurance/templates/lifeInsurance.html',
-    'msgbox'
-], function(BaseView, mn, tpl, MsgBox) {
+    'msgbox',
+    'module/lifeInsurance/model/lifeInsurance'
+], function(BaseView, mn, tpl, MsgBox, lifeInsuranceModel) {
     return BaseView.extend({
         id: "lifeInsurancePage",
         template: _.template(tpl),
@@ -73,8 +74,32 @@ define([
             }
             self.ui.defaultSortLayoutFloat.hide();
         },
+
+        /**初始化**/
+        initialize : function(){
+        },
+        //在开始渲染模板前执行，此时当前page没有添加到document
+        onBeforeRender : function(){
+
+        },
+        //渲染完模板后执行,此时当前page没有添加到document
+        onRender : function(){
+
+        },
         show: function(){
-            console.log("测试用");
+            lifeInsuranceModel.getLifeInsuranceCard();
+        },
+        //页间动画已经完成，当前page已经加入到document
+        pageIn : function(){
+        },
+
+        /**页面关闭时调用，此时不会销毁页面**/
+        close : function(){
+        },
+
+        //当页面销毁时触发
+        onDestroy : function(){
+//            console.log("footer destroy");
         }
     });
 });
