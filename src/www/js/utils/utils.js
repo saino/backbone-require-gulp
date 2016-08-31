@@ -8,7 +8,8 @@
     utils.toolHeight = 40;
     utils.userObj = {id:"QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0="};
     utils.serverConfig = {
-        serverUrl : "http://172.25.13.166:8080"
+        // serverUrl : "http://172.30.1.54:8080"
+        serverUrl: "http://172.25.13.166:8080"
     };
 
     /**
@@ -87,11 +88,11 @@
         var _dataType = dataType || "json";
         var _contentType = contentType || "application/json";
         $.ajax({
-            type       : _type,
-            url        : utils.serverConfig.serverUrl + url,
-            contentType: _contentType,
-            data       : _contentType == "application/json" && typeof data == "object" ? JSON.stringify(data) : data,
-            success    : function (result) {
+            method : _type,
+            url : utils.serverConfig.serverUrl + url,
+            data : _contentType == "application/json" && typeof data == "object" ? JSON.stringify(data) : data,
+            contentType :  _contentType,
+            success : function (result) {
                 success && success(result);
             },
             error      : function (msg) {

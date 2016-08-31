@@ -18,10 +18,10 @@ define([
 
             "in/plan": "plan",  //计划书页
             "in/additional":"additional",   //附加险列表
-            "in/disease":"disease",   //病种详情
+            "in/disease/:id":"disease",   //病种详情
             "in/increment":"increment", //增值服务详情
-            "in/clause":"clause",   //条款
-            "in/companyIntro":"companyIntro",   //寿险 公司简介
+            "in/clause/:id":"clause",   //条款
+            "in/companyIntro/:id":"companyIntro",   //寿险 公司简介
             "in/search":"search", //产品搜索
             'in/advanceQuery':"advanceQuery",//产品高级筛选
             "home/browseRecords": "browseRecords", //浏览记录
@@ -30,7 +30,7 @@ define([
             "in/productDetails":"productDetails",   //寿险 产品详情
             "in/productDetails/:productId":"productDetails",   //寿险 产品详情
             "in/attachDetails/:productId":"attachDetails",   //寿险 附加详情
-            "in/makePlan": "makePlan" //制作计划书
+            "in/makePlan": "makePlan"  //制作计划书
         },
 
         /**未登陆时需要过滤的路由**/

@@ -127,18 +127,7 @@
   border-bottom: 2px solid #dddddd;
 }
 
-//.年龄：_28天_60周岁_保障期间：_终身_ {
-//  font-size: 30px;
-//  font-family: "PingFang";
-//  color: rgb(102, 102, 102);
-//  line-height: 2;
-//  position: absolute;
-//  left: 47.73px;
-//  top: 480.38px;
-//  z-index: 9;
-//}
-
-#default-sort-layout-float{
+#default-sort-layout-float, #insurance-company-float{
   display: none;
   position: absolute;
   height: 100%;
@@ -167,4 +156,8 @@
 }
 .default-sort-item-selected{
   color: #e6454a;
+}
+
+#insurance-company-float{
+  display: block;
 }

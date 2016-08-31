@@ -11,7 +11,7 @@ define([
         },
         initialize:function(){
             var self = this;
-            self.set({"title":"","detailContent":"","hasShare":false,"isIos":device.ios()});//是否函分享按钮
+            self.set({"title":"","detailContent":"","hasShare":false,"isIos":device.ios(), companyPhone:""});//是否函分享按钮
             if(device.ios()){
                 self.set({"paddingTop":'style="padding-top:'+utils.toolHeight+'px"',"conHeight":'style="height:-webkit-calc(100% - '+(utils.toolHeight+235)+'px)"'});
             }else{
@@ -34,13 +34,42 @@ define([
                 this.set({"detailContent":""});
             }
         },
+
+        setPhoneNumber : function(number){
+            if(number){
+                number = "tel:"+number;
+            }else{
+                number = "";
+            }
+            this.set({companyPhone:number});
+        },
         /**
          * 设置是否可分享收藏
          * share :boolean
          */
         setHasShare:function(share){
             this.set({"hasShare":share});
-        }    
+        },
+
+        getCompanyInfo : function(organId){
+            var self = this;
+            var opt = {};
+            opt.url = "/ls/services/dt/productService/getCompanyInfo";
+            opt.type = "POST";
+            var data = {};
+            data.organId = organId;
+            opt.data = data;
+            opt.success = function(result){
+                if(result.status == 0) {
+                    self.setDetail(result.organDesc);
+                    self.setPhoneNumber(result.telephone);
+                }
+            };
+            opt.error = function(err){
+
+            };
+            utils.requestData(opt);
+        }
     });
     return companyIntroModel;
 });
