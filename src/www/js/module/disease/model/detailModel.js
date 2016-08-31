@@ -44,6 +44,28 @@ define([
             }else{
                 this.set({"btnsHtml":''});
             }            
+        },
+
+        /**
+         * 获取某一产品的病种详情
+         */
+        getDeseaseInfo : function(productId){
+            var self = this;
+            var opt = {};
+            opt.url = "/dt/productService/getDeseaseInfo";
+            opt.type = "POST";
+            var data = {};
+            data.packageId = productId;
+            opt.data = data;
+            opt.success = function(result){
+                if(result.status == 0) {
+                    self.setDetail(result.itemDesc)
+                }
+            };
+            opt.error = function(err){
+
+            };
+            utils.requestData(opt);
         }
     });
     return detailModel;
