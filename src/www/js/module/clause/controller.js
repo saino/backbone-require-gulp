@@ -7,8 +7,10 @@ define([
     'module/clause/views/clauseView'
 ],function(ClauseView){
     return {
-        clause : function(){
-            app.page.show(ClauseView);
+        clause : function(id){
+            var opt = {};
+            opt.productId = id;
+            app.page.show(ClauseView, opt);
         }
     };
 });

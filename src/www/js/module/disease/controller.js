@@ -9,14 +9,18 @@ define([
     'module/disease/views/companyIntroView'
 ],function(DiseaseView,IncrementView,CompanyIntroView){
     return {
-        disease : function(){       //病种详情
-            app.page.show(DiseaseView);
+        disease : function(id){       //病种详情
+            var opt = {};
+            opt.productId = id;
+            app.page.show(DiseaseView, opt);
         },
         increment: function(){      //增值服务详情
             app.page.show(IncrementView);
         },
-        companyIntro:function(){    //寿险-公司简介
-            app.page.show(CompanyIntroView);
+        companyIntro:function(id){    //寿险-公司简介
+            var opt = {};
+            opt.organId = id;
+            app.page.show(CompanyIntroView, opt);
         }
     };
 });

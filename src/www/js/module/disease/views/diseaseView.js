@@ -22,17 +22,8 @@ define([
             this.model = new detailModel();
             this.model.on("change",this.render,this);
             this.model.setTitle("病种详情");
-            this.model.setDetail("-<p>1.恶性肿瘤</p>"+
-                                "<p>2.急性心肌</p>"+
-                                "<p>3.脑中风后遗症</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植.重大器官移植术和造血干细胞移植.重大器官移植术和造血干细胞移植术</p>");
+            var productId = this.getOption("productId");
+            this.model.getDeseaseInfo(productId);
         },
         render: function() {
             this.$el.html(this.template(this.model.attributes));

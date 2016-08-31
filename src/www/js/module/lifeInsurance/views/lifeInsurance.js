@@ -38,7 +38,7 @@ define([
             event.stopPropagation();
             event.preventDefault();
 
-            console.log("aaaaaa");
+            // console.log("aaaaaa");
             // app.navigate("home/insuranceCompany", {replace})
         },
 
