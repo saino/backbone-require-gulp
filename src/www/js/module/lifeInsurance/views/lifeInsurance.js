@@ -72,6 +72,9 @@ define([
                 $target.attr("class","default-sort-item default-sort-item-selected");
             }
             self.ui.defaultSortLayoutFloat.hide();
+        },
+        show: function(){
+            console.log("测试用");
         }
     });
 });
