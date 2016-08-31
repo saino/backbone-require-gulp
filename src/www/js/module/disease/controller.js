@@ -17,8 +17,10 @@ define([
         increment: function(){      //增值服务详情
             app.page.show(IncrementView);
         },
-        companyIntro:function(){    //寿险-公司简介
-            app.page.show(CompanyIntroView);
+        companyIntro:function(id){    //寿险-公司简介
+            var opt = {};
+            opt.organId = id;
+            app.page.show(CompanyIntroView, opt);
         }
     };
 });

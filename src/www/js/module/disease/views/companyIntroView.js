@@ -22,9 +22,11 @@ define([
             this.model = new companyIntroModel();
             this.model.on("change",this.render,this);
             this.model.setTitle("公司简介");
-            this.model.setDetail("<p>长城人寿保险股份有限公司（简称）“长城人寿”是一家经中国保险监督管理委员会批准设立的全国性人寿保险公司。以“打造服务最好的保险品牌”为目标，倡导“让服务成为我们的生活方式 ”，致力于为客户提供适合的保险产品和便捷的服务，为员工提供良好的工作环境和成长空间</p>"+
-                                "<p>成立时间：2016年8月23日</p>"+
-                                "<p>注册资金：2，335，351，522元</p>");
+            var organId = this.getOption("organId");
+            this.model.getCompanyInfo(organId);
+            //this.model.setDetail("<p>长城人寿保险股份有限公司（简称）“长城人寿”是一家经中国保险监督管理委员会批准设立的全国性人寿保险公司。以“打造服务最好的保险品牌”为目标，倡导“让服务成为我们的生活方式 ”，致力于为客户提供适合的保险产品和便捷的服务，为员工提供良好的工作环境和成长空间</p>"+
+            //                    "<p>成立时间：2016年8月23日</p>"+
+            //                    "<p>注册资金：2，335，351，522元</p>");
         },
         render: function() {
             this.$el.html(this.template(this.model.attributes));
