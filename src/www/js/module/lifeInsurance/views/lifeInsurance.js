@@ -15,14 +15,33 @@ define([
             productInsureDuty: ".product-insure-duty",
             searchDefaultSort: "#search-default-sort",
             defaultSortLayoutFloat: "#default-sort-layout-float",
-            defaultSortContent: ".default-sort-content"
+            // defaultSortContent: ".default-sort-content",
+            searchText: "#search-text",                                 //搜索框
+            searchAdvancedScreening: "#search-advanced-screening"       //高级筛选
+
         },
 
         events: {
             "tap @ui.back": "clickBackHandler",
             "tap @ui.productInsureDuty": "clickProductInsureDutyHandler",
             "tap @ui.searchDefaultSort": "clickSearchDefaultSortHandler",
-            "tap @ui.defaultSortContent": "clickDefaultSortContentHandler"
+            "tap @ui.defaultSortLayoutFloat": "clickDefaultSortLayoutFloatHandler",
+            "tap @ui.searchText": "clickSearchTextHandler",
+            "tap @ui.searchAdvancedScreening": "clickSearchAdvancedScreeningHandler"
+        },
+
+        clickSearchAdvancedScreeningHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+
+            app.navigate("in/advanceQuery", {replace: true, trigger: true});
+        },
+
+        clickSearchTextHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+
+            app.navigate("in/search", {replace: true, trigger: true});
         },
 
         clickBackHandler: function (event) {
@@ -31,6 +50,7 @@ define([
 
             app.goBack();
         },
+
         clickProductInsureDutyHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
@@ -52,6 +72,7 @@ define([
                parent.next().slideToggle();
             }
         },
+
         clickSearchDefaultSortHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
@@ -59,7 +80,8 @@ define([
             this.ui.defaultSortLayoutFloat.show();
 
         },
-        clickDefaultSortContentHandler: function(event){
+
+        clickDefaultSortLayoutFloatHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
             var self = this;
@@ -78,6 +100,8 @@ define([
         /**初始化**/
         initialize : function(){
         },
+
+
         //在开始渲染模板前执行，此时当前page没有添加到document
         onBeforeRender : function(){
 

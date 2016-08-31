@@ -21,7 +21,11 @@ define([], function(){
 			type: "POST",
 			url: url,
 			data: options,
-			// dataType: "jsonp",
+			crossDomain: true,
+			xhrFields: {
+				withCredential: true
+			},
+			// dataType: "json",
 			success: function(){
 				console.log("success!!!");
 			},
