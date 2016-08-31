@@ -30,7 +30,7 @@ define([
             e.stopPropagation();
             e.preventDefault();
             app.goBack();
-        },
+        }
     });
     return SearchView;
 });

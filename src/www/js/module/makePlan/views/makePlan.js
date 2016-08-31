@@ -20,7 +20,9 @@ define([
         events : {
             "tap @ui.topTitleLeft": "clickTopTitleLeftHandler"
         },
-
+        pageIn:function(){
+            console.log("pagein11");
+        },
         clickTopTitleLeftHandler: function(event){
             event.stopPropagation();
             event.preventDefault();

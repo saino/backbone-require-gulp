@@ -1,7 +1,5 @@
 // 文件名称: utils.js
-//
-// 创 建 人: chenshy
-// 创建日期: 2014/08/22
+// 创 建 人: guyy
 // 描    述: 工具类
 (function(window){
     var utils = {};
@@ -39,15 +37,15 @@
         return false;
     };
 
-    /**
-     * 显示app顶端时间等
-     * @param cb_ok
-     * @param cb_err
-     */
-    utils.showTopBar = function(){
-        if(navigator && navigator.device && navigator.device.capture)
-            navigator.device.capture.showBar("white",null, null);
-    }
+//    /**
+//     * 显示app顶端时间等
+//     * @param cb_ok
+//     * @param cb_err
+//     */
+//    utils.showTopBar = function(){
+//        if(navigator && navigator.device && navigator.device.capture)
+//            navigator.device.capture.showBar("white",null, null);
+//    }
 
     
 })(window);
