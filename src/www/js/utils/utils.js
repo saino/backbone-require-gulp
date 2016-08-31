@@ -47,5 +47,59 @@
 //            navigator.device.capture.showBar("white",null, null);
 //    }
 
+    /**
+     * requestData 请求数据
+     * @param opts ajax配置对象
+     * {
+     * url：url 路径和参数,       (必填)
+     * success：成功回调              (必填)
+     * data：向服务器发送的数据       (选填) 如果contentType = "application/json"，data可以用Object或json string,其他类型data只能为string
+     * error：失败回调                (选填)
+     * type : 请求类型               （选填）
+    * dataType ：返回类型，默认为"json"，支持ajax支持的类型 (选填)
+     * }
+     */
+    utils.requestData = function (opts) {
+        if (typeof opts.url != "string") {
+            throw "url must provided";
+        }
+
+        if (typeof opts.success != "function") {
+            throw "success must provided";
+        }
+
+        if (!opts.type) opts.type = "GET";
+
+        utils.exChangeResultFullData(opts.url, opts.data, opts.success, opts.error, opts.type, opts.dataType)
+    };
+
+    /**
+     * 获取和提交RESTful数据接口
+     * @param url 接口地址
+     * @param data  传输数据 如果contentType = "application/json"，data可以用Object或json string,其他类型data只能为string
+     * @param success 成功回调
+     * @param error  失败回调
+     * @param type  取数据type = "GET"，提交数据type = "POST"
+     * @param dataType 成功返回数据的格式dataType= "json"或dataType= "text"等ajax支持的格式
+     */
+    utils.exChangeResultFullData = function (url, data, success, error, type, dataType, contentType) {
+        var _type = type || "POST";
+        var _dataType = dataType || "json";
+        var _contentType = contentType || "application/json";
+        $.ajax({
+            type       : _type,
+            url        : utils.serverConfig.serverUrl + url,
+            contentType: _contentType,
+            data       : _contentType == "application/json" && typeof data == "object" ? JSON.stringify(data) : data,
+            success    : function (result) {
+                success && success(result);
+            },
+            error      : function (msg) {
+                error && error(msg);
+            },
+            dataType   : _dataType
+        });
+    };
+
     
 })(window);
