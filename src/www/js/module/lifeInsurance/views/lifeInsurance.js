@@ -8,16 +8,18 @@ define([
     return BaseView.extend({
         id: "lifeInsurancePage",
         template: _.template(tpl),
-        forever: false,
+        forever: true,
 
         ui: {
             back: "#top-title-left",
             productInsureDuty: ".product-insure-duty",
-            searchDefaultSort: "#search-default-sort",
-            defaultSortLayoutFloat: "#default-sort-layout-float",
+            searchDefaultSort: "#search-default-sort",                  //默认排序
+            defaultSortLayoutFloat: "#default-sort-layout-float", 
             // defaultSortContent: ".default-sort-content",
             searchText: "#search-text",                                 //搜索框
-            searchAdvancedScreening: "#search-advanced-screening"       //高级筛选
+            searchAdvancedScreening: "#search-advanced-screening",      //高级筛选
+            searchInsuranceCompany: "#search-insurance-company",        //保险公司
+
 
         },
 
@@ -27,9 +29,20 @@ define([
             "tap @ui.searchDefaultSort": "clickSearchDefaultSortHandler",
             "tap @ui.defaultSortLayoutFloat": "clickDefaultSortLayoutFloatHandler",
             "tap @ui.searchText": "clickSearchTextHandler",
-            "tap @ui.searchAdvancedScreening": "clickSearchAdvancedScreeningHandler"
+            "tap @ui.searchAdvancedScreening": "clickSearchAdvancedScreeningHandler",
+            "tap @ui.searchInsuranceCompany": "clickSearchInsuranceCompanyHandler"
         },
 
+        //点击保险公司
+        clickSearchInsuranceCompanyHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+
+            console.log("aaaaaa");
+            // app.navigate("home/insuranceCompany", {replace})
+        },
+
+        // 点击高级筛选
         clickSearchAdvancedScreeningHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
@@ -37,6 +50,7 @@ define([
             app.navigate("in/advanceQuery", {replace: true, trigger: true});
         },
 
+        // 点击输入框
         clickSearchTextHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
@@ -44,6 +58,7 @@ define([
             app.navigate("in/search", {replace: true, trigger: true});
         },
 
+        // 点击返回
         clickBackHandler: function (event) {
             event.stopPropagation();
             event.preventDefault();
@@ -51,6 +66,7 @@ define([
             app.goBack();
         },
 
+        // 点击
         clickProductInsureDutyHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
@@ -108,10 +124,11 @@ define([
         },
         //渲染完模板后执行,此时当前page没有添加到document
         onRender : function(){
-
+            console.log("onRender...");
         },
         show: function(){
             lifeInsuranceModel.getLifeInsuranceCard();
+            console.log("show..");
         },
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
