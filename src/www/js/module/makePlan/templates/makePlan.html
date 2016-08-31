@@ -2,7 +2,224 @@
     <div id="top-title-left"></div>
     <div id="top-title-center">制作计划书</div>
 </div>
+<div id="make-plan-main">
 <div id="make-plane-title" style='background: url("images/temp/hx-logo.png") no-repeat right 30px center #fff;'>华夏健康人生计划</div>
-<div class="make-plan-insured">
-
+<div id="make-plan-insured" class="make-plan-insured">
+    <div class="insured-title">
+        <span>被保人信息</span>
+        <div id="import">
+            从客户列表导入&nbsp;
+        </div>
+    </div>
+    <div class="insured-property">
+        <div class="insured-property-item">
+            <span>被保人姓名：</span>
+            <input type="text" class="property-input"/>
+        </div>
+        <div class="insured-property-item">
+            <span>被保人年龄：</span>
+            <select name="old" id="old" class="property-input property-select">
+                <option value="30">30</option>
+                <option value="29">29</option>
+                <option value="28">28</option>
+            </select>
+        </div>
+        <div class="insured-property-item">
+            <span>被保人性别：</span>
+            <div class="property-radio">
+                <div class="property-radio-item property-radio-item-ck">
+                    <span class="circle"><span class="circle-ck"></span></span>男
+                </div>
+                <div class="property-radio-item">
+                    <span class="circle"><span class="circle-ck"></span></span>女
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="make-plan-policy-holder" class="make-plan-insured">
+    <div class="insured-title">
+        <span>投保人信息</span>
+    </div>
+    <div class="insured-property">
+        <div class="insured-property-item">
+            <span>投保人年龄：</span>
+            <select name="old" id="policy-old" class="property-input property-select">
+                <option value="30">30</option>
+                <option value="29">29</option>
+                <option value="28">28</option>
+            </select>
+        </div>
+        <div class="insured-property-item">
+            <span>投保人性别：</span>
+            <div class="property-radio">
+                <div class="property-radio-item property-radio-item-ck">
+                    <span class="circle"><span class="circle-ck"></span></span>男
+                </div>
+                <div class="property-radio-item">
+                    <span class="circle"><span class="circle-ck"></span></span>女
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="make-plan-select" class="make-plan-insured">
+        <div class="insured-title">
+            <span>投保选择</span>
+        </div>
+        <div class="insured-property">
+            <div class="insured-property-item">
+                <span>保额：</span>
+                <input type="text" class="property-input"/>
+            </div>
+            <div class="insured-property-item">
+                <span>交费期限：</span>
+                <select name="old" class="property-input property-select">
+                    <option value="30">20年</option>
+                    <option value="29">30年</option>
+                    <option value="28">40年</option>
+                </select>
+            </div>
+            <div class="insured-property-item">
+                <span>保障期限：</span>
+                <select name="old" class="property-input property-select">
+                    <option value="1">终身</option>
+                    <option value="29">30年</option>
+                    <option value="28">40年</option>
+                </select>
+            </div>
+        </div>
+        <div class="insured-duty">
+            <div class="duty-title"><img src="images/plan/icon08.png" alt="" class="title-img"/><span class="title-span">可选责任</span>
+                <div class="duty-open"></div>
+            </div>
+            <div class="duty-list">
+                <div class="duty-item">
+                    <div class="duty-item-left duty-item-left-ck">
+                        <div class="duty-item-check"></div>
+                        <div class="duty-item-name">可选责任1标题</div>
+                    </div>
+                    <input class="duty-item-input" placeholder="请输入保额" type="text"/>
+                </div>
+                <div class="duty-item">
+                    <div class="duty-item-left">
+                        <div class="duty-item-check"></div>
+                        <div class="duty-item-name">可选责任2标题标题标题标题标题</div>
+                    </div>
+                    <input class="duty-item-input" placeholder="请输入保额" type="text"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--附加险-->
+    <div id="make-plan-additional" class="make-plan-insured">
+        <div class="insured-title">
+            <span>附加险</span>
+        </div>
+        <div class="additional-name">附加投保人豁免保费重大疾病保险
+            <div class="additional-del"></div>
+        </div>
+        <div class="insured-property">
+            <div class="insured-property-item">
+                <span>保额：</span>
+                <input type="text" class="property-input"/>
+            </div>
+            <div class="insured-property-item">
+                <span>交费期限：</span>
+                <select name="old" class="property-input property-select">
+                    <option value="30">20年</option>
+                    <option value="29">30年</option>
+                    <option value="28">40年</option>
+                </select>
+            </div>
+            <div class="insured-property-item">
+                <span>保障期限：</span>
+                <select name="old" class="property-input property-select">
+                    <option value="1">终身</option>
+                    <option value="29">30年</option>
+                    <option value="28">40年</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="make-plan-add-additional" class="make-plan-insured">
+        <img src="images/plan/icon10.png" alt="" class="title-img"/>
+        <span class="title-span">添加附加险</span>
+    </div>
+    <!--首年保费-->
+    <div id="make-plan-first-year" class="make-plan-insured">
+        <div class="insured-title">
+            <span>首年保费</span>
+        </div>
+        <div class="first-year-list">
+            <table class="first-year-table">
+                <tr>
+                    <th width="20%">险种</th>
+                    <th width="20%">保险金额</th>
+                    <th width="20%">保障期限</th>
+                    <th width="20%">交费期限</th>
+                    <th width="20%">首保保费</th>
+                </tr>
+                <tr>
+                    <td>健康人生</td>
+                    <td>1，000，000</td>
+                    <td>终生</td>
+                    <td>20年</td>
+                    <td>19，930</td>
+                </tr>
+                <tr>
+                    <td>附加投保人</td>
+                    <td>190，000</td>
+                    <td>19年</td>
+                    <td>20年</td>
+                    <td>19，930</td>
+                </tr>
+            </table>
+            <div class="first-year-stop"></div>
+        </div>
+    </div>
+    <!--增值服务-->
+    <div id="make-plan-increment" class="make-plan-insured">
+        <div class="insured-title">
+            <div class="increment-check"></div>
+            <span>增值服务</span>
+            <div class="title-stop"></div>
+        </div>
+        <div class="increment-item">华厦重大疾病绿色通道</div>
+        <div class="increment-item">华厦重大疾病绿色通道</div>
+    </div>
+    <!--保险理念-->
+    <div id="make-plan-idea" class="make-plan-insured">
+        <div class="insured-title">
+            <span>保险理念</span>
+            <div class="title-stop"></div>
+        </div>
+        <div class="idea-item idea-item-ck"><span class="circle"><span class="circle-ck"></span></span>健康</div>
+        <div class="idea-item"><span class="circle"><span class="circle-ck"></span></span>理财</div>
+        <div class="idea-item"><span class="circle"><span class="circle-ck"></span></span>养老</div>
+    </div>
+    <!--留言-->
+    <div id="make-plan-comment" class="make-plan-insured">
+        <div class="insured-title">
+            <div class="increment-check"></div>
+            <span>留言</span>
+        </div>
+        <div class="comment-main">
+            <textarea name="comment" id="comment"></textarea>
+        </div>
+    </div>
+    <!--敬呈-->
+    <div id="make-plan-send" class="make-plan-insured">
+        <span class="send-span">该计划书敬呈</span>
+        <input type="text" class="send-input"/>
+        <select name="send-sex" id="send-sex" class="send-sex">
+            <option value="0">先生</option>
+            <option value="1">女士</option>
+        </select>
+    </div>
+    <!--生成计划书-->
+    <div id="make-plan-btn">
+        <img src="images/plan/icon11.png" class="btn-img"/>
+        <span class="btn-span">生成计划书</span>
+    </div>
 </div>

@@ -1,6 +1,104 @@
 #make-plan-container{
   position: absolute; top:0; left:0;  width: 100%;  height: 100%;  background: #f5f5f5;
 }
+#make-plan-main{width:100%; height:-webkit-calc(100% - 85px); overflow-y: scroll;}
 #make-plane-title{ height: 110px;width: 100%;font-size: 3.4em;line-height: 110px;text-indent: 30px; color: #333; margin-bottom: 12px;}
 //被保人信息
-.make-plan-insured{ }
+#make-plan-insured{margin-top: 12px;}
+.make-plan-insured{ width:-webkit-calc(100% - 28px); margin:17px auto 0 auto; background: #fff; box-shadow: 0 5px 5px 0 rgba(231,231,231,.75); border-radius: 8px;
+  .insured-title{width:100%; height:110px; line-height: 110px;background: url("../images/plan/icon12.png") no-repeat 16px center;
+    text-indent: 100px;border-bottom: 7px solid #f5f5f5;}
+  span{font-size: 3.4em;font-family: '苹方粗'; color:#666;}
+  #import{ float:right; width:300px; height:110px; line-height: 110px; color:#a2a2a2; font-size: 3em; text-indent: 0;
+          background: url("../images/insurance/next-big.png") no-repeat right 36px center;}
+  //属性列表
+  .insured-property{width:100%; overflow: hidden;}
+  .insured-property-item{width:-webkit-calc(100% - 72px); height: 110px; margin:0 auto; border-bottom: 2px solid #ddd; line-height: 110px;}
+    span{ font-size: 3em;}
+    .property-input{width:-webkit-calc(50%); height:70px; border-radius: 6px;border:1px solid #ddd; float:right; margin-top: 20px;
+          font-size: 3em;text-indent: 20px;}
+    .property-select{appearance:none; -webkit-appearance:none; background: url("../images/insurance/down-big.png") no-repeat right 20px center;}
+    .property-radio{width:-webkit-calc(50%); height:44px; float:right; margin-top: 33px;}
+      .property-radio-item{width:-webkit-calc(50%); height:44px; line-height: 44px; float:left; text-align: center; font-size: 3em;
+          .circle{width:44px; height:44px; border-radius: 22px; border:1px solid #ddd; display: inline-block; vertical-align: middle;
+             font-size: 0; margin-right: 32px;}
+          .circle-ck{width:32px; height:32px; border-radius: 16px; margin:5px auto; background: #e6454a; display:none;}
+      }
+      .property-radio-item-ck .circle-ck{display: inline-block;}
+  .insured-property-item:last-child{border-bottom: 0;}
+  //可选责任
+  .insured-duty{width:100%; overflow: hidden;border-top: 7px solid #f5f5f5;
+    .duty-title{width:100%; height: 110px; line-height: 110px; text-align: center; font-size: 0; color:#666; position: relative;}
+      .title-img{margin-right: 36px; vertical-align: middle;}
+      .title-span{font-size: 30px;vertical-align: middle; }
+      .duty-stop{position: absolute; right:36px; top:0; width:40px; height: 100%; background: url("../images/insurance/down-big.png") no-repeat center;}//点击收起
+      .duty-open{position: absolute; right:36px; top:0; width:40px; height: 100%; background: url("../images/insurance/up-big.png") no-repeat center;}//点击展开
+    .duty-list{width:-webkit-calc(100% - 12px); margin: 0 auto; border-top: 1px solid #ddd;}
+      .duty-item{width:-webkit-calc(100% - 60px); height:80px; line-height: 80px; border-bottom: 1px solid #ddd;margin:0 auto;}
+      .duty-item:last-child{border-bottom: 0;}
+      .duty-item-left{width:-webkit-calc(50%); float:left;}
+        .duty-item-check{width:44px; height:44px; border-radius: 6px; border:1px solid #ddd; margin-right: 20px; margin-top: 18px;
+        float:left;}
+        .duty-item-name{ font-size: 2.6em; color:#a2a2a2; width:-webkit-calc(100% - 64px);
+          text-overflow: ellipsis; overflow: hidden;white-space:nowrap; display: block; float:left;}
+      .duty-item-input{width:-webkit-calc(50%); height: 80px; line-height:80px; font-size: 2.6em; float:left; border:none; text-indent: 20px;}
+      .duty-item-left-ck .duty-item-check{background: url("../images/plan/icon05.png") no-repeat center;}
+      .duty-item-left-ck .duty-item-name{color:#666;}
+  }
+  //附加险
+  .additional-name{width:-webkit-calc(100% - 12px); height:110px; line-height: 110px; font-size: 3em; color:#666;
+    margin:0 auto; border-bottom: 2px solid #ddd; text-align: center}
+    .additional-del{width:48px; height:110px; background: url("../images/plan/icon06.png") no-repeat center; float:right; margin-right: 30px;}
+  //首年保费
+  .first-year-list{width:-webkit-calc(100% - 72px); margin:0 auto;}
+    .first-year-table{width:100%; overflow: hidden; font-size: 2.6em;
+      tr{height:80px; }
+      th{color:#666;border-bottom: 1px solid #ddd;}
+      td{color:#a2a2a2;text-align: center; padding: 27px 0;border-bottom: 1px solid #ddd;}
+    }
+    .first-year-stop{width:100%; height:80px; font-size: 0; background: url("../images/insurance/up-big.png") no-repeat center;}//点击关闭
+    .first-year-open{width:100%; height:80px; font-size: 0; background: url("../images/insurance/down-big.png") no-repeat center;}//点击展开
+  //增值服务
+  .increment-check{width:44px; height:44px; border-radius: 6px; border:1px solid #ddd; margin:33px 16px auto 36px;
+      float:left; }
+  .increment-check-ck{ background: url("../images/plan/icon05.png") no-repeat center;}
+  .title-stop{width:40px; height:100%; background: url("../images/insurance/up-big.png") no-repeat center; float:right; margin-right: 36px;}
+  .title-open{width:40px; height:100%; background: url("../images/insurance/next-big.png") no-repeat center;float:right; margin-right: 36px;}
+  .increment-item{width:-webkit-calc(100% - 72px); height:80px; line-height: 80px; margin:0 auto; border-bottom: 1px solid #ddd; font-size: 3em;
+   color:#a2a2a2;}
+  //保险理念
+  .idea-item{width:-webkit-calc(100% - 72px); height:80px; line-height: 80px; font-size: 3em; color:#a2a2a2; margin:0 auto;
+    .circle{width:44px; height:44px; border-radius: 22px; border:1px solid #ddd; display: inline-block; vertical-align: middle;
+      font-size: 0; margin-right: 22px;}
+    .circle-ck{width:32px; height:32px; border-radius: 16px; margin:5px; background: #e6454a; display:none;}
+   }
+  .idea-item-ck .circle-ck{display: inline-block;}
+  //留言
+  .comment-main{width:100%; height:220px;}
+  #comment{width:-webkit-calc(100% - 72px); height:179px; border:1px solid #ddd; margin:20px 36px; font-size: 3em; color:#a2a2a2; padding:12px;}
+  //敬呈
+  .send-span{}
+  .send-input{width:212px; height:70px; line-height: 70px; font-size: 3em; color:#a2a2a2; margin-top: 20px; border:1px solid #ddd; border-radius: 6px; text-align: center;}
+  .send-sex{width:160px; height:70px; line-height: 70px; font-size: 3em;  color:#666; margin-top:20px; border-radius: 6px;appearance:none; -webkit-appearance:none;
+    text-align: center; border:1px solid #ddd; background: url("../images/insurance/next-big.png") no-repeat right 20px center;}
+}
+#make-plan-select .insured-title{width:100%; height:110px; line-height: 110px;background: url("../images/plan/icon11.png") no-repeat 16px center;
+  text-indent: 100px;}
+#make-plan-additional .insured-title{width:100%; height:110px; line-height: 110px;background: url("../images/plan/icon07.png") no-repeat 16px center;
+  text-indent: 100px;}
+#make-plan-add-additional{width:-webkit-calc(100% - 28px); height:110px; line-height: 110px; font-size: 0; text-align: center;  margin: 7px auto 0 auto;
+  .title-img{margin-right: 36px; vertical-align: middle;}
+  .title-span{ font-size: 30px;vertical-align: middle;}
+}
+#make-plan-first-year .insured-title{width:100%; height:110px; line-height: 110px;background: url("../images/plan/icon09.png") no-repeat 16px center;
+  text-indent: 100px;}
+#make-plan-increment .insured-title{background:none; text-align: left; text-indent: 0;}
+#make-plan-comment .insured-title{background:none; text-align: left; text-indent: 0;}
+#make-plan-idea .insured-title{width:100%; height:110px; line-height: 110px;background: url("../images/plan/icon04.png") no-repeat 16px center;
+  text-indent: 100px;}
+#make-plan-send{text-align: center; height:110px;}
+#make-plan-btn{width:-webkit-calc(100% - 28px); margin:17px auto 50px auto; height:110px; background: #e6454a; color:#fff; line-height: 110px;
+    border-radius: 8px; text-align: center; font-size: 0;
+  .btn-img{vertical-align: middle; margin-right:20px;}
+  .btn-span{vertical-align: middle; font-size: 34px;}
+}

@@ -4,7 +4,7 @@ define([
     'text!module/makePlan/templates/makePlan.html',
     'marionette'
 ],function(BaseView, tpl, mn) {
-    return BaseView.extend({
+    var makePlanView =  BaseView.extend({
         id : "make-plan-container",
 
         template : _.template(tpl),
@@ -12,16 +12,12 @@ define([
         _mouseLock : false,
         _isShow : false,
 
-        // key : selector
         ui : {
             topTitleLeft: "#top-title-left"
         },
         //事件添加
         events : {
             "tap @ui.topTitleLeft": "clickTopTitleLeftHandler"
-        },
-        pageIn:function(){
-            console.log("pagein11");
         },
         clickTopTitleLeftHandler: function(event){
             event.stopPropagation();
@@ -42,6 +38,7 @@ define([
         },
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
+            console.log("pagein11");
         },
 
         /**页面关闭时调用，此时不会销毁页面**/
@@ -54,4 +51,5 @@ define([
         }
 
     });
+    return makePlanView;
 });

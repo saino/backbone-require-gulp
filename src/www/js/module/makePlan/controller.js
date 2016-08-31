@@ -1,9 +1,9 @@
 define([
-    'module/makePlan/views/makePlan'
-],function(makePlanView){
+    'module/makePlan/views/makePlanView'
+],function(MakePlanView){
     return {
         makePlan: function(){
-            app.page.show(makePlanView);
+            app.page.show(MakePlanView);
         }
     }
 });

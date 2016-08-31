@@ -23,7 +23,7 @@ define([
                 self.ui.historyContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
             }
         },
-        pageIn:function(){           
+        pageIn:function(){
         },
         //点击返回
         _clickBackHandler:function(e){
