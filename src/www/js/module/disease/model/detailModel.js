@@ -52,7 +52,7 @@ define([
         getDeseaseInfo : function(productId){
             var self = this;
             var opt = {};
-            opt.url = "/dt/productService/getDeseaseInfo";
+            opt.url = "/ls/services/dt/productService/getDeseaseInfo";
             opt.type = "POST";
             var data = {};
             data.packageId = productId;

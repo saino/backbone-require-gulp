@@ -12,7 +12,7 @@ define([], function () {
 
     p.getRuleInfo = function(productId, organId, cb_ok, cb_err){
         var opt = {};
-        opt.url = "/dt/productService/getRuleInfo";
+        opt.url = "/ls/services/dt/productService/getRuleInfo";
         opt.type = "POST";
         var data = {};
         data.packageId = productId;

@@ -54,7 +54,7 @@ define([
         getCompanyInfo : function(organId){
             var self = this;
             var opt = {};
-            opt.url = "/dt/productService/getCompanyInfo";
+            opt.url = "/ls/services/dt/productService/getCompanyInfo";
             opt.type = "POST";
             var data = {};
             data.organId = organId;

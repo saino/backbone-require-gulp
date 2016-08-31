@@ -12,7 +12,7 @@ define([], function () {
 
     p.getTermInfo = function(productId, cb_ok, cb_err){
         var opt = {};
-        opt.url = "/dt/productService/getTermInfo";
+        opt.url = "/ls/services/dt/productService/getTermInfo";
         opt.type = "POST";
         var data = {};
         data.product = productId;
