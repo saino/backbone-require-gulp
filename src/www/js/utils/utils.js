@@ -7,7 +7,12 @@
     var utils = {};
     window.utils = utils;
     //IOS顶部工具栏高度
-  utils.toolHeight = 40;
+    utils.toolHeight = 40;
+    utils.userObj = {id:"QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0="};
+    utils.serverConfig = {
+        serverUrl : "http://172.25.13.166:8080"
+    };
+
     /**
      * 检测是否是正确的邮箱
      * @param val

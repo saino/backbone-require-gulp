@@ -5,7 +5,7 @@ define([
     'marionette'
 ],function(BaseView, tpl, mn) {
     return BaseView.extend({
-        id : "makePlanPage",
+        id : "make-plan-container",
 
         template : _.template(tpl),
 
