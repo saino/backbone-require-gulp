@@ -18,7 +18,7 @@ define([], function () {
      */
     p.getSearchHistoryAndHotKeywords = function(cb_ok, cb_err){
         var opt = {};
-        opt.url = "/ls/services/dt/productService/getSearchHistoryAndHotKeywords";
+        opt.url = "/ls/services/dt/productService/getSearchHistoryHotKeywords";
         opt.type = "POST";
         var data = {};
         data.encryptedUserData = utils.userObj.id;
@@ -68,7 +68,7 @@ define([], function () {
     /*********************************高级筛选**************************************/
     p.getAdvancedFilters = function(cb_ok, cb_err){
         var opt = {};
-        opt.url = "/dt/productService/getAdvancedFilters";
+        opt.url = "/ls/services/dt/productService/getAdvancedFilters";
         opt.type = "GET";
         opt.success = function(result){
             if(result.status == 0) {

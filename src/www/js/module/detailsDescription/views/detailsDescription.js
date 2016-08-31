@@ -2,12 +2,14 @@ define([
     'common/base/base_view',
     'marionette',
     'text!module/detailsDescription/templates/detailsDescription.html',
-    'msgbox'
-], function(BaseView, mn, tpl, MsgBox) {
+    'msgbox',
+    'module/detailsDescription/model/detailsDescriptionModel'
+], function(BaseView, mn, tpl, MsgBox, detailsDescriptionModel) {
     return BaseView.extend({
         id: "detailsDescriptionPage",
         template: _.template(tpl),
         forever: false,
+        descriptionData : null,
 
         ui: {
             back: "#top-title-left",
@@ -34,8 +36,7 @@ define([
 
             this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 details-description-rule-name-selected");
             this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2");
-            this.ui.detailsDescriptionRuleContent.html("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
-
+            this.ui.detailsDescriptionRuleContent.html(self.descriptionData.itemDescproductUnderwritingRule);
         },
         clickDetailsDescriptionRuleName2Handler: function(event){
             event.stopPropagation();
@@ -43,7 +44,8 @@ define([
 
             this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2 details-description-rule-name-selected");
             this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1");
-            this.ui.detailsDescriptionRuleContent.html("222222222222222222222222222222222222222");
+            this.ui.detailsDescriptionRuleContent.html(self.descriptionData.companyUnderwritingRule);
+
         },
         initialize: function(){
             console.log("initialize!!!");
@@ -56,15 +58,22 @@ define([
 
         onRender: function(){
             console.log("render!!!ww");
+            var self = this;
+            var productId = self.getOption("detailsDescriptionId");
+            var organId = self.getOption("organId");
+            detailsDescriptionModel.getRuleInfo(productId, organId, function(data){
+                self.descriptionData = data;
+                self.ui.detailsDescriptionRuleContent.html(self.descriptionData.itemDescproductUnderwritingRule);
+            }, function(){
+
+            });
         },
 
         show: function(){
             this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 details-description-rule-name-selected");
             this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2");
-            this.ui.detailsDescriptionRuleContent.html("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
-            console.log("show!!!");
-
         },
+
         pageIn: function(){
             console.log("pageIn!!!");
         },
