@@ -49,7 +49,7 @@ define([
             self.ui.productList.find('.list-item').remove();
             for(i=0; i < len; i++){
                 var obj = list[i];
-                html += '<div class="type-item list-item" data-id="'+obj.listId+'">'+ obj.typeName +'</div>'
+                html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.typeName +'</div>'
             }
             self.ui.productList.append(html);
         },
@@ -60,7 +60,7 @@ define([
             self.ui.rightsInfoList.find('.list-item').remove();
             for(i=0; i < len; i++){
                 var obj = list[i];
-                html += '<div class="type-item list-item" data-id="'+obj.listId+'">'+ obj.rightName +'</div>'
+                html += '<div class="type-item list-item" data-id='+obj.rightId+'>'+ obj.rightName +'</div>'
             }
             self.ui.rightsInfoList.append(html);
         },
@@ -71,7 +71,7 @@ define([
             self.ui.companyList.find('.list-item').remove();
             for(i=0; i < len; i++){
                 var obj = list[i];
-                html += '<div class="type-item list-item" data-id="'+obj.listId+'">'+ obj.companyName +'</div>'
+                html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.companyName +'</div>'
             }
             self.ui.companyList.append(html);
         },
@@ -109,9 +109,23 @@ define([
             infoLists = self.getIdList(self.ui.rightsInfoList);
             companyLists = self.getIdList(self.ui.companyList);
 
-            console.log(productLists);
-            console.log(infoLists);
-            console.log(companyLists);
+
+            //种类ID
+            utils.lifeInsuranceOptions.saleTypeIds = productLists;
+            //权益ID
+            utils.lifeInsuranceOptions.rightIds = infoLists;
+            //公司ID
+            utils.lifeInsuranceOptions.companyIds = companyLists;
+
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = true;
+            //是否初始化查询条件
+            utils.isInitOption = false;
+
+            app.goBack();
+            // console.log(productLists);
+            // console.log(infoLists);
+            // console.log(companyLists);
         },
 
         getIdList : function(parent){
@@ -120,7 +134,7 @@ define([
             for(i = 0; i < len; i++){
                 var obj = list[i];
                 var id = obj.getAttribute("data-id");
-                if(id) res.push(id);
+                if(id) res.push(parseInt(id));
             }
             return res;
         },
