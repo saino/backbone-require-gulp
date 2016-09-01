@@ -89,14 +89,14 @@
   height: 68px;
   width: 68px;
 }
-#life-insurance-label-1{
+.life-insurance-label-1{
   background: url("../images/recomment.png") no-repeat center;
 }
-#life-insurance-label-2{
-  background: url("../images/recomment.png") no-repeat center;
+.life-insurance-label-2{
+  background: url("../images/hot.png") no-repeat center;
 }
-#life-insurance-label-3{
-  background: url("../images/recomment.png") no-repeat center;
+.life-insurance-label-3{
+  background: url("../images/new.png") no-repeat center;
 }
 .life-insurance-name-title{
   width: calc(100% - 12px);
@@ -158,6 +158,3 @@
   color: #e6454a;
 }
 
-#insurance-company-float{
-  display: block;
-}

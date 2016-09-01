@@ -19,6 +19,7 @@ define([
             searchText: "#search-text",                                 //搜索框
             searchAdvancedScreening: "#search-advanced-screening",      //高级筛选
             searchInsuranceCompany: "#search-insurance-company",        //保险公司
+            lifeInsuranceContent: "#life-insurance-content"             //寿险容器
 
 
         },
@@ -62,6 +63,11 @@ define([
         clickBackHandler: function (event) {
             event.stopPropagation();
             event.preventDefault();
+
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = true;
+            //是否初始化查询条件
+            utils.isInitOption = true;
 
             app.goBack();
         },
@@ -126,16 +132,214 @@ define([
         onRender : function(){
             console.log("onRender...");
         },
+
+        // 根据条件查找并加载数据
+        loadData: function(){
+            var self = this;
+            lifeInsuranceModel.getLifeInsuranceCard(utils.lifeInsuranceOptions, function(data){
+                // console.log(data);
+                var lifeInsuranceContentHtml = "";
+                if(data.status == "0"){
+                    var salesPackages = data.salesPackages;
+                    for(var i=0; salesPackages&&i<salesPackages.length; i++){
+                        lifeInsuranceContentHtml += '<div class="life-insurance-card">' +
+                                                        '<div class="life-insurance-name">';
+                        var lifeInsuranceFlagHtml = "";
+                        for(var j=0; salesPackages[i].labels&&j<salesPackages[i].labels.length; j++){
+                            //推荐
+                            if(salesPackages[i].labels[j].listId == 1){
+                                lifeInsuranceFlagHtml += '<div class="life-insurance-flag life-insurance-label-1"></div>';
+                            }
+
+                            //热销
+                            if(salesPackages[i].labels[j].listId == 2){
+                                lifeInsuranceFlagHtml += '<div class="life-insurance-flag life-insurance-label-2"></div>';
+                            }
+                        }
+                        // 最新
+                        if(salesPackages[i].isNew){
+                            lifeInsuranceFlagHtml += '<div class="life-insurance-flag life-insurance-label-3"></div>';
+                        }
+                        lifeInsuranceContentHtml += lifeInsuranceFlagHtml;
+                        lifeInsuranceContentHtml += '<div class="life-insurance-name-title">'+ salesPackages[i].packageName +'</div>'+
+                                                    '</div>';
+
+                        lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
+                                                        '<div class="life-insurance-label-name">年龄：</div>'+
+                                                        '<div class="life-insurance-label-message">'+ salesPackages[i].minAge+'周岁-'+salesPackages[i].maxAge +'周岁</div>'+
+                                                    '</div>';
+
+                        lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
+                                                        '<div class="life-insurance-label-name">保障期间：</div>'+
+                                                        '<div class="life-insurance-label-message">sss'+ salesPackages[i].coveragePeriods+'</div>'+
+                                                    '</div>';
+                        lifeInsuranceContentHtml += '<div class="life-insurance-equity-label">';
+                        var equityLabelHtml = "";
+                        var equityLabelWidth = (self.$el.width() - 100)/3;
+                        for(var t=0; salesPackages[i].rights&&t<salesPackages[i].rights.length; t++){
+                            var currentEquityLabelWidth = salesPackages[i].rights[t].rightName.length * 26 + 55;
+                            var n = Math.ceil(currentEquityLabelWidth / equityLabelWidth);
+                                n = n > 3 ? 3 : n;
+                                n = n * 33.3333333333333;
+                            equityLabelHtml += '<div class="equity-label" style="width: '+ n +'%;">'+
+                                                    '<div class="equity-label-select"></div>'+
+                                                    '<div class="equity-label-name">'+salesPackages[i].rights[t].rightName+'</div>'+
+                                                '</div>';
+                        }
+                        lifeInsuranceContentHtml += equityLabelHtml;                                
+                        lifeInsuranceContentHtml += '</div>'+
+                                                    '<div class="life-insurance-look-pv">'+
+                                                        '<div class="insurance-product-card-look-pv">'+
+                                                            '<div class="insurance-product-card-pv">'+ salesPackages[i].visitNum +'</div>'+
+                                                            '<div class="insurance-product-card-eye"></div>'+
+                                                        '</div>'+
+                                                    '</div>';
+                        lifeInsuranceContentHtml += '<div class="product-insure-duty">'+
+                                                        '<div class="insure-duty-title">'+
+                                                            '<span>保险责任</span>'+        
+                                                            '<span class="pull-icon-big"></span>'+
+                                                        '</div>'+
+                                                        '<div class="insure-duty-content">';
+                        var insureDutyItemHtml = "";
+                        for(var k=0; salesPackages[i].liabilities&&k<salesPackages[i].liabilities.length; k++){
+                            insureDutyItemHtml += '<div class="insure-duty-item">'+
+                                                    '<div class="duty-item-title">'+
+                                                        '<span>'+salesPackages[i].liabilities[k].liabName+'</span>'+
+                                                        '<span class="pull-icon-small"></span>'+
+                                                    '</div>'+
+                                                    '<div class="duty-item-content">'+salesPackages[i].liabilities[k].liabDesc+'</div>'+
+                                                  '</div>';
+                        }
+                        lifeInsuranceContentHtml += insureDutyItemHtml;
+
+                            lifeInsuranceContentHtml += '</div>';
+                        lifeInsuranceContentHtml += '</div>';
+
+                
+            
+                        lifeInsuranceContentHtml += '</div>'; 
+                    }
+
+                    self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
+                } else{
+                    console.log("数据返回错误", data.errorMessages);
+                }
+            }, function(error){
+                console.log("数据查询失败", error);
+            });
+        },
+
         show: function(){
-            lifeInsuranceModel.getLifeInsuranceCard();
+            var self = this;
+            if(utils.isLifeInsuranceRefresh){
+                if(utils.isInitOption){
+                    utils.lifeInsuranceOptions.encryptedUserData = "QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0=";
+                    utils.lifeInsuranceOptions.searchWords = "安行无忧";
+                    utils.lifeInsuranceOptions.saleTypeIds = null;  //选填，种类ID，来自高级过滤接口的返回值
+                    utils.lifeInsuranceOptions.examPremOrder = "desc";    //选填，示例保费排序方式。asc:升序，desc: 降序
+                    utils.lifeInsuranceOptions.rightIds = null;       //选填，权益ID，来自高级过滤接口的返回值
+                    utils.lifeInsuranceOptions.companyIds = null; //选填，公司ID，来自高级过滤接口的返回值
+                    utils.lifeInsuranceOptions.sortOption = 1;     //选填，排序选项。2：按浏览量排序，3：按上架时间排序
+                    console.log("initOption");
+                }
+                console.log("reloadData");
+                self.loadData();
+
+            }
+
+            // lifeInsuranceModel.getLifeInsuranceCard(utils.isLifeInsuranceRefresh, function(data){
+            //     console.log(data);
+            //     var lifeInsuranceContentHtml = "";
+            //     if(data.status == "0"){
+            //         var salesPackages = data.salesPackages;
+            //         for(var i=0; salesPackages&&i<salesPackages.length; i++){
+            //             lifeInsuranceContentHtml += '<div class="life-insurance-card">' +
+            //                                             '<div class="life-insurance-name">';
+            //             var lifeInsuranceFlagHtml = "";
+            //             for(var j=0; salesPackages[i].labels&&j<salesPackages[i].labels.length; j++){
+            //                 //推荐
+            //                 if(salesPackages[i].labels[j].listId == 1){
+            //                     lifeInsuranceFlagHtml += '<div class="life-insurance-flag life-insurance-label-1"></div>';
+            //                 }
+
+            //                 //热销
+            //                 if(salesPackages[i].labels[j].listId == 2){
+            //                     lifeInsuranceFlagHtml += '<div class="life-insurance-flag life-insurance-label-2"></div>';
+            //                 }
+            //             }
+            //             // 最新
+            //             if(salesPackages[i].isNew){
+            //                 lifeInsuranceFlagHtml += '<div class="life-insurance-flag life-insurance-label-3"></div>';
+            //             }
+            //             lifeInsuranceContentHtml += lifeInsuranceFlagHtml;
+            //             lifeInsuranceContentHtml += '<div class="life-insurance-name-title">'+ salesPackages[i].packageName +'</div>'+
+            //                                         '</div>';
+
+            //             lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
+            //                                             '<div class="life-insurance-label-name">年龄：</div>'+
+            //                                             '<div class="life-insurance-label-message">'+ salesPackages[i].minAge+'周岁-'+salesPackages[i].maxAge +'周岁</div>'+
+            //                                         '</div>';
+
+            //             lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
+            //                                             '<div class="life-insurance-label-name">保障期间：</div>'+
+            //                                             '<div class="life-insurance-label-message">sss'+ salesPackages[i].coveragePeriods+'</div>'+
+            //                                         '</div>';
+            //             lifeInsuranceContentHtml += '<div class="life-insurance-equity-label">';
+            //             var equityLabelHtml = "";
+            //             for(var t=0; salesPackages[i].rights&&t<salesPackages[i].rights.length; t++){
+            //                 equityLabelHtml += '<div class="equity-label">'+
+            //                                         '<div class="equity-label-select"></div>'+
+            //                                         '<div class="equity-label-name">'+salesPackages[i].rights[t].rightName+'</div>'+
+            //                                     '</div>';
+            //             }
+            //             lifeInsuranceContentHtml += equityLabelHtml;                                
+            //             lifeInsuranceContentHtml += '</div>'+
+            //                                         '<div class="life-insurance-look-pv">'+
+            //                                             '<div class="insurance-product-card-look-pv">'+
+            //                                                 '<div class="insurance-product-card-pv">'+ salesPackages[i].visitNum +'</div>'+
+            //                                                 '<div class="insurance-product-card-eye"></div>'+
+            //                                             '</div>'+
+            //                                         '</div>';
+            //             lifeInsuranceContentHtml += '<div class="product-insure-duty">'+
+            //                                             '<div class="insure-duty-title">'+
+            //                                                 '<span>保险责任</span>'+        
+            //                                                 '<span class="pull-icon-big"></span>'+
+            //                                             '</div>'+
+            //                                             '<div class="insure-duty-content">';
+            //             var insureDutyItemHtml = "";
+            //             for(var k=0; salesPackages[i].liabilities&&k<salesPackages[i].liabilities.length; k++){
+            //                 insureDutyItemHtml += '<div class="insure-duty-item">'+
+            //                                         '<div class="duty-item-title">'+
+            //                                             '<span>'+salesPackages[i].liabilities[k].liabName+'</span>'+
+            //                                             '<span class="pull-icon-small"></span>'+
+            //                                         '</div>'+
+            //                                         '<div class="duty-item-content">'+salesPackages[i].liabilities[k].liabDesc+'</div>'+
+            //                                       '</div>';
+            //             }
+            //             lifeInsuranceContentHtml += insureDutyItemHtml;
+
+            //                 lifeInsuranceContentHtml += '</div>';
+            //             lifeInsuranceContentHtml += '</div>';
+
+                
+            
+            //             lifeInsuranceContentHtml += '</div>'; 
+            //         }
+
+            //     }
+            //     self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
+            // });
             console.log("show..");
         },
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
+            utils.isInitOption = false;
+            utils.isLifeInsuranceRefresh = false;
         },
 
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
+
         },
 
         //当页面销毁时触发
