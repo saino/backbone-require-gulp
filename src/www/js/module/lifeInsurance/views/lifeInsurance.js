@@ -10,6 +10,7 @@ define([
         template: _.template(tpl),
         forever: true,
         actualSearchWords: "", //搜索框对应搜索词
+        companys: [],   //保险公司
         ui: {
             back: "#top-title-left",
             productInsureDuty: ".product-insure-duty",
@@ -17,12 +18,14 @@ define([
             defaultSortLayoutFloat: "#default-sort-layout-float",       //默认排序浮层
 
             insuranceCompanyFloat: "#insurance-company-float",        //保险公司浮层
+            insuranceCompanyContent: "#insurance-company-content",      //保险公司容器
             // defaultSortContent: ".default-sort-content",
             searchText: "#search-text",                                 //搜索框
             searchAdvancedScreening: "#search-advanced-screening",      //高级筛选
             searchInsuranceCompany: "#search-insurance-company",        //保险公司
             lifeInsuranceContent: "#life-insurance-content",             //寿险容器
-            searchIcon: "#search-icon"         //搜索框的放大镜
+            searchIcon: "#search-icon",                                  //搜索框的放大镜
+            // insuranceCompanyNameSelected: ".insurance-company-name-selected" //被选中的公司
 
 
         },
@@ -45,7 +48,10 @@ define([
             event.preventDefault();
             var self = this;
             if(event.target.getAttribute("class") == "insurance-company-name"){
-                console.log("lllll");
+
+                self.ui.insuranceCompanyContent.find(".insurance-company-name-selected").attr("class", "insurance-company-name");
+                event.target.setAttribute("class", "insurance-company-name insurance-company-name-selected");
+                // console.log("lllll");
             } else if(event.target.getAttribute("id") == "insurance-company-float"){
                 self.ui.insuranceCompanyFloat.hide();
             }
@@ -62,19 +68,39 @@ define([
 
         },
 
+
         //点击保险公司
         clickSearchInsuranceCompanyHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
             var self = this;
             self.ui.insuranceCompanyFloat.show();
-            lifeInsuranceModel.getCompanies(function(data){
-                console.log(data);
-            }, function(error){
-                console.log(error);
-            });
-            // console.log("aaaaaa");
-            // app.navigate("home/insuranceCompany", {replace})
+
+            if(self.companys.length == 0){
+                lifeInsuranceModel.getCompanies(function(data){
+                    console.log(data);
+                    if(data.status == "0"){
+                        self.companys = data.company;
+                        var insuranceCompanyNameHtml = '<div class="insurance-company-name insurance-company-name-selected" data-id="all">全部</div>';
+                        for(var i=0; self.companys&&i<self.companys.length; i++){
+                            insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
+                        }
+
+                        self.ui.insuranceCompanyContent.html(insuranceCompanyNameHtml);
+                    } else {
+                        console.log("数据返回错误", data.errorMessages)
+                    }
+                }, function(error){
+                    console.log("数据查询失败", error);
+                });
+            }
+            // else{
+            //     var insuranceCompanyNameHtml = '<div class="insurance-company-name" data-id="all">全部</div>';
+            //     for(var i=0; self.companys&&i<self.companys.length; i++){
+            //         insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
+            //     }
+            //     self.ui.insuranceCompanyContent.html(insuranceCompanyNameHtml);
+            // }
         },
 
         // 点击高级筛选
