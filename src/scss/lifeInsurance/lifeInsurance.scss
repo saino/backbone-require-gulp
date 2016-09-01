@@ -157,4 +157,46 @@
 .default-sort-item-selected{
   color: #e6454a;
 }
-
+#insurance-company{
+  position: relative;
+  background: #fff;
+  height: 950px;
+  width: calc(100% - 28px);
+  margin: 0 auto;
+  top: calc(50% - 475px);
+  border-radius: 10px;
+}
+#insurance-company-title{
+  height: 98px;
+  width: 100%;
+  background-color: #e6454a;
+  color: #fff;
+  font-size: 3.4em;
+  text-align: center;
+  line-height: 95px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+#insurance-company-content{
+  height: 852px;
+  width: 100%;
+  padding-top: 30px;
+  padding-left: 16px;
+  padding-right: 6px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.insurance-company-name{
+  height: 50px;
+  width: 165px;
+  background: #e4e0df;
+  border-radius: 10px;
+  margin-right: 10px;
+  margin-bottom: 26px;
+  float: left;
+  text-align: center;
+  line-height: 50px;
+  font-size: 2.6em;
+  color: #666;
+  overflow: hidden;
+}

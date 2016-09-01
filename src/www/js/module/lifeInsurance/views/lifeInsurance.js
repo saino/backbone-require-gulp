@@ -9,12 +9,14 @@ define([
         id: "lifeInsurancePage",
         template: _.template(tpl),
         forever: true,
-
+        actualSearchWords: "", //搜索框对应搜索词
         ui: {
             back: "#top-title-left",
             productInsureDuty: ".product-insure-duty",
             searchDefaultSort: "#search-default-sort",                  //默认排序
-            defaultSortLayoutFloat: "#default-sort-layout-float", 
+            defaultSortLayoutFloat: "#default-sort-layout-float",       //默认排序浮层
+
+            insuranceCompanyFloat: "#insurance-company-float",        //保险公司浮层
             // defaultSortContent: ".default-sort-content",
             searchText: "#search-text",                                 //搜索框
             searchAdvancedScreening: "#search-advanced-screening",      //高级筛选
@@ -33,15 +35,29 @@ define([
             "tap @ui.searchText": "clickSearchTextHandler",
             "tap @ui.searchAdvancedScreening": "clickSearchAdvancedScreeningHandler",
             "tap @ui.searchInsuranceCompany": "clickSearchInsuranceCompanyHandler",
-            "tap @ui.searchIcon": "clickSearchIconHandler"
+            "tap @ui.searchIcon": "clickSearchIconHandler",
+            "tap @ui.insuranceCompanyFloat": "clickInsuranceCompanyFloatHandler"
         },
+
+        //点击保险公司浮层
+        clickInsuranceCompanyFloatHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            var self = this;
+            if(event.target.getAttribute("class") == "insurance-company-name"){
+                console.log("lllll");
+            } else if(event.target.getAttribute("id") == "insurance-company-float"){
+                self.ui.insuranceCompanyFloat.hide();
+            }
+        },
+
         //点击搜索框的放大镜
         clickSearchIconHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
             var self = this;
-            utils.lifeInsuranceOptions.searchWords = self.ui.searchText.attr("value") || self.ui.searchText.attr("placeholder") || "";
-
+            // utils.lifeInsuranceOptions.searchWords = self.ui.searchText.attr("value") || self.ui.searchText.attr("placeholder") || "";
+            utils.lifeInsuranceOptions.searchWords = self.actualSearchWords || "";
             self.loadData();
 
         },
@@ -50,7 +66,13 @@ define([
         clickSearchInsuranceCompanyHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
-
+            var self = this;
+            self.ui.insuranceCompanyFloat.show();
+            lifeInsuranceModel.getCompanies(function(data){
+                console.log(data);
+            }, function(error){
+                console.log(error);
+            });
             // console.log("aaaaaa");
             // app.navigate("home/insuranceCompany", {replace})
         },
@@ -162,10 +184,15 @@ define([
             lifeInsuranceModel.getLifeInsuranceCard(utils.lifeInsuranceOptions, function(data){
                 console.log(data);
                 var lifeInsuranceContentHtml = "";
-                if(data.status == "0"){
+                if(data.status == "0"){  
                     var salesPackages = data.salesPackages;
+                    if(salesPackages.defaultSearchWords){
+                        self.ui.searchText.attr("placeholder", salesPackages.defaultSearchWords.hotKeyWords);
+                        self.actualSearchWords = salesPackages.defaultSearchWords.actualSearchWords;
+                    }
+
                     for(var i=0; salesPackages&&i<salesPackages.length; i++){
-                        lifeInsuranceContentHtml += '<div class="life-insurance-card">' +
+                        lifeInsuranceContentHtml += '<div class="life-insurance-card" data-id="'+ salesPackages[i].packageId +'">' +
                                                         '<div class="life-insurance-name">';
                         var lifeInsuranceFlagHtml = "";
                         for(var j=0; salesPackages[i].labels&&j<salesPackages[i].labels.length; j++){

@@ -71,7 +71,7 @@ define([
             self.ui.companyList.find('.list-item').remove();
             for(i=0; i < len; i++){
                 var obj = list[i];
-                html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.companyName +'</div>'
+                html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>'
             }
             self.ui.companyList.append(html);
         },
