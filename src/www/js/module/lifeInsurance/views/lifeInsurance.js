@@ -47,10 +47,29 @@ define([
             event.stopPropagation();
             event.preventDefault();
             var self = this;
-            if(event.target.getAttribute("class") == "insurance-company-name"){
+            var target = event.target;
+            if(target.getAttribute("class") == "insurance-company-name"){
 
                 self.ui.insuranceCompanyContent.find(".insurance-company-name-selected").attr("class", "insurance-company-name");
-                event.target.setAttribute("class", "insurance-company-name insurance-company-name-selected");
+                target.setAttribute("class", "insurance-company-name insurance-company-name-selected");
+                utils.companyId = target.getAttribute("data-id");
+                if(utils.companyId == "all"){
+                    utils.lifeInsuranceOptions.companyIds = utils.advancedCompanyId;
+                }else{
+                    utils.lifeInsuranceOptions.companyIds = [];
+                    utils.lifeInsuranceOptions.companyIds[0] = -1;
+                    utils.companyId = parseInt(utils.companyId);
+                    if(utils.advancedCompanyId.length == 0){
+                        utils.lifeInsuranceOptions.companyIds[0] = utils.companyId;
+                    }
+                    for(var i=0; i<utils.advancedCompanyId.length; i++){
+                        if(utils.companyId == utils.advancedCompanyId){
+                            utils.lifeInsuranceOptions.companyIds[0] = utils.companyId;
+                            break;
+                        }
+                    }
+                }
+                self.loadData();
                 // console.log("lllll");
             } else if(event.target.getAttribute("id") == "insurance-company-float"){
                 self.ui.insuranceCompanyFloat.hide();
@@ -76,31 +95,35 @@ define([
             var self = this;
             self.ui.insuranceCompanyFloat.show();
 
-            if(self.companys.length == 0){
-                lifeInsuranceModel.getCompanies(function(data){
-                    console.log(data);
-                    if(data.status == "0"){
-                        self.companys = data.company;
-                        var insuranceCompanyNameHtml = '<div class="insurance-company-name insurance-company-name-selected" data-id="all">全部</div>';
-                        for(var i=0; self.companys&&i<self.companys.length; i++){
-                            insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
-                        }
+            if(utils.isInitCompany){
+                if(self.companys.length == 0){
+                    lifeInsuranceModel.getCompanies(function(data){
+                        console.log(data);
+                        if(data.status == "0"){
+                            self.companys = data.company;
+                            var insuranceCompanyNameHtml = '<div class="insurance-company-name insurance-company-name-selected" data-id="all">全部</div>';
+                            for(var i=0; self.companys&&i<self.companys.length; i++){
+                                insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
+                            }
 
-                        self.ui.insuranceCompanyContent.html(insuranceCompanyNameHtml);
-                    } else {
-                        console.log("数据返回错误", data.errorMessages)
+                            self.ui.insuranceCompanyContent.html(insuranceCompanyNameHtml);
+                        } else {
+                            console.log("数据返回错误", data.errorMessages)
+                        }
+                    }, function(error){
+                        console.log("数据查询失败", error);
+                    });
+                }
+                else{
+                    var insuranceCompanyNameHtml = '<div class="insurance-company-name" data-id="all">全部</div>';
+                    for(var i=0; self.companys&&i<self.companys.length; i++){
+                        insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
                     }
-                }, function(error){
-                    console.log("数据查询失败", error);
-                });
+                    self.ui.insuranceCompanyContent.html(insuranceCompanyNameHtml);
+                }
+                //是否初始化保险公司
+                utils.isInitCompany = false;
             }
-            // else{
-            //     var insuranceCompanyNameHtml = '<div class="insurance-company-name" data-id="all">全部</div>';
-            //     for(var i=0; self.companys&&i<self.companys.length; i++){
-            //         insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
-            //     }
-            //     self.ui.insuranceCompanyContent.html(insuranceCompanyNameHtml);
-            // }
         },
 
         // 点击高级筛选
@@ -128,7 +151,6 @@ define([
             utils.isLifeInsuranceRefresh = true;
             //是否初始化查询条件
             utils.isInitOption = true;
-
             app.goBack();
         },
 
@@ -332,7 +354,8 @@ define([
 
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
-
+            //是否初始化保险公司
+             utils.isInitCompany = true;
         },
 
         //当页面销毁时触发

@@ -67,17 +67,42 @@ define([
 
         initCompanyList : function(list){
             var self = this;
-            var i, len = list.length, html = '<div class="type-item type-all type-item-ck">全部</div>';
-            self.ui.companyList.find('.list-item').remove();
-            for(i=0; i < len; i++){
-                var obj = list[i];
-                html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>'
+            var i, len = list.length,html = '';
+            if(utils.companyId == "all"){
+                html = '<div class="type-item type-all type-item-ck">全部</div>';
+                for(i=0; i < len; i++){
+                    var obj = list[i];
+                    html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+                }
+                utils.advancedCompanyId = [];
+            }else{
+                html = '<div class="type-item type-all">全部</div>';
+                for(i=0; i < len; i++){
+                    var obj = list[i];
+                    if(utils.companyId == obj.listId){
+                        utils.advancedCompanyId = [];
+                        // utils.advancedCompanyId[0] = utils.companyId;
+                        html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+                    }else{
+                        html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+                    }
+                }
             }
+            self.ui.companyList.find('.list-item').remove();
+            // for(i=0; i < len; i++){
+            //     var obj = list[i];
+            //     html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>'
+            // }
             self.ui.companyList.append(html);
         },
 
         pageIn:function(){
            
+        },
+        close: function(){
+            //是否初始化保险公司
+            utils.isInitCompany = true;
+            utils.companyId = "all";
         },
 
         /**
@@ -116,11 +141,14 @@ define([
             utils.lifeInsuranceOptions.rightIds = infoLists;
             //公司ID
             utils.lifeInsuranceOptions.companyIds = companyLists;
-
+            utils.advancedCompanyId = companyLists;
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = true;
             //是否初始化查询条件
             utils.isInitOption = false;
+            //是否初始化保险公司
+            utils.isInitCompany = true;
+            utils.companyId = "all";
 
             app.goBack();
             // console.log(productLists);
@@ -166,6 +194,14 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = false;
+            //是否初始化查询条件
+            utils.isInitOption = false;
+            //是否初始化保险公司
+            utils.isInitCompany = true;
+            utils.companyId = "all";
             app.goBack();
         }
     });

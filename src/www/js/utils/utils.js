@@ -16,6 +16,11 @@
     utils.isLifeInsuranceRefresh = true;
     //是否初始化查询条件
     utils.isInitOption = true;
+    //是否初始化保险公司
+    utils.isInitCompany = true;
+
+    utils.companyId = "all";
+    utils.advancedCompanyId = [];
 
     //寿险业查询条件
     utils.lifeInsuranceOptions = { 

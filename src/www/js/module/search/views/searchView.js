@@ -52,6 +52,7 @@ define([
             })
         },
 
+        //点击热搜词
         clickHotWordConHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
@@ -161,6 +162,11 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = false;
+            //是否初始化查询条件
+            utils.isInitOption = false;
+
             app.goBack();
         }
     });
