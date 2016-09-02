@@ -71,8 +71,9 @@ define([], function () {
 
     /**
      * 知识搜索
-     * @param currentUserId  当前用户ID
-     * @param salesPackageId  售卖的保险ID
+     * @param packageId  产品卡ID
+     * @param productId  精算产品ID
+     * @param salesProductId  售卖的保险ID
      * @param cb_ok
      * @param cb_err
      */
