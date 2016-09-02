@@ -39,9 +39,22 @@ define([
             "tap @ui.searchAdvancedScreening": "clickSearchAdvancedScreeningHandler",
             "tap @ui.searchInsuranceCompany": "clickSearchInsuranceCompanyHandler",
             "tap @ui.searchIcon": "clickSearchIconHandler",
-            "tap @ui.insuranceCompanyFloat": "clickInsuranceCompanyFloatHandler"
+            "tap @ui.insuranceCompanyFloat": "clickInsuranceCompanyFloatHandler",
+            "tap @ui.lifeInsuranceContent": "clickLifeInsuranceContentHandler"
         },
 
+        //点击寿险容器
+        clickLifeInsuranceContentHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            var $target = $(event.target);
+            var lifeInsuranceCard = $target.parents(".life-insurance-card")[0];
+            if(lifeInsuranceCard){
+                var lifeInsuranceCardId = lifeInsuranceCard.getAttribute("data-id");
+                app.navigate("in/productDetails/"+ lifeInsuranceCardId, {replace: true, trigger: true});
+            }
+
+        },
         //点击保险公司浮层
         clickInsuranceCompanyFloatHandler: function(event){
             event.stopPropagation();
@@ -268,10 +281,38 @@ define([
                                                         '<div class="life-insurance-label-name">年龄：</div>'+
                                                         '<div class="life-insurance-label-message">'+ salesPackages[i].minAge+'周岁-'+salesPackages[i].maxAge +'周岁</div>'+
                                                     '</div>';
+                        var lifeInsuranceLabelMessageHtml = "";
+                        for(var v=0; salesPackages[i].coveragePeriods&&v<salesPackages[i].coveragePeriods.length; v++){
 
+                            if(v){
+                                lifeInsuranceLabelMessageHtml += "、";
+                            }else{
+                                lifeInsuranceLabelMessageHtml += "至";
+                            }
+// periodValue
+                            if(salesPackages[i].coveragePeriods[v].periodType == 1){
+                                lifeInsuranceLabelMessageHtml += "终身";
+                            }
+                            if(salesPackages[i].coveragePeriods[v].periodType == 2){
+                                lifeInsuranceLabelMessageHtml += salesPackages[i].coveragePeriods[v].periodValue + "年";
+                            }
+                            if(salesPackages[i].coveragePeriods[v].periodType == 3){
+                                lifeInsuranceLabelMessageHtml += salesPackages[i].coveragePeriods[v].periodValue + "周岁";
+                            }
+                            if(salesPackages[i].coveragePeriods[v].periodType == 4){
+                                lifeInsuranceLabelMessageHtml += salesPackages[i].coveragePeriods[v].periodValue + "月";
+                            }
+                            if(salesPackages[i].coveragePeriods[v].periodType == 5){
+                                lifeInsuranceLabelMessageHtml += salesPackages[i].coveragePeriods[v].periodValue + "天";
+                            }
+                        }
+
+                        if(!lifeInsuranceLabelMessageHtml){
+                            lifeInsuranceLabelMessageHtml = "未知";
+                        }
                         lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
                                                         '<div class="life-insurance-label-name">保障期间：</div>'+
-                                                        '<div class="life-insurance-label-message">sss'+ salesPackages[i].coveragePeriods+'</div>'+
+                                                        '<div class="life-insurance-label-message">'+lifeInsuranceLabelMessageHtml+'</div>'+
                                                     '</div>';
                         lifeInsuranceContentHtml += '<div class="life-insurance-equity-label">';
                         var equityLabelHtml = "";
@@ -350,14 +391,14 @@ define([
         },
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
-            utils.isInitOption = false;
-            utils.isLifeInsuranceRefresh = false;
+            // utils.isInitOption = false;
+            // utils.isLifeInsuranceRefresh = false;
         },
 
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
             //是否初始化保险公司
-             utils.isInitCompany = true;
+             // utils.isInitCompany = true;
         },
 
         //当页面销毁时触发

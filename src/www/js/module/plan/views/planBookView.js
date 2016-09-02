@@ -14,15 +14,42 @@ define([
 
         ui:{
             planTitle : ".plan-book-title",
+
+            btnRangeReduce : ".btn-range-reduce",
+            btnRangeAdd : ".btn-range-add",
+            rangeInput : ".input-range"
         },
 
         events:{
+            "tap @ui.btnRangeAdd" : "onRangeAddHandler",
+            "tap @ui.btnRangeReduce" : "onRangeReduceHandler"
         },
 
         initialize:function(){
         },
 
         show : function(){
+        },
+
+        onRangeAddHandler : function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var self = this;
+            var val = parseInt(self.ui.rangeInput.val()) + 1;
+            self.setRangeValue(val);
+        },
+
+        onRangeReduceHandler : function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var self = this;
+            var val = parseInt(self.ui.rangeInput.val()) - 1;
+            self.setRangeValue(val);
+        },
+
+        setRangeValue : function(val){
+            var self = this;
+            self.ui.rangeInput.val(val);
         }
     });
     return planBookView;

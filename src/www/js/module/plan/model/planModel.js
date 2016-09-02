@@ -2,6 +2,11 @@ define([
 
 ],function(){
     var PlanModel = function(){};
+
+    PlanModel.prototype.getPlanInfo = function(){
+
+    };
+
     //获取公司信息集合 服务商、承保商
     PlanModel.prototype.getCompanyInfo = function(planId, cb_ok, cb_err){
         var opt = {};
@@ -45,7 +50,7 @@ define([
         };
         options.error = cb_err;
         utils.requestData(options);
-    }
+    };
     /**
      * 计算首年保费
      * @param obj

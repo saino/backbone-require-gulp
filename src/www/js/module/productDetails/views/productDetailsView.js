@@ -68,7 +68,11 @@ define([
             //根据用户ID 和保险售卖ID查询数据
             self._initView = self.initView.bind(self);
             //TODO 需要真实的接口和数据
-            productDetailsModel.getProductInfo(self.currentUserId, self.productId, self._initView, function(err){
+            var options =  {
+                    "encryptedUserData": utils.userObj.id,
+                    "salesPackageId": self.productId
+                };
+            productDetailsModel.getProductInfo(options, self._initView, function(err){
                 console.log(err);
             });
 
@@ -105,8 +109,8 @@ define([
             var salesLiabilityList = data.salesLiabilityList;
             self.initDutyView(salesLiabilityList);
             //组合计划
-            var packageList = data.packageList;
-            self.initPlanView(packageList);
+            var productList = data.productList;
+            self.initPlanView(productList);
             //附加险
             var attachProductList = data.attachProductList;
             self.initSubjoinView(attachProductList);
@@ -134,36 +138,61 @@ define([
             var self = this;
             //投保年龄
             var minAge = ageRange.minAge;       //最小年龄
-            var minAgeUnit = ageRange.minUnit;  //最小年龄单位
+            // var minAgeUnit = ageRange.minUnit;  //最小年龄单位
             var maxAge = ageRange.maxAge;       //最小年龄
-            var maxAgeUnit = ageRange.maxUnit;  //最小年龄单位
-            self.ui.insureAge.text(minAge+minAgeUnit+"-"+maxAge+maxAgeUnit);
+            // var maxAgeUnit = ageRange.maxUnit;  //最小年龄单位
+            self.ui.insureAge.text(minAge+"周岁-"+maxAge+"周岁");
             //最低保额
             var minAmount = amountLimit.minAmount;      //最低保额
-            var limitUnit = amountLimit.limitUnit;      //保额单位
-            self.ui.limitCoverage.text(minAmount+limitUnit);
+            var limitUnit = amountLimit.moneyId;      //保额单位
+            self.ui.limitCoverage.text(minAmount+"元");
             //交费期间
             var paymentStr = "";
-            for(var i = 0; i < prdtTermChargeList.length; i++){
-                var obj1 = prdtTermChargeList[i];
-                if(i != prdtTermChargeList.length -1){
-                    paymentStr += obj1.periodValue + "/"
-                }else{
-                    paymentStr += obj1.periodValue;
+            for(var i = 0; prdtTermChargeList&&i<prdtTermChargeList.length; i++){
+                var obj1 = prdtTermChargeList[i];paymentStr += "/";
+                if(i){
+                    paymentStr += "/";
+                }
+                if(obj1.periodType == 1){
+                    paymentStr += obj1.periodValue + "趸交";
+                }
+                if(obj1.periodType == 2){
+                    paymentStr += obj1.periodValue + "年交";
+                }
+                if(obj1.periodType == 3){
+                    paymentStr += obj1.periodValue + "周岁";
+                }
+                if(obj1.periodType == 4){
+                    paymentStr += "终身";
                 }
             }
-            self.ui.paymentRange.text(paymentStr+"年交");
+            self.ui.paymentRange.text(paymentStr);
             //保障期间
             var safeguardStr = "";
-            for(var j = 0; j < prdtTermCoverageList.length; j++){
+            for(var j = 0; prdtTermCoverageList&&j<prdtTermCoverageList.length; j++){
                 var obj2 = prdtTermCoverageList[j];
                 if(j == 0){
-                    safeguardStr += "至"+obj2.periodValue+"岁，"
+                    safeguardStr += "至";
                 }else{
-                    safeguardStr += obj2.periodValue+"年，"
+                    safeguardStr += "、";
+                }
+                if(obj2.periodType == 1){
+                    safeguardStr += "终身";
+                }
+                if(obj2.periodType == 2){
+                    safeguardStr += obj2.periodValue + "年";
+                }
+                if(obj2.periodType == 3){
+                    safeguardStr += obj2.periodValue + "周岁";
+                }
+                if(obj2.periodType == 4){
+                    safeguardStr += obj2.periodValue + "月";
+                }
+                if(obj2.periodType == 5){
+                    safeguardStr += obj2.periodValue + "天";
                 }
             }
-            self.ui.safeguardRange.text(safeguardStr + "终身");
+            self.ui.safeguardRange.text(safeguardStr);
         },
         /**
          * 设置保障概览
@@ -233,17 +262,17 @@ define([
         },
         /**
          * 设置组合计划险
-         * @param packageList
+         * @param productList
          */
-        initPlanView : function (packageList){
+        initPlanView : function (productList){
             var self = this;
             var planTemp = '<div class="insure-plan-item" data-type="{salesProductId}">'+
                 '<span data-type="{salesProductId}">{salesProductName}</span>'+
                 '<span class="pull-icon-next" data-type="{salesProductId}"></span>'+
             '</div>';
             var planStr = "";
-            for(var i = 0; i < packageList.length; i++){
-                var obj = packageList[i];
+            for(var i = 0; i < productList.length; i++){
+                var obj = productList[i];
                 var realTemp = planTemp.replace("{salesProductName}", obj.salesProductName).replace(/\{salesProductId\}/g, obj.salesProductId);
                 planStr += realTemp;
             }
@@ -260,7 +289,7 @@ define([
                 '<span class="pull-icon-next" data-type="{salesProductId}"></span>'+
                 '</div>';
             var subjoinStr = "";
-            for(var i = 0; i < attachProductList.length; i++){
+            for(var i = 0; attachProductList&&i<attachProductList.length; i++){
                 var obj = attachProductList[i];
                 var realTemp = subjoinTemp.replace("{salesProductName}", obj.salesProductName).replace(/\{salesProductId\}/g, obj.salesProductId);
                 subjoinStr += realTemp;
@@ -274,6 +303,11 @@ define([
         onBackBtnHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = false;
+            //是否初始化查询条件
+            utils.isInitOption = true;
             app.goBack();
         },
         /**
@@ -387,7 +421,8 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
-            MsgBox.alert("去制作");
+            app.navigate("in/makePlan/" + self.productId, {replace: true, trigger: true});
+            // MsgBox.alert("去制作");in/makePlan/:productId
         },
         close:function(){
             var self = this;
