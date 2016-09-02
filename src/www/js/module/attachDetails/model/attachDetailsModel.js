@@ -76,10 +76,26 @@ define([], function () {
      * @param cb_ok
      * @param cb_err
      */
-    AttachDetailsModel.prototype.getRiderInfo = function (currentUserId, salesPackageId, cb_ok, cb_err) {
-        if (cb_ok) {
-            cb_ok(test);
-        }
+    AttachDetailsModel.prototype.getRiderInfo = function (packageId, productId, salesProductId, cb_ok, cb_err) {
+        var opt = {};
+        opt.url = "/ls/services/dt/productService/getRiderInfo";
+        opt.type = "POST";
+        var data = {};
+        data.packageId = packageId;
+        data.productId = productId;
+        data.salesProductId = salesProductId;
+        opt.data = data;
+        opt.success = function(result){
+            if(result.status == 0){
+                if (cb_ok) cb_ok(result);
+            }else{
+                if(cb_err) cb_err(err)
+            }
+        };
+        opt.error = function(err){
+            if(cb_err) cb_err(err)
+        };
+        utils.requestData(opt);
     };
 
 

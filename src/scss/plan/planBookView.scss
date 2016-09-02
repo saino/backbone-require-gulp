@@ -1,0 +1,441 @@
+#plan-book-container{
+  width: 100%;
+  height: 100%;
+  background-color: #6c9ef9;
+  overflow-y: auto;
+
+  .plan-book-banner{
+    position: relative;
+    width: 100%;
+    height: 305px;
+    background: url("../images/plan/bannerBg.png") no-repeat center;
+    background-size: auto 100%;
+
+    .plan-book-company{
+      position: absolute;
+      top: 30px;
+      left: 20px;
+      font-family: "苹方粗";
+      font-size: 34px;
+      color: #333333;
+    }
+
+    .plan-book-title{
+      position: absolute;
+      font-family: "苹方粗";
+      font-size: 30px;
+      color: #FFFFFF;
+      width: 100%;
+      text-align: center;
+      bottom: 52px;
+    }
+  }
+
+  .plan-book-date{
+    margin : 14px auto 0 auto;
+    width: calc(100% - 60px);
+    height: 258px;
+    background: url("../images/plan/imageBg2.png") no-repeat center;
+    background-size: 100%;
+    font-size: 32px;
+    color: #666666;
+    position: relative;
+
+    .redColor{
+      color: #d54343;
+      margin-top: 10px;
+    }
+
+    span{
+      display: block;
+    }
+    .payment{
+      position: absolute;
+      display: inline-block;
+      left: 20px;
+      top: 22px;
+    }
+
+    .guarantee{
+      position: absolute;
+      display: inline-block;
+      right: 20px;
+      top: 22px;
+      text-align:right;
+    }
+
+    .coverage-total{
+      position: absolute;
+      display: inline-block;
+      left: 20px;
+      bottom: 22px;
+    }
+
+    .coverage-first{
+      position: absolute;
+      display: inline-block;
+      right: 20px;
+      bottom: 22px;
+      text-align:right;
+    }
+
+    .sexAndAge{
+      position: absolute;
+      display: inline-block;
+      left:calc(50% - 60px);
+      top:calc(50% - 60px);
+      width:120px;
+      height: 120px;
+      text-align:center;
+      padding-top: 18px;
+
+      .sex-txt{
+        font-family: "苹方粗";
+      }
+    }
+  }
+
+  .plan-book-type{
+    margin: 17px 20px 0 20px;
+    padding: 0 36px;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    font-size: 26px;
+    color: #666666;
+
+    .type-title, .type-td{
+      height: 80px;
+      border-bottom: 1px solid rgba(238, 238 ,238, .9);
+      display: table;
+      width:100%;
+
+      span{
+        width: 20%;
+        text-align: right;
+        display: table-cell;
+        vertical-align : middle;
+      }
+
+      span:nth-child(1){
+        text-align:left;
+      }
+    }
+
+    .type-td{
+      color: #a2a2a2;
+    }
+
+    .type-button{
+      width: 100%;
+      height: 80px;
+      background: url("../images/plan/icon_1.png") no-repeat center;
+    }
+  }
+
+  .div-title{
+    font-size: 34px;
+    text-align: center;
+    height: 110px;
+    line-height: 110px;
+    font-family: "苹方粗";
+    border-bottom: 2px solid #ddd;
+  }
+
+  .plan-book-product{
+    margin: 17px 20px 0 20px;
+    color: #666666;
+    font-size: 26px;
+    padding: 0 6px;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+
+    .product-item:last-child{
+      border-bottom: 0;
+    }
+
+    .product-item{
+      height: 128px;
+      border-bottom: 2px solid #ddd;
+      div{
+        float: left;
+      }
+
+      .product-icon{
+        width: 98px;
+        height: 98px;
+        background: url("../images/plan/product-icon-1.png") no-repeat center;
+        margin-top: 15px;
+      }
+
+      .product-txt{
+        line-height: 128px;
+      }
+    }
+
+    .icon-left{
+      .product-icon{
+        margin-left: 16px;
+        margin-right: 64px;
+      }
+
+      div{
+        float: left;
+      }
+    }
+
+    .icon-right{
+      .product-icon{
+        margin-left: 64px;
+        margin-right: 16px;
+      }
+
+      div{
+        float: right;
+      }
+    }
+  }
+
+  .plan-guarantee-div{
+    margin: 17px 20px 0 20px;
+    color: #666666;
+    font-size: 26px;
+    padding: 0 6px;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+
+    .guarantee-list{
+      width: 100%;
+      padding: 8px 36px 34px 36px;
+
+      .guarantee-item{
+        width: 33.3333%;
+        height: 44px;
+        margin-top: 26px;
+        float: left;
+
+        div{
+          float: left;
+        }
+        .guarantee-icon{
+          width: 44px;
+          height: 44px;
+          background: url("../images/plan/hook-icon.png") no-repeat center;
+        }
+
+        .guarantee-txt{
+          margin-left: 20px;
+          line-height: 44px;
+        }
+      }
+    }
+  }
+
+  .plan-obligation{
+    margin: 17px 20px 0 20px;
+    color: #666666;
+    font-size: 26px;
+
+    border-radius: 4px;
+    background-color: #FFFFFF;
+
+    .plan-obligation-title{
+      position: relative;
+      margin: 0 6px;
+
+      .btn-clause{
+        position: absolute;
+        width: 134px;
+        height: 50px;
+        background-color: #d54343;
+        color: #fff;
+        border-radius: 10px;
+        text-align: center;
+        line-height: 50px;
+        right: 88px;
+        top: 30px;
+      }
+
+      .btn-icon{
+        position: absolute;
+        width: 38px;
+        height: 50px;
+        background: url("../images/bigUpArrow.png") no-repeat center;
+        top: 30px;
+        right: 28px;
+      }
+    }
+
+    .plan-obligation-list{
+      width: 100%;
+
+
+      .plan-obligation-item{
+        margin: 0 36px;;
+        .obligation-item-title{
+          font-size: 30px;
+          color: #666666;
+          height: 80px;
+          line-height: 80px;
+          font-family: "苹方粗";
+          border-bottom: 2px solid #ddd;
+        }
+
+        .info-div{
+          width: 100%;
+          margin: 20px 0;
+          .item-title{
+            float: left;
+          }
+
+          .item-right{
+            margin-right: 88px;
+            float: right;
+          }
+        }
+
+        .info-btn-div{
+          margin-bottom: 20px;
+          width: 100%;
+          .item-title{
+            float: left;
+            color: #7994f9;
+          }
+
+          .item-right-btn{
+            float: right;
+            width: 38px;
+            height: 30px;
+            background: url("../images/bigUpArrow.png") no-repeat center;
+            margin-right: 28px;
+          }
+
+          .item-right{
+            margin-right: 22px;
+            float: right;
+          }
+        }
+      }
+
+      .plan-obligation-item-line{
+        width: 100%;
+        height: 6px;
+        background-color: #f5f5f5;
+      }
+    }
+
+  }
+
+  .plan-demo{
+    margin: 17px 20px 0 20px;
+    color: #666666;
+    font-size: 26px;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+
+    .demo-age-div{
+      margin: 0 36px;
+      height: 110px;
+      line-height: 110px;
+      text-align: center;
+      border-bottom: 2px solid #ddd;
+
+      .demo-age-select{
+        width: 130px;
+        height: 44px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        margin: 0 6px;
+        font-size: 26px;
+        color: #666666;
+      }
+    }
+
+    .demo-list{
+      margin: 0 6px;
+      border-bottom: 2px solid #ddd;
+      .demo-list-item{
+        height: 80px;
+        margin: 0 30px;
+        border-bottom: 2px solid #ddd;
+        line-height: 80px;
+        .demo-list-item-txt{
+          float: left;
+        }
+
+        .demo-list-item-money{
+          color: #7994f9;
+          float: right;
+        }
+      }
+
+      .demo-list-item:last-child{
+        border-bottom: 0px;
+      }
+    }
+
+    .demo-first-title{
+      height: 110px;
+      line-height: 110px;
+      text-align: center;
+      font-size: 30px;
+      margin: 0 36px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .demo-change-age-div{
+      margin: 0 6px;
+      border-bottom: 2px solid #ddd;
+
+      .demo-range-tip{
+        margin: 40px 0;
+        text-align: center;
+        color: #a2a2a2;
+      }
+    }
+
+    .demo-tip{
+      padding: 28px 16px;
+      line-height: 44px;
+      color: #a2a2a2;
+    }
+  }
+}
+
+.plan-added-service{
+  margin: 17px 20px 0 20px;
+  color: #666666;
+  font-size: 26px;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+}
+
+//留言
+.plan-message{
+  margin: 17px 20px 20px 20px;
+  color: #666666;
+  font-size: 26px;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+
+  .div-title{
+    border-bottom: 0px !important;
+  }
+
+  .plan-message-txt{
+    height: 140px;
+    margin: 0 36px;
+    padding: 20px;
+    color: #a2a2a2;
+    border-radius: 6px;
+    border: 1px solid #d5d5d5;
+  }
+
+  .plan-message-contact{
+    height: 62px;
+    padding: 16px 36px 16px 0;
+    text-align: right;
+    div{
+      display: inline-block;
+    }
+  }
+}

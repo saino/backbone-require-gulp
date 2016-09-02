@@ -61,8 +61,10 @@ define([
             opt.data = data;
             opt.success = function(result){
                 if(result.status == 0) {
-                    self.setDetail(result.organDesc);
-                    self.setPhoneNumber(result.telephone);
+                    if(result.companyInfo.length){
+                        self.setDetail(result.companyInfo[0].organDesc);
+                        self.setPhoneNumber(result.companyInfo[0].telephone);
+                    }
                 }
             };
             opt.error = function(err){

@@ -7,8 +7,10 @@ define([
     'module/plan/views/planView'
 ],function(PlanView){
     return {
-        plan : function(){
-            app.page.show(PlanView);
+        plan : function(id){
+            var opt = {};
+            opt.planId = id;
+            app.page.show(PlanView, opt);
         }
     };
 });

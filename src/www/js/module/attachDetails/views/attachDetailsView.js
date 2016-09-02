@@ -28,7 +28,12 @@ define([
             topCon : ".top-title",
             backBtn : ".top-title-left", //点击返回
             attachDetailsTitle : ".attach-details-title",
-            attachDetailsMain : "#attach-details-main"
+            attachDetailsMain : "#attach-details-main",
+
+            bxzrTxt : ".bxzr-txt",      //保险责任
+            thbzTxt : ".thbgz-txt",     //投核保规则
+            bzxqTxt : ".bzxq-txt",      //病种详情
+            xxtkTxt : ".xxtk-txt"       //详细条款
 
         },
         events:{
@@ -48,39 +53,27 @@ define([
                 self.ui.attachDetailsMain.css({height: "calc(100% - " + height + "px)"});
             }, 0)
 
-            self.productId = self.getOption("productId");   //获取产品ID
-            console.log(self.productId);
-            self._initView = self.initView.bind(self);
+            self.packageId = self.getOption("packageId");   //产品卡ID
+            self.productId = self.getOption("productId");   //精算产品ID
+            self.salesProductId = self.getOption("salesProductId");     //销售产品ID
+
             //TODO 需要真实的接口和数据
-            attachDetailsModel.getRiderInfo(self.currentUserId, self.productId, self._initView, function(err){
+            attachDetailsModel.getRiderInfo(self.packageId, self.productId, self.salesProductId, function(data){
+                self.initData(data);
+            }, function(err){
                 console.log(err);
             });
         },
-        initView : function(data){
+        initData : function(data){
             var self = this;
-            var packageName = data.packageName;
-            self.ui.attachDetailsTitle.text(packageName);
-            var salesRiderList = data.salesRiderList;
-            var attachStr = "";
-            for(var i = 0; i < salesRiderList.length; i++){
-                var temp = "";
-                var obj = salesRiderList[i];
-                //TODO 这里区分到底是下拉还是下一页需要准确字段判断
-                if(obj.hasOwnProperty("liabDesc")){
-                    temp = pullTemp;
-                    var realTemp = temp.replace("{liabName}", obj.liabName).replace(/\{liabDesc\}/g, obj.liabDesc);
-                    attachStr += realTemp;
-                }else{
-                    temp = nextTemp;
-                    var realTemp = temp.replace("{salesProductName}", obj.salesProductName).replace(/\{salesProductId\}/g, obj.salesProductId);
-                    attachStr += realTemp;
-                }
-            }
-            self.ui.attachDetailsMain.html(attachStr);
+            self.ui.attachDetailsTitle.html(data.productName);
+            self.ui.bxzrTxt.html(data.safeDuty);
+            self.ui.thbzTxt.html(data.coverRule);
+            self.ui.bzxqTxt.html(data.diseaseDetails);
+            self.ui.xxtkTxt.html(data.particularItem);
         },
         pageIn:function(){
             var self = this;
-
         },
         /**
          * 点击返回

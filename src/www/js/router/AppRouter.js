@@ -16,7 +16,7 @@ define([
         appRoutes: {
             "": "insurance",
 
-            "in/plan": "plan",  //计划书页
+            "in/plan/:id": "plan",  //计划书页
             "in/additional":"additional",   //附加险列表
             "in/disease/:id":"disease",   //病种详情
             "in/increment":"increment", //增值服务详情
@@ -26,10 +26,10 @@ define([
             'in/advanceQuery':"advanceQuery",//产品高级筛选
             "home/browseRecords": "browseRecords", //浏览记录
             "home/lifeInsurance": "lifeInsurance",       //寿险查询结果列表
-            "home/detailsDescription/:detailsDescriptionId": "detailsDescription",   //详情说明
+            "home/detailsDescription/:detailsDescriptionId/:organId": "detailsDescription",   //详情说明
             "in/productDetails":"productDetails",   //寿险 产品详情
             "in/productDetails/:productId":"productDetails",   //寿险 产品详情
-            "in/attachDetails/:productId":"attachDetails",   //寿险 附加详情
+            "in/attachDetails/:packageId/:productId/:salesProductId" : "attachDetails",   //寿险 附加详情
             "in/makePlan": "makePlan" //制作计划书
         },
 

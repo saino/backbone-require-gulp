@@ -58,8 +58,10 @@ define([
             data.packageId = productId;
             opt.data = data;
             opt.success = function(result){
-                if(result.status == 0) {
-                    self.setDetail(result.itemDesc)
+                if(result.status == 0){
+                    if(result.diseaseItem.length > 0) {
+                        self.setDetail(result.diseaseItem[0].itemDesc);
+                    }
                 }
             };
             opt.error = function(err){

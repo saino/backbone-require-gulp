@@ -7,8 +7,8 @@ define([
     'module/attachDetails/views/attachDetailsView'
 ],function(attachDetailsView){
     return {
-        attachDetails : function(productId){
-            app.page.show(attachDetailsView, {productId: productId});
+        attachDetails : function(packageId, productId, salesProductId){
+            app.page.show(attachDetailsView, {packageId:packageId, productId: productId, salesProductId:salesProductId});
         }
     };
 });
