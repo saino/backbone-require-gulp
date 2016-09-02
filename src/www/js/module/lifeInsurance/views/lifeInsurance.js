@@ -70,6 +70,7 @@ define([
                     }
                 }
                 self.loadData();
+                self.ui.insuranceCompanyFloat.hide();
                 // console.log("lllll");
             } else if(event.target.getAttribute("id") == "insurance-company-float"){
                 self.ui.insuranceCompanyFloat.hide();
@@ -115,7 +116,7 @@ define([
                     });
                 }
                 else{
-                    var insuranceCompanyNameHtml = '<div class="insurance-company-name" data-id="all">全部</div>';
+                    var insuranceCompanyNameHtml = '<div class="insurance-company-name  insurance-company-name-selected" data-id="all">全部</div>';
                     for(var i=0; self.companys&&i<self.companys.length; i++){
                         insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
                     }
@@ -234,9 +235,10 @@ define([
                 var lifeInsuranceContentHtml = "";
                 if(data.status == "0"){  
                     var salesPackages = data.salesPackages;
-                    if(salesPackages.defaultSearchWords){
-                        self.ui.searchText.attr("placeholder", salesPackages.defaultSearchWords.hotKeyWords);
-                        self.actualSearchWords = salesPackages.defaultSearchWords.actualSearchWords;
+                    if(data.defaultSearchWords){
+                        // console.log('sssss');
+                        self.ui.searchText.attr("placeholder", data.defaultSearchWords.hotKeyWords);
+                        self.actualSearchWords = data.defaultSearchWords.actualSearchWords;
                     }
 
                     for(var i=0; salesPackages&&i<salesPackages.length; i++){
@@ -302,7 +304,7 @@ define([
                         for(var k=0; salesPackages[i].liabilities&&k<salesPackages[i].liabilities.length; k++){
                             insureDutyItemHtml += '<div class="insure-duty-item">'+
                                                     '<div class="duty-item-title">'+
-                                                        '<span>'+salesPackages[i].liabilities[k].liabName+'</span>'+
+                                                        '<span class="duty-item-title-span">'+salesPackages[i].liabilities[k].liabName+'</span>'+
                                                         '<span class="pull-icon-small"></span>'+
                                                     '</div>'+
                                                     '<div class="duty-item-content">'+salesPackages[i].liabilities[k].liabDesc+'</div>'+

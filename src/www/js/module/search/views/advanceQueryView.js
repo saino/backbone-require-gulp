@@ -80,7 +80,7 @@ define([
                 for(i=0; i < len; i++){
                     var obj = list[i];
                     if(utils.companyId == obj.listId){
-                        utils.advancedCompanyId = [];
+                        // utils.advancedCompanyId = [];
                         // utils.advancedCompanyId[0] = utils.companyId;
                         html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
                     }else{
@@ -141,6 +141,7 @@ define([
             utils.lifeInsuranceOptions.rightIds = infoLists;
             //公司ID
             utils.lifeInsuranceOptions.companyIds = companyLists;
+            console.log(companyLists);
             utils.advancedCompanyId = companyLists;
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = true;

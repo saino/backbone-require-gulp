@@ -204,3 +204,13 @@
   color: #ffffff;
     background: #e39b2a;
 }
+
+.duty-item-title-span{
+    display: block;
+    float: left;
+    height: 98px;
+    width: calc(100% - 70px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
