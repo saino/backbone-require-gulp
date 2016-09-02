@@ -206,10 +206,30 @@ define([], function () {
      * @param cb_ok
      * @param cb_err
      */
-    ProductDetailsModel.prototype.getProductInfo = function (currentUserId, salesPackageId, cb_ok, cb_err) {
-        if (cb_ok) {
-            cb_ok(test);
-        }
+    ProductDetailsModel.prototype.getProductInfo = function (options, cb_ok, cb_err) {
+        // if (cb_ok) {
+            // cb_ok(test);
+        // }
+        var url = utils.serverConfig.serverUrl + "/ls/services/dt/productService/getProductInfo";
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: JSON.stringify(options),
+            contentType: "application/json",
+            dataType: "json",
+            processData: false,
+            success: function(data){
+                
+                console.log("success", data);
+                cb_ok && cb_ok(data);
+                // successCB && successCB(data);
+            },
+            error: function(data){
+                // cb_err && cb_err(data);
+                // console.log("error", data);
+                // errorCB && errorCB(data);
+            }
+        });
     };
 
 
