@@ -30,12 +30,16 @@ define([
             backBtn : ".top-title-left", //点击返回
             clearBtn: ".top-title-right",              //清除按钮
             planSearchContainer : ".plan-search-container",    //搜索框
-            personalPlanMain : "#personal-plan-main"
+            personalPlanMain: "#personal-plan-main",
+            planSearchTxt: ".plan-search-txt",        //搜索内容框
+            planSearchBtn : ".plan-search-icon"      //搜索按钮
         },
         events:{
             "tap @ui.backBtn":"onBackBtnHandler",
             "tap @ui.clearBtn": "onClearPlanHandler",      //清空计划书
-            "tap @ui.personalPlanMain":"onDeletePlanItemHandler"      //清空计划书
+            "tap @ui.personalPlanMain": "onDeletePlanItemHandler",      //清空计划书
+            "tap @ui.planSearchBtn": "onPlanSearchBtnHandler",      //搜索计划书
+            "input @ui.planSearchTxt": "onPlanSearchInputHandler"      //输入内容实时搜索
         },
         initialize:function(){
 
@@ -98,6 +102,39 @@ define([
             e.stopPropagation();
             e.preventDefault();
             app.goBack();
+        },
+        /**
+         *搜索按钮点击事件
+         */
+        onPlanSearchInputHandler :function(e){
+            var self = this;
+            var text = self.ui.planSearchTxt.val();
+            if (text){
+                self.planSearchOperation(text);
+            }
+        },
+        /**
+         *搜索按钮点击事件
+         */
+        onPlanSearchBtnHandler :function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var self = this;
+            var text = self.ui.planSearchTxt.val();
+            if (text){
+                self.planSearchOperation(text);
+            }
+        },
+        /**
+         *具体搜索实现函数
+         */
+        planSearchOperation: function (text) {
+            var self = this;
+            //TODO 具体搜索,需要实现
+            console.log(text);
+            personalPlanModel.searchPlanItemList(self.currentUserId, text, self._initView, function (err) { 
+                console.log(err);
+            });
         },
         /**
          * 点击清空所有计划书

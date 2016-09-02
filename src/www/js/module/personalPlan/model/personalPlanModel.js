@@ -58,11 +58,23 @@ define([], function () {
     /**
      * 知识搜索
      * @param currentUserId  当前用户ID
-     * @param salesPackageId  售卖的保险ID
      * @param cb_ok
      * @param cb_err
      */
     PersonalPlanModel.prototype.getPlanItemList = function (currentUserId, cb_ok, cb_err) {
+        if (cb_ok) {
+            cb_ok(test);
+        }
+    };
+
+    /**
+     * 知识搜索
+     * @param currentUserId  当前用户ID
+     * @param key  当前模糊搜索的内容
+     * @param cb_ok
+     * @param cb_err
+     */
+    PersonalPlanModel.prototype.searchPlanItemList = function (currentUserId, key, cb_ok, cb_err) {
         if (cb_ok) {
             cb_ok(test);
         }
