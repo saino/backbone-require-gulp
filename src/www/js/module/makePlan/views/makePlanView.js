@@ -44,6 +44,7 @@ define([
             secondInsured:".second-insured",  //第二被保人
             secondInsured:".second-insured",  //第一被保人
             policyHolder:".policy-holder",    //投保人
+            sendName:".send-input",//投保人名称 敬呈对象
             makePlanInput:"#make-plan-select", //主险输入区域
             additionalPlanInput:"#make-plan-additional", //附加险输入区域
             incrementCon:"#make-plan-increment",//增值服务
@@ -237,7 +238,7 @@ define([
            //可选责任列表
            var dutyHtml = "";
            if(plan.prdtTermChargeList && plan.prdtTermChargeList.length > 0){
-               for(var i = 0; i < plan.prdtTermChargeList.length;)
+               for(var i = 0; i < plan.prdtTermChargeList.length; i++)
                {
                    var typeName = self.paymentPeriodArr[0];
                    if(parseInt(plan.prdtTermChargeList[i].periodType) >=0 && parseInt(plan.prdtTermChargeList[i].periodType) < self.paymentPeriodArr.length)
@@ -250,11 +251,11 @@ define([
            if(plan.prdtTermCoverageList && plan.prdtTermCoverageList.length > 0){
                for(var j = 0; j < plan.prdtTermCoverageList.length; j++){
                    var typeName = self.guaranteePeriodArr[0];
-                   if(parseInt(plan.guaranteePeriodArr[i].periodType) >=0 && parseInt(plan.guaranteePeriodArr[i].periodType) < self.guaranteePeriodArr.length)
+                   if(parseInt(plan.prdtTermCoverageList[j].periodType) >=0 && parseInt(plan.prdtTermCoverageList[j].periodType) < self.guaranteePeriodArr.length)
                    {
-                       typeName = self.guaranteePeriodArr[parseInt(plan.guaranteePeriodArr[i].periodType)];
+                       typeName = self.guaranteePeriodArr[parseInt(plan.prdtTermCoverageList[j].periodType)];
                    }
-                   guaranteePeriodHtml += '<option value="'+plan.prdtTermCoverageList[i].periodValue+'">'+typeName+'</option>';
+                   guaranteePeriodHtml += '<option value="'+plan.prdtTermCoverageList[j].periodValue+'">'+typeName+'</option>';
                }
            }
            if(plan.productLiabilityList && plan.productLiabilityList.length > 0){
@@ -262,9 +263,9 @@ define([
                    dutyHtml += self.dutyItemTpl({liabId:plan.productLiabilityList[i].liabId,liabName:plan.productLiabilityList[i].liabName});
                }
            }
-           if(plan.unitFlag == 0) {
+//           if(plan.unitFlag == 0) {//暂时只按保额 guyy TODO
                tempHtml = self.unitFlag1Tpl({productId:plan.salesProductId,productName:plan.salesProductName,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
-           }
+//           }
            return tempHtml;
        },
         //根据险种拼接Html-附加险
@@ -304,9 +305,9 @@ define([
                     dutyHtml += self.dutyItemTpl({liabId:plan.productLiabilityList[i].liabId,liabName:plan.productLiabilityList[i].liabName});
                 }
             }
-            if(plan.unitFlag == 0) {
+//            if(plan.unitFlag == 0) {//暂时只按保额 guyy TODO
                 tempHtml = self.additionalUnitFlag1Tpl({additionalName:plan.salesProductName,productId:plan.salesProductId,productName:plan.salesProductName,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
-            }
+//            }
             return tempHtml;
         },
         //增值服务
@@ -458,6 +459,51 @@ define([
                 target.parents(".insured-title").siblings(".accordion-list").slideDown();
             }
         },
+        //根据输入获取计划书详情
+        getPlanByInput:function(){
+            var self = this;
+            var responseData = {};
+            var plan = {};
+            responseData.encryptedUserData = utils.userObj.id;
+            responseData.packageId = self.currProductId;//产品计划ID
+            var insureds = [];//被保人数组
+            //第一被保人
+            debugger;
+            var insured = {};
+            insured.id = 0;//自己填写的被保人信息 无ID
+            insured.name = self.ui.firstInsured.find(".insured-name").val();
+            insured.age = self.ui.firstInsured.find(".insured-old").val();
+            insured.gender = self.ui.firstInsured.find(".insured-sex").data("val");
+            insured.jobCateId = self.ui.firstInsured.find(".insured-job").val();//职位
+            insured.socialInsuranceIndi = self.ui.firstInsured.find(".insured-social").data("val");//社保
+            insured.smoking = self.ui.firstInsured.find(".insured-smoking").data("val");//吸烟
+            insureds.push(insured);
+            //第二被保人
+            var secInsured = {};
+            secInsured.id = 0;
+            secInsured.name = self.ui.secondInsured.find(".insured-name").val();
+            secInsured.age = self.ui.secondInsured.find(".insured-old").val();
+            secInsured.gender = self.ui.secondInsured.find(".insured-sex").data("val");
+            secInsured.jobCateId = self.ui.secondInsured.find(".insured-job").val();//职位
+            secInsured.socialInsuranceIndi = self.ui.secondInsured.find(".insured-social").data("val");//社保
+            secInsured.smoking = self.ui.secondInsured.find(".insured-smoking").data("val");//吸烟
+            insureds.push(secInsured);
+            responseData.insureds = insureds;
+            //投保人
+            var proposer = {};
+            proposer.name = self.ui.sendName.val();
+            proposer.age = self.ui.policyHolder.find(".insured-old").val();
+            proposer.gender = self.ui.policyHolder.find(".insured-sex").data("val");
+            responseData.proposer = proposer;
+            //主险数据
+            var mainCoverages = [];
+            var mainCoverage = {};
+            mainCoverages.push(mainCoverage);
+            responseData.mainCoverages = mainCoverages;
+
+            responseData.plan = plan;
+            return responseData;
+        },
         //保险理念列表 单选
         clickIdeaItemHandler:function(e){
             e.stopPropagation();
@@ -470,12 +516,19 @@ define([
         clickCalcPremiumHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            var responseData = self.getPlanByInput();
 
         },
         //点击生成计划书
         clickMakePlanHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(!self.isCalcOver){
+                MsgBox.alert("请先计算保费");
+                return;
+            }
 
         },
         //点击添加附加险 指向附加险列表
@@ -484,6 +537,8 @@ define([
             e.preventDefault();
             var self = this;
             var exitsAdditionalIds = self.additionalIdArr.join(",");
+            if(exitsAdditionalIds != "")
+                exitsAdditionalIds = utils.myEncodeURIComponent(exitsAdditionalIds);
             app.navigate("#in/additional/"+self.currProductId+"/"+exitsAdditionalIds,{replace:true,trigger:true});
         },
         //点击删除附加险
@@ -491,7 +546,6 @@ define([
             var self  = this;
             e.stopPropagation();
             e.preventDefault();
-            console.log(self.additionalIdArr);
             MsgBox.ask("确定删除该附加险吗？","",function(type){
                 if(type == 2) { //确定  0=取消
                     var parent = $(e.target).parents(".additional-item");
