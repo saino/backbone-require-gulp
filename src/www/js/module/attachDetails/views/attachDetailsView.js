@@ -31,8 +31,9 @@ define([
             attachDetailsMain : "#attach-details-main",
 
             bxzrTxt : ".bxzr-txt",      //保险责任
-            thbzTxt : ".thbgz-txt",     //投核保规则
             bzxqTxt : ".bzxq-txt",      //病种详情
+
+            thbzTxt : ".thbgz-txt",     //投核保规则
             xxtkTxt : ".xxtk-txt"       //详细条款
 
         },
@@ -68,9 +69,7 @@ define([
             var self = this;
             self.ui.attachDetailsTitle.html(data.productName);
             self.ui.bxzrTxt.html(data.safeDuty);
-            self.ui.thbzTxt.html(data.coverRule);
             self.ui.bzxqTxt.html(data.diseaseDetails);
-            self.ui.xxtkTxt.html(data.particularItem);
         },
         pageIn:function(){
             var self = this;
@@ -91,6 +90,7 @@ define([
         onAttachDetailsMainHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
             var target = e.target;
             var $target = $(target);
             var parent = null;
@@ -103,7 +103,14 @@ define([
             }
             var dataType = $target.attr("data-type");
             if(dataType){       //next 跳转
-                MsgBox.alert(dataType);
+                switch(dataType){
+                    case "rule":
+                        app.navigate("home/detailsDescription/"+self.packageId+"/:organId", {replace: true,trigger: true})
+                        break;
+                    case "tk":
+                        app.navigate("in/clause/" + self.productId, {replace: true,trigger: true});
+                        break;
+                }
             }
         },
         close:function(){

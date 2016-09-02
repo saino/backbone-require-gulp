@@ -3,8 +3,24 @@ define([
 ],function(){
     var PlanModel = function(){};
 
-    PlanModel.prototype.getPlanInfo = function(){
-
+    PlanModel.prototype.getPlanInfo = function(planId, cb_ok, cb_err){
+        var opt = {};
+        opt.url = "/ls/services/dt/planService/getPlanInfo";
+        opt.type = "POST";
+        var data = {};
+        data.quotationId = planId;
+        opt.data = data;
+        opt.success = function(result){
+            if(result.status == 0){
+                if (cb_ok) cb_ok(result);
+            }else{
+                if(cb_err) cb_err(err)
+            }
+        };
+        opt.error = function(err){
+            if(cb_err) cb_err(err)
+        };
+        utils.requestData(opt);
     };
 
     //获取公司信息集合 服务商、承保商
