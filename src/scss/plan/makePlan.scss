@@ -31,8 +31,8 @@
     .duty-title{width:100%; height: 110px; line-height: 110px; text-align: center; font-size: 0; color:#666; position: relative;}
       .title-img{margin-right: 36px; vertical-align: middle;}
       .title-span{font-size: 30px;vertical-align: middle; }
-      .duty-stop{position: absolute; right:36px; top:0; width:40px; height: 100%; background: url("../images/insurance/down-big.png") no-repeat center;}//点击收起
-      .duty-open{position: absolute; right:36px; top:0; width:40px; height: 100%; background: url("../images/insurance/up-big.png") no-repeat center;}//点击展开
+      .duty-stop{position: absolute; right:0px; top:0; width:76px; height: 100%; background: url("../images/insurance/down-big.png") no-repeat left center;}//点击收起
+      .duty-open{position: absolute; right:0px; top:0; width:76px; height: 100%; background: url("../images/insurance/up-big.png") no-repeat left center;}//点击展开
     .duty-list{width:-webkit-calc(100% - 12px); margin: 0 auto; border-top: 1px solid #ddd;}
       .duty-item{width:-webkit-calc(100% - 60px); height:80px; line-height: 80px; border-bottom: 1px solid #ddd;margin:0 auto;}
       .duty-item:last-child{border-bottom: 0;}
@@ -41,15 +41,22 @@
         float:left;}
         .duty-item-name{ font-size: 2.6em; color:#a2a2a2; width:-webkit-calc(100% - 64px);
           text-overflow: ellipsis; overflow: hidden;white-space:nowrap; display: block; float:left;}
-      .duty-item-input{width:-webkit-calc(50%); height: 80px; line-height:80px; font-size: 2.6em; float:left; border:none; text-indent: 20px;}
+      .duty-item-input{width:-webkit-calc(50%); height: 80px; line-height:80px; font-size: 2.6em; float:left; border:none;
+             display: none; text-indent: 20px;}
       .duty-item-left-ck .duty-item-check{background: url("../images/plan/icon05.png") no-repeat center;}
       .duty-item-left-ck .duty-item-name{color:#666;}
+    .duty-item-left-ck+.duty-item-input{display: block;}
   }
   //附加险
-  .additional-name{width:-webkit-calc(100% - 12px); height:110px; line-height: 110px; font-size: 3em; color:#666;
-    margin:0 auto; border-bottom: 2px solid #ddd; text-align: center}
+  .additional-name{width:-webkit-calc(100% - 12px); height:110px; line-height: 110px;  color:#666;
+    margin:0 auto; border-bottom: 2px solid #ddd; text-align: left;}
+    .additional-name-span{width:-webkit-calc(100% - 80px);
+      text-overflow: ellipsis; overflow: hidden;white-space:nowrap; display: block; float:left; }/*省略号*/
     .additional-del{width:48px; height:110px; background: url("../images/plan/icon06.png") no-repeat center; float:right; margin-right: 30px;}
   //首年保费
+  #totalFirstYearPremium{font-size: 3em; color:#e6454a; line-height: 110px; height:110px; display: inline-block; float:right; text-indent: 5px;}
+  #btnTotalFirstYear{display: inline-block; width:150px; height: 58px; line-height: 58px; border-radius: 12px; background: #e6454a;
+    color:#ffffff; text-align: center;float: right; border: none; font-size: 3em; margin-top: 26px;}
   .first-year-list{width:-webkit-calc(100% - 72px); margin:0 auto;}
     .first-year-table{width:100%; overflow: hidden; font-size: 2.6em;
       tr{height:80px; }
@@ -67,6 +74,7 @@
   .increment-item{width:-webkit-calc(100% - 72px); height:80px; line-height: 80px; margin:0 auto; border-bottom: 1px solid #ddd; font-size: 3em;
    color:#a2a2a2;}
   //保险理念
+//  .accordion-list{display:none;}
   .idea-item{width:-webkit-calc(100% - 72px); height:80px; line-height: 80px; font-size: 3em; color:#a2a2a2; margin:0 auto;
     .circle{width:44px; height:44px; border-radius: 22px; border:1px solid #ddd; display: inline-block; vertical-align: middle;
       font-size: 0; margin-right: 22px;}

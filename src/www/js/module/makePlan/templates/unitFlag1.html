@@ -1,0 +1,26 @@
+<div class="insured-property" data-productId="<%=productId %>" data-productName="<%=productName %>">
+    <div class="insured-property-item">
+        <span>保额：</span>
+        <input type="text" class="property-input"/>
+    </div>
+    <div class="insured-property-item">
+        <span>交费期限：</span>
+        <select name="old" class="property-input property-select payment-period">
+            <%=paymentPeriodHtml %>
+        </select>
+    </div>
+    <div class="insured-property-item">
+        <span>保障期限：</span>
+        <select name="old" class="property-input property-select guarantee-period">
+            <%=guaranteePeriodHtml %>
+        </select>
+    </div>
+</div>
+<div class="insured-duty">
+    <div class="duty-title"><img src="images/plan/icon08.png" alt="" class="title-img"/><span class="title-span">可选责任</span>
+        <div class="duty-tip duty-open"></div>
+    </div>
+    <div class="duty-list">
+        <%=dutyHtml %>
+    </div>
+</div>
