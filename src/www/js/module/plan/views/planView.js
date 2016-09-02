@@ -86,7 +86,7 @@ define([
             var self = this;
             self.planBookView = new PlayBookView();
             self.getRegion("planMain").show(self.planBookView);
-            self.planBookView.show();
+            self.planBookView.show(self.planId);
         },
 
         //点击返回

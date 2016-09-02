@@ -17,7 +17,8 @@ define([
             "": "insurance",
 
             "in/plan/:id": "plan",  //计划书页
-            "in/additional":"additional",   //附加险列表
+            "in/additional/:planId":"additional",   //附加险列表
+            "in/additional/:planId/:list":"additional",   //附加险列表
             "in/disease/:id":"disease",   //病种详情
             "in/increment":"increment", //增值服务详情
             "in/clause/:id":"clause",   //条款

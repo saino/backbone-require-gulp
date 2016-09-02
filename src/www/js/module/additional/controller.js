@@ -7,8 +7,11 @@ define([
     'module/additional/views/additionalView'
 ],function(AdditionalView){
     return {
-        additional : function(){
-            app.page.show(AdditionalView);
+        additional : function(id, param){
+            var opt = {};
+            opt.planId = id;
+            opt.list = JSON.stringify(utils.myDecodeURIComponent(param));
+            app.page.show(AdditionalView, opt);
         }
     };
 });
