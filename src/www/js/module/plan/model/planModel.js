@@ -47,6 +47,15 @@ define([
         utils.requestData(options);
     }
     /**
+     * 计算首年保费
+     * @param obj
+     * @param cb_ok
+     * @param cb_err
+     */
+    PlanModel.prototype.calcFirstYearPremium = function(obj,cb_ok,cb_err){
+
+    }
+    /**
      * 保险计划书
      */
     PlanModel.prototype.savePlan = function(options){

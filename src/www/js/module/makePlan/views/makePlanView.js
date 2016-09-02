@@ -18,6 +18,7 @@ define([
         forever:true,
         isCalcOver:false,       //是否已经计算过保费
         mainPlanNum:0,          //主险个数
+        additionalIdArr:[],         //附加险ID
         currProductId:0,        //当前产品ID
         currCompany:{},         //当前计划书所属公司对象
         currPlanList:[],        //当前销售产品列表（主产品、附加产品）
@@ -177,6 +178,7 @@ define([
             var additionalInputHtml = "";
             for(var i = 0; i < self.currPlanList.length; i++){
                 if(self.currPlanList[i].insType == 2) {
+                    self.additionalIdArr.push(self.currPlanList[i].salesProductId);
                     additionalInputHtml += self.getAdditionalPlanInputHtml(self.currPlanList[i]);
                 }
             }
@@ -480,16 +482,24 @@ define([
         addAdditionalPlanHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-            app.navigate("#in/additional",{replace:true,trigger:true});
+            var self = this;
+            var exitsAdditionalIds = self.additionalIdArr.join(",");
+            app.navigate("#in/additional/"+self.currProductId+"/"+exitsAdditionalIds,{replace:true,trigger:true});
         },
         //点击删除附加险
         delAdditionPlanHandler:function(e){
+            var self  = this;
             e.stopPropagation();
             e.preventDefault();
+            console.log(self.additionalIdArr);
             MsgBox.ask("确定删除该附加险吗？","",function(type){
                 if(type == 2) { //确定  0=取消
-                    console.log("删除了");
                     var parent = $(e.target).parents(".additional-item");
+                    var additionalId = parent.data("productid");//待删除附加险ID
+                    var index = additionalId?self.additionalIdArr.indexOf(additionalId):-1;
+                    if(index >= 0){
+                        self.additionalIdArr.splice(index,1);
+                    }
                     parent.slideUp(function(){
                         parent.remove();
                     });
