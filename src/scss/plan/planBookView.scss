@@ -386,6 +386,35 @@
       margin: 0 6px;
       border-bottom: 2px solid #ddd;
 
+      .input-range-div{
+        position: relative;
+        text-align: center;
+        height: 108px;
+        line-height: 108px;
+      }
+
+      .input-range{
+        width: calc(100% - 196px);
+      }
+
+      .btn-range-reduce{
+        top: 30px;
+        position: absolute;
+        left: 28px;;
+        width: 49px;
+        height: 49px;
+        background: url("../images/common/reduce-btn.png") no-repeat center;
+      }
+
+      .btn-range-add{
+        top: 30px;
+        position: absolute;
+        right: 28px;
+        width: 49px;
+        height: 49px;
+        background: url("../images/common/add-btn.png") no-repeat center;
+      }
+
       .demo-range-tip{
         margin: 40px 0;
         text-align: center;
@@ -438,4 +467,20 @@
       display: inline-block;
     }
   }
+}
+
+
+
+input[type="range"] {
+  background-color: #DDDDDD;
+  width: 400px;
+  -webkit-appearance: none;
+  height: 4px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  cursor: default;
+  height: 60px;
+  width: 60px;
+  background: url("../images/common/range-thumb.png") no-repeat center;
 }

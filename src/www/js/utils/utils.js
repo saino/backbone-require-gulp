@@ -123,5 +123,37 @@
         });
     };
 
+    /*
+     *把特殊符号%,替换"s百分号b"掉后，编码字符串，
+     *@parms : str	需要编码的字符串
+     */
+    utils.myEncodeURIComponent = function (str){
+        var reStr = str;
+        if(str.indexOf("%") > -1){
+            reStr = str.replace(/\%/g, "s百分号b");
+        }
+        try {
+            return encodeURIComponent(reStr);
+        }catch(e){
+            return reStr;
+        }
+    };
+    /*
+     *解码字符串后，把"s百分号b"替换成%
+     *@parms : str	需要解码的字符串
+     */
+    utils.myDecodeURIComponent = function (str){
+        var reStr = str;
+        try {
+            reStr = decodeURIComponent(str);
+        }catch(e){
+        }
+        if(reStr.indexOf("s百分号b") > -1){
+            reStr = reStr.replace(/s百分号b/g, "%");
+        }
+        return reStr;
+    };
+
+
     
 })(window);
