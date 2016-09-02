@@ -16,8 +16,8 @@ define([
         ui:{
             topCon : ".top-title",
             backBtn : ".top-title-left", //点击返回
-            shareBtn : ".top-title-right-2",              //分享按钮
-            collectBtn : ".top-title-right-1",            //收藏按钮
+            shareBtn : ".top-title-right-1",              //分享按钮
+            collectBtn : ".top-title-right-2",            //收藏按钮
             detailsInfoTop : ".details-info-top",       // 产品名称和公司LOGO
             productDetailsPv : ".product-details-pv",   //产品PV
             insureAge : "#insure-age span:last-child",                      //投保年龄
@@ -87,6 +87,7 @@ define([
          * @param data
          */
         initView : function(data){
+            console.log(data);
             var self = this;
             //设置用户信息
             var packageName = data.packageName; //保险名称
@@ -149,7 +150,7 @@ define([
             //交费期间
             var paymentStr = "";
             for(var i = 0; prdtTermChargeList&&i<prdtTermChargeList.length; i++){
-                var obj1 = prdtTermChargeList[i];paymentStr += "/";
+                var obj1 = prdtTermChargeList[i];
                 if(i){
                     paymentStr += "/";
                 }
@@ -264,16 +265,20 @@ define([
          * 设置组合计划险
          * @param productList
          */
+                /**
+         * 设置组合计划险
+         * @param productList
+         */
         initPlanView : function (productList){
             var self = this;
-            var planTemp = '<div class="insure-plan-item" data-type="{salesProductId}">'+
-                '<span data-type="{salesProductId}">{salesProductName}</span>'+
-                '<span class="pull-icon-next" data-type="{salesProductId}"></span>'+
+            var planTemp = '<div class="insure-plan-item" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
+                '<span  data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
+                '<span class="pull-icon-next" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
             '</div>';
             var planStr = "";
             for(var i = 0; i < productList.length; i++){
                 var obj = productList[i];
-                var realTemp = planTemp.replace("{salesProductName}", obj.salesProductName).replace(/\{salesProductId\}/g, obj.salesProductId);
+                var realTemp = planTemp.replace("{salesProductName}", obj.salesProductName).replace(/\{productId\}/g, obj.productId).replace(/\{salesProductId\}/g, obj.salesProductId);
                 planStr += realTemp;
             }
             self.ui.planContent.html(planStr);
@@ -284,14 +289,14 @@ define([
          */
         initSubjoinView : function (attachProductList){
             var self = this;
-            var subjoinTemp = '<div class="insure-subjoin-item" data-type="{salesProductId}">'+
-                '<span data-type="{salesProductId}">{salesProductName}</span>'+
-                '<span class="pull-icon-next" data-type="{salesProductId}"></span>'+
+            var subjoinTemp = '<div class="insure-subjoin-item" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
+                '<span data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
+                '<span class="pull-icon-next" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
                 '</div>';
             var subjoinStr = "";
             for(var i = 0; attachProductList&&i<attachProductList.length; i++){
                 var obj = attachProductList[i];
-                var realTemp = subjoinTemp.replace("{salesProductName}", obj.salesProductName).replace(/\{salesProductId\}/g, obj.salesProductId);
+                var realTemp = subjoinTemp.replace("{salesProductName}", obj.attachProductName).replace(/\{productId\}/g, obj.attachId).replace(/\{salesProductId\}/g, obj.salesProductId);
                 subjoinStr += realTemp;
             }
             self.ui.subjoinContent.html(subjoinStr);
@@ -318,7 +323,18 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
-            MsgBox.alert("点击了分享保险");
+            // MsgBox.alert("点击了分享保险");
+            var options = {
+                "packageId": parseInt(self.productId),
+                "linkUrl": window.location.href,
+                "encryptedUserData": utils.userObj.id
+            };
+            // console.log(options);
+            productDetailsModel.sharePackage(options, function(data){
+                console.log("success", data);
+            }, function(error){
+                console.log(error);
+            });
         },
         /**
          * 收藏保险
@@ -328,7 +344,21 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
-            MsgBox.alert("点击了收藏保险");
+            var $target = $(e.target);
+            if($target.hasClass("hasCollection")) return;
+            var options = {
+                "encryptedUserData": utils.userObj.id,
+                "packageId": parseInt(self.productId)
+            }
+            productDetailsModel.collectProduct(options, function(data){
+                console.log("success", data);
+                if(data.status == "0"){
+                    $target.toggleClass("hasCollection");
+                }
+            }, function(error){
+                console.log(error);
+            });
+            // MsgBox.alert("点击了收藏保险");
         },
         /**
          *点击显示或者隐藏保险责任
@@ -381,10 +411,12 @@ define([
             var self = this;
             var target = e.target;
             var $target = $(target);
-            var dataType = $target.attr("data-type");
-            if(dataType){
-                MsgBox.alert("计划组合列表");
-            }
+            // var dataType = $target.attr("data-type");
+            // if(dataType){
+                // MsgBox.alert("计划组合列表");
+                console.log(self.productId, $target.attr("data-productid"), $target.attr("data-salesproductid"));
+                // app.navigate("in/attachDetails/9100001/1004001/100001", {replace : true, trigger : true})
+            // }
         },
         /**
          *点击显示或者隐藏附加险
@@ -407,11 +439,12 @@ define([
             var self = this;
             var target = e.target;
             var $target = $(target);
-            var dataType = $target.attr("data-type");
-            if(dataType){
+            // var dataType = $target.attr("data-type");
+            // if(dataType){
                 //MsgBox.alert("推荐附加险列表");
-                app.navigate("#in/attachDetails/"+dataType, {replace : true, trigger : true});
-            }
+                console.log(self.productId, $target.attr("data-productid"), $target.attr("data-salesproductid"));
+                // app.navigate("#in/attachDetails/"+dataType, {replace : true, trigger : true});
+            // }
         },
         /**
          * 跳转到附加险列表的选项页
