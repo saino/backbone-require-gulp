@@ -31,7 +31,7 @@ define([
             event.stopPropagation();
             event.preventDefault();
             var self = this;
-
+            console.log(event.target);
             if(event.target.getAttribute("class") == "insurance-product-delete"){
                 MsgBox.ask("你认定删除该条浏览记录吗？","bbbbbbb",function(type){
                     if(type == 2) { //确定  0=取消

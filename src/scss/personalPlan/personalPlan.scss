@@ -76,6 +76,85 @@
         width: 100%;
         overflow-y: auto;
         overflow-x: hidden;
+        padding: 12px 14px 120px;
+        .personal-plan-item{
+            width: 100%;
+            height: 404px;
+            margin-bottom: 17px;
+            box-shadow: 0 5px 5px #eee;
+            background: #fff;
+            position: relative;
+            padding: 0 16px;
+            .personal-plan-item-title{
+                width: 100%;
+                height: 110px;
+                line-height: 110px;
+                box-shadow: 0 5px 5px #eee;
+                .personal-plan-item-name{
+                    float: left;
+                    height: 100%;
+                    font-size: 3.4em;
+                    color: #666;
+                    max-width: 60%;
+                    .avatar-icon{
+                        width: 68px;
+                        height: 68px;
+                        display: inline-block; 
+                        border: 0;
+                        border-radius: 100%;
+                        box-sizing: border-box;
+                        margin-right: 16px;
+                        vertical-align: middle;
+                    }
+                }
+                .personal-plan-item-date{
+                    float: right;
+                    height: 100%;
+                    text-indent: 56px;
+                    font-size: 2.6em;
+                    color: #a2a2a2;
+                    background: url('../images/insurance/age.png') left center no-repeat;
+                    line-height: 110px;
+                }
+            }
+            .personal-plan-item-content{
+                width: 100%;
+                height: 294px;
+                padding-top: 50px;
+                p{
+                   font-size: 3.0em;
+                   color: #666;
+                   margin-bottom: 30px;
+                }
+                p:first-child{
+                    color: #333;
+                    font-size: 3.2em;
+                }
+            }
+            .personal-plan-item-delete{
+                position: absolute;
+                width: 80px;
+                height: 80px;
+                bottom: 4px;
+                right: 0;
+                background: url('../images/delete.png') center no-repeat;
+            }
+        }
     }
     
 }
+
+.plan-item-noting {
+    position: absolute;
+    height: 100px;
+    width: 100%;
+    font-size: 3.4em;
+    color: #666;
+    text-align: center;
+    line-height: 100px;
+    top: calc(50% - 50px);
+}
+
+
+
+
