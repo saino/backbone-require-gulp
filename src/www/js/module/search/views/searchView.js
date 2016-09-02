@@ -25,13 +25,15 @@ define([
             historyList : "#history-list",
             btnClearHistory : "#clear-history",
             searchInput : ".search-key",
-            btnSearch : ".search-btn"
+            btnSearch : ".search-btn",
+            hotWordCon: "#hot-word-con" //热搜词
         },
         events:{
             "tap #top-title-left-2":"_clickBackHandler",
             "tap @ui.btnClearHistory" : "onClearHistoryHandler",
             "tap @ui.btnSearch" : "onBtnSearchHandler",
-            "tap .history-item-del" : "onDeleteHistoryItemHandler"
+            "tap .history-item-del" : "onDeleteHistoryItemHandler",
+            "tap @ui.hotWordCon": "clickHotWordConHandler"      //点击热搜词
         },
 
         onRender:function(){
@@ -48,6 +50,24 @@ define([
             }, function(){
 
             })
+        },
+
+        //点击热搜词
+        clickHotWordConHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+
+            var sefl = this;
+
+            if(event.target.getAttribute("class") == "hot-word-item"){
+                utils.lifeInsuranceOptions.searchWords = event.target.innerHTML || "";
+                //进入寿险列表查询也是否需要重新加载数据
+                utils.isLifeInsuranceRefresh = true;
+                //是否初始化查询条件
+                utils.isInitOption = false;
+                app.goBack();
+            }
+
         },
 
         initHistoryList : function(list){
@@ -97,10 +117,12 @@ define([
             if(keywords == "" && self.defaultSearchWordObj){
                 keywords = self.defaultSearchWordObj.actualSearchWords;
             }
-
-            if(keywords){
-                console.log(keywords)
-            }
+            utils.lifeInsuranceOptions.searchWords = keywords || "";
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = true;
+            //是否初始化查询条件
+            utils.isInitOption = false;
+            app.goBack();
         },
 
         /**
@@ -140,8 +162,13 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = false;
+            //是否初始化查询条件
+            utils.isInitOption = false;
+
             app.goBack();
-        },
+        }
     });
     return SearchView;
 });

@@ -27,10 +27,11 @@ define([
             "home/browseRecords": "browseRecords", //浏览记录
             "home/lifeInsurance": "lifeInsurance",       //寿险查询结果列表
             "home/detailsDescription/:detailsDescriptionId/:organId": "detailsDescription",   //详情说明
-            "in/productDetails":"productDetails",   //寿险 产品详情
             "in/productDetails/:productId":"productDetails",   //寿险 产品详情
             "in/attachDetails/:packageId/:productId/:salesProductId" : "attachDetails",   //寿险 附加详情
-            "in/makePlan": "makePlan" //制作计划书
+            "in/makePlan": "makePlan",  //制作计划书
+            "in/makePlan/:productId": "makePlan",  //制作计划书
+            "in/personalPlan": "personalPlan"  //个人计划书， 这里默认有当前用户ID
         },
 
         /**未登陆时需要过滤的路由**/

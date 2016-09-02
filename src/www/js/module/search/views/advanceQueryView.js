@@ -49,7 +49,7 @@ define([
             self.ui.productList.find('.list-item').remove();
             for(i=0; i < len; i++){
                 var obj = list[i];
-                html += '<div class="type-item list-item" data-id="'+obj.listId+'">'+ obj.typeName +'</div>'
+                html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.typeName +'</div>'
             }
             self.ui.productList.append(html);
         },
@@ -60,24 +60,49 @@ define([
             self.ui.rightsInfoList.find('.list-item').remove();
             for(i=0; i < len; i++){
                 var obj = list[i];
-                html += '<div class="type-item list-item" data-id="'+obj.listId+'">'+ obj.rightName +'</div>'
+                html += '<div class="type-item list-item" data-id='+obj.rightId+'>'+ obj.rightName +'</div>'
             }
             self.ui.rightsInfoList.append(html);
         },
 
         initCompanyList : function(list){
             var self = this;
-            var i, len = list.length, html = '<div class="type-item type-all type-item-ck">全部</div>';
-            self.ui.companyList.find('.list-item').remove();
-            for(i=0; i < len; i++){
-                var obj = list[i];
-                html += '<div class="type-item list-item" data-id="'+obj.listId+'">'+ obj.companyName +'</div>'
+            var i, len = list.length,html = '';
+            if(utils.companyId == "all"){
+                html = '<div class="type-item type-all type-item-ck">全部</div>';
+                for(i=0; i < len; i++){
+                    var obj = list[i];
+                    html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+                }
+                utils.advancedCompanyId = [];
+            }else{
+                html = '<div class="type-item type-all">全部</div>';
+                for(i=0; i < len; i++){
+                    var obj = list[i];
+                    if(utils.companyId == obj.listId){
+                        // utils.advancedCompanyId = [];
+                        // utils.advancedCompanyId[0] = utils.companyId;
+                        html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+                    }else{
+                        html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+                    }
+                }
             }
+            self.ui.companyList.find('.list-item').remove();
+            // for(i=0; i < len; i++){
+            //     var obj = list[i];
+            //     html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>'
+            // }
             self.ui.companyList.append(html);
         },
 
         pageIn:function(){
            
+        },
+        close: function(){
+            //是否初始化保险公司
+            utils.isInitCompany = true;
+            utils.companyId = "all";
         },
 
         /**
@@ -109,9 +134,27 @@ define([
             infoLists = self.getIdList(self.ui.rightsInfoList);
             companyLists = self.getIdList(self.ui.companyList);
 
-            console.log(productLists);
-            console.log(infoLists);
+
+            //种类ID
+            utils.lifeInsuranceOptions.saleTypeIds = productLists;
+            //权益ID
+            utils.lifeInsuranceOptions.rightIds = infoLists;
+            //公司ID
+            utils.lifeInsuranceOptions.companyIds = companyLists;
             console.log(companyLists);
+            utils.advancedCompanyId = companyLists;
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = true;
+            //是否初始化查询条件
+            utils.isInitOption = false;
+            //是否初始化保险公司
+            utils.isInitCompany = true;
+            utils.companyId = "all";
+
+            app.goBack();
+            // console.log(productLists);
+            // console.log(infoLists);
+            // console.log(companyLists);
         },
 
         getIdList : function(parent){
@@ -120,7 +163,7 @@ define([
             for(i = 0; i < len; i++){
                 var obj = list[i];
                 var id = obj.getAttribute("data-id");
-                if(id) res.push(id);
+                if(id) res.push(parseInt(id));
             }
             return res;
         },
@@ -152,6 +195,14 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = false;
+            //是否初始化查询条件
+            utils.isInitOption = false;
+            //是否初始化保险公司
+            utils.isInitCompany = true;
+            utils.companyId = "all";
             app.goBack();
         }
     });

@@ -14,6 +14,7 @@ define([
 
     fn.prototype = {
         show : function(view){
+            console.log("ttt");
             if(view._isShown){
                 return;
             }
@@ -47,6 +48,7 @@ define([
             }
 
             if(view["page-animation"]){
+                console.log("............3....");
                 var className = view["page-animation"];
                 _.delay(function(){
                     $el.addClass(className);
@@ -61,6 +63,7 @@ define([
                     $el.off("webkitAnimationEnd");
                 });
             }else{
+                console.log("................");
                 if(view.pageIn){
                     view.pageIn();
                 }

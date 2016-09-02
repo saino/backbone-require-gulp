@@ -1,7 +1,5 @@
 // 文件名称: utils.js
-//
-// 创 建 人: chenshy
-// 创建日期: 2014/08/22
+// 创 建 人: guyy
 // 描    述: 工具类
 (function(window){
     var utils = {};
@@ -10,8 +8,30 @@
     utils.toolHeight = 40;
     utils.userObj = {id:"QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0="};
     utils.serverConfig = {
-        serverUrl : "http://172.25.13.166:8080"
+        // serverUrl : "http://172.30.1.54:8080"
+        serverUrl: "http://172.25.13.166:8080"
     };
+
+    //进入寿险列表查询也是否需要重新加载数据
+    utils.isLifeInsuranceRefresh = true;
+    //是否初始化查询条件
+    utils.isInitOption = true;
+    //是否初始化保险公司
+    utils.isInitCompany = true;
+
+    utils.companyId = "all";
+    utils.advancedCompanyId = [];
+
+    //寿险业查询条件
+    utils.lifeInsuranceOptions = { 
+            "encryptedUserData": "QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0=",
+            "searchWords": "安行无忧",
+            "saleTypeIds": [],  //选填，种类ID，来自高级过滤接口的返回值
+            "examPremOrder": "desc",    //选填，示例保费排序方式。asc:升序，desc: 降序
+            "rightIds": [],       //选填，权益ID，来自高级过滤接口的返回值
+            "companyIds": [], //选填，公司ID，来自高级过滤接口的返回值
+            "sortOption": 1     //选填，排序选项。2：按浏览量排序，3：按上架时间排序
+        };
 
     /**
      * 检测是否是正确的邮箱
@@ -39,15 +59,15 @@
         return false;
     };
 
-    /**
-     * 显示app顶端时间等
-     * @param cb_ok
-     * @param cb_err
-     */
-    utils.showTopBar = function(){
-        if(navigator && navigator.device && navigator.device.capture)
-            navigator.device.capture.showBar("white",null, null);
-    }
+//    /**
+//     * 显示app顶端时间等
+//     * @param cb_ok
+//     * @param cb_err
+//     */
+//    utils.showTopBar = function(){
+//        if(navigator && navigator.device && navigator.device.capture)
+//            navigator.device.capture.showBar("white",null, null);
+//    }
 
     /**
      * requestData 请求数据

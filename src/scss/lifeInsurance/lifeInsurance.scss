@@ -89,14 +89,14 @@
   height: 68px;
   width: 68px;
 }
-#life-insurance-label-1{
+.life-insurance-label-1{
   background: url("../images/recomment.png") no-repeat center;
 }
-#life-insurance-label-2{
-  background: url("../images/recomment.png") no-repeat center;
+.life-insurance-label-2{
+  background: url("../images/hot.png") no-repeat center;
 }
-#life-insurance-label-3{
-  background: url("../images/recomment.png") no-repeat center;
+.life-insurance-label-3{
+  background: url("../images/new.png") no-repeat center;
 }
 .life-insurance-name-title{
   width: calc(100% - 12px);
@@ -127,18 +127,7 @@
   border-bottom: 2px solid #dddddd;
 }
 
-//.年龄：_28天_60周岁_保障期间：_终身_ {
-//  font-size: 30px;
-//  font-family: "PingFang";
-//  color: rgb(102, 102, 102);
-//  line-height: 2;
-//  position: absolute;
-//  left: 47.73px;
-//  top: 480.38px;
-//  z-index: 9;
-//}
-
-#default-sort-layout-float{
+#default-sort-layout-float, #insurance-company-float{
   display: none;
   position: absolute;
   height: 100%;
@@ -167,4 +156,61 @@
 }
 .default-sort-item-selected{
   color: #e6454a;
+}
+#insurance-company{
+  position: relative;
+  background: #fff;
+  height: 950px;
+  width: calc(100% - 28px);
+  margin: 0 auto;
+  top: calc(50% - 475px);
+  border-radius: 10px;
+}
+#insurance-company-title{
+  height: 98px;
+  width: 100%;
+  background-color: #e6454a;
+  color: #fff;
+  font-size: 3.4em;
+  text-align: center;
+  line-height: 95px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+#insurance-company-content{
+  height: 852px;
+  width: 100%;
+  padding-top: 30px;
+  padding-left: 16px;
+  padding-right: 6px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.insurance-company-name{
+  height: 50px;
+  width: 165px;
+  background: #e4e0df;
+  border-radius: 10px;
+  margin-right: 10px;
+  margin-bottom: 26px;
+  float: left;
+  text-align: center;
+  line-height: 50px;
+  font-size: 2.6em;
+  color: #666;
+  overflow: hidden;
+}
+.insurance-company-name-selected{
+  color: #ffffff;
+    background: #e39b2a;
+}
+
+.duty-item-title-span{
+    display: block;
+    float: left;
+    height: 98px;
+    width: calc(100% - 70px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
 }

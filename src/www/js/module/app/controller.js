@@ -15,7 +15,8 @@ define([
     'module/productDetails/controller',
     'module/search/controller',
     'module/attachDetails/controller',
-    'module/makePlan/controller'
+    'module/makePlan/controller',
+    'module/personalPlan/controller',
 ],function(){
     var controllers = {
     };

@@ -22,6 +22,36 @@ define([
         };
         utils.requestData(opt);
     };
+
+    /**
+     * 根据产品ID获取用户
+     * @param productId 产品ID 例：9100001
+     */
+    PlanModel.prototype.getPlanInitiaData = function(productId,cb_ok,cb_err){
+        var data = {encryptedUserData:utils.userObj.id,salesPackageId:productId};
+        var options = {
+            url:"/ls/services/dt/planService/getPlanInitialData",
+            data:JSON.stringify(data),
+            type:"POST",
+            dataType:"json"
+        };
+        options.success = function(data){
+            if(data && data.status == 0){
+                cb_ok && cb_ok(data);
+            }else{
+                var errMsg = data.errorMessages ? data.errorMessages:"数据读取失败";
+                cb_err && cb_err(errMsg);
+            }
+        };
+        options.error = cb_err;
+        utils.requestData(options);
+    }
+    /**
+     * 保险计划书
+     */
+    PlanModel.prototype.savePlan = function(options){
+
+    }
     var planModel = new PlanModel();
     return planModel;
 });
