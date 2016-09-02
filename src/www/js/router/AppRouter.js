@@ -31,7 +31,8 @@ define([
             "in/productDetails/:productId":"productDetails",   //寿险 产品详情
             "in/attachDetails/:productId":"attachDetails",   //寿险 附加详情
             "in/makePlan": "makePlan",  //制作计划书
-            "in/makePlan/:productId": "makePlan"  //制作计划书
+            "in/makePlan/:productId": "makePlan",  //制作计划书
+            "in/personalPlan": "personalPlan"  //个人计划书， 这里默认有当前用户ID
         },
 
         /**未登陆时需要过滤的路由**/
