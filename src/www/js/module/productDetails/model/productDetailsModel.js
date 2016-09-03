@@ -219,19 +219,51 @@ define([], function () {
             dataType: "json",
             processData: false,
             success: function(data){
-                
-                console.log("success", data);
                 cb_ok && cb_ok(data);
-                // successCB && successCB(data);
             },
             error: function(data){
-                // cb_err && cb_err(data);
-                // console.log("error", data);
-                // errorCB && errorCB(data);
+                cb_err && cb_err(data);
             }
         });
     };
 
+    //分享产品接口
+    ProductDetailsModel.prototype.sharePackage = function(options, cb_ok, cb_err){
+        var url = utils.serverConfig.serverUrl + "/ls/services/dt/productService/sharePackage";
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: JSON.stringify(options),
+            contentType: "application/json",
+            dataType: "json",
+            processData: false,
+            success: function(data){
+                cb_ok && cb_ok(data);
+            },
+            error: function(data){
+                cb_err && cb_err(data);
+            }
+        });
+    };
+
+    //收藏产品接口
+    ProductDetailsModel.prototype.collectProduct = function(options, cb_ok, cb_err){
+        var url = utils.serverConfig.serverUrl + "/ls/services/dt/productService/collectProduct";
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: JSON.stringify(options),
+            contentType: "application/json",
+            dataType: "json",
+            processData: false,
+            success: function(data){
+                cb_ok && cb_ok(data);
+            },
+            error: function(data){
+                cb_err && cb_err(data);
+            }
+        });
+    }
 
     var productDetailsModel = new ProductDetailsModel();
     return productDetailsModel;
