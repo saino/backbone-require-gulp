@@ -86,7 +86,7 @@ define([
         //渲染完模板后执行,此时当前page没有添加到document
         onRender : function(){
             var self = this;
-            console.log("onRender");
+            app.on("common:add:additional", self.onAddAdditional, self);
             if(device.ios()){
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
                 self.ui.makePlanMain.css("height","-webkit-calc(100% - "+(85+utils.toolHeight)+"px)");
@@ -189,7 +189,7 @@ define([
             for(var i = 0; i < self.currPlanList.length; i++){
                 if(self.currPlanList[i].insType == 2) {
                     self.additionalIdArr.push(self.currPlanList[i].salesProductId);
-                    additionalInputHtml += self.getAdditionalPlanInputHtml(self.currPlanList[i]);
+                    additionalInputHtml += self.getAdditionalPlanInputHtml(self.currPlanList[i],0);
                 }
             }
             self.ui.additionalPlanInput.append($(additionalInputHtml));
@@ -277,8 +277,8 @@ define([
 //           }
            return tempHtml;
        },
-        //根据险种拼接Html-附加险
-        getAdditionalPlanInputHtml:function(plan){
+        //根据险种拼接Html-附加险  isFromAdditionalList是否来自附加险列表
+        getAdditionalPlanInputHtml:function(plan,isFromAdditionalList){
             var tempHtml = "";
             var self = this;
             if(!plan)return tempHtml;
@@ -288,6 +288,8 @@ define([
             var guaranteePeriodHtml = "";
             //可选责任列表
             var dutyHtml = "";
+            var productId = isFromAdditionalList == 1 ? plan.attachId : plan.salesProductId;
+            var productName = isFromAdditionalList == 1 ? plan.productName : plan.salesProductName;
             if(plan.prdtTermChargeList && plan.prdtTermChargeList.length > 0){
                 for(var i = 0; i < plan.prdtTermChargeList.length;)
                 {
@@ -315,7 +317,7 @@ define([
                 }
             }
 //            if(plan.unitFlag == 0) {//暂时只按保额 guyy TODO
-                tempHtml = self.additionalUnitFlag1Tpl({additionalName:plan.salesProductName,productId:plan.salesProductId,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
+                tempHtml = self.additionalUnitFlag1Tpl({additionalName:productName,productId:productId,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
 //            }
             return tempHtml;
         },
@@ -413,18 +415,28 @@ define([
                 self.occupationListHtml += '<option value="'+self.occupationList[i].id+'">'+self.occupationList[i].name+'</option>';
             }
         },
+        //监听添加附加险
+        onAddAdditional:function(obj){
+            var self = this;
+            var tempHtml = self.getAdditionalPlanInputHtml(obj,1);
+            if(tempHtml != "")
+            {
+                self.additionalIdArr.push(obj.attachId);
+            }
+            self.ui.additionalPlanInput.append($(tempHtml));
+        },
         //点击返回
-        clickTopTitleLeftHandler: function(event){
-            event.stopPropagation();
-            event.preventDefault();
+        clickTopTitleLeftHandler: function(e){
+            e.stopPropagation();
+            e.preventDefault();
             //返回重置当前产品计划ID，返回进入重置所有
             this.currProductId = 0;
             app.goBack();
         },
         //点击单选框
-        clickRadioHandler:function(event){
-            event.stopPropagation();
-            event.preventDefault();
+        clickRadioHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
             var target = $(event.currentTarget);
             if(target.hasClass("property-radio-item-ck")){
                 return;

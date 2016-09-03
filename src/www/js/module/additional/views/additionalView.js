@@ -44,9 +44,9 @@ define([
         initData : function(data){
             var self = this;
             self.additionalList = data;
-            var html = "", i, len = self.dataList.length;
+            var html = "", i, len = self.additionalList.length;
             for(i=0; i<len;i++){
-                var obj = self.dataList[i];
+                var obj = self.additionalList[i];
                 html += '<div class="additional-item" data-id="'+obj.attachId+'"><div class="content">'+obj.productName+'</div><div class="btnAdd">添加</div></div>'
             }
             self.ui.mainList.html(html);
@@ -60,7 +60,7 @@ define([
             if(parent){
                 var id = parent.dataset.id;
                 if(id){
-                    console.log(id);
+                    this.addToMakePlan(id);
                 }
             }
         },
@@ -71,8 +71,9 @@ define([
                 return;
             for(var i = 0; i < self.additionalList.length; i++){
                 if(self.additionalList[i].attachId == id) {
-                    
-                    return self.additionalList[i];
+                    app.triggerMethod("common:add:additional",self.additionalList[i]);
+                    app.goBack();
+                    break;
                 }
             }
         },

@@ -10,7 +10,7 @@ define([
         additional : function(id, param){
             var opt = {};
             opt.productId = id;
-            opt.list = param?JSON.stringify(utils.myDecodeURIComponent(param)):[];
+            opt.list = param?utils.myDecodeURIComponent(param).split(","):[];
             app.page.show(AdditionalView, opt);
         }
     };
