@@ -2,8 +2,9 @@ define([
     'common/base/base_view',
     'marionette',
     'text!module/browseRecords/templates/browseRecords.html',
-    'msgbox'
-], function(BaseView, mn, tpl, MsgBox) {
+    'msgbox',
+    'module/browseRecords/model/browseRecords'
+], function(BaseView, mn, tpl, MsgBox, browseRecordsModel) {
     return BaseView.extend({
         id: "browseRecordsPage",
         template : _.template(tpl),
@@ -27,22 +28,39 @@ define([
 
             app.goBack();
         },
+
+        //删除指定
         clickDeleteHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
             var self = this;
-            console.log(event.target);
+            // console.log(event.target);
             if(event.target.getAttribute("class") == "insurance-product-delete"){
-                MsgBox.ask("你认定删除该条浏览记录吗？","bbbbbbb",function(type){
+                MsgBox.ask("你确定删除该条浏览记录吗？","bbbbbbb",function(type){
                     if(type == 2) { //确定  0=取消
-                        console.log("删除了");
-                        var pparent = $(event.target).parent().parent();
-                        $(event.target).parent().slideUp(function(){
-                            $(event.target).parent().remove();
-                            if(!(pparent.children().length)){
-                                self.ui.browseRecordsContent.html('<div id="browse-records-noting">暂无浏览记录</div>');
+                        // console.log("删除了");
+                        var parent = $(event.target).parent();
+                        var  packageId = parseInt(parent.attr("data-id"));
+                        var options = {
+                            "encryptedUserData": utils.userObj.id,
+                            "packageId": packageId,
+                        };
+                        browseRecordsModel.clearBrowseHistory(options, function(data){
+                            if(data.status == "0"){
+                                var pparent = parent.parent();
+                                parent.slideUp(function(){
+                                    parent.remove();
+                                    if(!(pparent.children().length)){
+                                        self.ui.browseRecordsContent.html('<div id="browse-records-noting">暂无浏览记录</div>');
+                                    }
+                                });
+                            }else{
+                                console.log("删除失败");
                             }
+                        }, function(error){
+                            console.log("删除失败");
                         });
+                  
 
                     }
                     if(type == 0) {
@@ -56,10 +74,20 @@ define([
             event.preventDefault();
 
             var self = this;
-            MsgBox.ask("你认定删除所有浏览记录吗？","bbbbbbb",function(type){
+            MsgBox.ask("你确定删除所有浏览记录吗？","bbbbbbb",function(type){
                 if(type == 2) { //确定  0=取消
-                    console.log("删除了");
-                    self.ui.browseRecordsContent.html('<div id="browse-records-noting">暂无浏览记录</div>');
+                    var options = {
+                        "encryptedUserData": utils.userObj.id,
+                    };
+                    browseRecordsModel.clearBrowseHistory(options, function(data){
+                        if(data.status == "0"){
+                          self.ui.browseRecordsContent.html('<div id="browse-records-noting">暂无浏览记录</div>');
+                        }else{
+                            console.log("删除失败",data);
+                        }
+                    }, function(error){
+                        console.log("删除失败",error);
+                    });
                 }
                 if(type == 0) {
                     console.log("取消删除");
@@ -81,95 +109,79 @@ define([
             console.log("render!!!ww");
         },
 
+        loadData: function(){
+            var self = this;
+            var options = {
+                "encryptedUserData": utils.userObj.id
+            }
+            browseRecordsModel.getProductBrowseHistory(options, function(data){
+                if(data.status == "0"){
+                    var insuranceProductCard = data.salesPackagebrowsehistory;
+                    var equityLabelWidth = (self.$el.width() - 100)/3;
+                    var insuranceProductCardHtml = "";
+                    for(var i=0; i<insuranceProductCard.length; i++) {
+                        var bgImg = "";
+                        
+                        for(var j=0; insuranceProductCard[i].labels&&j<insuranceProductCard[i].labels.length; j++){
+                               //推荐
+                            if(insuranceProductCard[i].labels[j].listId == 1){
+                                bgImg += '<div class="life-insurance-flag life-insurance-label-1"></div>';
+                            }
+
+                            //热销
+                            if(insuranceProductCard[i].labels[j].listId == 2){
+                                bgImg += '<div class="life-insurance-flag life-insurance-label-2"></div>';
+                            }
+                        }
+                        //最新
+                        if(insuranceProductCard[i].isNew){
+                            bgImg += '<div class="life-insurance-flag life-insurance-label-3"></div>';
+                        }
+                        insuranceProductCardHtml += '<div class="insurance-product-card" data-id="'+insuranceProductCard[i].packageId+'">' + bgImg +
+                                                        '<div class="insurance-product-card-up">' +
+                                                            '<div class="insurance-product-card-name">' + insuranceProductCard[i].packageName + '</div>' +
+                                                            '<div class="insurance-product-card-look-pv">' +
+                                                                '<div class="insurance-product-card-pv">' + insuranceProductCard[i].visitNum + '</div>' +
+                                                                '<div class="insurance-product-card-eye"></div>' +
+                                                            '</div>' +
+                                                        '</div>' +
+                                                        '<div class="insurance-product-card-down">';
+
+                        var equityLabelHtml = "";
+                        for (var k = 0; insuranceProductCard[i].rights&&k<insuranceProductCard[i].rights.length; k++) {
+                            var currentEquityLabelWidth = insuranceProductCard[i].rights[k].rightName.length * 26 + 55;
+                            var n = Math.ceil(currentEquityLabelWidth / equityLabelWidth);
+                            n = n > 3 ? 3 : n;
+                            n = n * 33.3333333333333;
+                                equityLabelHtml += '<div class="equity-label" style="width: '+ n +'%;">' +
+                                                    '<div class="equity-label-select"></div>' +
+                                                    '<div class="equity-label-name">' + insuranceProductCard[i].rights[j].rightName + '</div>' +
+                                                '</div>';
+                        }
+                        insuranceProductCardHtml += equityLabelHtml;
+                        insuranceProductCardHtml +=     '</div>' +
+                                                        '<div class="insurance-product-delete"> </div>' +
+                                                    '</div>';
+                    }
+                    if(!insuranceProductCard.length){
+                        insuranceProductCardHtml = '<div id="browse-records-noting">暂无浏览记录</div>';
+                    }
+                    self.ui.browseRecordsContent.html(insuranceProductCardHtml);
+                } else{
+                    var insuranceProductCardHtml = '<div id="browse-records-noting">暂无浏览记录</div>';
+                    self.ui.browseRecordsContent.html(insuranceProductCardHtml);
+                    console("数据返回错误", data);
+                }
+            }, function(error){
+                var insuranceProductCardHtml = '<div id="browse-records-noting">暂无浏览记录</div>';
+                self.ui.browseRecordsContent.html(insuranceProductCardHtml);
+                console.log("数据查询失败", error);
+            });
+        },
+
         show: function(){
-            console.log("show!!!");
-            var insuranceProductCard = [
-                {
-                    isNew: true,
-                    insuranceProductCardName: "华夏贴心宝",
-                    insuranceProductCardPv: 13241,
-                    equityLabelName: [
-                        "被保豁免",
-                        "轻症",
-                        "身故",
-                        "疾病终末",
-                        "疾病终末",
-                        "疾病终末"
-                    ]
-                },{
-                    insuranceProductCardName: "华夏贴心宝1",
-                    insuranceProductCardPv: 13241,
-                    equityLabelName: [
-                        "被保豁免1",
-                        "轻症1",
-                        "身故1",
-                        "疾病终末1",
-                        "疾病终末1",
-                        "疾病终末1"
-                    ]
-                },{
-                    insuranceProductCardName: "华夏贴心宝2",
-                    insuranceProductCardPv: 13241,
-                    equityLabelName: [
-                        "被保豁免2",
-                        "轻症2",
-                        "身故2",
-                        "疾病终末2",
-                        "疾病终末2",
-                        "疾病终末2"
-                    ]
-                },{
-                    isNew: true,
-                    insuranceProductCardName: "华夏贴心宝3",
-                    insuranceProductCardPv: 13241,
-                    equityLabelName: [
-                        "被保豁免3",
-                        "轻症3",
-                        "身故3",
-                        "疾病终末3",
-                        "疾病终末3",
-                        "疾病终末3"
-                    ]
-                }
-            ];
-            var equityLabelWidth = (this.$el.width() - 100)/3;
-            var insuranceProductCardHtml = "";
-            for(var i=0; i<insuranceProductCard.length; i++) {
-                var bgImg = "";
-                if(insuranceProductCard[i].isNew){
-                    bgImg = 'style="background-image: url(./images/new.png)"';
-                }
-                insuranceProductCardHtml += '<div class="insurance-product-card" '+ bgImg +'>' +
-                                                '<div class="insurance-product-card-up">' +
-                                                    '<div class="insurance-product-card-name">' + insuranceProductCard[i].insuranceProductCardName + '</div>' +
-                                                    '<div class="insurance-product-card-look-pv">' +
-                                                        '<div class="insurance-product-card-pv">' + insuranceProductCard[i].insuranceProductCardPv + '</div>' +
-                                                        '<div class="insurance-product-card-eye"></div>' +
-                                                    '</div>' +
-                                                '</div>' +
-                                                '<div class="insurance-product-card-down">';
-
-                var equityLabelHtml = "";
-                for (var j = 0; j < insuranceProductCard[i].equityLabelName.length; j++) {
-                    var currentEquityLabelWidth = insuranceProductCard[i].equityLabelName[j].length * 26 + 55;
-                    var n = Math.ceil(currentEquityLabelWidth / equityLabelWidth);
-                    n = n > 3 ? 3 : n;
-                    n = n * 33.3333333333333;
-                        equityLabelHtml += '<div class="equity-label" style="width: '+ n +'%;">' +
-                                            '<div class="equity-label-select"></div>' +
-                                            '<div class="equity-label-name">' + insuranceProductCard[i].equityLabelName[j] + '</div>' +
-                                        '</div>';
-                }
-                insuranceProductCardHtml += equityLabelHtml;
-                insuranceProductCardHtml +=     '</div>' +
-                                                '<div class="insurance-product-delete"> </div>' +
-                                            '</div>';
-            }
-            if(!insuranceProductCard.length){
-                insuranceProductCardHtml = '<div id="browse-records-noting">暂无浏览记录</div>';
-            }
-            this.ui.browseRecordsContent.html(insuranceProductCardHtml);
-
+            var self = this;
+            self.loadData();
         },
 
         pageIn: function(){

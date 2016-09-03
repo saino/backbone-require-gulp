@@ -289,7 +289,6 @@ define([
                             }else{
                                 lifeInsuranceLabelMessageHtml += "至";
                             }
-// periodValue
                             if(salesPackages[i].coveragePeriods[v].periodType == 1){
                                 lifeInsuranceLabelMessageHtml += "终身";
                             }

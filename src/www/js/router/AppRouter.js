@@ -24,7 +24,7 @@ define([
             "in/clause/:id":"clause",   //条款
             "in/companyIntro/:id":"companyIntro",   //寿险 公司简介
             "in/search":"search", //产品搜索
-            'inx`/advanceQuery':"advanceQuery",//产品高级筛选
+            'in/advanceQuery':"advanceQuery",//产品高级筛选
             "home/browseRecords": "browseRecords", //浏览记录
             "home/lifeInsurance": "lifeInsurance",       //寿险查询结果列表
             "home/detailsDescription/:detailsDescriptionId/:organId": "detailsDescription",   //详情说明

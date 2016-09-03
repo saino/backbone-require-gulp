@@ -13,6 +13,8 @@ define([
         id:"product-details-container",
         currentUserId : "",     //当前用户ID
         productId : "",         //售卖产品ID
+        // forever: true,
+        // forever: true,
         ui:{
             topCon : ".top-title",
             backBtn : ".top-title-left", //点击返回
@@ -64,7 +66,7 @@ define([
             }, 0)
 
             self.productId = self.getOption("productId");   //获取产品ID
-            console.log(self.productId);
+            // console.log(self.productId);
             //根据用户ID 和保险售卖ID查询数据
             self._initView = self.initView.bind(self);
             //TODO 需要真实的接口和数据
@@ -248,7 +250,7 @@ define([
             var self = this;
             var dutyTemp = '<div class="insure-duty-item">'+
                     '<div class="duty-item-title">'+
-                    '<span>{liabName}</span>'+
+                    '<span class="duty-item-title-span">{liabName}</span>'+
                     '<span class="pull-icon-small"></span>'+
                     '</div>'+
                     '<div class="duty-item-content">{liabDesc}</div>'+
@@ -272,7 +274,7 @@ define([
         initPlanView : function (productList){
             var self = this;
             var planTemp = '<div class="insure-plan-item" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
-                '<span  data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
+                '<span class="duty-item-title-span" data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
                 '<span class="pull-icon-next" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
             '</div>';
             var planStr = "";
@@ -290,7 +292,7 @@ define([
         initSubjoinView : function (attachProductList){
             var self = this;
             var subjoinTemp = '<div class="insure-subjoin-item" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
-                '<span data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
+                '<span class="duty-item-title-span" data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
                 '<span class="pull-icon-next" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
                 '</div>';
             var subjoinStr = "";
@@ -414,7 +416,13 @@ define([
             // var dataType = $target.attr("data-type");
             // if(dataType){
                 // MsgBox.alert("计划组合列表");
-                console.log(self.productId, $target.attr("data-productid"), $target.attr("data-salesproductid"));
+                var packageId = self.productId;
+                var productId = $target.attr("data-productid");
+                var salesProductId = $target.attr("data-salesproductid");
+                if(packageId&&productId&&salesProductId){
+                    app.navigate("in/attachDetails/"+packageId+"/"+productId+"/"+salesProductId, {replace : true, trigger : true}); 
+                }
+                // console.log(self.productId, $target.attr("data-productid"), $target.attr("data-salesproductid"));
                 // app.navigate("in/attachDetails/9100001/1004001/100001", {replace : true, trigger : true})
             // }
         },
@@ -442,7 +450,13 @@ define([
             // var dataType = $target.attr("data-type");
             // if(dataType){
                 //MsgBox.alert("推荐附加险列表");
-                console.log(self.productId, $target.attr("data-productid"), $target.attr("data-salesproductid"));
+                var packageId = self.productId;
+                var productId = $target.attr("data-productid");
+                var salesProductId = $target.attr("data-salesproductid");
+                if(packageId&&productId&&salesProductId){
+                    app.navigate("in/attachDetails/"+packageId+"/"+productId+"/"+salesProductId, {replace : true, trigger : true}); 
+                }
+                //console.log(self.productId, $target.attr("data-productid"), $target.attr("data-salesproductid"));
                 // app.navigate("#in/attachDetails/"+dataType, {replace : true, trigger : true});
             // }
         },
@@ -459,8 +473,8 @@ define([
         },
         close:function(){
             var self = this;
-            self._initView = null;
-            self.remove();
+            // self._initView = null;
+            // self.remove();
             if(MsgBox && MsgBox.isShow()) {
                 MsgBox.clear();
             }
