@@ -24,6 +24,7 @@ define([
         id:"attach-details-container",
         currentUserId : "",     //当前用户ID
         productId : "",         //售卖产品ID
+        organId: "",        //投核保ID
         ui:{
             topCon : ".top-title",
             backBtn : ".top-title-left", //点击返回
@@ -60,13 +61,17 @@ define([
 
             //TODO 需要真实的接口和数据
             attachDetailsModel.getRiderInfo(self.packageId, self.productId, self.salesProductId, function(data){
-                self.initData(data);
+                console.log(data);
+                if(data.status == "0"){
+                    self.initData(data);
+                }
             }, function(err){
                 console.log(err);
             });
         },
         initData : function(data){
             var self = this;
+            self.organId = data.organId;
             self.ui.attachDetailsTitle.html(data.productName);
             self.ui.bxzrTxt.html(data.safeDuty);
             self.ui.bzxqTxt.html(data.diseaseDetails);
@@ -105,7 +110,7 @@ define([
             if(dataType){       //next 跳转
                 switch(dataType){
                     case "rule":
-                        app.navigate("home/detailsDescription/"+self.packageId+"/:organId", {replace: true,trigger: true})
+                        app.navigate("home/detailsDescription/"+self.packageId+"/" + self.organId, {replace: true,trigger: true})
                         break;
                     case "tk":
                         app.navigate("in/clause/" + self.productId, {replace: true,trigger: true});
