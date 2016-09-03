@@ -9,8 +9,8 @@ define([
     return {
         additional : function(id, param){
             var opt = {};
-            opt.planId = id;
-            opt.list = JSON.stringify(utils.myDecodeURIComponent(param));
+            opt.productId = id;
+            opt.list = param?JSON.stringify(utils.myDecodeURIComponent(param)):[];
             app.page.show(AdditionalView, opt);
         }
     };

@@ -10,6 +10,8 @@ define([
     var AdditionalView = BaseView.extend({
         template: _.template(AdditionalTpl),
         id:"additional-container",
+        currProductId:0,        //当前产品计划书ID
+        additionalList:[], //附加险列表
         ui:{
             "topCon":"#top-title",
             "btnBack":"#top-title-left", //点击返回
@@ -27,10 +29,12 @@ define([
             if(device.ios()){
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
             }
-
-            self.planId = self.getOption("planId");
-            self.addedList = self.getOption("list") || [];
-            additionalModel.getRiders(self.planId, self.addedList, function(data){
+            //重置列表
+            self.additionalList = [];
+            self.currProductId = 0;
+            self.currProductId = self.getOption("productId");
+            self.addedList = self.getOption("list") || []
+            additionalModel.getRiders(self.currProductId,self.addedList, function(data){
                 self.initData(data);
             }, function(){
 
@@ -39,11 +43,11 @@ define([
 
         initData : function(data){
             var self = this;
-            self.dataList = data.list;
+            self.additionalList = data;
             var html = "", i, len = self.dataList.length;
             for(i=0; i<len;i++){
                 var obj = self.dataList[i];
-                html += '<div class="additional-item" data-id="'+obj.id+'"><div class="content">'+obj.productName+'</div><div class="btnAdd">添加</div></div>'
+                html += '<div class="additional-item" data-id="'+obj.attachId+'"><div class="content">'+obj.productName+'</div><div class="btnAdd">添加</div></div>'
             }
             self.ui.mainList.html(html);
         },
@@ -60,7 +64,18 @@ define([
                 }
             }
         },
-
+        //根据附加险ID 将对象加到制作计划里
+        addToMakePlan:function(id){
+            var self = this;
+            if(!self.additionalList || self.additionalList.length <= 0)
+                return;
+            for(var i = 0; i < self.additionalList.length; i++){
+                if(self.additionalList[i].attachId == id) {
+                    
+                    return self.additionalList[i];
+                }
+            }
+        },
         pageIn:function(){},
         //点击返回
         _clickBackHandler:function(e){

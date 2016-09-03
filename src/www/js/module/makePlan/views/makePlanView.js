@@ -3,16 +3,20 @@ define([
     'common/base/base_view',
     'text!module/makePlan/templates/makePlan.html',
     'text!module/makePlan/templates/unitFlag1.html',
+    'text!module/makePlan/templates/unitFlag2.html',
     'text!module/makePlan/templates/additionalUnitFlag1.html',
+    'text!module/makePlan/templates/calculationResult.html',
     'module/plan/model/planModel',
     'marionette',
     'msgbox'
-],function(BaseView, tpl,unitFlag1Tpl,additionalUnitFlag1Tpl,planModel, mn,MsgBox) {
+],function(BaseView, tpl,unitFlag1Tpl,unitFlag2Tpl,additionalUnitFlag1Tpl ,calcResultTpl,planModel, mn,MsgBox) {
     var makePlanView =  BaseView.extend({
         id : "make-plan-container",
         template : _.template(tpl),
         unitFlag1Tpl: _.template(unitFlag1Tpl),
+        unitFlag2Tpl: _.template(unitFlag2Tpl),
         additionalUnitFlag1Tpl: _.template(additionalUnitFlag1Tpl),
+        calcResultTpl: _.template(calcResultTpl),
         _mouseLock : false,
         _isShow : false,
         forever:true,
@@ -35,6 +39,7 @@ define([
         ageRangeOfPolicyHolderHtml:"",//投保人年龄范围html
         paymentPeriodArr:["无关","趸交","按年限交","交至某确定年龄","终生交费"],//交费期限 下拉选项名称数组
         guaranteePeriodArr:["无关","保终身","年","保至某确定年龄","按月保","天"],//保障期限 下拉选项名称数组
+        totalFirstYearPrem:0,       //首年总保费
         ui : {
             topTitleLeft : "#top-title-left",
             topCon : "#top-title",
@@ -49,7 +54,11 @@ define([
             additionalPlanInput:"#make-plan-additional", //附加险输入区域
             incrementCon:"#make-plan-increment",//增值服务
             ideaCon:"#make-plan-idea",              //保险理念
-            planInfoCon:"#make-plane-title" //计划书名称及所属公司
+            planInfoCon:"#make-plane-title", //计划书名称及所属公司
+            incrementCheck:"#make-plan-comment", //增值服务勾选框
+            commentTxt:"#comment", //留言框
+            totalFirstYearPremium:"#totalFirstYearPremium", //总保费
+            calcResultCon:".first-year-list"        //计算结果
         },
         //事件添加
         events : {
@@ -225,7 +234,7 @@ define([
                             '<div class="property-radio-item" data-val="F"><span class="circle"><span class="circle-ck"></span></span>女</div></div></div>'),
        dutyItemTpl: _.template('<div class="duty-item"><div class="duty-item-left" data-liabId="<%=liabId %>">' +
                             '<div class="duty-item-check"></div><div class="duty-item-name"><%=liabName %></div></div>' +
-                            '<input class="duty-item-input" placeholder="请输入保额" type="text"/></div>'),
+                            '<input class="duty-item-input" placeholder="请输入保额" type="number"/></div>'),
        //根据险种拼接Html-主险
        getMainPlanInputHtml:function(plan){
            var tempHtml = "";
@@ -264,7 +273,7 @@ define([
                }
            }
 //           if(plan.unitFlag == 0) {//暂时只按保额 guyy TODO
-               tempHtml = self.unitFlag1Tpl({productId:plan.salesProductId,productName:plan.salesProductName,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
+               tempHtml = self.unitFlag2Tpl({productId:plan.salesProductId,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
 //           }
            return tempHtml;
        },
@@ -306,7 +315,7 @@ define([
                 }
             }
 //            if(plan.unitFlag == 0) {//暂时只按保额 guyy TODO
-                tempHtml = self.additionalUnitFlag1Tpl({additionalName:plan.salesProductName,productId:plan.salesProductId,productName:plan.salesProductName,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
+                tempHtml = self.additionalUnitFlag1Tpl({additionalName:plan.salesProductName,productId:plan.salesProductId,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
 //            }
             return tempHtml;
         },
@@ -332,6 +341,25 @@ define([
                     tempHtml += '<div class="idea-item" data-id="' + ideaArr[i].spiritId + '"><span class="circle"><span class="circle-ck"></span></span>' + ideaArr[i].spiritName + '</div>';
                 }
             }
+            return tempHtml;
+        },
+        //获取计算结果html
+        getCalcResultHtml:function(){
+            var tempHtml = "";
+            var self = this;
+            //根据销售方式 定标题
+            var saName = "保险金额";
+            console.log(self.coveragePrems);
+            var headHtml = ' <tr><th width="20%">险种</th><th width="20%">'+saName+'</th><th width="20%">保障期限</th>' +
+                '<th width="20%">交费期限</th><th width="20%">首保保费</th></tr>';
+            var tdHtml = "";
+            for(var i = 0; i < self.coveragePrems.length; i++){
+                tdHtml += '<tr><td>'+self.coveragePrems[i].productName+'</td> <td>'+self.coveragePrems[i].premium+'</td> <td>'+
+                    self.paymentPeriodArr[parseInt(self.coveragePrems[i].chargePeriod.periodType)]+'</td> <td>'+
+                    self.guaranteePeriodArr[parseInt(self.coveragePrems[i].coveragePeriod.periodType)]+'</td> <td>'+
+                    self.coveragePrems[i].firstYearPrem+'</td> </tr>';
+            }
+            tempHtml = self.calcResultTpl({headHtml:headHtml, tdHtml:tdHtml});
             return tempHtml;
         },
         //设置被保人相关属性 否存在第二被保人、是否与被保人吸烟有关、是否与被保人职业有关、是否与被保人社保有关
@@ -465,10 +493,9 @@ define([
             var responseData = {};
             var plan = {};
             responseData.encryptedUserData = utils.userObj.id;
-            responseData.packageId = self.currProductId;//产品计划ID
+            plan.packageId = self.currProductId;//产品计划ID
             var insureds = [];//被保人数组
             //第一被保人
-            debugger;
             var insured = {};
             insured.id = 0;//自己填写的被保人信息 无ID
             insured.name = self.ui.firstInsured.find(".insured-name").val();
@@ -478,29 +505,126 @@ define([
             insured.socialInsuranceIndi = self.ui.firstInsured.find(".insured-social").data("val");//社保
             insured.smoking = self.ui.firstInsured.find(".insured-smoking").data("val");//吸烟
             insureds.push(insured);
-            //第二被保人
-            var secInsured = {};
-            secInsured.id = 0;
-            secInsured.name = self.ui.secondInsured.find(".insured-name").val();
-            secInsured.age = self.ui.secondInsured.find(".insured-old").val();
-            secInsured.gender = self.ui.secondInsured.find(".insured-sex").data("val");
-            secInsured.jobCateId = self.ui.secondInsured.find(".insured-job").val();//职位
-            secInsured.socialInsuranceIndi = self.ui.secondInsured.find(".insured-social").data("val");//社保
-            secInsured.smoking = self.ui.secondInsured.find(".insured-smoking").data("val");//吸烟
-            insureds.push(secInsured);
-            responseData.insureds = insureds;
+            //是否存在第二被保人
+            if(self.ui.secondInsured.find(".insured-name").size() > 0) {
+                //第二被保人
+                var secInsured = {};
+                secInsured.id = 0;
+                secInsured.name = self.ui.secondInsured.find(".insured-name").val();
+                secInsured.age = self.ui.secondInsured.find(".insured-old").val();
+                secInsured.gender = self.ui.secondInsured.find(".insured-sex").data("val");
+                secInsured.jobCateId = self.ui.secondInsured.find(".insured-job").val();//职位
+                secInsured.socialInsuranceIndi = self.ui.secondInsured.find(".insured-social").data("val");//社保
+                secInsured.smoking = self.ui.secondInsured.find(".insured-smoking").data("val");//吸烟
+                insureds.push(secInsured);
+            }
+            plan.insureds = insureds;
             //投保人
             var proposer = {};
             proposer.name = self.ui.sendName.val();
             proposer.age = self.ui.policyHolder.find(".insured-old").val();
             proposer.gender = self.ui.policyHolder.find(".insured-sex").data("val");
-            responseData.proposer = proposer;
+            plan.proposer = proposer;
+
             //主险数据
             var mainCoverages = [];
-            var mainCoverage = {};
-            mainCoverages.push(mainCoverage);
-            responseData.mainCoverages = mainCoverages;
-
+            self.ui.makePlanInput.find(".main-insured-item").each(function(index){
+                var mainCoverage = {};
+                mainCoverage.productId = $(this).data("productid");
+                mainCoverage.unitFlag = $(this).data("unitflag");
+                mainCoverage.sa = $(this).find(".insured-sa").val();
+                if(mainCoverage.sa && mainCoverage.sa.trim().length <= 0){
+                    MsgBox.alert("请输入保额","");
+                    return false;
+                }
+                mainCoverage.premium = $(this).find(".insured-premium").val();
+                if(mainCoverage.premium && mainCoverage.premium.trim().length <= 0){
+                    MsgBox.alert("请输入保费","");
+                    return false;
+                }
+                mainCoverage.unit = $(this).find(".insured-unit").val();
+                if(mainCoverage.unit && mainCoverage.unit.trim().length <= 0){
+                    MsgBox.alert("请输入份数","");
+                    return false;
+                }
+                mainCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
+                //交费期限
+                var chargePeriod = {};
+                var type = $(this).find(".payment-period").find("option:selected").text();
+                type = self.paymentPeriodArr.indexOf(type);
+                chargePeriod.periodType = type
+                chargePeriod.periodValue = parseInt($(this).find(".payment-period").find("option:selected").val());
+                mainCoverage.chargePeriod = chargePeriod;
+                //保障期限
+                var  coveragePeriod = {};
+                type = $(this).find(".guarantee-period").find("option:selected").text();
+                type = self.guaranteePeriodArr.indexOf(type);
+                coveragePeriod.periodType = type
+                coveragePeriod.periodValue = parseInt($(this).find(".guarantee-period").find("option:selected").val());
+                mainCoverage.coveragePeriod = coveragePeriod;
+                //责任数组
+                var planLiabilityList = [];
+                $(this).find(".duty-item").each(function(index){
+                    var planLiability = {};
+                    planLiability.unitFlag = mainCoverage.unitFlag;
+                    if($(this).find(".duty-item-left-ck").size() > 0){
+                        planLiability.liabId = $(this).find(".duty-item-left-ck").data("liabid");
+                        planLiability.value = $(this).find(".duty-item-input").val();
+                        planLiabilityList.push(planLiability);
+                    }
+                });
+                mainCoverage.planLiabilityList = planLiabilityList;
+                mainCoverages.push(mainCoverage);
+            });
+            plan.mainCoverages = mainCoverages;
+            //附加险数据
+            var riderCoverages = [];
+            self.ui.additionalPlanInput.find(".additional-item").each(function(index){
+                var riderCoverage = {};
+                riderCoverage.productId = $(this).data("productid");
+                riderCoverage.unitFlag = $(this).data("unitflag");
+                riderCoverage.sa = $(this).find(".insured-sa").val();
+                riderCoverage.premium = $(this).find(".insured-premium").val();
+                riderCoverage.unit = $(this).find(".insured-unit").val();
+                riderCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
+                //交费期限
+                var chargePeriod = {};
+                var type = $(this).find(".payment-period").find("option:selected").text();
+                type = self.paymentPeriodArr.indexOf(type);
+                chargePeriod.periodType = type
+                chargePeriod.periodValue = parseInt($(this).find(".payment-period").find("option:selected").val());
+                riderCoverage.chargePeriod = chargePeriod;
+                //保障期限
+                var coveragePeriod = {};
+                type = $(this).find(".guarantee-period").find("option:selected").text();
+                type = self.guaranteePeriodArr.indexOf(type);
+                chargePeriod.periodType = type
+                chargePeriod.periodValue = parseInt($(this).find(".guarantee-period").find("option:selected").val());
+                riderCoverage.coveragePeriod = coveragePeriod;
+                riderCoverages.push(riderCoverage);
+            });
+            plan.riderCoverages = riderCoverages;
+            //增值服务在计划书是否显示
+            plan.showValueAdded = "N";
+            if(self.ui.incrementCon.find(".increment-check").hasClass("increment-check-ck")){
+                plan.showValueAdded = "Y";
+            }
+            //增值服务列表
+            var valueAddedIds = [];
+            self.ui.incrementCon.find(".accordion-list .increment-item").each(function(){
+                valueAddedIds.push($(this).data("id"));
+            });
+            plan.valueAddedIds = valueAddedIds;
+            //保险理念ID
+            var insuranceSpirit = 0;
+            insuranceSpirit = self.ui.ideaCon.find(".accordion-list .idea-item-ck").data("id");
+            plan.insuranceSpirit = insuranceSpirit;
+            //留言
+            plan.showAdvice = "N";
+            plan.advice = self.ui.commentTxt.val();
+            if(self.ui.incrementCheck.find(".increment-check").hasClass("increment-check-ck")){
+                plan.showAdvice = "Y";
+            }
             responseData.plan = plan;
             return responseData;
         },
@@ -518,7 +642,17 @@ define([
             e.preventDefault();
             var self = this;
             var responseData = self.getPlanByInput();
-
+            planModel.calcFirstYearPremium(responseData,function(data){
+                self.totalFirstYearPrem = data.totalFirstYearPrem;
+                self.coveragePrems = data.coveragePrems;
+                self.ui.totalFirstYearPremium.html(self.totalFirstYearPrem+"元");
+                var resultHtml = self.getCalcResultHtml();
+                self.ui.calcResultCon.remove(".first-year-table");
+                self.ui.calcResultCon.prepend($(resultHtml));
+                self.isCalcOver = true;
+            },function(err){
+                MsgBox.alert(err);
+            });
         },
         //点击生成计划书
         clickMakePlanHandler:function(e){
@@ -529,7 +663,12 @@ define([
                 MsgBox.alert("请先计算保费");
                 return;
             }
-
+            var responseData = self.getPlanByInput();
+            planModel.savePlan(responseData,function(data){
+                MsgBox.alert("计划生成成功"+data.quotationId);
+            },function(err){
+                MsgBox.alert(err);
+            });
         },
         //点击添加附加险 指向附加险列表
         addAdditionalPlanHandler:function(e){
@@ -537,9 +676,12 @@ define([
             e.preventDefault();
             var self = this;
             var exitsAdditionalIds = self.additionalIdArr.join(",");
-            if(exitsAdditionalIds != "")
+            if(exitsAdditionalIds != "") {
                 exitsAdditionalIds = utils.myEncodeURIComponent(exitsAdditionalIds);
-            app.navigate("#in/additional/"+self.currProductId+"/"+exitsAdditionalIds,{replace:true,trigger:true});
+                app.navigate("#in/additional/"+self.currProductId+"/"+exitsAdditionalIds,{replace:true,trigger:true});
+            }else{
+                app.navigate("#in/additional/"+self.currProductId,{replace:true,trigger:true});
+            }
         },
         //点击删除附加险
         delAdditionPlanHandler:function(e){

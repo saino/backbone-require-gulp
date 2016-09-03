@@ -74,13 +74,51 @@ define([
      * @param cb_err
      */
     PlanModel.prototype.calcFirstYearPremium = function(obj,cb_ok,cb_err){
-
+        var options = {
+            url:"/ls/services/dt/planService/calcPremium",
+            data:JSON.stringify(obj),
+            type:"POST",
+            dataType:"json"
+        };
+        options.success = function(data){
+            if(data && data.status == 0){
+                if(data.status == 0)
+                    cb_ok && cb_ok(data);
+                else{
+                    cb_err && cb_err(data.errorMessages);
+                }
+            }else{
+                var errMsg = data.errorMessages ? data.errorMessages:"数据读取失败";
+                cb_err && cb_err(errMsg);
+            }
+        };
+        options.error = cb_err;
+        utils.requestData(options);
     }
     /**
      * 保险计划书
      */
-    PlanModel.prototype.savePlan = function(options){
-
+    PlanModel.prototype.savePlan = function(obj,cb_ok,cb_err){
+        var options = {
+            url:"/ls/services/dt/planService/savePlan",
+            data:JSON.stringify(obj),
+            type:"POST",
+            dataType:"json"
+        };
+        options.success = function(data){
+            if(data && data.status == 0){
+                if(data.status == 0)
+                    cb_ok && cb_ok(data);
+                else{
+                    cb_err && cb_err(data.errorMessages);
+                }
+            }else{
+                var errMsg = data.errorMessages ? data.errorMessages:"生成失败";
+                cb_err && cb_err(errMsg);
+            }
+        };
+        options.error = cb_err;
+        utils.requestData(options);
     }
     var planModel = new PlanModel();
     return planModel;

@@ -12,15 +12,17 @@ define([], function () {
 
     p.getRiders = function(packageId, addedList, cb_ok, cb_err){
         var opt = {};
-        opt.url = "/ls/services/dt/planService/getRiderInfo";
+        opt.url = "/ls/services/dt/planService/getRiders";
         opt.type = "POST";
         var data = {};
         data.packageId = packageId;
-        data.addedRiderIds = addedList;
-        opt.data = data;
+        if(addedList.length>0) {
+            data.addedRiderIds = addedList;
+        }
+        opt.data = data;//JSON.stringify(data);
         opt.success = function(result){
             if(result.status == 0) {
-                if(cb_ok) cb_ok(result);
+                if(cb_ok) cb_ok(result.ridersList);
             }else {
                 if(cb_err) cb_err(result.errorMessages);
             }
