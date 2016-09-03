@@ -22,6 +22,54 @@
     utils.companyId = "all";
     utils.advancedCompanyId = [];
 
+    //当前增值服务详情对象
+    utils.currValueAdded = null;
+    /**
+     * 交费期限、保障期限
+     * @param type  1交费期限   2保障期限
+     * @param periodType 1趸交   2交value年 3交到value岁  4交终身
+     * @param value  1保终身   2保value年  3保到value岁  4保value个月  5保value天
+     * add by guYY
+     */
+    utils.getPeriodText = function(type,periodType,value){
+        var str = "";
+        periodType = parseInt(periodType);
+        if(type == 1){
+            switch (periodType){
+                case 1:
+                    str = "趸交";
+                    break;
+                case 2:
+                    str = "交"+value+"年";
+                    break;
+                case 3:
+                    str = "交到"+value+"岁";
+                    break;
+                case 4:
+                    str = "交终身";
+                    break;
+            }
+        }else if(type == 2){
+            switch (periodType){
+                case 1:
+                    str = "保终身";
+                    break;
+                case 2:
+                    str = "保"+value+"年";
+                    break;
+                case 3:
+                    str = "保到"+value+"岁";
+                    break;
+                case 4:
+                    str = "保"+value+"个月";
+                    break;
+                case 5:
+                    str = "保"+value+"天";
+                    break;
+            }
+        }
+        return str;
+    }
     //寿险业查询条件
     utils.lifeInsuranceOptions = { 
             "encryptedUserData": "QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0=",

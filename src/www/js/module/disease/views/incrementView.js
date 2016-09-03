@@ -10,6 +10,7 @@ define([
     var IncrementView = BaseView.extend({
         template: _.template(DiseaseTpl),
         id:"disease-container",
+        forever:false,
         ui:{
             "topCon":"#top-title",
             "diseaseContent":"#disease-main",
@@ -24,17 +25,6 @@ define([
             this.model = new detailModel();
             this.model.on("change",this.render,this);
             this.model.setTitle("增值服务详情");
-            this.model.setDetail("<h1>增值服务介绍</h1>"+
-                                "<p>VIP增值服务内容</p>"+
-                                "<p>3.脑中风后遗症</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植术</p>"+
-                                "<p>4.重大器官移植术和造血干细胞移植.重大器官移植术和造血干细胞移植.重大器官移植术和造血干细胞移植术</p>");
             this.model.setHasShare(true);
         },
         render: function() {
@@ -42,13 +32,16 @@ define([
             return this;
         },
         onRender:function(){
-            var self = this;
             // if(device.ios()){
             //     self.ui.topCon.css("padding-top",utils.toolHeight+"px");
             //     self.ui.diseaseContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
             // }
         },
-        pageIn:function(){},
+        pageIn:function(){
+            if(utils.currValueAdded != null) {
+                this.model.setDetail(utils.currValueAdded.valueAddedDesc);
+            }
+        },
         //点击返回
         _clickBackHandler:function(e){
             e.stopPropagation();

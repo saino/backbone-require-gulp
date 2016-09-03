@@ -37,8 +37,6 @@ define([
         ageRangeOfLifeAssuredHtml:"",//被保人年龄范围html
         ageRangeOfPolicyHolder:null, //投保人年龄范围对象
         ageRangeOfPolicyHolderHtml:"",//投保人年龄范围html
-        paymentPeriodArr:["无关","趸交","按年限交","交至某确定年龄","终生交费"],//交费期限 下拉选项名称数组
-        guaranteePeriodArr:["无关","保终身","年","保至某确定年龄","按月保","天"],//保障期限 下拉选项名称数组
         totalFirstYearPrem:0,       //首年总保费
         ui : {
             topTitleLeft : "#top-title-left",
@@ -249,22 +247,16 @@ define([
            if(plan.prdtTermChargeList && plan.prdtTermChargeList.length > 0){
                for(var i = 0; i < plan.prdtTermChargeList.length; i++)
                {
-                   var typeName = self.paymentPeriodArr[0];
-                   if(parseInt(plan.prdtTermChargeList[i].periodType) >=0 && parseInt(plan.prdtTermChargeList[i].periodType) < self.paymentPeriodArr.length)
-                   {
-                       typeName = self.paymentPeriodArr[parseInt(plan.prdtTermChargeList[i].periodType)];
-                   }
-                   paymentPeriodHtml += '<option value="'+plan.prdtTermChargeList[i].periodValue+'">'+typeName+'</option>';
+                   var typeName = "";
+                   typeName = utils.getPeriodText(1,plan.prdtTermChargeList[i].periodType,plan.prdtTermChargeList[i].periodValue);
+                   paymentPeriodHtml += '<option data-type="'+plan.prdtTermChargeList[i].periodType+'" value="'+plan.prdtTermChargeList[i].periodValue+'">'+typeName+'</option>';
                }
            }
            if(plan.prdtTermCoverageList && plan.prdtTermCoverageList.length > 0){
                for(var j = 0; j < plan.prdtTermCoverageList.length; j++){
-                   var typeName = self.guaranteePeriodArr[0];
-                   if(parseInt(plan.prdtTermCoverageList[j].periodType) >=0 && parseInt(plan.prdtTermCoverageList[j].periodType) < self.guaranteePeriodArr.length)
-                   {
-                       typeName = self.guaranteePeriodArr[parseInt(plan.prdtTermCoverageList[j].periodType)];
-                   }
-                   guaranteePeriodHtml += '<option value="'+plan.prdtTermCoverageList[j].periodValue+'">'+typeName+'</option>';
+                   var typeName = "";
+                   typeName = utils.getPeriodText(2,plan.prdtTermCoverageList[j].periodType,plan.prdtTermCoverageList[j].periodValue);
+                   guaranteePeriodHtml += '<option data-type="'+plan.prdtTermCoverageList[j].periodType+'" value="'+plan.prdtTermCoverageList[j].periodValue+'">'+typeName+'</option>';
                }
            }
            if(plan.productLiabilityList && plan.productLiabilityList.length > 0){
@@ -293,22 +285,16 @@ define([
             if(plan.prdtTermChargeList && plan.prdtTermChargeList.length > 0){
                 for(var i = 0; i < plan.prdtTermChargeList.length;)
                 {
-                    var typeName = self.paymentPeriodArr[0];
-                    if(parseInt(plan.prdtTermChargeList[i].periodType) >=0 && parseInt(plan.prdtTermChargeList[i].periodType) < self.paymentPeriodArr.length)
-                    {
-                        typeName = self.paymentPeriodArr[parseInt(plan.prdtTermChargeList[i].periodType)];
-                    }
-                    paymentPeriodHtml += '<option value="'+plan.prdtTermChargeList[i].periodValue+'">'+typeName+'</option>';
+                    var typeName = "";
+                    typeName = utils.getPeriodText(1,plan.prdtTermChargeList[i].periodType,plan.prdtTermChargeList[i].periodValue);
+                    paymentPeriodHtml += '<option data-type="'+plan.prdtTermChargeList[i].periodType+'" value="'+plan.prdtTermChargeList[i].periodValue+'">'+typeName+'</option>';
                 }
             }
             if(plan.prdtTermCoverageList && plan.prdtTermCoverageList.length > 0){
                 for(var j = 0; j < plan.prdtTermCoverageList.length; j++){
-                    var typeName = self.guaranteePeriodArr[0];
-                    if(parseInt(plan.guaranteePeriodArr[i].periodType) >=0 && parseInt(plan.guaranteePeriodArr[i].periodType) < self.guaranteePeriodArr.length)
-                    {
-                        typeName = self.guaranteePeriodArr[parseInt(plan.guaranteePeriodArr[i].periodType)];
-                    }
-                    guaranteePeriodHtml += '<option value="'+plan.prdtTermCoverageList[i].periodValue+'">'+typeName+'</option>';
+                    var typeName = "";
+                    typeName = utils.getPeriodText(2,plan.prdtTermCoverageList[j].periodType,plan.prdtTermCoverageList[j].periodValue);
+                    guaranteePeriodHtml += '<option data-type="'+plan.prdtTermCoverageList[j].periodType+'" value="'+plan.prdtTermCoverageList[j].periodValue+'">'+typeName+'</option>';
                 }
             }
             if(plan.productLiabilityList && plan.productLiabilityList.length > 0){
@@ -357,8 +343,8 @@ define([
             var tdHtml = "";
             for(var i = 0; i < self.coveragePrems.length; i++){
                 tdHtml += '<tr><td>'+self.coveragePrems[i].productName+'</td> <td>'+self.coveragePrems[i].premium+'</td> <td>'+
-                    self.paymentPeriodArr[parseInt(self.coveragePrems[i].chargePeriod.periodType)]+'</td> <td>'+
-                    self.guaranteePeriodArr[parseInt(self.coveragePrems[i].coveragePeriod.periodType)]+'</td> <td>'+
+                    utils.getPeriodText(2,self.coveragePrems[i].coveragePeriod.periodType,self.coveragePrems[i].coveragePeriod.periodValue)+'</td> <td>'+
+                    utils.getPeriodText(1,self.coveragePrems[i].chargePeriod.periodType,self.coveragePrems[i].chargePeriod.periodValue)+'</td> <td>'+
                     self.coveragePrems[i].firstYearPrem+'</td> </tr>';
             }
             tempHtml = self.calcResultTpl({headHtml:headHtml, tdHtml:tdHtml});
@@ -437,7 +423,8 @@ define([
         clickRadioHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-            var target = $(event.currentTarget);
+            var target = $(event.target);
+            if(!target.hasClass("property-radio-item"))return;
             if(target.hasClass("property-radio-item-ck")){
                 return;
             }
@@ -562,15 +549,13 @@ define([
                 mainCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
                 //交费期限
                 var chargePeriod = {};
-                var type = $(this).find(".payment-period").find("option:selected").text();
-                type = self.paymentPeriodArr.indexOf(type);
-                chargePeriod.periodType = type
+                var type = $(this).find(".payment-period").find("option:selected").data("type");
+                chargePeriod.periodType = type;
                 chargePeriod.periodValue = parseInt($(this).find(".payment-period").find("option:selected").val());
                 mainCoverage.chargePeriod = chargePeriod;
                 //保障期限
                 var  coveragePeriod = {};
-                type = $(this).find(".guarantee-period").find("option:selected").text();
-                type = self.guaranteePeriodArr.indexOf(type);
+                type = $(this).find(".guarantee-period").find("option:selected").data("type");
                 coveragePeriod.periodType = type
                 coveragePeriod.periodValue = parseInt($(this).find(".guarantee-period").find("option:selected").val());
                 mainCoverage.coveragePeriod = coveragePeriod;
@@ -586,6 +571,7 @@ define([
                     }
                 });
                 mainCoverage.planLiabilityList = planLiabilityList;
+                mainCoverage.insuredIds = [insured.id];
                 mainCoverages.push(mainCoverage);
             });
             plan.mainCoverages = mainCoverages;
@@ -601,18 +587,17 @@ define([
                 riderCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
                 //交费期限
                 var chargePeriod = {};
-                var type = $(this).find(".payment-period").find("option:selected").text();
-                type = self.paymentPeriodArr.indexOf(type);
+                var type = $(this).find(".payment-period").find("option:selected").data("type");
                 chargePeriod.periodType = type
                 chargePeriod.periodValue = parseInt($(this).find(".payment-period").find("option:selected").val());
                 riderCoverage.chargePeriod = chargePeriod;
                 //保障期限
                 var coveragePeriod = {};
-                type = $(this).find(".guarantee-period").find("option:selected").text();
-                type = self.guaranteePeriodArr.indexOf(type);
+                type = $(this).find(".guarantee-period").find("option:selected").data("type");
                 chargePeriod.periodType = type
                 chargePeriod.periodValue = parseInt($(this).find(".guarantee-period").find("option:selected").val());
                 riderCoverage.coveragePeriod = coveragePeriod;
+                riderCoverage.insuredIds = [insured.id];
                 riderCoverages.push(riderCoverage);
             });
             plan.riderCoverages = riderCoverages;
@@ -654,6 +639,7 @@ define([
             e.preventDefault();
             var self = this;
             var responseData = self.getPlanByInput();
+            console.log(JSON.stringify(responseData));//TODO
             planModel.calcFirstYearPremium(responseData,function(data){
                 self.totalFirstYearPrem = data.totalFirstYearPrem;
                 self.coveragePrems = data.coveragePrems;
@@ -677,7 +663,8 @@ define([
             }
             var responseData = self.getPlanByInput();
             planModel.savePlan(responseData,function(data){
-                MsgBox.alert("计划生成成功"+data.quotationId);
+                app.navigate("in/plan/"+data.quotationId,{replace:true, trigger:true})
+                console.log("计划生成成功"+data.quotationId);
             },function(err){
                 MsgBox.alert(err);
             });

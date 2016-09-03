@@ -37,7 +37,7 @@
     height: 258px;
     background: url("../images/plan/imageBg2.png") no-repeat center;
     background-size: 100%;
-    font-size: 32px;
+    font-size: 3em;
     color: #666666;
     position: relative;
 
@@ -130,6 +130,7 @@
       height: 80px;
       background: url("../images/plan/icon_1.png") no-repeat center;
     }
+    .type-button.down{background: url("../images/insurance/down-big.png") no-repeat center;}
   }
 
   .div-title{
@@ -148,7 +149,9 @@
     padding: 0 6px;
     border-radius: 4px;
     background-color: #FFFFFF;
-
+    //产品特色图片
+    #featureImgList{width:100%; overflow: hidden;}
+    .featureImg{width:100%;}
     .product-item:last-child{
       border-bottom: 0;
     }
@@ -198,14 +201,15 @@
   .plan-guarantee-div{
     margin: 17px 20px 0 20px;
     color: #666666;
-    font-size: 26px;
+//    font-size: 26px;
     padding: 0 6px;
     border-radius: 4px;
     background-color: #FFFFFF;
 
     .guarantee-list{
       width: 100%;
-      padding: 8px 36px 34px 36px;
+      padding: 34px 36px;
+      overflow: hidden;
 
       .guarantee-item{
         width: 33.3333%;
@@ -433,9 +437,15 @@
 .plan-added-service{
   margin: 17px 20px 0 20px;
   color: #666666;
-  font-size: 26px;
   border-radius: 4px;
   background-color: #FFFFFF;
+}
+.added-service-list{width:-webkit-calc(100% - 72px); overflow: hidden; margin:0 auto;
+  .added-service-item{width:100%; height:80px; line-height: 80px;}
+  .added-service-item-txt{width:-webkit-calc(100% - 190px); height: 80px; font-size: 2.6em; color:#666666;
+    text-overflow: ellipsis; overflow: hidden;white-space:nowrap; display: block; float:left;}
+  .added-service-item-button{width:180px; height:50px; margin-top: 15px; border-radius: 12px; line-height: 50px;
+    background: #e6454a; color:#fff; text-align: center; float:left; font-size: 2.6em;}
 }
 
 //留言

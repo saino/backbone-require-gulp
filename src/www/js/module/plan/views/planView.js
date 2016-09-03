@@ -8,13 +8,14 @@ define([
     'module/plan/views/planCompanyView',
     'marionette',
     "msgbox",
-    'module/plan/views/planBookView'
-],function(BaseView, tpl, planCompanyView, mn, MsgBox, PlayBookView) {
+    'module/plan/views/planBookView',
+    'module/plan/views/insuranceConceptView'
+],function(BaseView, tpl, planCompanyView, mn, MsgBox, PlayBookView, InsuranceConceptView) {
     return BaseView.extend({
         id: "plan-container",
         template : _.template(tpl),
         _mouseLock : false,
-        forever : false,
+        forever : true,
         ui : {
             "topCon":"#top-title",
             "planMain":"#plan-main",
@@ -68,7 +69,7 @@ define([
             if(tabIndex == 1){
                 self.showPlan();
             }else if(tabIndex == 2){
-
+                self.showInsuranceConcept();
             }else if(tabIndex == 3){
                 self.showCompany();
             }
@@ -88,7 +89,13 @@ define([
             self.getRegion("planMain").show(self.planBookView);
             self.planBookView.show(self.planId);
         },
-
+        //显示保险理念
+        showInsuranceConcept:function(){
+            var self = this;
+            self.insuranceConceptView = new InsuranceConceptView();
+            self.getRegion("planMain").show(self.insuranceConceptView);
+            self.insuranceConceptView.show(self.planId);
+        },
         //点击返回
         _clickBackHandler:function(e){
             e.stopPropagation();

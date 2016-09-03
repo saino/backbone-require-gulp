@@ -14,7 +14,7 @@ define([
             if(result.status == 0){
                 if (cb_ok) cb_ok(result);
             }else{
-                if(cb_err) cb_err(err)
+                if(cb_err) cb_err("数据错误")
             }
         };
         opt.error = function(err){
@@ -22,7 +22,26 @@ define([
         };
         utils.requestData(opt);
     };
-
+    //获取保险理念
+    PlanModel.prototype.getInsuranceConcept = function(planId, cb_ok, cb_err){
+        var opt = {};
+        opt.url = "/ls/services/dt/planService/getInsuranceSpirit";
+        opt.type = "POST";
+        var data = {};
+        data.quotationId = planId;
+        opt.data = data;
+        opt.success = function(result){
+            if(result.status == 0){
+                if (cb_ok) cb_ok(result);
+            }else{
+                if(cb_err) cb_err(err)
+            }
+        };
+        opt.error = function(err){
+            if(cb_err) cb_err(err)
+        };
+        utils.requestData(opt);
+    }
     //获取公司信息集合 服务商、承保商
     PlanModel.prototype.getCompanyInfo = function(planId, cb_ok, cb_err){
         var opt = {};

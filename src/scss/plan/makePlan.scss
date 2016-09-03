@@ -21,7 +21,7 @@
     .property-radio{width:-webkit-calc(50%); height:44px; float:right; margin-top: 33px;}
       .property-radio-item{width:-webkit-calc(50%); height:44px; line-height: 44px; float:left; text-align: center; font-size: 3em;
           .circle{width:44px; height:44px; border-radius: 22px; border:1px solid #ddd; display: inline-block; vertical-align: middle;
-             font-size: 0; margin-right: 32px;}
+             font-size: 0; margin-right: 32px;pointer-events:none;}
           .circle-ck{width:32px; height:32px; border-radius: 16px; margin:5px auto; background: #e6454a; display:none;}
       }
       .property-radio-item-ck .circle-ck{display: inline-block;}
