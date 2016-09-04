@@ -19,9 +19,9 @@ define([
             "in/plan/:id": "plan",  //计划书页
             "in/additional/:planId":"additional",   //附加险列表
             "in/additional/:planId/:list":"additional",   //附加险列表
-            "in/disease/:id":"disease",   //病种详情
+            "in/disease/:packageId/:productId/:libId":"disease",   //病种详情
             "in/increment":"increment", //增值服务详情
-            "in/clause/:id":"clause",   //条款
+            "in/clause/:id":"clause",   //条款详情
             "in/companyIntro/:id":"companyIntro",   //寿险 公司简介
             "in/search":"search", //产品搜索
             'in/advanceQuery':"advanceQuery",//产品高级筛选

@@ -42,7 +42,8 @@ define([
             "tap @ui.btnRangeAdd" : "onRangeAddHandler",
             "tap @ui.btnRangeReduce" : "onRangeReduceHandler",
             "tap .added-service-item-button":"clickShowValueAddedHandler",//点击查看增值服务详情
-            "tap .type-button":"clickStopHandler"  //点击收起/展开险种保费表格
+            "tap .type-button":"clickStopHandler",  //点击收起/展开险种保费表格
+            "tap .item-right-btn":"clickOpenDescHandler" //点击展开/收起责任详情
         },
 
         initialize:function(){
@@ -75,6 +76,8 @@ define([
                 {
                     self.ui.commentCon.html(plan.advice);
                 }
+                //初始化责任列表
+                self.initLiability(self.planBook.planLiability);
             }, function(){
 
             })
@@ -114,8 +117,8 @@ define([
 //            self.ui.paymentDate.html(utils.paymentPeriodArr[parseInt(mainCoverage.chargePeriod.periodValue)]);//交费期限
             self.ui.paymentDate.html(utils.getPeriodText(1,mainCoverage.chargePeriod.periodType,mainCoverage.chargePeriod.periodValue));//交费期限
             self.ui.guaranteeDate.html(utils.getPeriodText(2,mainCoverage.coveragePeriod.periodType,mainCoverage.coveragePeriod.periodValue));//保障期限
-            self.ui.coverageTotal.html(mainCoverage.premium||"0元");//保额
-            self.ui.coverageFirst.html(mainCoverage.firstYearPrem||"0元");//首年保费
+            self.ui.coverageTotal.html(utils.formatNumber2(mainCoverage.sa));//此处只显示SA 不管哪种销售方式
+            self.ui.coverageFirst.html(utils.formatNumber2(mainCoverage.firstYearPrem));//首年保费
         },
         //初始化险种保费说明表
         showInsuredTable:function(plan){
@@ -127,16 +130,16 @@ define([
                     var item = plan.mainCoverages[i];
                     var productName = self.getProductName(item.productId);
                     tempHtml += '<div class="type-td" data-id="'+item.productId+'"><span>'+productName+'</span>' +
-                        '<span>'+(item.premium||'0元')+'</span><span>'+utils.getPeriodText(2,item.coveragePeriod.periodType,item.coveragePeriod.periodValue)+'</span>' +
-                        '<span>'+utils.getPeriodText(1,item.chargePeriod.periodType,item.chargePeriod.periodValue)+'</span><span>'+(item.firstYearPrem||'0元')+'</span></div>'
+                        '<span>'+utils.formatNumber(item.sa)+'</span><span>'+utils.getPeriodText(2,item.coveragePeriod.periodType,item.coveragePeriod.periodValue)+'</span>' +
+                        '<span>'+utils.getPeriodText(1,item.chargePeriod.periodType,item.chargePeriod.periodValue)+'</span><span>'+utils.formatNumber(item.firstYearPrem)+'</span></div>'
 
                 }
                 for(i = 0; i < plan.riderCoverages.length; i++){
                     var item = plan.riderCoverages[i];
                     var productName = self.getProductName(item.productId);
                     tempHtml += '<div class="type-td" data-id="'+item.productId+'"><span>'+productName+'</span>' +
-                        '<span>'+item.premium+'</span><span>'+utils.getPeriodText(2,item.coveragePeriod.periodType,item.coveragePeriod.periodValue)+'</span>' +
-                        '<span>'+utils.getPeriodText(1,item.chargePeriod.periodType,item.chargePeriod.periodValue)+'</span><span>'+item.firstYearPrem+'</span></div>'
+                        '<span>'+utils.formatNumber(item.sa)+'</span><span>'+utils.getPeriodText(2,item.coveragePeriod.periodType,item.coveragePeriod.periodValue)+'</span>' +
+                        '<span>'+utils.getPeriodText(1,item.chargePeriod.periodType,item.chargePeriod.periodValue)+'</span><span>'+utils.formatNumber(item.firstYearPrem)+'</span></div>'
                 }
             }
             self.ui.calcResultTable.html($(tempHtml));
@@ -177,6 +180,11 @@ define([
                 }
             }
             self.ui.valueAddedList.html($(tempHtml));
+        },
+        //责任
+        initLiability:function(initLiability){
+            //TODO
+
         },
         getProductName:function(id){
             var self = this;
@@ -234,7 +242,21 @@ define([
                 target.siblings("#calcResultTable").slideDown();
             }
         },
-
+        //点击展开或收起责任描述
+        clickOpenDescHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var target = $(e.target);
+            if(!target.hasClass("item-right-btn")){
+                target = target.find(".item-right-btn");
+            }
+            target.toggleClass("down");
+            if(target.hasClass("down")){//点击收起
+                target.parents(".info-btn-div").next(".info-desc").slideDown();
+            }else{//点击展开
+                target.parents(".info-btn-div").next(".info-desc").slideUp();
+            }
+        },
         setRangeValue : function(val){
             var self = this;
             self.ui.rangeInput.val(val);

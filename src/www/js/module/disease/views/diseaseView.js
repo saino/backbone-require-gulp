@@ -22,19 +22,16 @@ define([
             this.model = new detailModel();
             this.model.on("change",this.render,this);
             this.model.setTitle("病种详情");
+            var packageId = this.getOption("packageId");
             var productId = this.getOption("productId");
-            this.model.getDeseaseInfo(productId);
+            var libId = this.getOption("libId");
+            this.model.getDeseaseInfo(packageId,productId,libId);
         },
         render: function() {
             this.$el.html(this.template(this.model.attributes));
             return this;
         },
         onRender:function(){
-            var self = this;
-            // if(device.ios()){
-            //     self.ui.topCon.css("padding-top",utils.toolHeight+"px");
-            //     self.ui.diseaseContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
-            // }
         },
         pageIn:function(){},
         //点击返回

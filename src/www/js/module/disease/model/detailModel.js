@@ -49,26 +49,27 @@ define([
         /**
          * 获取某一产品的病种详情
          */
-        getDeseaseInfo : function(productId){
+        getDeseaseInfo : function(packageId,productId,libId){
             var self = this;
             var opt = {};
-            opt.url = "/ls/services/dt/productService/getDeseaseInfo";
+            opt.url = "/ls/services/dt/planService/getLiabDiseaseInfo";
             opt.type = "POST";
             var data = {};
-            data.packageId = productId;
+            data.packageId = packageId;
+            data.productId = productId;
+            data.liabId = libId;
             opt.data = data;
             opt.success = function(result){
                 if(result.status == 0){
-                    if(result.diseaseItem.length > 0) {
-                        self.setDetail(result.diseaseItem[0].itemDesc);
-                    }
+                    self.setDetail(result.diseaseDesc||"");
                 }
             };
             opt.error = function(err){
-
+                console.log(err);
             };
             utils.requestData(opt);
         }
+
     });
     return detailModel;
 });

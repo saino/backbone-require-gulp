@@ -24,6 +24,29 @@
 
     //当前增值服务详情对象
     utils.currValueAdded = null;
+    //格式化金额
+    utils.formatNumber = function(num){
+        if(!num)
+            return "0";
+        if(num % 10000 == 0){
+            return num / 10000 +"万"
+        }
+        return num;
+    }
+    //格式化金额2 带"元”
+    utils.formatNumber2 = function(num){
+        if(!num)
+            return "0元";
+        if(num % 10000 == 0){
+            return num / 10000 +"万元"
+        }
+        return num+"元";
+    }
+    //是否正整数
+    utils.isPositiveNum = function(s){//是否为正整数
+        var re = /^[0-9]*[1-9][0-9]*$/ ;
+        return re.test(s)
+    }
     /**
      * 交费期限、保障期限
      * @param type  1交费期限   2保障期限

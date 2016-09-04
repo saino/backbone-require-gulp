@@ -281,6 +281,7 @@
           height: 80px;
           line-height: 80px;
           font-family: "苹方粗";
+          font-weight: bold;
           border-bottom: 2px solid #ddd;
         }
 
@@ -292,8 +293,10 @@
           }
 
           .item-right{
-            margin-right: 88px;
             float: right;
+          }
+          .item-right-mr88{
+            margin-right: 88px;
           }
         }
 
@@ -304,20 +307,22 @@
             float: left;
             color: #7994f9;
           }
-
           .item-right-btn{
             float: right;
             width: 38px;
             height: 30px;
-            background: url("../images/bigUpArrow.png") no-repeat center;
+            background: url("../images/insurance/down-big.png") no-repeat center;
             margin-right: 28px;
           }
-
+          .item-right-btn.down{
+            background: url("../images/insurance/up-big.png") no-repeat center;
+          }
           .item-right{
             margin-right: 22px;
             float: right;
           }
         }
+        .info-desc{ color: #7994f9; background: #EEEEEE; display: none;}
       }
 
       .plan-obligation-item-line{
@@ -476,6 +481,7 @@
     div{
       display: inline-block;
     }
+    a{color:#a2a2a2; font-size: 26px;}
   }
 }
 
