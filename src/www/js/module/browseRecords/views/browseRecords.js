@@ -115,6 +115,7 @@ define([
                 "encryptedUserData": utils.userObj.id
             }
             browseRecordsModel.getProductBrowseHistory(options, function(data){
+                console.log(data);
                 if(data.status == "0"){
                     var insuranceProductCard = data.salesPackagebrowsehistory;
                     var equityLabelWidth = (self.$el.width() - 100)/3;
@@ -155,7 +156,7 @@ define([
                             n = n * 33.3333333333333;
                                 equityLabelHtml += '<div class="equity-label" style="width: '+ n +'%;">' +
                                                     '<div class="equity-label-select"></div>' +
-                                                    '<div class="equity-label-name">' + insuranceProductCard[i].rights[j].rightName + '</div>' +
+                                                    '<div class="equity-label-name">' + insuranceProductCard[i].rights[k].rightName + '</div>' +
                                                 '</div>';
                         }
                         insuranceProductCardHtml += equityLabelHtml;

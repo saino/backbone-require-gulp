@@ -1,6 +1,6 @@
 /**
  * Created by GYY on 2016/8/22.
- * 条款页面
+ * 主产品信息页面
  */
 define([
     'common/base/base_view',
@@ -35,9 +35,11 @@ define([
             planTitle : ".insure-plan-title",               //计划标题
             planTitleBtn : ".insure-plan-title .pull-icon-big", //计划下拉按钮
             planContent : ".insure-plan-content",           //产品组合计划列表
+            productInsurePlan: ".product-insure-plan",    //产品组合计划表容器
             subjoinTitle : ".insure-subjoin-title",         //附加标题
             subjoinTitleBtn : ".insure-subjoin-title .pull-icon-big",   //附加下拉按钮
             subjoinContent : ".insure-subjoin-content",     //推荐附加险
+            productInsureSubjoin: ".product-insure-subjoin", //附加险容器
             insureMake : ".product-insure-make"        //制作企划书
         },
         events:{
@@ -50,8 +52,18 @@ define([
             "tap @ui.planContent" :  "onGoToPlanItemHandler",
             "tap @ui.subjoinTitleBtn":"onToggleSubjoinContentHandler",
             "tap @ui.subjoinContent" : "onGoToSubjoinItemHandler",
-            "tap @ui.insureMake" : "onGoToInsureMakeHandler"        //去制作
+            "tap @ui.insureMake" : "onGoToInsureMakeHandler",        //去制作
+            "tap @ui.detailsInfoTop": "onDetailsInfoTopHandler"            //去公司详情
         },
+
+        // 去公司详情
+        onDetailsInfoTopHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+
+            app.navigate("in/companyIntro/" + this.companyId, {replace : true, trigger : true});
+        },
+
         initialize:function(){
 
         },
@@ -91,6 +103,14 @@ define([
         initView : function(data){
             console.log(data);
             var self = this;
+            self.companyId = data.company.listId;
+
+            if(data.isCollected == "Y"){
+                self.ui.collectBtn.attr("class", "top-title-right-2 hasCollection");
+            }else if(data.isCollected == "N"){
+                self.ui.collectBtn.attr("class", "top-title-right-2")
+            }
+
             //设置用户信息
             var packageName = data.packageName; //保险名称
             var organLogo =  data.company.organLogo;    //公司logo
@@ -273,6 +293,15 @@ define([
          */
         initPlanView : function (productList){
             var self = this;
+
+            if(!productList || productList.length==0){
+                self.ui.productInsurePlan.hide();
+                console.log("没有计划组合");
+                return;
+            }else{
+                self.ui.productInsurePlan.show();
+            }
+
             var planTemp = '<div class="insure-plan-item" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
                 '<span class="duty-item-title-span" data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
                 '<span class="pull-icon-next" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
@@ -291,6 +320,15 @@ define([
          */
         initSubjoinView : function (attachProductList){
             var self = this;
+
+            if(!attachProductList || attachProductList.length==0){
+                self.ui.productInsureSubjoin.hide();
+                console.log("没有附加险");
+                return;
+            }else{
+                self.ui.productInsureSubjoin.show();
+            }
+
             var subjoinTemp = '<div class="insure-subjoin-item" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
                 '<span class="duty-item-title-span" data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
                 '<span class="pull-icon-next" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+

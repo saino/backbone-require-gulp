@@ -62,6 +62,7 @@ define([
             var productId = self.getOption("detailsDescriptionId");
             var organId = self.getOption("organId");
             detailsDescriptionModel.getRuleInfo(productId, organId, function(data){
+                console.log(data);
                 self.descriptionData = data;
                 self.ui.detailsDescriptionRuleContent.html(self.descriptionData.productUnderwritingRule);
             }, function(){

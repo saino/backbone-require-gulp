@@ -15,7 +15,7 @@ define([], function () {
         opt.url = "/ls/services/dt/productService/getTermInfo";
         opt.type = "POST";
         var data = {};
-        data.productId = productId;
+        data.productId = parseInt(productId);
         opt.data = data;
         opt.success = function(result){
             if(result.status == 0) {

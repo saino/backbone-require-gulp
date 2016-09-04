@@ -13,6 +13,7 @@ define([
         companys: [],   //保险公司
         ui: {
             back: "#top-title-left",
+            topRitleRight: "#top-title-right",
             productInsureDuty: ".product-insure-duty",
             searchDefaultSort: "#search-default-sort",                  //默认排序
             defaultSortLayoutFloat: "#default-sort-layout-float",       //默认排序浮层
@@ -40,7 +41,15 @@ define([
             "tap @ui.searchInsuranceCompany": "clickSearchInsuranceCompanyHandler",
             "tap @ui.searchIcon": "clickSearchIconHandler",
             "tap @ui.insuranceCompanyFloat": "clickInsuranceCompanyFloatHandler",
-            "tap @ui.lifeInsuranceContent": "clickLifeInsuranceContentHandler"
+            "tap @ui.lifeInsuranceContent": "clickLifeInsuranceContentHandler",
+            "tap @ui.topRitleRight": "clickTopRitleRightHandler",
+        },
+
+        //点击右上角浏览记录
+        clickTopRitleRightHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            app.navigate("home/browseRecords", {replace: true, trigger: true});
         },
 
         //点击寿险容器
@@ -386,6 +395,8 @@ define([
                 self.loadData();
 
             }
+            utils.isLifeInsuranceRefresh = false;
+            utils.isInitOption = false;
 
         },
         //页间动画已经完成，当前page已经加入到document
