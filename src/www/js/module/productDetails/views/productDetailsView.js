@@ -160,14 +160,18 @@ define([
         initConditionView : function (amountLimit, ageRange, prdtTermChargeList, prdtTermCoverageList){
             var self = this;
             //投保年龄
-            var minAge = ageRange.minAge;       //最小年龄
+            var minAge = (ageRange && ageRange.minAge);       //最小年龄
+            minAge = minAge == null ? "" : minAge;
             // var minAgeUnit = ageRange.minUnit;  //最小年龄单位
-            var maxAge = ageRange.maxAge;       //最小年龄
+            var maxAge = (ageRange && ageRange.maxAge);       //最小年龄
+            maxAge = maxAge == null ? "" : maxAge;
             // var maxAgeUnit = ageRange.maxUnit;  //最小年龄单位
             self.ui.insureAge.text(minAge+"周岁-"+maxAge+"周岁");
             //最低保额
-            var minAmount = amountLimit.minAmount;      //最低保额
-            var limitUnit = amountLimit.moneyId;      //保额单位
+            var minAmount = (amountLimit && amountLimit.minAmount);      //最低保额
+            minAmount = minAmount == null ? "" : minAmount;
+            var limitUnit = (amountLimit && amountLimit.moneyId);      //保额单位
+            limitUnit = limitUnit == null ? "" : limitUnit;
             self.ui.limitCoverage.text(minAmount+"元");
             //交费期间
             var paymentStr = "";
@@ -293,26 +297,29 @@ define([
          */
         initPlanView : function (productList){
             var self = this;
-
+            var planTemp =  '<div class="insure-plan-item" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
+                                '<span class="duty-item-title-span" data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
+                                '<span class="pull-icon-next" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
+                            '</div>';
             if(!productList || productList.length==0){
                 self.ui.productInsurePlan.hide();
                 console.log("没有计划组合");
                 return;
+            }else if(productList.length==1){
+                self.ui.productInsurePlan.find(".insure-plan-title").hide();
+                var obj = productList[0];
+                var str = planTemp.replace("{salesProductName}", "详细说明").replace(/\{productId\}/g, obj.productId).replace(/\{salesProductId\}/g, obj.salesProductId);
+                self.ui.planContent.html(str);
+                self.ui.planContent.show();
             }else{
-                self.ui.productInsurePlan.show();
+                var planStr = "";
+                for(var i = 0; i < productList.length; i++){
+                    var obj = productList[i];
+                    var realTemp = planTemp.replace("{salesProductName}", obj.salesProductName).replace(/\{productId\}/g, obj.productId).replace(/\{salesProductId\}/g, obj.salesProductId);
+                    planStr += realTemp;
+                }
+                self.ui.planContent.html(planStr);
             }
-
-            var planTemp = '<div class="insure-plan-item" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
-                '<span class="duty-item-title-span" data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
-                '<span class="pull-icon-next" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
-            '</div>';
-            var planStr = "";
-            for(var i = 0; i < productList.length; i++){
-                var obj = productList[i];
-                var realTemp = planTemp.replace("{salesProductName}", obj.salesProductName).replace(/\{productId\}/g, obj.productId).replace(/\{salesProductId\}/g, obj.salesProductId);
-                planStr += realTemp;
-            }
-            self.ui.planContent.html(planStr);
         },
         /**
          * 设置附加险

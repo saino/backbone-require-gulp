@@ -13,10 +13,22 @@ define([
         ui:{
             "topCon":"#top-title",
             "btnBack":"#top-title-left", //点击返回
+            "termSearchText": "#term-search-text",  //搜索框
+            "termTextClear": "#term-text-clear",  //搜索词删除
+            "termSearchIcon": "#term-search-icon",  //搜索按钮
             infoDiv : "#clause-main"
         },
         events:{
-            "tap #top-title-left":"_clickBackHandler"
+            "tap #top-title-left":"_clickBackHandler",
+            "input @ui.termSearchText": "inputTextHandler"
+        },
+        inputTextHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            if(this.ui.termSearchText[0].value){
+                console.log("sss");
+            }
+
         },
         initialize:function(){
 
@@ -29,6 +41,7 @@ define([
 
             var productId = self.getOption("productId");
             clauseModel.getTermInfo(productId, function(data){
+                console.log(data, "llll");
                 self.initData(data);
             }, function(){
 

@@ -60,6 +60,7 @@ define([
             data.organId = organId;
             opt.data = data;
             opt.success = function(result){
+                console.log(result);
                 if(result.status == 0) {
                     if(result.companyInfo.length){
                         self.setDetail(result.companyInfo[0].organDesc);
