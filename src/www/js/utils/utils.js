@@ -19,6 +19,10 @@
     //是否初始化保险公司
     utils.isInitCompany = true;
 
+    utils.advanceSaleTypeIds = [];
+    utils.advanceRightIds = [];
+    // utils.advanceCompanyLists = [];
+
     utils.companyId = "all";
     utils.advancedCompanyId = [];
 

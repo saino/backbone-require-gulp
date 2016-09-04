@@ -389,6 +389,11 @@ define([
                     utils.lifeInsuranceOptions.rightIds = null;       //选填，权益ID，来自高级过滤接口的返回值
                     utils.lifeInsuranceOptions.companyIds = null; //选填，公司ID，来自高级过滤接口的返回值
                     utils.lifeInsuranceOptions.sortOption = 1;     //选填，排序选项。2：按浏览量排序，3：按上架时间排序
+
+                    utils.advanceSaleTypeIds = [];
+                    utils.advanceRightIds = [];
+                    utils.advancedCompanyId = [];
+
                     console.log("initOption");
                 }
                 console.log("reloadData");
