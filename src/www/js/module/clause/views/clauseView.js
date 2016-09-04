@@ -20,15 +20,33 @@ define([
         },
         events:{
             "tap #top-title-left":"_clickBackHandler",
-            "input @ui.termSearchText": "inputTextHandler"
+            "input @ui.termSearchText": "inputTextHandler",
+            "tap @ui.termTextClear": "clickTermTextClearHandler",
+            "tap @ui.termSearchIcon": "clickTermSearchIconHandler"
         },
         inputTextHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
             if(this.ui.termSearchText[0].value){
-                console.log("sss");
+                this.ui.termTextClear.show();
+            }else{
+                this.ui.termTextClear.hide();
             }
-
+        },
+        clickTermTextClearHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            this.ui.termSearchText[0].value = "";
+            this.ui.termTextClear.hide();
+        },
+        clickTermSearchIconHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            var keyWord = this.ui.termSearchText[0].value;
+            if(keyWord){
+                console.log("搜索"+keyWord);
+            }
+            
         },
         initialize:function(){
 

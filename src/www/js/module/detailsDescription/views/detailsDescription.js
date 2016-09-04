@@ -13,6 +13,7 @@ define([
 
         ui: {
             back: "#top-title-left",
+            detailsDescriptionName1: "#details-description-name1",
             detailsDescriptionRuleName1: ".details-description-rule-name1",
             detailsDescriptionRuleName2: ".details-description-rule-name2",
             detailsDescriptionRuleContent: "#details-description-rule-content"
@@ -48,19 +49,19 @@ define([
 
         },
         initialize: function(){
-            console.log("initialize!!!");
+            // console.log("initialize!!!");
             //console.log(this.getOption("detailsDescriptionId"));
         },
 
         onBeforeRender: function(){
-            console.log("onBeforeRender!!!");
+            // console.log("onBeforeRender!!!");
         },
 
         onRender: function(){
-            console.log("render!!!ww");
             var self = this;
             var productId = self.getOption("detailsDescriptionId");
             var organId = self.getOption("organId");
+            self.ui.detailsDescriptionName1.html(utils.productName); 
             detailsDescriptionModel.getRuleInfo(productId, organId, function(data){
                 console.log(data);
                 self.descriptionData = data;

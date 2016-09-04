@@ -71,6 +71,7 @@ define([
         },
         initData : function(data){
             var self = this;
+            utils.productName = data.productName;
             self.organId = data.organId;
             self.ui.attachDetailsTitle.html(data.productName);
             self.ui.bxzrTxt.html(data.safeDuty);
