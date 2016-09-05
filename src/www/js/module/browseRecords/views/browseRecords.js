@@ -11,6 +11,7 @@ define([
         forever : false,
 
         ui: {
+            topTitle: "#top-title",
             back: "#top-title-left",
             browseRecordsContent: "#browse-records-content",
             browseRecordsTitleRight: "#top-title-right"
@@ -182,6 +183,10 @@ define([
 
         show: function(){
             var self = this;
+            if(device.ios()){
+                self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
+                self.ui.browseRecordsContent.css("height", "calc(100% - 84px - "+utils.toolHeight+"px)");
+            }
             self.loadData();
         },
 
