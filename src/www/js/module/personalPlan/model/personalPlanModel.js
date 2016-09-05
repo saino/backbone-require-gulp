@@ -7,258 +7,61 @@
 define([], function () {
     var PersonalPlanModel = function () {
     };
-    var test = {
-        "status": "0",
-        "errorMessages": [
-            
-        ],
-        "planCardList": [
-            {
-            "quotationId": 1011203,
-            "phName": "五大",
-            "generateDate": "2016-09-05T06:18:27",
-            "packageName": "福临门2015铂金版",
-            "insured": {        //
-                "id": "0",
-                "name": "五大",
-                "age": 28,
-                "gender": "M",      //被保人性别。M：男，F：女
-                "jobCateId": null,
-                "socialInsuranceIndi": "Y",
-                "smoking": null
-            },
-            "mainCoverage": {           //主险
-                "productId": 100009,
-                "masterProductId": null,
-                "unitFlag": 7,
-                "sa": 1000,     //保额
-                "premium": 10000,
-                "unit": null,
-                "benefitlevel": null,
-                "chargePeriod": {   //交费期限
-                    "periodType": 1,
-                    "periodValue": 1
-                },
-                "coveragePeriod": {     //保障期限
-                    "periodType": 1,
-                    "periodValue": 0
-                },
-                "firstYearPrem": 1000,
-                "planLiabilityList": [
-                    {
-                        "liabId": 8016,
-                        "unitFlag": 7,
-                        "value": 100
-                    }
-                ],
-                "insuredIds": [
-                    "0"
-                ]
-            },
-            "totalFirstYearPrem": 1000      //保费
-            },
-            {
-            "quotationId": 1011204,
-            "phName": "张三",
-            "generateDate": "2016-09-04T07:18:27",
-            "packageName": "福临门2015铂金版",
-            "insured": {        //
-                "id": "0",
-                "name": "张三",
-                "age": 28,
-                "gender": "M",      //被保人性别。M：男，F：女
-                "jobCateId": null,
-                "socialInsuranceIndi": "Y",
-                "smoking": null
-            },
-            "mainCoverage": {           //主险
-                "productId": 100009,
-                "masterProductId": null,
-                "unitFlag": 7,
-                "sa": 1000,     //保额
-                "premium": 10000,
-                "unit": null,
-                "benefitlevel": null,
-                "chargePeriod": {   //交费期限
-                    "periodType": 4,
-                    "periodValue": 1
-                },
-                "coveragePeriod": {     //保障期限
-                    "periodType": 1,
-                    "periodValue": 0
-                },
-                "firstYearPrem": 1000,
-                "planLiabilityList": [
-                    {
-                        "liabId": 8016,
-                        "unitFlag": 7,
-                        "value": 100
-                    }
-                ],
-                "insuredIds": [
-                    "0"
-                ]
-            },
-            "totalFirstYearPrem": 1000      //保费
-            },{
-            "quotationId": 1011205,
-            "phName": "李四",
-            "generateDate": "2016-09-03T08:18:27",
-            "packageName": "福临门2015铂金版",
-            "insured": {        //
-                "id": "0",
-                "name": "李四",
-                "age": 28,
-                "gender": "M",      //被保人性别。M：男，F：女
-                "jobCateId": null,
-                "socialInsuranceIndi": "Y",
-                "smoking": null
-            },
-            "mainCoverage": {           //主险
-                "productId": 100009,
-                "masterProductId": null,
-                "unitFlag": 7,
-                "sa": 1000,     //保额
-                "premium": 10000,
-                "unit": null,
-                "benefitlevel": null,
-                "chargePeriod": {   //交费期限
-                    "periodType": 1,
-                    "periodValue": 1
-                },
-                "coveragePeriod": {     //保障期限
-                    "periodType": 1,
-                    "periodValue": 0
-                },
-                "firstYearPrem": 1000,
-                "planLiabilityList": [
-                    {
-                        "liabId": 8016,
-                        "unitFlag": 7,
-                        "value": 100
-                    }
-                ],
-                "insuredIds": [
-                    "0"
-                ]
-            },
-            "totalFirstYearPrem": 1000      //保费
-            },{
-            "quotationId": 1011206,
-            "phName": "陈六",         //投保人
-            "generateDate": "2016-09-02T09:18:27",
-            "packageName": "福临门2015铂金版",
-            "insured": {        //被保人
-                "id": "0",
-                "name": "陈六",
-                "age": 28,
-                "gender": "F",      //被保人性别。M：男，F：女
-                "jobCateId": null,
-                "socialInsuranceIndi": "Y",
-                "smoking": null
-            },
-            "mainCoverage": {           //主险
-                "productId": 100009,
-                "masterProductId": null,
-                "unitFlag": 7,
-                "sa": 1000,     //保额
-                "premium": 10000,
-                "unit": null,
-                "benefitlevel": null,
-                "chargePeriod": {   //交费期限
-                    "periodType": 2,
-                    "periodValue": 20
-                },
-                "coveragePeriod": {     //保障期限
-                    "periodType": 1,
-                    "periodValue": 0
-                },
-                "firstYearPrem": 1000,
-                "planLiabilityList": [
-                    {
-                        "liabId": 8016,
-                        "unitFlag": 7,
-                        "value": 100
-                    }
-                ],
-                "insuredIds": [
-                    "0"
-                ]
-            },
-            "totalFirstYearPrem": 1000      //保费
-            },{
-            "quotationId": 1011207,
-            "phName": "武大郎",
-            "generateDate": "2016-09-01T10:18:27",
-            "packageName": "福临门2015铂金版",
-            "insured": {        //
-                "id": "0",
-                "name": "武大郎",
-                "age": 28,
-                "gender": "M",      //被保人性别。M：男，F：女
-                "jobCateId": null,
-                "socialInsuranceIndi": "Y",
-                "smoking": null
-            },
-            "mainCoverage": {           //主险
-                "productId": 100009,
-                "masterProductId": null,
-                "unitFlag": 7,
-                "sa": 1000,     //保额
-                "premium": 10000,
-                "unit": null,
-                "benefitlevel": null,
-                "chargePeriod": {   //交费期限
-                    "periodType": 3,
-                    "periodValue": 50
-                },
-                "coveragePeriod": {     //保障期限
-                    "periodType": 1,
-                    "periodValue": 0
-                },
-                "firstYearPrem": 1000,
-                "planLiabilityList": [
-                    {
-                        "liabId": 8016,
-                        "unitFlag": 7,
-                        "value": 100
-                    }
-                ],
-                "insuredIds": [
-                    "0"
-                ]
-            },
-            "totalFirstYearPrem": 1000      //保费
+    /**
+     * 获取我的计划书列表
+     * @param currentUserId  当前用户ID
+     * @param cb_ok
+     * @param cb_err
+     */
+    PersonalPlanModel.prototype.getPlanItemList = function ( cb_ok, cb_err) {
+        var opt = {};
+        opt.url = "/ls/services/dt/planService/getPlanList";
+        opt.type = "POST";
+        var data = {};
+        data.encryptedUserData = utils.userObj.id;
+        opt.data = data;
+        opt.success = function(result){
+            if(result.status == 0){
+                if (cb_ok) cb_ok(result);
+            }else{
+                if(cb_err) cb_err("数据错误")
             }
-        ]
         };
-
-    /**
-     * 知识搜索
-     * @param currentUserId  当前用户ID
-     * @param cb_ok
-     * @param cb_err
-     */
-    PersonalPlanModel.prototype.getPlanItemList = function (currentUserId, cb_ok, cb_err) {
-        if (cb_ok) {
-            cb_ok(test);
-        }
+        opt.error = function(err){
+            if(cb_err) cb_err(err)
+        };
+        utils.requestData(opt);
     };
 
     /**
-     * 知识搜索
-     * @param currentUserId  当前用户ID
-     * @param key  当前模糊搜索的内容
+     * 删除计划
+     * @param type  0清空所有   1删除单个计划书
+     * @param quotationId  计划书ID
      * @param cb_ok
      * @param cb_err
      */
-    PersonalPlanModel.prototype.searchPlanItemList = function (currentUserId, key, cb_ok, cb_err) {
-        if (cb_ok) {
-            cb_ok(test);
+    PersonalPlanModel.prototype.delPlan = function (type,quotationId, cb_ok, cb_err) {
+        var opt = {};
+        opt.url = "/ls/services/dt/planService/deletePlan";
+        opt.type = "POST";
+        var data = {};
+        data.encryptedUserData = utils.userObj.id;
+        if(type == 1) {
+            data.quotationId = quotationId;
         }
+        opt.data = data;
+        opt.success = function(result){
+            if(result.status == 0){
+                if (cb_ok) cb_ok(result);
+            }else{
+                if(cb_err) cb_err("删除失败")
+            }
+        };
+        opt.error = function(err){
+            if(cb_err) cb_err(err)
+        };
+        utils.requestData(opt);
     };
-
-
     var personalPlanModel = new PersonalPlanModel();
     return personalPlanModel;
 });

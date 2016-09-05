@@ -23,8 +23,7 @@ define([
     var PersonalPlanView = BaseView.extend({
         template: _.template(Tpl),
         id:"personal-plan-container",
-        currentUserId: "",     //当前用户ID
-        currentListData : [],     //当前计划书数据的列表
+//        currentListData : [],     //当前计划书数据的列表
         initListData : [],      //初始化的
         ui:{
             topCon : ".top-title",
@@ -55,7 +54,8 @@ define([
                 self.ui.personalPlanMain.css({height: "calc(100% - " + height + "px)"});
             }, 0)
             //TODO 需要真实的接口和数据
-            personalPlanModel.getPlanItemList(self.currentUserId,  function(data){
+            personalPlanModel.getPlanItemList(function(data){
+                console.log(data);
                 var list = data.planCardList;
                 self.initListData = list;
                 self.initView(list);
@@ -72,13 +72,10 @@ define([
          * 初始化界面的动态数据
          * @param data
          */
-        initView : function(data){
+        initView : function(list){
             var self = this;
-            //TODO 以下为模拟的数据，需要调试的，会有细微的改动
-            var list = data;
-            self.currentListData = data;
             var planItemStr = "";
-            if (list.length > 0){
+            if (list && list.length > 0){
                 for (var i = 0; i < list.length; i++){
                     var obj = list[i];
                     var date = utils.formattime(obj.generateDate, "yyyy年MM月dd日");      //格式最后需要转换
@@ -90,7 +87,7 @@ define([
                     var coveragePeriodStr = utils.getPeriodText(2, coveragePeriod.periodType, coveragePeriod.periodValue);
                     var recognizeeInfo = obj.insured.name + " " + (obj.insured.gender == "M" ? "男" : "女") + " " +
                     obj.insured.age + "岁 " + chargePeriodStr + " " + coveragePeriodStr;             //被保人信息
-                    var costInfo = "保额" + obj.mainCoverage.sa + "元 首年保费" + obj.totalFirstYearPrem + "元";      //费用信息
+                    var costInfo = "保额" + utils.formatNumber2(obj.mainCoverage.sa) + " 首年保费" + utils.formatNumber2(obj.totalFirstYearPrem);      //费用信息
                     var objectId = obj.quotationId;    //计划ID
                     var realItemTemp = planItemTemp.replace("{applicantName}", applicantName).replace("{itemDate}", date)
                         .replace("{planName}", planName).replace("{recognizeeInfo}", recognizeeInfo)
@@ -118,9 +115,7 @@ define([
         onPlanSearchInputHandler :function(e){
             var self = this;
             var text = self.ui.planSearchTxt.val();
-            if (text){
-                self.planSearchOperation(text);
-            }
+            self.planSearchOperation(text);
         },
         /**
          *搜索按钮点击事件
@@ -139,7 +134,6 @@ define([
          */
         planSearchOperation: function (text) {
             var self = this;
-            //TODO 具体搜索,需要实现
             var searchData = utils.searchObjectArray(self.initListData, text, ["packageName", "phName", "insured|name"]);
             self.initView(searchData);
         },
@@ -152,18 +146,21 @@ define([
             e.preventDefault();
             var self = this;
             //有子项的时候
-            if (self.currentListData.length > 0) {
+            if (self.initListData.length > 0) {
                 //清空，我的所有计划书
-                MsgBox.ask("你确定要清空所有计划书吗？", "bbbbbbb", function (type) {
+                MsgBox.ask("你确定要清空所有计划书吗？", "", function (type) {
                     if (type == 2) { //确定  0=取消
-                        console.log("删除了");
                         self.ui.personalPlanMain.html('<div class="plan-item-noting">暂无浏览记录</div>');
                         //清空缓存数组
-                        self.currentListData = [];
-                        //TODO 需要真实清空所有计划书
+                        self.initListData = [];
+                        personalPlanModel.delPlan(0,0,function(){
+                            console.log("清除成功");
+                        },function(err){
+                            console.log("清除失败");
+                        })
                     }
                     if (type == 0) {
-                        console.log("取消删除");
+                        console.log("取消清除");
                     }
                 });
             }    
@@ -184,23 +181,38 @@ define([
             if (dataId){
                 parent = $target.parent();
                 if (parent) {
-                    MsgBox.ask("你确定要删除该计划书吗？","bbbbbbb",function(type){
+                    MsgBox.ask("你确定要删除该计划书吗？","",function(type){
                         if(type == 2) { //确定  0=取消
-                            console.log("删除了1111");
                             var pparent = parent.parent();
                             parent.slideUp(function(){
                                 parent.remove();
-                                //TODO 需要真实删除该条计划
                                 if (!(pparent.children().length)) {
-                                    self.currentListData = [];
+                                    self.initListData = [];
                                     self.ui.personalPlanMain.html('<div class="plan-item-noting">暂无浏览记录</div>');
+                                }else{
+                                    //清除缓存
+                                    self.delPlanFromCache(dataId);
                                 }
                             });
+                            personalPlanModel.delPlan(1,dataId,function(){
+                                console.log("删除成功");
+                            },function(err){
+                                console.log("删除失败");
+                            })
                         }
                         if(type == 0) {
                             console.log("取消删除");
                         }
                     });  
+                }
+            }
+        },
+        delPlanFromCache:function(id){
+            var self = this;
+            for(var i = 0 ; i < self.initListData.length; i++){
+                if(self.initListData[i].quotationId == id){
+                    self.initListData.splice(i,1);
+                    break;
                 }
             }
         },

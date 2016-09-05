@@ -274,6 +274,7 @@
      */
     utils.searchObjectArray = function(array, searchVal, keyArr) {
         var results = [];
+        if(searchVal == "")return array;
         for(var i = 0; i < array.length; i++){
             var obj = array[i];
             for(var j = 0; j < keyArr.length; j++){

@@ -415,17 +415,17 @@ define([
                     minAmount = plan.amountLimit.minAmount;
                     maxAmount = plan.amountLimit.maxAmount;
                 }
-                tempHtml = self.additionalUnitFlag1Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,minAmount:minAmount,maxAmount:maxAmount});
+                tempHtml = self.additionalUnitFlag1Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,minAmount:minAmount,maxAmount:maxAmount});
             }else if(plan.unitFlag == 7) {//保费
-                tempHtml = self.additionalUnitFlag2Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
+                tempHtml = self.additionalUnitFlag2Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
             }else if(plan.unitFlag == 1) {//份数
-                tempHtml = self.additionalUnitFlag3Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
+                tempHtml = self.additionalUnitFlag3Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
             }else if(plan.unitFlag == 3) {//份数 档次
-                tempHtml = self.additionalUnitFlag4Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
+                tempHtml = self.additionalUnitFlag4Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
             }else if(plan.unitFlag == 4) {//档次
-                tempHtml = self.additionalUnitFlag5Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
+                tempHtml = self.additionalUnitFlag5Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
             }else{
-                tempHtml = self.additionalUnitFlag6Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag});
+                tempHtml = self.additionalUnitFlag6Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag});
             }
             return tempHtml;
         },
@@ -683,7 +683,6 @@ define([
                     }
                 }
                 //保额需验证最小值 最大值
-                debugger;
                 mainCoverage.premium = $(this).find(".insured-premium").val();
                 if(mainCoverage.premium == ""){
                     validateErrMsg = "请输入主险保费";
@@ -897,7 +896,7 @@ define([
                 MsgBox.ask("确定删除该主险吗？", "", function (type) {
                     if (type == 2) { //确定  0=取消
                         var parent = $(e.target).parents(".main-insured-item");
-                        var productId = parent.data("productid");//待删除主险ID
+                        var productId = parseInt(parent.data("productid"));//待删除主险ID
                         var index = productId ? self.mainPlanIdArr.indexOf(productId) : -1;
                         if (index >= 0) {
                             self.mainPlanIdArr.splice(index, 1);
@@ -914,7 +913,7 @@ define([
                 MsgBox.ask("确定删除该附加险吗？", "", function (type) {
                     if (type == 2) { //确定  0=取消
                         var parent = $(e.target).parents(".additional-item");
-                        var additionalId = parent.data("productid");//待删除附加险ID
+                        var additionalId = parseInt(parent.data("productid"));//待删除附加险ID
                         var index = additionalId ? self.additionalIdArr.indexOf(additionalId) : -1;
                         if (index >= 0) {
                             self.additionalIdArr.splice(index, 1);

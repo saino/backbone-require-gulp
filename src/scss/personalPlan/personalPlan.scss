@@ -90,12 +90,15 @@
                 height: 110px;
                 line-height: 110px;
                 box-shadow: 0 5px 5px #eee;
+               position: relative;
                 .personal-plan-item-name{
                     float: left;
                     height: 100%;
+                    width:-webkit-calc(100% - 240px);
                     font-size: 3.4em;
                     color: #666;
                     max-width: 60%;
+                   text-overflow: ellipsis; overflow: hidden;white-space:nowrap; display: block;
                     .avatar-icon{
                         width: 68px;
                         height: 68px;
@@ -108,13 +111,16 @@
                     }
                 }
                 .personal-plan-item-date{
-                    float: right;
                     height: 100%;
                     text-indent: 56px;
                     font-size: 2.6em;
                     color: #a2a2a2;
                     background: url('../images/insurance/age.png') left center no-repeat;
                     line-height: 110px;
+                    position: absolute;
+                  right:0;
+                  top:0;
+                  width:240px;
                 }
             }
             .personal-plan-item-content{
