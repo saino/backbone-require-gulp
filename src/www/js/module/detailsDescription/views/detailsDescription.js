@@ -12,7 +12,9 @@ define([
         descriptionData : null,
 
         ui: {
+            topTitle: "#top-title",
             back: "#top-title-left",
+            detailsDescriptionContent: "#details-description-content",
             detailsDescriptionName1: "#details-description-name1",
             detailsDescriptionRuleName1: ".details-description-rule-name1",
             detailsDescriptionRuleName2: ".details-description-rule-name2",
@@ -72,8 +74,13 @@ define([
         },
 
         show: function(){
-            this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 details-description-rule-name-selected");
-            this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2");
+            var self = this;
+            if(device.ios()){
+                self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
+                self.ui.detailsDescriptionContent.css("height", "calc(100% - 84px - "+utils.toolHeight+"px)");
+            }
+            self.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 details-description-rule-name-selected");
+            self.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2");
         },
 
         pageIn: function(){

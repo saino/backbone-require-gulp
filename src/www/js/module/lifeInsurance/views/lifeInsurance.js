@@ -12,6 +12,7 @@ define([
         actualSearchWords: "", //搜索框对应搜索词
         companys: [],   //保险公司
         ui: {
+            topTitle: "#top-title",
             back: "#top-title-left",
             topRitleRight: "#top-title-right",
             productInsureDuty: ".product-insure-duty",
@@ -247,6 +248,7 @@ define([
         //渲染完模板后执行,此时当前page没有添加到document
         onRender : function(){
             // console.log("onRender...");
+
         },
 
         // 根据条件查找并加载数据
@@ -380,6 +382,10 @@ define([
 
         show: function(){
             var self = this;
+            if(device.ios()){
+                self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
+                self.ui.lifeInsuranceContent.css("height", "calc(100% - 255px - "+utils.toolHeight+"px)");
+            }
             if(utils.isLifeInsuranceRefresh){
                 if(utils.isInitOption){
                     utils.lifeInsuranceOptions.encryptedUserData = "QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0=";
