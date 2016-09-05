@@ -3,8 +3,9 @@ define([
     'marionette',
     'text!module/lifeInsurance/templates/lifeInsurance.html',
     'msgbox',
-    'module/lifeInsurance/model/lifeInsurance'
-], function(BaseView, mn, tpl, MsgBox, lifeInsuranceModel) {
+    'module/lifeInsurance/model/lifeInsurance',
+    'module/myCustomer/model/myCustomer'
+], function(BaseView, mn, tpl, MsgBox, lifeInsuranceModel, myCustomerModel) {
     return BaseView.extend({
         id: "lifeInsurancePage",
         template: _.template(tpl),
@@ -248,7 +249,14 @@ define([
         //渲染完模板后执行,此时当前page没有添加到document
         onRender : function(){
             // console.log("onRender...");
+            var options = {
 
+            };
+            myCustomerModel.queryAgentCustomers(options, function(data){
+                console.log(data);
+            }, function(error){
+                console.log(error);
+            });
         },
 
         // 根据条件查找并加载数据
