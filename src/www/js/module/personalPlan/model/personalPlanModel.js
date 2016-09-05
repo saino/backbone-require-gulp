@@ -7,53 +7,231 @@
 define([], function () {
     var PersonalPlanModel = function () {
     };
-
     var test = {
         "status": "0",
-        "errorMessages": [],
-        "userId": 9100001,
-        "planItemList": [{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
-            planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "保额100万",            //保额
-            premium: "首年保费20735.37元",    //首年保费
-            objectId : "123456"
-        },{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
-            planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "保额100万",            //保额
-            premium: "首年保费20735.37元",    //首年保费
-            objectId : "123456"
-        },{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
-            planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "保额100万",            //保额
-            premium: "首年保费20735.37元",    //首年保费
-            objectId : "123456"
-        },{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
-            planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "100万元",            //保额
-            premium: "20735.37元",    //首年保费
-            objectId : "123456"
-        }]
-    };
+        "errorMessages": [
+            
+        ],
+        "planCardList": [
+            {
+            "quotationId": 1011203,
+            "phName": "五大",
+            "generateDate": "2016-09-05T06:18:27",
+            "packageName": "福临门2015铂金版",
+            "insured": {        //
+                "id": "0",
+                "name": "五大",
+                "age": 28,
+                "gender": "M",      //被保人性别。M：男，F：女
+                "jobCateId": null,
+                "socialInsuranceIndi": "Y",
+                "smoking": null
+            },
+            "mainCoverage": {           //主险
+                "productId": 100009,
+                "masterProductId": null,
+                "unitFlag": 7,
+                "sa": 1000,     //保额
+                "premium": 10000,
+                "unit": null,
+                "benefitlevel": null,
+                "chargePeriod": {   //交费期限
+                    "periodType": 1,
+                    "periodValue": 1
+                },
+                "coveragePeriod": {     //保障期限
+                    "periodType": 1,
+                    "periodValue": 0
+                },
+                "firstYearPrem": 1000,
+                "planLiabilityList": [
+                    {
+                        "liabId": 8016,
+                        "unitFlag": 7,
+                        "value": 100
+                    }
+                ],
+                "insuredIds": [
+                    "0"
+                ]
+            },
+            "totalFirstYearPrem": 1000      //保费
+            },
+            {
+            "quotationId": 1011204,
+            "phName": "张三",
+            "generateDate": "2016-09-04T07:18:27",
+            "packageName": "福临门2015铂金版",
+            "insured": {        //
+                "id": "0",
+                "name": "张三",
+                "age": 28,
+                "gender": "M",      //被保人性别。M：男，F：女
+                "jobCateId": null,
+                "socialInsuranceIndi": "Y",
+                "smoking": null
+            },
+            "mainCoverage": {           //主险
+                "productId": 100009,
+                "masterProductId": null,
+                "unitFlag": 7,
+                "sa": 1000,     //保额
+                "premium": 10000,
+                "unit": null,
+                "benefitlevel": null,
+                "chargePeriod": {   //交费期限
+                    "periodType": 4,
+                    "periodValue": 1
+                },
+                "coveragePeriod": {     //保障期限
+                    "periodType": 1,
+                    "periodValue": 0
+                },
+                "firstYearPrem": 1000,
+                "planLiabilityList": [
+                    {
+                        "liabId": 8016,
+                        "unitFlag": 7,
+                        "value": 100
+                    }
+                ],
+                "insuredIds": [
+                    "0"
+                ]
+            },
+            "totalFirstYearPrem": 1000      //保费
+            },{
+            "quotationId": 1011205,
+            "phName": "李四",
+            "generateDate": "2016-09-03T08:18:27",
+            "packageName": "福临门2015铂金版",
+            "insured": {        //
+                "id": "0",
+                "name": "李四",
+                "age": 28,
+                "gender": "M",      //被保人性别。M：男，F：女
+                "jobCateId": null,
+                "socialInsuranceIndi": "Y",
+                "smoking": null
+            },
+            "mainCoverage": {           //主险
+                "productId": 100009,
+                "masterProductId": null,
+                "unitFlag": 7,
+                "sa": 1000,     //保额
+                "premium": 10000,
+                "unit": null,
+                "benefitlevel": null,
+                "chargePeriod": {   //交费期限
+                    "periodType": 1,
+                    "periodValue": 1
+                },
+                "coveragePeriod": {     //保障期限
+                    "periodType": 1,
+                    "periodValue": 0
+                },
+                "firstYearPrem": 1000,
+                "planLiabilityList": [
+                    {
+                        "liabId": 8016,
+                        "unitFlag": 7,
+                        "value": 100
+                    }
+                ],
+                "insuredIds": [
+                    "0"
+                ]
+            },
+            "totalFirstYearPrem": 1000      //保费
+            },{
+            "quotationId": 1011206,
+            "phName": "陈六",         //投保人
+            "generateDate": "2016-09-02T09:18:27",
+            "packageName": "福临门2015铂金版",
+            "insured": {        //被保人
+                "id": "0",
+                "name": "陈六",
+                "age": 28,
+                "gender": "F",      //被保人性别。M：男，F：女
+                "jobCateId": null,
+                "socialInsuranceIndi": "Y",
+                "smoking": null
+            },
+            "mainCoverage": {           //主险
+                "productId": 100009,
+                "masterProductId": null,
+                "unitFlag": 7,
+                "sa": 1000,     //保额
+                "premium": 10000,
+                "unit": null,
+                "benefitlevel": null,
+                "chargePeriod": {   //交费期限
+                    "periodType": 2,
+                    "periodValue": 20
+                },
+                "coveragePeriod": {     //保障期限
+                    "periodType": 1,
+                    "periodValue": 0
+                },
+                "firstYearPrem": 1000,
+                "planLiabilityList": [
+                    {
+                        "liabId": 8016,
+                        "unitFlag": 7,
+                        "value": 100
+                    }
+                ],
+                "insuredIds": [
+                    "0"
+                ]
+            },
+            "totalFirstYearPrem": 1000      //保费
+            },{
+            "quotationId": 1011207,
+            "phName": "武大郎",
+            "generateDate": "2016-09-01T10:18:27",
+            "packageName": "福临门2015铂金版",
+            "insured": {        //
+                "id": "0",
+                "name": "武大郎",
+                "age": 28,
+                "gender": "M",      //被保人性别。M：男，F：女
+                "jobCateId": null,
+                "socialInsuranceIndi": "Y",
+                "smoking": null
+            },
+            "mainCoverage": {           //主险
+                "productId": 100009,
+                "masterProductId": null,
+                "unitFlag": 7,
+                "sa": 1000,     //保额
+                "premium": 10000,
+                "unit": null,
+                "benefitlevel": null,
+                "chargePeriod": {   //交费期限
+                    "periodType": 3,
+                    "periodValue": 50
+                },
+                "coveragePeriod": {     //保障期限
+                    "periodType": 1,
+                    "periodValue": 0
+                },
+                "firstYearPrem": 1000,
+                "planLiabilityList": [
+                    {
+                        "liabId": 8016,
+                        "unitFlag": 7,
+                        "value": 100
+                    }
+                ],
+                "insuredIds": [
+                    "0"
+                ]
+            },
+            "totalFirstYearPrem": 1000      //保费
+            }
+        ]
+        };
 
     /**
      * 知识搜索
