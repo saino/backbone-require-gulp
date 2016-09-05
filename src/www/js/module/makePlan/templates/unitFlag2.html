@@ -1,8 +1,12 @@
 <div class="main-insured-item" data-productid="<%=productId %>" data-unitflag="<%=unitflag %>">
+    <div class="additional-name main-insured-name" <%=displayClass %>>
+    <span class="additional-name-span"><%=mainPlanName %></span>
+    <div class="additional-del" data-insured-type="<%=insType %>"></div>
+</div>
     <div class="insured-property">
         <div class="insured-property-item">
             <span>保费：</span>
-            <input type="number" class="property-input insured-premium" min="0" max="999"/>
+            <input type="number" class="property-input insured-premium"/>
         </div>
         <div class="insured-property-item">
             <span>交费期限：</span>

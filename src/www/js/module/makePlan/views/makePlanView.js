@@ -4,31 +4,49 @@ define([
     'text!module/makePlan/templates/makePlan.html',
     'text!module/makePlan/templates/unitFlag1.html',
     'text!module/makePlan/templates/unitFlag2.html',
+    'text!module/makePlan/templates/unitFlag3.html',
+    'text!module/makePlan/templates/unitFlag4.html',
+    'text!module/makePlan/templates/unitFlag5.html',
+    'text!module/makePlan/templates/unitFlag6.html',
     'text!module/makePlan/templates/additionalUnitFlag1.html',
+    'text!module/makePlan/templates/additionalUnitFlag2.html',
+    'text!module/makePlan/templates/additionalUnitFlag3.html',
+    'text!module/makePlan/templates/additionalUnitFlag4.html',
+    'text!module/makePlan/templates/additionalUnitFlag5.html',
+    'text!module/makePlan/templates/additionalUnitFlag6.html',
     'text!module/makePlan/templates/calculationResult.html',
     'module/plan/model/planModel',
     'marionette',
     'msgbox'
-],function(BaseView, tpl,unitFlag1Tpl,unitFlag2Tpl,additionalUnitFlag1Tpl ,calcResultTpl,planModel, mn,MsgBox) {
+],function(BaseView, tpl,unitFlag1Tpl,unitFlag2Tpl,unitFlag3Tpl,unitFlag4Tpl,unitFlag5Tpl,unitFlag6Tpl,additionalUnitFlag1Tpl,additionalUnitFlag2Tpl,additionalUnitFlag3Tpl,additionalUnitFlag4Tpl,additionalUnitFlag5Tpl,additionalUnitFlag6Tpl ,calcResultTpl,planModel, mn,MsgBox) {
     var makePlanView =  BaseView.extend({
         id : "make-plan-container",
         template : _.template(tpl),
-        unitFlag1Tpl: _.template(unitFlag1Tpl),
-        unitFlag2Tpl: _.template(unitFlag2Tpl),
-        additionalUnitFlag1Tpl: _.template(additionalUnitFlag1Tpl),
+        unitFlag1Tpl: _.template(unitFlag1Tpl), //销售方式unitFlag=6 保额
+        unitFlag2Tpl: _.template(unitFlag2Tpl),//销售方式unitFlag=7 保费
+        unitFlag3Tpl: _.template(unitFlag3Tpl),//销售方式unitFlag=1 份数
+        unitFlag4Tpl: _.template(unitFlag4Tpl),//销售方式unitFlag=3 档次、份数
+        unitFlag5Tpl: _.template(unitFlag5Tpl),//销售方式unitFlag=4 档次
+        unitFlag6Tpl: _.template(unitFlag6Tpl),//销售方式为其他是 不显示任何输入项
+        additionalUnitFlag1Tpl: _.template(additionalUnitFlag1Tpl),  //附加险销售方式录入规则 同主险
+        additionalUnitFlag2Tpl: _.template(additionalUnitFlag2Tpl),
+        additionalUnitFlag3Tpl: _.template(additionalUnitFlag3Tpl),
+        additionalUnitFlag4Tpl: _.template(additionalUnitFlag4Tpl),
+        additionalUnitFlag5Tpl: _.template(additionalUnitFlag5Tpl),
+        additionalUnitFlag6Tpl: _.template(additionalUnitFlag6Tpl),
         calcResultTpl: _.template(calcResultTpl),
         _mouseLock : false,
         _isShow : false,
         forever:true,
         isCalcOver:false,       //是否已经计算过保费
         mainPlanNum:0,          //主险个数
+        mainPlanIdArr:[],           //主险ID数组
         additionalIdArr:[],         //附加险ID
         currProductId:0,        //当前产品ID
         currCompany:{},         //当前计划书所属公司对象
         currPlanList:[],        //当前销售产品列表（主产品、附加产品）
         hasPolicyHolder:false,//是否显示投保人
         hasSecInsured:false,    //是否指向第二被保人  Y是  N否
-        hasSmoking:false,   //是否与被保人吸烟有关
         smokingType:0,      //和吸烟无关  1下拉框 2下拉框
         hasJob:false,       //是否与被保人职业有关
         hasSocialInsure:false,   //是否与被保人吸烟有关
@@ -105,6 +123,25 @@ define([
                 });
                 return;
             }
+            //TODO 测试数据 待删
+//            var tempData = {planList:[
+////                {salesProductId:10001,unitFlag:1,insType:1,salesProductName:"中华人民共和国主险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {salesProductId:10002,unitFlag:3,insType:1,salesProductName:"中华人民共和国主险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
+////                {salesProductId:10003,unitFlag:4,insType:1,salesProductName:"中华人民共和国主险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[11,12,13,14,15]},
+////                {salesProductId:10004,unitFlag:6,amountLimit:{minAmount:100,maxAmount:999999999999},insType:1,salesProductName:"中华人民共和国主险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {smokingIndi:1,pointToSecInsured:"Y",salesProductId:10005,unitFlag:7,insType:1,salesProductName:"中华人民共和国主险5",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {smokingIndi:0,salesProductId:10006,unitFlag:9,insType:1,salesProductName:"中主险不需要输入项",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {salesProductId:20001,unitFlag:1,insType:2,salesProductName:"中华人民共和国附加险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {salesProductId:20002,unitFlag:3,insType:2,salesProductName:"中华人民共附加险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
+////                {salesProductId:20003,unitFlag:4,insType:2,salesProductName:"中华人民共附加险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[17,12,13,14,16]},
+////                {salesProductId:20004,unitFlag:6,amountLimit:{minAmount:1000,maxAmount:999999999999},insType:2,salesProductName:"中华人民共附加险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {salesProductId:20005,unitFlag:7,insType:2,salesProductName:"中华人民共附加险5",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项一",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项二",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项三",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]}
+//            ]};
+//            self.initializeUI(tempData);
+//            return;
             //返回进入 或进入不同产品计划书 重置输入
             if(self.currProductId == 0 || self.currProductId != tempProductId){
                 self.currProductId = tempProductId;
@@ -135,10 +172,6 @@ define([
             if(self.hasJob){  //职位
                 firstInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
             }
-            //TODO 确定下拉框 可删
-            if(self.hasSmoking){//吸烟
-                firstInsuredHtml += self.insuredSmokingTpl();
-            }
             if(self.smokingType == 1){
                 firstInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingListHtml});
             }else if(self.smokingType == 2){
@@ -158,10 +191,6 @@ define([
                 secondInsuredHtml += self.insuredSexTpl();
                 if(self.hasJob){  //职位
                     secondInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
-                }
-                //TODO 确认吸烟用下拉框  可删
-                if(self.hasSmoking){//吸烟
-                    secondInsuredHtml += self.insuredSmokingTpl();
                 }
                 if(self.smokingType == 1){
                     secondInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingListHtml});
@@ -193,9 +222,12 @@ define([
             }
             //根据销售方式、主险个数拼接投保输入框html
             var inputHtml = "";
-            for(var i = 0; i < self.currPlanList.length; i++){
-                if(self.currPlanList[i].insType == 1) {
-                    inputHtml += self.getMainPlanInputHtml(self.currPlanList[i]);
+            if(self.currPlanList && self.currPlanList.length > 0) {
+                for (var i = 0; i < self.currPlanList.length; i++) {
+                    if (self.currPlanList[i].insType == 1) {
+                        self.mainPlanIdArr.push(self.currPlanList[i].salesProductId);
+                        inputHtml += self.getMainPlanInputHtml(self.currPlanList[i]);
+                    }
                 }
             }
             self.ui.makePlanInput.append($(inputHtml));
@@ -226,37 +258,47 @@ define([
         },
         //被保人属性
         insuredNameTpl: _.template('<div class="insured-property-item"><span>被保人姓名：</span><input type="text" class="property-input insured-name"/></div>'),
-        insuredOldTpl: _.template('<div class="insured-property-item"> <span>被保人年龄：</span><select name="old"  class="property-input property-select insured-old"><%=oldOptions %></select></div>'),
+        insuredOldTpl: _.template('<div class="insured-property-item"> <span>被保人年龄：</span><select class="property-input property-select insured-old"><%=oldOptions %></select></div>'),
         insuredSexTpl: _.template('<div class="insured-property-item"><span>被保人性别：</span><div class="property-radio insured-sex" data-val="M">' +
                             '<div class="property-radio-item property-radio-item-ck" data-val="M"><span class="circle"><span class="circle-ck"></span></span>男</div>'+
                             '<div class="property-radio-item" data-val="F"><span class="circle"><span class="circle-ck"></span></span>女</div></div></div>'),
         insuredOccupationsTpl: _.template('<div class="insured-property-item"><span>被保人职业类别：</span>' +
-                                    '<select name="old" class="property-input property-select insured-job"><%=occupationOptions %></select>' +
+                                    '<select class="property-input property-select insured-job"><%=occupationOptions %></select>' +
                                     '</div>'),
         insuredSocialTpl: _.template('<div class="insured-property-item"><span>被保人社保：</span><div class="property-radio insured-social" data-val="N">' +
                                     ' <div class="property-radio-item" data-val="Y"><span class="circle"><span class="circle-ck"></span></span>有</div>' +
                                     '<div class="property-radio-item property-radio-item-ck" data-val="N"><span class="circle"><span class="circle-ck"></span></span>无</div> </div></div>'),
+        //单选按钮的吸烟 属性 暂时不用了
         insuredSmokingTpl:_.template('<div class="insured-property-item"><span>被保人吸烟：</span><div class="property-radio insured-smoking" data-val="N">' +
                                     '<div class="property-radio-item" data-val="Y"><span class="circle"><span class="circle-ck"></span></span>是' +
                                     '</div><div class="property-radio-item property-radio-item-ck" data-val="N"><span class="circle"><span class="circle-ck"></span></span>否</div></div></div>'),
         insuredSmokingTpl2 : _.template('<div class="insured-property-item"><span>被保人吸烟：</span>' +
-                                '<select name="old" class="property-input property-select insured-smoking"><%=smokingOptions %></select>' +
+                                '<select class="property-input property-select insured-smoking"><%=smokingOptions %></select>' +
                                 '</div>'),
         //投保人属性
         policyHolderOldTpl : _.template('<div class="insured-property-item"><span>投保人年龄：</span>' +
-                             '<select name="old" class="property-input property-select insured-old"><%=oldOptions %></select></div>'),
+                             '<select class="property-input property-select insured-old"><%=oldOptions %></select></div>'),
         policyHolderSexTpl: _.template('<div class="insured-property-item"><span>投保人性别：</span>' +
                              '<div class="property-radio insured-sex" data-val="M"><div class="property-radio-item property-radio-item-ck" data-val="M">' +
                             '<span class="circle"><span class="circle-ck"></span></span>男</div>' +
                             '<div class="property-radio-item" data-val="F"><span class="circle"><span class="circle-ck"></span></span>女</div></div></div>'),
        dutyItemTpl: _.template('<div class="duty-item"><div class="duty-item-left" data-liabId="<%=liabId %>">' +
                             '<div class="duty-item-check"></div><div class="duty-item-name"><%=liabName %></div></div>' +
-                            '<input class="duty-item-input" placeholder="请输入保额" type="number"/></div>'),
+                            '<input class="duty-item-input" placeholder="请输入<%=inputText %>" type="number"/></div>'),
+        //可选责任列表 输入下拉框时（档次）
+        dutyItem2Tpl: _.template('<div class="duty-item"><div class="duty-item-left" data-liabId="<%=liabId %>">' +
+            '<div class="duty-item-check"></div><div class="duty-item-name"><%=liabName %></div></div>' +
+            '<select class="property-input property-select insured-benefitlevel duty-item-select"><%=benefitlevelOptions %></select></div>'),
+//            '<input class="duty-item-input" placeholder="请输入<%=inputText %>" type="number"/></div>'),
        //根据险种拼接Html-主险
        getMainPlanInputHtml:function(plan){
            var tempHtml = "";
            var self = this;
            if(!plan)return tempHtml;
+           var displayClass = "";
+           if(self.mainPlanNum <= 1){
+               displayClass = 'style="display:none;"';
+           }
            //交费期限
            var paymentPeriodHtml = "";
            //保障期限
@@ -278,14 +320,55 @@ define([
                    guaranteePeriodHtml += '<option data-type="'+plan.prdtTermCoverageList[j].periodType+'" value="'+plan.prdtTermCoverageList[j].periodValue+'">'+typeName+'</option>';
                }
            }
-           if(plan.productLiabilityList && plan.productLiabilityList.length > 0){
-               for(i = 0; i < plan.productLiabilityList.length; i++){
-                   dutyHtml += self.dutyItemTpl({liabId:plan.productLiabilityList[i].liabId,liabName:plan.productLiabilityList[i].liabName});
+           //档次下拉框
+           var benefitLevelHtml = "";
+           if(plan.benefitPlan && plan.benefitPlan.length > 0){
+               for(i = 0; i < plan.benefitPlan.length; i++){
+                   var num = parseInt(plan.benefitPlan[i]);
+                   if(!isNaN(num) && num >=0 && num < utils.benefitPlan.length){
+                       benefitLevelHtml += '<option value="'+num+'">'+utils.benefitPlan[num]+'</option>';
+                   }
                }
            }
-//           if(plan.unitFlag == 0) {//暂时只按保额 guyy TODO
-               tempHtml = self.unitFlag2Tpl({productId:plan.salesProductId,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
-//           }
+           //可选责任列表
+           if(plan.productLiabilityList && plan.productLiabilityList.length > 0){
+               for(i = 0; i < plan.productLiabilityList.length; i++){
+                   var inputText = "";
+                   if(plan.unitFlag == 6){
+                       inputText = "保额";
+                   }else if(plan.unitFlag == 7){
+                       inputText = "保费";
+                   }else if(plan.unitFlag == 1){
+                       inputText = "份数";
+                   }else if(plan.unitFlag == 4){
+                       inputText = "档次";
+                   }
+                   if(plan.unitFlag == 4){//可选责任对应输入档次 下拉框
+                       dutyHtml += self.dutyItem2Tpl({liabId:plan.productLiabilityList[i].liabId,liabName:plan.productLiabilityList[i].liabName,benefitlevelOptions:benefitLevelHtml});
+                   }else{
+                       dutyHtml += self.dutyItemTpl({liabId:plan.productLiabilityList[i].liabId,liabName:plan.productLiabilityList[i].liabName,inputText:inputText});
+                   }
+               }
+           }
+
+           if(plan.unitFlag == 6) {//保额
+               var minAmount = 0, maxAmount = 999999;
+               if(plan.amountLimit){
+                   minAmount = plan.amountLimit.minAmount;
+                   maxAmount = plan.amountLimit.maxAmount;
+               }
+               tempHtml = self.unitFlag1Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount});
+           }else if(plan.unitFlag == 7) {//保费
+               tempHtml = self.unitFlag2Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
+           }else if(plan.unitFlag == 1) {//份数
+               tempHtml = self.unitFlag3Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
+           }else if(plan.unitFlag == 3) {//份数 档次
+               tempHtml = self.unitFlag4Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml});
+           }else if(plan.unitFlag == 4) {//档次
+               tempHtml = self.unitFlag5Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml});
+           }else{
+               tempHtml = self.unitFlag6Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,dutyHtml:dutyHtml});
+           }
            return tempHtml;
        },
         //根据险种拼接Html-附加险  isFromAdditionalList是否来自附加险列表
@@ -316,14 +399,34 @@ define([
                     guaranteePeriodHtml += '<option data-type="'+plan.prdtTermCoverageList[j].periodType+'" value="'+plan.prdtTermCoverageList[j].periodValue+'">'+typeName+'</option>';
                 }
             }
-            if(plan.productLiabilityList && plan.productLiabilityList.length > 0){
-                for(i = 0; i < plan.productLiabilityList.length; i++){
-                    dutyHtml += self.dutyItemTpl({liabId:plan.productLiabilityList[i].liabId,liabName:plan.productLiabilityList[i].liabName});
+            //档次
+            var benefitLevelHtml = "";
+            if(plan.benefitPlan && plan.benefitPlan.length > 0){
+                for(i = 0; i < plan.benefitPlan.length; i++){
+                    var num = parseInt(plan.benefitPlan[i]);
+                    if(!isNaN(num) && num >=0 && num < utils.benefitPlan.length){
+                        benefitLevelHtml += '<option value="'+num+'">'+utils.benefitPlan[num]+'</option>';
+                    }
                 }
             }
-//            if(plan.unitFlag == 0) {//暂时只按保额 guyy TODO
-                tempHtml = self.additionalUnitFlag1Tpl({additionalName:productName,productId:productId,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
-//            }
+            if(plan.unitFlag == 6) {//保额
+                var minAmount = 0, maxAmount = 999999;
+                if(plan.amountLimit){
+                    minAmount = plan.amountLimit.minAmount;
+                    maxAmount = plan.amountLimit.maxAmount;
+                }
+                tempHtml = self.additionalUnitFlag1Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,minAmount:minAmount,maxAmount:maxAmount});
+            }else if(plan.unitFlag == 7) {//保费
+                tempHtml = self.additionalUnitFlag2Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
+            }else if(plan.unitFlag == 1) {//份数
+                tempHtml = self.additionalUnitFlag3Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
+            }else if(plan.unitFlag == 3) {//份数 档次
+                tempHtml = self.additionalUnitFlag4Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
+            }else if(plan.unitFlag == 4) {//档次
+                tempHtml = self.additionalUnitFlag5Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
+            }else{
+                tempHtml = self.additionalUnitFlag6Tpl({insType:2,productId:plan.salesProductId,additionalName:plan.salesProductName,unitflag:plan.unitFlag});
+            }
             return tempHtml;
         },
         //增值服务
@@ -374,7 +477,6 @@ define([
             var self = this;
             self.hasPolicyHolder = false;//投保人
             self.hasSecInsured = false;
-            self.hasSmoking = false;
             self.smokingType = 0;//和吸烟无关  1下拉框 2下拉框
             self.hasJob = false;
             self.hasSocialInsure = false;
@@ -392,7 +494,9 @@ define([
                 {
                     self.hasSecInsured = true;
                 }
-                self.smokingType = self.currPlanList[i].smokingIndi;
+                if(self.smokingType == 0) {
+                    self.smokingType = self.currPlanList[i].smokingIndi;
+                }
                 if(self.currPlanList[i].jobIndi == "Y")    //职业
                 {
                     self.hasJob = true;
@@ -402,7 +506,6 @@ define([
                     self.hasSocialInsure = true;
                 }
             }
-//            self.smokingType = 1;//TODO 测试吸烟下拉框
             //主险个数
             self.mainPlanNum = mainPlanNum;
             //设置职位列表HTML、被保人年龄限制列表HTML，投保人年龄限制列表HTML
@@ -411,11 +514,15 @@ define([
             self.ageRangeOfPolicyHolderHtml = "";
             self.smokingListHtml = "";
             self.smokingList2Html = "";
-            for(var i = self.ageRangeOfLifeAssured.minAge; i <= self.ageRangeOfLifeAssured.maxAge; i++){
-                self.ageRangeOfLifeAssuredHtml += '<option value="'+i+'">'+i+'</option>';
+            if(self.ageRangeOfLifeAssured) {
+                for (var i = self.ageRangeOfLifeAssured.minAge; i <= self.ageRangeOfLifeAssured.maxAge; i++) {
+                    self.ageRangeOfLifeAssuredHtml += '<option value="' + i + '">' + i + '</option>';
+                }
             }
-            for(i = self.ageRangeOfPolicyHolder.minAge; i <= self.ageRangeOfPolicyHolder.maxAge; i++){
-                self.ageRangeOfPolicyHolderHtml += '<option value="'+i+'">'+i+'</option>';
+            if(self.ageRangeOfPolicyHolder) {
+                for (i = self.ageRangeOfPolicyHolder.minAge; i <= self.ageRangeOfPolicyHolder.maxAge; i++) {
+                    self.ageRangeOfPolicyHolderHtml += '<option value="' + i + '">' + i + '</option>';
+                }
             }
             for(i = 0; i < self.occupationList.length;i++){
                 self.occupationListHtml += '<option value="'+self.occupationList[i].id+'">'+self.occupationList[i].name+'</option>';
@@ -560,21 +667,35 @@ define([
                 mainCoverage.unitFlag = $(this).data("unitflag");
                 mainCoverage.sa = $(this).find(".insured-sa").val();
                 if(mainCoverage.sa == ""){
-                    validateErrMsg = "请输入保额";
+                    validateErrMsg = "请输入主险保额";
                     return false;
                 }
+                if(mainCoverage.sa){
+                    var max = parseInt($(this).find(".insured-sa").attr("max"));
+                    var min = parseInt($(this).find(".insured-sa").attr("min"));
+                   if(parseInt(mainCoverage.sa) < min){
+                       validateErrMsg = "主险保额不得小于"+min;
+                       return false;
+                   }
+                    if(parseInt(mainCoverage.sa) > max){
+                        validateErrMsg = "主险保额不得大于"+max;
+                        return false;
+                    }
+                }
+                //保额需验证最小值 最大值
+                debugger;
                 mainCoverage.premium = $(this).find(".insured-premium").val();
                 if(mainCoverage.premium == ""){
-                    validateErrMsg = "请输入保费";
+                    validateErrMsg = "请输入主险保费";
                     return false;
                 }
                 mainCoverage.unit = $(this).find(".insured-unit").val();
                 if(mainCoverage.unit == ""){
-                    validateErrMsg = "请输入份数";
+                    validateErrMsg = "请输入主险份数";
                     return false;
                 }
                 if(mainCoverage.unit && !utils.isPositiveNum(mainCoverage.unit)){
-                    validateErrMsg = "份数不能填小数";
+                    validateErrMsg = "份数必须整数";
                     return false;
                 }
                 mainCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
@@ -618,17 +739,29 @@ define([
                 riderCoverage.unitFlag = $(this).data("unitflag");
                 riderCoverage.sa = $(this).find(".insured-sa").val();
                 if(riderCoverage.sa == ""){
-                    validateErrMsg = "请输入保额";
+                    validateErrMsg = "请输入附加险保额";
                     return false;
+                }
+                if(riderCoverage.sa){
+                    var max = parseInt($(this).find(".insured-sa").attr("max"));
+                    var min = parseInt($(this).find(".insured-sa").attr("min"));
+                    if(parseInt(riderCoverage.sa) < min){
+                        validateErrMsg = "附加险保额不得小于"+min;
+                        return false;
+                    }
+                    if(parseInt(riderCoverage.sa) > max){
+                        validateErrMsg = "附加险保额不得大于"+max;
+                        return false;
+                    }
                 }
                 riderCoverage.premium = $(this).find(".insured-premium").val();
                 if(riderCoverage.premium == ""){
-                    validateErrMsg = "请输入保费";
+                    validateErrMsg = "请输入附加险保费";
                     return false;
                 }
                 riderCoverage.unit = $(this).find(".insured-unit").val();
                 if(riderCoverage.unit == ""){
-                    validateErrMsg = "请输入份费";
+                    validateErrMsg = "请输入附加险份费";
                     return false;
                 }
                 if(riderCoverage.unit &&!utils.isPositiveNum(riderCoverage.unit)){
@@ -642,20 +775,20 @@ define([
                 chargePeriod.periodType = type
                 chargePeriod.periodValue = parseInt($(this).find(".payment-period").find("option:selected").val());
                 riderCoverage.chargePeriod = chargePeriod;
-                if(!chargePeriod.periodType || !chargePeriod.periodValue){
-                    validateErrMsg = "交费期限必选";
-                    return false;
-                }
+//                if(!chargePeriod.periodType || !chargePeriod.periodValue){ //此处为空暂不做验证
+//                    validateErrMsg = "交费期限必选";
+//                    return false;
+//                }
                 //保障期限
                 var coveragePeriod = {};
                 type = $(this).find(".guarantee-period").find("option:selected").data("type");
                 coveragePeriod.periodType = type
                 coveragePeriod.periodValue = parseInt($(this).find(".guarantee-period").find("option:selected").val());
                 riderCoverage.coveragePeriod = coveragePeriod;
-                if(!coveragePeriod.periodType || !coveragePeriod.periodValue){
-                    validateErrMsg = "保障期限必选";
-                    return false;
-                }
+//                if(!coveragePeriod.periodType || !coveragePeriod.periodValue){ //此处为空暂不做验证
+//                    validateErrMsg = "保障期限必选";
+//                    return false;
+//                }
                 riderCoverage.insuredIds = [insured.id];
                 riderCoverages.push(riderCoverage);
             });
@@ -713,7 +846,7 @@ define([
                 self.ui.calcResultCon.prepend($(resultHtml));
                 self.isCalcOver = true;
             },function(err){
-                MsgBox.alert(err);
+                console.log(err);
             });
         },
         //点击生成计划书
@@ -752,22 +885,49 @@ define([
             var self  = this;
             e.stopPropagation();
             e.preventDefault();
-            MsgBox.ask("确定删除该附加险吗？","",function(type){
-                if(type == 2) { //确定  0=取消
-                    var parent = $(e.target).parents(".additional-item");
-                    var additionalId = parent.data("productid");//待删除附加险ID
-                    var index = additionalId?self.additionalIdArr.indexOf(additionalId):-1;
-                    if(index >= 0){
-                        self.additionalIdArr.splice(index,1);
+            var target = $(e.target);
+            if(!target.hasClass("additional-del"))return;
+            //1主险（不能全部删除，得留 一个）  2附加险
+            var insType = target.data("insured-type");
+            if(insType == 1){
+                if(self.mainPlanIdArr.length <= 1){
+                    MsgBox.alert("只剩一个主险，不可删除");
+                    return;
+                }
+                MsgBox.ask("确定删除该主险吗？", "", function (type) {
+                    if (type == 2) { //确定  0=取消
+                        var parent = $(e.target).parents(".main-insured-item");
+                        var productId = parent.data("productid");//待删除主险ID
+                        var index = productId ? self.mainPlanIdArr.indexOf(productId) : -1;
+                        if (index >= 0) {
+                            self.mainPlanIdArr.splice(index, 1);
+                        }
+                        parent.slideUp(function () {
+                            parent.remove();
+                        });
                     }
-                    parent.slideUp(function(){
-                        parent.remove();
-                    });
-                }
-                if(type == 0) {
-                    console.log("取消删除");
-                }
-            });
+                    if (type == 0) {
+                        console.log("取消删除");
+                    }
+                });
+            }else if(insType == 2) {
+                MsgBox.ask("确定删除该附加险吗？", "", function (type) {
+                    if (type == 2) { //确定  0=取消
+                        var parent = $(e.target).parents(".additional-item");
+                        var additionalId = parent.data("productid");//待删除附加险ID
+                        var index = additionalId ? self.additionalIdArr.indexOf(additionalId) : -1;
+                        if (index >= 0) {
+                            self.additionalIdArr.splice(index, 1);
+                        }
+                        parent.slideUp(function () {
+                            parent.remove();
+                        });
+                    }
+                    if (type == 0) {
+                        console.log("取消删除");
+                    }
+                });
+            }
         },
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
