@@ -7,7 +7,6 @@
 define([], function () {
     var PersonalCollectModel = function () {
     };
-
     // var test = {
     //     "status": "0",
     //     "errorMessages": [],

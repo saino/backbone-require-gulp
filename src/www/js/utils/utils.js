@@ -228,6 +228,9 @@
         }
         return reStr;
     };
+    //档次列表
+    utils.benefitPlan = ["Not Relevant","Plan 1","Plan 2","Plan 3","Plan 4","Plan 5","Plan 6","Plan 7","Plan 8","Plan 9",
+        "Plan 10","Plan 11","Plan 12","Plan 13","Plan 14","Plan 15","Plan 16","Plan 17","Plan 18","Plan 19","Plan 20"];
 
     /**
      * 格式化显示时间

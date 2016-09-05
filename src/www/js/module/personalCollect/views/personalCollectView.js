@@ -21,6 +21,7 @@ define([
         template: _.template(Tpl),
         id:"personal-collect-container",
         currentUserId: "",     //当前用户ID
+        initListData : [],      //初始化数据
         currentListData : [],     //当前收藏数据的列表
         ui:{
             topCon : ".top-title",
@@ -119,16 +120,16 @@ define([
                                                     '</div>';
                     }
                     if(!insuranceProductCard.length){
-                        insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏记录</div>';
+                        insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏的产品</div>';
                     }
                     self.ui.personalCollectMain.html(insuranceProductCardHtml);
                 } else{
-                    var insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏记录</div>';
+                    var insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏的产品</div>';
                     self.ui.personalCollectMain.html(insuranceProductCardHtml);
                     console("数据返回错误", data);
                 }
             }, function(error){
-                var insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏记录</div>';
+                var insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏的产品</div>';
                 self.ui.personalCollectMain.html(insuranceProductCardHtml);
                 console.log("数据查询失败", error);
             });
@@ -189,7 +190,7 @@ define([
                     personalCollectModel.deleteCollectProduct(options, function(data){
                         console.log(data);
                         if(data.status == "0"){
-                          self.ui.personalCollectMain.html('<div id="browse-records-noting">暂无浏览记录</div>');
+                          self.ui.personalCollectMain.html('<div id="browse-records-noting">暂无收藏的产品</div>');
                         }else{
                             console.log("删除失败",data);
                         }
@@ -254,7 +255,7 @@ define([
                                 parent.slideUp(function(){
                                     parent.remove();
                                     if(!(pparent.children().length)){
-                                        self.ui.personalCollectMain.html('<div id="browse-records-noting">暂无浏览记录</div>');
+                                        self.ui.personalCollectMain.html('<div id="browse-records-noting">暂无收藏的产品</div>');
                                     }
                                 });
                             }else{
@@ -274,7 +275,6 @@ define([
         },
         close:function(){
             var self = this;
-            self._initView = null;
             self.remove();
             if(MsgBox && MsgBox.isShow()) {
                 MsgBox.clear();
