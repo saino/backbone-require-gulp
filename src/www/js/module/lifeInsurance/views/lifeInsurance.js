@@ -379,11 +379,19 @@ define([
                         lifeInsuranceContentHtml += '</div>'; 
                     }
 
+                    if(!salesPackages || salesPackages.length == 0){
+                       lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
+                    }
+
                     self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
                 } else{
+                    lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
+                    self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
                     console.log("数据返回错误", data.errorMessages);
                 }
             }, function(error){
+                    lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
+                    self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
                 console.log("数据查询失败", error);
             });
         },

@@ -28,6 +28,7 @@ define([
             safeguardRange : "#safeguard-range span:last-child",             //保障期间
             productDetailsMain : "#product-details-main",
             summaryContent : ".insure-summary-content" ,     //保障概览
+            productInsureFeature: ".product-insure-feature", //产品特色容器
             featureContent : ".insure-feature-content",     //产品特色
             dutyTitle : ".insure-duty-title",               //责任标题
             dutyTitleBtn : ".insure-duty-title .pull-icon-big", //责任下拉按钮
@@ -247,7 +248,17 @@ define([
          */
         initFeatureView : function (productFeatureList) {
             var self = this;
-            var featureTemp = '<div class="insure-feature-item" style="background: url({feature-pic}) no-repeat center"></div>';
+
+            if(!productFeatureList || productFeatureList.length==0){
+                self.ui.productInsureFeature.hide();
+                console.log("没有附加险");
+                return;
+            }else{
+                self.ui.productInsureFeature.show();
+            }
+
+            // var featureTemp = '<div class="insure-feature-item" style="background: url({feature-pic}) no-repeat center"></div>';
+            var featureTemp = '<img style="width: 100%" src="{feature-pic}"></img>';
             var featureStr = "";
             for(var i = 0; i < productFeatureList.length; i++){
                 var obj = productFeatureList[i];

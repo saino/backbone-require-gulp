@@ -45,18 +45,7 @@ define([
             setTimeout(function(){
                 var height = self.ui.topCon.outerHeight(true);
                 self.ui.personalCollectMain.css({height: "calc(100% - " + height + "px)"});
-            }, 0)
-            // self._initView = self.initView.bind(self);
-            // //TODO 需要真实的接口和数据
-            // // personalCollectModel.getCollectItemList(self.currentUserId,  self._initView, function(err){
-            // //     console.log(err);
-            // // });
-            // // var options = {
-            // //     encryptedUserData: utils.userObj.id
-            // // };
-            // // personalCollectModel.getCollectedProductList(options, self._initView, function(error){
-            // //     console.log(err);
-            // // });
+            }, 0);
 
         },
         pageIn:function(){
@@ -134,37 +123,6 @@ define([
                 console.log("数据查询失败", error);
             });
         },
-        // /**
-        //  * 初始化界面的动态数据
-        //  * @param data
-        //  */
-        // initView : function(data){
-        //     console.log(data);
-        //     var self = this;
-        //     //TODO 以下为模拟的数据，需要调试的，会有细微的改动
-        //     var list = data.salesPackageCollectHistory;
-        //     self.currentListData = list;
-        //     var collectItemStr = "";
-        //     if (list.length > 0){
-        //         for (var i = 0; i < list.length; i++){
-        //             var obj = list[i];
-        //             var date = obj.createTime;      //格式最后需要转换
-        //             var applicantName = "投保人：" + obj.applicantName; //投保人名称
-        //             var planName = obj.planName;    //计划书名称
-        //             var recognizeeInfo = obj.recognizeeInfo + " " + obj.transferDeadline + " " + obj.safeguardDeadline;             //被保人信息
-        //             var costInfo = "保额" + obj.coverage + " 首年保费" + obj.premium;      //费用信息
-        //             var objectId = obj.objectId;    //计划ID
-        //             var realItemTemp = collectItemTemp.replace("{applicantName}", applicantName).replace("{itemDate}", date)
-        //                 .replace("{planName}", planName).replace("{recognizeeInfo}", recognizeeInfo)
-        //                 .replace("{costInfo}", costInfo).replace("{dataId}", objectId);
-        //             collectItemStr += realItemTemp;
-        //         }
-        //         self.ui.personalCollectMain.html(collectItemStr);
-        //     }else{
-        //         self.ui.personalCollectMain.html('<div class="collect-item-noting">暂无浏览记录</div>');
-        //     }
-            
-        // },
         /**
          * 点击返回
          * @param e
@@ -211,33 +169,6 @@ define([
             event.stopPropagation();
             event.preventDefault();
             var self = this;
-            //删除单条计划书
-            // var target = e.target;
-            // var $target = $(target);
-            // var dataId = $target.attr("data-id");
-            // var parent = "";
-            // if (dataId){
-            //     parent = $target.parent();
-            //     if (parent) {
-            //         MsgBox.ask("你确定要删除该收藏的产品吗？","bbbbbbb",function(type){
-            //             if(type == 2) { //确定  0=取消
-            //                 console.log("删除了1111");
-            //                 var pparent = parent.parent();
-            //                 parent.slideUp(function(){
-            //                     parent.remove();
-            //                     //TODO 需要真实删除该条计划
-            //                     if (!(pparent.children().length)) {
-            //                         self.currentListData = [];
-            //                         self.ui.personalCollectMain.html('<div class="collect-item-noting">暂无浏览记录</div>');
-            //                     }
-            //                 });
-            //             }
-            //             if(type == 0) {
-            //                 console.log("取消删除");
-            //             }
-            //         });  
-            //     }
-            // }
             if(event.target.getAttribute("class") == "insurance-product-delete"){
                 MsgBox.ask("你确定删除该条收藏的产品吗？","bbbbbbb",function(type){
                     if(type == 2) { //确定  0=取消
