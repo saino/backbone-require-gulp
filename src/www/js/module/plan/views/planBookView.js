@@ -5,11 +5,17 @@
 define([
     'common/base/base_view',
     'module/plan/model/planModel',
-    'text!module/plan/templates/planBookView.html'
-],function(BaseView, planModel, tpl){
+    'text!module/plan/templates/planBookView.html',
+    'text!module/plan/templates/planLiability.html',
+    'text!module/plan/templates/planLiabilityItem.html',
+    'text!module/plan/templates/planLiabilityItemItem.html'
+],function(BaseView, planModel, tpl,planLiabilityTpl,planLiabilityItemTpl,planLiabilityItemItemTpl){
     var planBookView = BaseView.extend({
         id:"plan-book-container",
         template: _.template(tpl),
+        planLiabilityTpl: _.template(planLiabilityTpl),
+        planLiabilityItemTpl: _.template(planLiabilityItemTpl),
+        planLiabilityItemItemTpl: _.template(planLiabilityItemItemTpl),
         inited : false,       //初始化完毕
         currPlanId:0,       //当前已生成计划 ID
         planBook:{},            //当前计划书对象
@@ -35,14 +41,18 @@ define([
             featureImgList:"#featureImgList",  //产品特色容器
             guaranteeList:".guarantee-list",  //保障概览容器
             valueAddedList:".added-service-list",  //增值服务
-            commentCon:".plan-message-txt"      //留言
+            commentCon:".plan-message-txt",      //留言
+            btnClause:".btn-clause",     //条款按钮
+            liabilityList:".plan-obligation-list"//保险责任
         },
 
         events:{
+            "tap .btn-clause":"clickClauseHandler", //点击打开条款列表
             "tap @ui.btnRangeAdd" : "onRangeAddHandler",
             "tap @ui.btnRangeReduce" : "onRangeReduceHandler",
             "tap .added-service-item-button":"clickShowValueAddedHandler",//点击查看增值服务详情
             "tap .type-button":"clickStopHandler",  //点击收起/展开险种保费表格
+            "tap .btn-icon":"clickLiabilityHandler",  //点击收起/展开责任列表
             "tap .item-right-btn":"clickOpenDescHandler" //点击展开/收起责任详情
         },
 
@@ -182,9 +192,40 @@ define([
             self.ui.valueAddedList.html($(tempHtml));
         },
         //责任
-        initLiability:function(initLiability){
-            //TODO
-
+        initLiability:function(planLiability){
+            var packageId = planLiability.packageId;
+            var liabCateList = planLiability.liabCateList;
+            var tempHtml = "", self = this;
+            self.ui.btnClause.data("id",packageId);
+            //嵌套三层循环，需求之复杂 只可意会 不可言传
+            for(var i = 0; i < liabCateList.length; i++)
+            {
+                var liabilityListHtml = "";
+                //只有是1时，参与计算，才有amount。否则取liabCalcMethod描述
+                var libCalcType = liabCateList[i].libCalcType;
+                for(var j =0 ; j < liabCateList[i].simpleLiabList.length; j++){
+                    var obj = liabCateList[i].simpleLiabList[j];
+                    var liabilityList2Html = "";
+                    var totalAmount = "";
+                    if(libCalcType == 1){
+                        totalAmount = obj.totalAmount;
+                    }
+                    for(var k = 0; k < obj.liabList.length; k++){
+                        var itemObj = obj.liabList[k];
+                        var liabAmount = itemObj.liabCalcMethod;
+                        var rightClass = "";
+                        if(libCalcType == 1){
+                            rightClass = "item-right-mr88"; //显示金额时需距离右边88px
+                            liabAmount = itemObj.liabAmount;
+                        }
+                        var libId = itemObj.libId;
+                        var productId = itemObj.productId;
+                        liabilityList2Html += self.planLiabilityItemItemTpl({liabDisplayName:itemObj.liabDisplayName,liabAmount:liabAmount,libDescQuote:itemObj.libDescQuote,rightClass:rightClass});
+                    }
+                    liabilityListHtml += self.planLiabilityItemTpl({liabDisplayName:obj.liabDisplayName,totalAmount:totalAmount,liabilityList2Html:liabilityList2Html});
+                }
+                tempHtml += self.planLiabilityTpl({categoryName:liabCateList[i].categoryName,liabilityListHtml:liabilityListHtml});
+            }
         },
         getProductName:function(id){
             var self = this;
@@ -195,6 +236,16 @@ define([
                 }
             }
             return "";
+        },
+        //点击查看条款列表
+        clickClauseHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var self = this;
+            var target = $(e.target);
+            if(target.data("id")){
+                app.navigate("in/clauseList/"+target.data("id"),{trigger:true, replace:true});
+            }
         },
         onRangeAddHandler : function(e){
             e.stopPropagation();
@@ -240,6 +291,19 @@ define([
                 target.siblings("#calcResultTable").slideUp();
             }else{//点击收起
                 target.siblings("#calcResultTable").slideDown();
+            }
+        },
+        //展开、收起保险责任
+        clickLiabilityHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var target = $(e.target);
+            var self = this;
+            target.toggleClass("down");
+            if(target.hasClass("down")){//点击展开
+                self.ui.liabilityList.slideDown();
+            }else{//点击收起
+                self.ui.liabilityList.slideUp();
             }
         },
         //点击展开或收起责任描述

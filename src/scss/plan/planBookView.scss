@@ -263,10 +263,11 @@
         position: absolute;
         width: 38px;
         height: 50px;
-        background: url("../images/bigUpArrow.png") no-repeat center;
+        background: url("../images/insurance/up-big.png") no-repeat center;
         top: 30px;
         right: 28px;
       }
+      .btn-icon.down{background: url("../images/insurance/down-big.png") no-repeat center;}
     }
 
     .plan-obligation-list{

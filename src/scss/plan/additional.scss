@@ -12,7 +12,10 @@
 box-shadow: 0 5px 5px 0 rgba(231,231,231,.75);}
 
 /*详细条款*/
-#clause-container{width:100%; height:100%; position: absolute; top:0; left:0; overflow: hidden; background: #F5F5F5;}
+#clause-container{width:100%; height:100%; position: absolute; top:0; left:0; overflow: hidden; background: #F5F5F5;
+  .clause-item{margin:14px 30px 0 30px; width:-webkit-calc(100% - 60px); height:70px; background:#FBF9FA; border-radius: 10px; line-height: 70px;  text-indent: 16px;   font-size: 3em;
+    text-overflow: ellipsis; overflow: hidden; white-space:nowrap; display: block;}
+}
 #clause-main{    background: #fff;overflow: hidden;font-size: 2.6em;margin-top: 10px;width: 100%;padding: 40px 36px 44px;line-height: 40px;
   .clause-item{margin:14px 30px 0 30px; width:-webkit-calc(100% - 60px); height:70px; background:#FBF9FA; border-radius: 10px; line-height: 70px;  text-indent: 16px;   font-size: 3em;
     text-overflow: ellipsis; overflow: hidden; white-space:nowrap; display: block;}
