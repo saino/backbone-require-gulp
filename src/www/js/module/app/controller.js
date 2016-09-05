@@ -17,6 +17,8 @@ define([
     'module/attachDetails/controller',
     'module/makePlan/controller',
     'module/personalPlan/controller',
+    'module/personalCollect/controller',
+    'module/personalCustomer/controller'
 ],function(){
     var controllers = {
     };
