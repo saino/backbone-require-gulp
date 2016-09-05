@@ -35,6 +35,7 @@ define([
             }
 
             searchModel.getAdvancedFilters(function(data){
+                console.log(data);
                 self.initProductList(data.salesTypeInfo);
                 self.initRightsInfoList(data.rightsInfo);
                 self.initCompanyList(data.companyVo);
@@ -45,49 +46,125 @@ define([
 
         initProductList : function(list){
             var self = this;
-            var i, len = list.length, html = '<div class="type-item type-all type-item-ck">全部</div>';
-            self.ui.productList.find('.list-item').remove();
-            for(i=0; i < len; i++){
-                var obj = list[i];
-                html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.typeName +'</div>'
+            var i, len = list.length, html = '';
+            if(utils.advanceSaleTypeIds.length == 0){
+                html = '<div class="type-item type-all type-item-ck">全部</div>';
+                self.ui.productList.find('.list-item').remove();
+                for(i=0; i < len; i++){
+                    var obj = list[i];
+                    html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.typeName +'</div>'
+                }
+            }else{
+                html = '<div class="type-item type-all">全部</div>';
+                self.ui.productList.find('.list-item').remove();
+                for(i=0; i < len; i++){
+                    var obj = list[i];
+                    for(var j=0; j<utils.advanceSaleTypeIds.length; j++){
+                        if(obj.listId == utils.advanceSaleTypeIds[j]){
+                            html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.typeName +'</div>';
+                            break;
+                        }
+                    }
+                    if(j == utils.advanceRightIds.length){
+                        html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.typeName +'</div>';
+                    }
+                    // html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.typeName +'</div>'
+                }
             }
             self.ui.productList.append(html);
         },
 
         initRightsInfoList : function(list){
             var self = this;
-            var i, len = list.length, html = '<div class="type-item type-all type-item-ck">全部</div>';
-            self.ui.rightsInfoList.find('.list-item').remove();
-            for(i=0; i < len; i++){
-                var obj = list[i];
-                html += '<div class="type-item list-item" data-id='+obj.rightId+'>'+ obj.rightName +'</div>'
+            var i, len = list.length, html = '';
+            if(utils.advanceRightIds.length == 0){
+                 html = '<div class="type-item type-all type-item-ck">全部</div>';
+                self.ui.rightsInfoList.find('.list-item').remove();
+                for(i=0; i < len; i++){
+                    var obj = list[i];
+                    html += '<div class="type-item list-item" data-id='+obj.rightId+'>'+ obj.rightName +'</div>'
+                }
+            } else{
+                html = '<div class="type-item type-all">全部</div>';
+                self.ui.rightsInfoList.find('.list-item').remove();
+                for(i=0; i < len; i++){
+                    var obj = list[i];
+                    for(var j=0; j<utils.advanceRightIds.length; j++){
+                        if(obj.rightId == utils.advanceRightIds[j]){
+                            html += '<div class="type-item list-item type-item-ck" data-id='+obj.rightId+'>'+ obj.rightName +'</div>';
+                            break;
+                        }
+                    }
+                    if(j == utils.advanceRightIds.length){
+                        html += '<div class="type-item list-item" data-id='+obj.rightId+'>'+ obj.rightName +'</div>';
+                    }
+                }
             }
+           
             self.ui.rightsInfoList.append(html);
         },
 
         initCompanyList : function(list){
             var self = this;
             var i, len = list.length,html = '';
-            if(utils.companyId == "all"){
-                html = '<div class="type-item type-all type-item-ck">全部</div>';
-                for(i=0; i < len; i++){
-                    var obj = list[i];
-                    html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+            // if(utils.companyId == "all"){
+            //     html = '<div class="type-item type-all type-item-ck">全部</div>';
+            //     for(i=0; i < len; i++){
+            //         var obj = list[i];
+            //         html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+            //     }
+            //     utils.advancedCompanyId = [];
+            // }else{
+            //     html = '<div class="type-item type-all">全部</div>';
+            //     for(i=0; i < len; i++){
+            //         var obj = list[i];
+            //         if(utils.companyId == obj.listId){
+            //             // utils.advancedCompanyId = [];
+            //             // utils.advancedCompanyId[0] = utils.companyId;
+            //             html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+            //         }else{
+            //             html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+            //         }
+            //     }
+            // }
+
+            if(utils.advancedCompanyId.length == 0){
+                if(utils.companyId == "all"){
+                    html = '<div class="type-item type-all type-item-ck">全部</div>';
+                    for(i=0; i < len; i++){
+                        var obj = list[i];
+                        html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+                    }
+                    // utils.advancedCompanyId = [];
+                }else{
+                    html = '<div class="type-item type-all">全部</div>';
+                    for(i=0; i < len; i++){
+                        var obj = list[i];
+                        if(utils.companyId == obj.listId){
+                            // utils.advancedCompanyId = [];
+                            // utils.advancedCompanyId[0] = utils.companyId;
+                            html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+                        }else{
+                            html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+                        }
+                    }
                 }
-                utils.advancedCompanyId = [];
             }else{
                 html = '<div class="type-item type-all">全部</div>';
-                for(i=0; i < len; i++){
+                for(i=0; i<len; i++){
                     var obj = list[i];
-                    if(utils.companyId == obj.listId){
-                        // utils.advancedCompanyId = [];
-                        // utils.advancedCompanyId[0] = utils.companyId;
-                        html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
-                    }else{
+                    for(var j=0; j<utils.advancedCompanyId.length; j++){
+                        if(utils.advancedCompanyId[j] == obj.listId || utils.companyId == obj.listId){
+                            html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
+                            break;
+                        }
+                    }
+                    if(j == utils.advancedCompanyId.length){
                         html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
                     }
                 }
             }
+
             self.ui.companyList.find('.list-item').remove();
             // for(i=0; i < len; i++){
             //     var obj = list[i];
@@ -137,11 +214,14 @@ define([
 
             //种类ID
             utils.lifeInsuranceOptions.saleTypeIds = productLists;
+            utils.advanceSaleTypeIds = productLists;
             //权益ID
             utils.lifeInsuranceOptions.rightIds = infoLists;
+            utils.advanceRightIds = infoLists;
             //公司ID
             utils.lifeInsuranceOptions.companyIds = companyLists;
-            console.log(companyLists);
+            // utils.advanceCompanyLists = companyLists;
+            // console.log(companyLists);
             utils.advancedCompanyId = companyLists;
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = true;
