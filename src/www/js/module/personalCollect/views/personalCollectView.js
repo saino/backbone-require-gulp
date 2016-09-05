@@ -21,6 +21,7 @@ define([
         template: _.template(Tpl),
         id:"personal-collect-container",
         currentUserId: "",     //当前用户ID
+        initListData : [],      //初始化数据
         currentListData : [],     //当前收藏数据的列表
         ui:{
             topCon : ".top-title",
@@ -44,12 +45,15 @@ define([
             setTimeout(function(){
                 var height = self.ui.topCon.outerHeight(true);
                 self.ui.personalCollectMain.css({height: "calc(100% - " + height + "px)"});
-            }, 0)
-            self._initView = self.initView.bind(self);
+            }, 0);
             //TODO 需要真实的接口和数据
-            // personalCollectModel.getCollectItemList(self.currentUserId,  self._initView, function(err){
-            //     console.log(err);
-            // });
+            personalCollectModel.getCollectItemList(self.currentUserId,  function(data){
+                var list = data.collectItemList;
+                self.initListData = list;
+                self.initView(list);
+            }, function(err){
+                console.log(err);
+            });
 
         },
         pageIn:function(){
@@ -63,21 +67,25 @@ define([
         initView : function(data){
             var self = this;
             //TODO 以下为模拟的数据，需要调试的，会有细微的改动
-            var list = data.planItemList;
+            var list = data;
             self.currentListData = list;
             var collectItemStr = "";
             if (list.length > 0){
                 for (var i = 0; i < list.length; i++){
                     var obj = list[i];
-                    var date = obj.createTime;      //格式最后需要转换
-                    var applicantName = "投保人：" + obj.applicantName; //投保人名称
-                    var planName = obj.planName;    //计划书名称
-                    var recognizeeInfo = obj.recognizeeInfo + " " + obj.transferDeadline + " " + obj.safeguardDeadline;             //被保人信息
-                    var costInfo = "保额" + obj.coverage + " 首年保费" + obj.premium;      //费用信息
+                    var insuranceName = obj.planName; //投保人名称
+                    var ageTerm = obj.transferDeadline;             //年龄
+                    var safeguardTerm =obj.safeguardDeadline;      //保障期间
                     var objectId = obj.objectId;    //计划ID
-                    var realItemTemp = collectItemTemp.replace("{applicantName}", applicantName).replace("{itemDate}", date)
-                        .replace("{planName}", planName).replace("{recognizeeInfo}", recognizeeInfo)
-                        .replace("{costInfo}", costInfo).replace("{dataId}", objectId);
+                    var itemFeature = "";
+                    var salesRightsList = obj.salesRightsList;
+                    for(var j = 0; j < salesRightsList.length; j++){
+                        var salesRight = salesRightsList[j];
+                        itemFeature +='<div class="item-feature">'+salesRight.rightName+'</div>';
+                    }
+                    var realItemTemp = collectItemTemp.replace("{insuranceName}", insuranceName).replace("{ageTerm}", ageTerm)
+                        .replace("{safeguardTerm}", safeguardTerm).replace("{itemFeature}", itemFeature)
+                        .replace("{dataId}", objectId);
                     collectItemStr += realItemTemp;
                 }
                 self.ui.personalCollectMain.html(collectItemStr);
@@ -158,7 +166,6 @@ define([
         },
         close:function(){
             var self = this;
-            self._initView = null;
             self.remove();
             if(MsgBox && MsgBox.isShow()) {
                 MsgBox.clear();

@@ -232,6 +232,67 @@
     utils.benefitPlan = ["Not Relevant","Plan 1","Plan 2","Plan 3","Plan 4","Plan 5","Plan 6","Plan 7","Plan 8","Plan 9",
         "Plan 10","Plan 11","Plan 12","Plan 13","Plan 14","Plan 15","Plan 16","Plan 17","Plan 18","Plan 19","Plan 20"];
 
+    /**
+     * 格式化显示时间
+     * @param time
+     * @param format  如"yyyy.MM.dd HH:mm"   "yyyy.MM.dd"
+     * @returns {*}
+     */
+    utils.formattime = function(time, format) {
+        var t = new Date(time);
+        var tf = function (i) { return (i < 10 ? '0' : '') + i };
+        return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function (a) {
+            switch (a) {
+                case 'yyyy':
+                    return tf(t.getFullYear());
+                    break;
+                case 'MM':
+                    return tf(t.getMonth() + 1);
+                    break;
+                case 'mm':
+                    return tf(t.getMinutes());
+                    break;
+                case 'dd':
+                    return tf(t.getDate());
+                    break;
+                case 'HH':
+                    return tf(t.getHours());
+                    break;
+                case 'ss':
+                    return tf(t.getSeconds());
+                    break;
+            }
+        })
+    };
 
+    /**
+     * 模糊搜索数组为对象数组
+     * @param array 需要搜索的原始数组
+     * @param searchVal  搜索的值
+     * @keyArr 搜索所需要的几个字段
+     * @returns {*}
+     */
+    utils.searchObjectArray = function(array, searchVal, keyArr) {
+        var results = [];
+        for(var i = 0; i < array.length; i++){
+            var obj = array[i];
+            for(var j = 0; j < keyArr.length; j++){
+                var key = keyArr[j];
+                var val = "";
+                var temp = [];
+                temp = key.split("|");
+                if(temp.length > 1 ){
+                    val = obj[temp[0]][temp[1]];
+                }else{
+                    val = obj[key];
+                }
+                if(val.indexOf(searchVal) > - 1){
+                    results.push(obj);
+                    break;
+                }
+            }
+        }
+        return results;
+    };
     
 })(window);

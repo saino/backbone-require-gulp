@@ -12,45 +12,129 @@ define([], function () {
         "status": "0",
         "errorMessages": [],
         "userId": 9100001,
-        "planItemList": [{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
+        "collectItemList": [{
             planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "保额100万",            //保额
-            premium: "首年保费20735.37元",    //首年保费
+            transferDeadline: "28天-60周岁",     //交费期限
+            safeguardDeadline: "终身",             //保障期限
+            salesRightsList : [ {
+                "rightId" : 1,
+                "rightName" : "终身寿险",
+                "rightDesc" : "终身寿险",
+                "displayOrder" : 1
+            }, {
+                "rightId" : 4,
+                "rightName" : "单次重疾",
+                "rightDesc" : null,
+                "displayOrder" : 2
+            }, {
+                "rightId" : 5,
+                "rightName" : "多次轻症",
+                "rightDesc" : null,
+                "displayOrder" : 3
+            }, {
+                "rightId" : 9,
+                "rightName" : "重疾豁免",
+                "rightDesc" : null,
+                "displayOrder" : 6
+            }, {
+                "rightId" : 10,
+                "rightName" : "轻症豁免",
+                "rightDesc" : null,
+                "displayOrder" : 7
+            } ],
             objectId : "123456"
         },{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
             planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "保额100万",            //保额
-            premium: "首年保费20735.37元",    //首年保费
+            transferDeadline: "28天-60周岁",     //交费期限
+            safeguardDeadline: "终身",             //保障期限
+            salesRightsList : [ {
+                "rightId" : 1,
+                "rightName" : "终身寿险",
+                "rightDesc" : "终身寿险",
+                "displayOrder" : 1
+            }, {
+                "rightId" : 4,
+                "rightName" : "单次重疾",
+                "rightDesc" : null,
+                "displayOrder" : 2
+            }, {
+                "rightId" : 5,
+                "rightName" : "多次轻症",
+                "rightDesc" : null,
+                "displayOrder" : 3
+            }, {
+                "rightId" : 9,
+                "rightName" : "重疾豁免",
+                "rightDesc" : null,
+                "displayOrder" : 6
+            }, {
+                "rightId" : 10,
+                "rightName" : "轻症豁免",
+                "rightDesc" : null,
+                "displayOrder" : 7
+            } ],
             objectId : "123456"
         },{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
             planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "保额100万",            //保额
-            premium: "首年保费20735.37元",    //首年保费
+            transferDeadline: "28天-60周岁",     //交费期限
+            safeguardDeadline: "终身",             //保障期限
+            salesRightsList : [ {
+                "rightId" : 1,
+                "rightName" : "终身寿险",
+                "rightDesc" : "终身寿险",
+                "displayOrder" : 1
+            }, {
+                "rightId" : 4,
+                "rightName" : "单次重疾",
+                "rightDesc" : null,
+                "displayOrder" : 2
+            }, {
+                "rightId" : 5,
+                "rightName" : "多次轻症",
+                "rightDesc" : null,
+                "displayOrder" : 3
+            }, {
+                "rightId" : 9,
+                "rightName" : "重疾豁免",
+                "rightDesc" : null,
+                "displayOrder" : 6
+            }, {
+                "rightId" : 10,
+                "rightName" : "轻症豁免",
+                "rightDesc" : null,
+                "displayOrder" : 7
+            } ],
             objectId : "123456"
         },{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
             planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "100万元",            //保额
-            premium: "20735.37元",    //首年保费
+            transferDeadline: "28天-60周岁",     //交费期限
+            safeguardDeadline: "终身",             //保障期限
+            salesRightsList : [ {
+                "rightId" : 1,
+                "rightName" : "终身寿险",
+                "rightDesc" : "终身寿险",
+                "displayOrder" : 1
+            }, {
+                "rightId" : 4,
+                "rightName" : "单次重疾",
+                "rightDesc" : null,
+                "displayOrder" : 2
+            }, {
+                "rightId" : 5,
+                "rightName" : "多次轻症",
+                "rightDesc" : null,
+                "displayOrder" : 3
+            }, {
+                "rightId" : 9,
+                "rightName" : "重疾豁免",
+                "rightDesc" : null,
+                "displayOrder" : 6
+            }, {
+                "rightId" : 10,
+                "rightName" : "轻症豁免",
+                "rightDesc" : null,
+                "displayOrder" : 7
+            } ],
             objectId : "123456"
         }]
     };

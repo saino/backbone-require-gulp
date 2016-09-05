@@ -12,69 +12,17 @@ define([], function () {
         "status": "0",
         "errorMessages": [],
         "userId": 9100001,
-        "planItemList": [{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
-            planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "保额100万",            //保额
-            premium: "首年保费20735.37元",    //首年保费
-            objectId : "123456"
-        },{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
-            planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "保额100万",            //保额
-            premium: "首年保费20735.37元",    //首年保费
-            objectId : "123456"
-        },{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
-            planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "保额100万",            //保额
-            premium: "首年保费20735.37元",    //首年保费
-            objectId : "123456"
-        },{
-            applicantName: "王五",        //投保人名称
-            createTime: "2016年8月24日",
-            planName: "华夏贴心宝",
-            recognizeeInfo : "张三 男 33岁",    //被保人，性别，年龄
-            transferDeadline: "交20年保险",     //交费期限
-            safeguardDeadline: "保终身",             //保障期限
-            coverage: "100万元",            //保额
-            premium: "20735.37元",    //首年保费
-            objectId : "123456"
-        }]
+        "customerItemList": [{"A":[["AYJ","13701883239"]]},{"B":[["八宝1","18516221508"],["八宝2","22222222222"],["八宝3","333333333333"],["八宝4","4444444444"],["八宝5","555555555555"],["八宝6","66666666666"],["八宝7","77777777777"]]},{"C":[["陈四1","11111111111"],["陈四2","22222222222"],["陈四3","333333333333"],["陈四4","4444444444"],["陈四5","555555555555"],["陈四6","66666666666"],["陈四7","77777777777"]]},{"D":[["Daniel Higgins Jr.","(408) 555-3514"],["David Taylor","555-610-6679"]]},{"H":[["Hank M. Zakroff","(707) 555-1854"]]},{"J":[["John Appleseed","888-555-1212"]]},{"L":[["李二1","1111111111"],["李二2","2222222222222"],["李二3","3333333333"],["李二4","44444444444"],["李二5","5555555555555"],["李二6","6666666666666"],["李二7","777777777777"],["李二8","8888888888888"],["李二9","9999999999999"],["李二10","101010101010"],["李二11","1111111111"],["李二12","121212121212"]]},{"K":[["Kate Bell","(415) 555-3695"]]},{"Z":[["张三1","111111111"],["张三2","111111111"],["张三3","111111111"],["张三4","111111111"],["张三5","111111111"],["张三6","111111111"],["张三7","111111111"],["张三8","111111111"],["张三9","111111111"],["张三10","10101010101010"],["张三11","111111111"],["张三12","111111111"],["张三13","111111111"],["张三14","111111111"],["张三15","111111111"],["张三16","111111111"],["张三17","111111111"],["张三18","111111111"]]},{"#":[["1111","255-4455"]]}]
+
     };
 
     /**
-     * 知识搜索
+     * 获取个人客户列表
      * @param currentUserId  当前用户ID
      * @param cb_ok
      * @param cb_err
      */
-    PersonalCustomerModel.prototype.getPlanItemList = function (currentUserId, cb_ok, cb_err) {
-        if (cb_ok) {
-            cb_ok(test);
-        }
-    };
-
-    /**
-     * 知识搜索
-     * @param currentUserId  当前用户ID
-     * @param key  当前模糊搜索的内容
-     * @param cb_ok
-     * @param cb_err
-     */
-    PersonalCustomerModel.prototype.searchPlanItemList = function (currentUserId, key, cb_ok, cb_err) {
+    PersonalCustomerModel.prototype.getCustomerItemList = function (currentUserId, cb_ok, cb_err) {
         if (cb_ok) {
             cb_ok(test);
         }

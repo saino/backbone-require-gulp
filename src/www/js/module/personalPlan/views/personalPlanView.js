@@ -25,6 +25,7 @@ define([
         id:"personal-plan-container",
         currentUserId: "",     //当前用户ID
         currentListData : [],     //当前计划书数据的列表
+        initListData : [],      //初始化的
         ui:{
             topCon : ".top-title",
             backBtn : ".top-title-left", //点击返回
@@ -53,9 +54,12 @@ define([
                 var height = self.ui.topCon.outerHeight(true) + self.ui.planSearchContainer.height();
                 self.ui.personalPlanMain.css({height: "calc(100% - " + height + "px)"});
             }, 0)
-            self._initView = self.initView.bind(self);
             //TODO 需要真实的接口和数据
-            personalPlanModel.getPlanItemList(self.currentUserId,  self._initView, function(err){
+            personalPlanModel.getPlanItemList(self.currentUserId,  function(data){
+                var list = data.planCardList;
+                self.initListData = list;
+                self.initView(list);
+            }, function(err){
                 console.log(err);
             });
 
@@ -71,18 +75,23 @@ define([
         initView : function(data){
             var self = this;
             //TODO 以下为模拟的数据，需要调试的，会有细微的改动
-            var list = data.planItemList;
-            self.currentListData = list;
+            var list = data;
+            self.currentListData = data;
             var planItemStr = "";
             if (list.length > 0){
                 for (var i = 0; i < list.length; i++){
                     var obj = list[i];
-                    var date = obj.createTime;      //格式最后需要转换
-                    var applicantName = "投保人：" + obj.applicantName; //投保人名称
-                    var planName = obj.planName;    //计划书名称
-                    var recognizeeInfo = obj.recognizeeInfo + " " + obj.transferDeadline + " " + obj.safeguardDeadline;             //被保人信息
-                    var costInfo = "保额" + obj.coverage + " 首年保费" + obj.premium;      //费用信息
-                    var objectId = obj.objectId;    //计划ID
+                    var date = utils.formattime(obj.generateDate, "yyyy年MM月dd日");      //格式最后需要转换
+                    var applicantName = "投保人：" + obj.phName; //投保人名称
+                    var planName = obj.packageName;    //计划书名称
+                    var chargePeriod = obj.mainCoverage.chargePeriod;        //交费期限
+                    var chargePeriodStr = utils.getPeriodText(1, chargePeriod.periodType, chargePeriod.periodValue);
+                    var coveragePeriod = obj.mainCoverage.coveragePeriod;    //保障期限
+                    var coveragePeriodStr = utils.getPeriodText(2, coveragePeriod.periodType, coveragePeriod.periodValue);
+                    var recognizeeInfo = obj.insured.name + " " + (obj.insured.gender == "M" ? "男" : "女") + " " +
+                    obj.insured.age + "岁 " + chargePeriodStr + " " + coveragePeriodStr;             //被保人信息
+                    var costInfo = "保额" + obj.mainCoverage.sa + "元 首年保费" + obj.totalFirstYearPrem + "元";      //费用信息
+                    var objectId = obj.quotationId;    //计划ID
                     var realItemTemp = planItemTemp.replace("{applicantName}", applicantName).replace("{itemDate}", date)
                         .replace("{planName}", planName).replace("{recognizeeInfo}", recognizeeInfo)
                         .replace("{costInfo}", costInfo).replace("{dataId}", objectId);
@@ -131,10 +140,8 @@ define([
         planSearchOperation: function (text) {
             var self = this;
             //TODO 具体搜索,需要实现
-            console.log(text);
-            personalPlanModel.searchPlanItemList(self.currentUserId, text, self._initView, function (err) { 
-                console.log(err);
-            });
+            var searchData = utils.searchObjectArray(self.initListData, text, ["packageName", "phName", "insured|name"]);
+            self.initView(searchData);
         },
         /**
          * 点击清空所有计划书
@@ -199,7 +206,6 @@ define([
         },
         close:function(){
             var self = this;
-            self._initView = null;
             self.remove();
             if(MsgBox && MsgBox.isShow()) {
                 MsgBox.clear();
