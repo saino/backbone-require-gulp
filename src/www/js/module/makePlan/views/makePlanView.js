@@ -29,10 +29,15 @@ define([
         hasPolicyHolder:false,//是否显示投保人
         hasSecInsured:false,    //是否指向第二被保人  Y是  N否
         hasSmoking:false,   //是否与被保人吸烟有关
+        smokingType:0,      //和吸烟无关  1下拉框 2下拉框
         hasJob:false,       //是否与被保人职业有关
         hasSocialInsure:false,   //是否与被保人吸烟有关
-        occupationList:[{name:"教师",id:1},{name:"医生",id:2},{name:"广告",id:3}],      //职业类别
+        smokingList1:[{id:1,name:"不吸烟-超优体"},{id:2,name:"不吸烟-优选体"},{id:3,name:"不吸烟-优标体"},{id:4,name:"不吸烟-标准体"},{id:5,name:"吸烟-次选体"},{id:6,name:"吸烟-次标准体"}],  //吸烟smokingType=1时有效
+        smokingList2:[{id:"N",name:"不吸烟"},{id:"Y",name:"吸烟"}],  //吸烟smokingType=2时有效
+        occupationList:[{name:"1",id:1},{name:"2",id:2},{name:"3",id:3},{name:"4",id:4},{name:"5",id:5},{name:"6",id:6}],      //职业类别
         occupationListHtml:"",//职位列表html
+        smokingListHtml:"",//吸烟类型=1列表html
+        smokingList2Html:"",//吸烟类型=2列表html
         ageRangeOfLifeAssured:null, //被保人年龄范围对象
         ageRangeOfLifeAssuredHtml:"",//被保人年龄范围html
         ageRangeOfPolicyHolder:null, //投保人年龄范围对象
@@ -106,7 +111,7 @@ define([
                 planModel.getPlanInitiaData(self.currProductId,function(data){
                     self.initializeUI(data);
                 },function(err){
-                    MsgBox.alert(err);
+                    console.log(err);
                 });
             }
         },
@@ -130,8 +135,14 @@ define([
             if(self.hasJob){  //职位
                 firstInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
             }
+            //TODO 确定下拉框 可删
             if(self.hasSmoking){//吸烟
                 firstInsuredHtml += self.insuredSmokingTpl();
+            }
+            if(self.smokingType == 1){
+                firstInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingListHtml});
+            }else if(self.smokingType == 2){
+                firstInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingList2Html});
             }
             if(self.hasSocialInsure){ //社保
                 firstInsuredHtml += self.insuredSocialTpl();
@@ -148,8 +159,14 @@ define([
                 if(self.hasJob){  //职位
                     secondInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
                 }
+                //TODO 确认吸烟用下拉框  可删
                 if(self.hasSmoking){//吸烟
                     secondInsuredHtml += self.insuredSmokingTpl();
+                }
+                if(self.smokingType == 1){
+                    secondInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingListHtml});
+                }else if(self.smokingType == 2){
+                    secondInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingList2Html});
                 }
                 if(self.hasSocialInsure){ //社保
                     secondInsuredHtml += self.insuredSocialTpl();
@@ -222,7 +239,9 @@ define([
         insuredSmokingTpl:_.template('<div class="insured-property-item"><span>被保人吸烟：</span><div class="property-radio insured-smoking" data-val="N">' +
                                     '<div class="property-radio-item" data-val="Y"><span class="circle"><span class="circle-ck"></span></span>是' +
                                     '</div><div class="property-radio-item property-radio-item-ck" data-val="N"><span class="circle"><span class="circle-ck"></span></span>否</div></div></div>'),
-
+        insuredSmokingTpl2 : _.template('<div class="insured-property-item"><span>被保人吸烟：</span>' +
+                                '<select name="old" class="property-input property-select insured-smoking"><%=smokingOptions %></select>' +
+                                '</div>'),
         //投保人属性
         policyHolderOldTpl : _.template('<div class="insured-property-item"><span>投保人年龄：</span>' +
                              '<select name="old" class="property-input property-select insured-old"><%=oldOptions %></select></div>'),
@@ -356,6 +375,7 @@ define([
             self.hasPolicyHolder = false;//投保人
             self.hasSecInsured = false;
             self.hasSmoking = false;
+            self.smokingType = 0;//和吸烟无关  1下拉框 2下拉框
             self.hasJob = false;
             self.hasSocialInsure = false;
             if(!self.currPlanList || self.currPlanList.length <= 0)
@@ -372,10 +392,7 @@ define([
                 {
                     self.hasSecInsured = true;
                 }
-                if(self.currPlanList[i].smokingIndi == "Y")//吸烟
-                {
-                    self.hasSmoking = true;
-                }
+                self.smokingType = self.currPlanList[i].smokingIndi;
                 if(self.currPlanList[i].jobIndi == "Y")    //职业
                 {
                     self.hasJob = true;
@@ -385,12 +402,15 @@ define([
                     self.hasSocialInsure = true;
                 }
             }
+//            self.smokingType = 1;//TODO 测试吸烟下拉框
             //主险个数
             self.mainPlanNum = mainPlanNum;
             //设置职位列表HTML、被保人年龄限制列表HTML，投保人年龄限制列表HTML
             self.occupationListHtml = "";
             self.ageRangeOfLifeAssuredHtml = "";
             self.ageRangeOfPolicyHolderHtml = "";
+            self.smokingListHtml = "";
+            self.smokingList2Html = "";
             for(var i = self.ageRangeOfLifeAssured.minAge; i <= self.ageRangeOfLifeAssured.maxAge; i++){
                 self.ageRangeOfLifeAssuredHtml += '<option value="'+i+'">'+i+'</option>';
             }
@@ -399,6 +419,12 @@ define([
             }
             for(i = 0; i < self.occupationList.length;i++){
                 self.occupationListHtml += '<option value="'+self.occupationList[i].id+'">'+self.occupationList[i].name+'</option>';
+            }
+            for(i = 0; i < self.smokingList1.length; i++){
+                self.smokingListHtml += '<option value="'+self.smokingList1[i].id+'">'+self.smokingList1[i].name+'</option>';
+            }
+            for(i = 0; i < self.smokingList2.length; i++){
+                self.smokingList2Html += '<option value="'+self.smokingList2[i].id+'">'+self.smokingList2[i].name+'</option>';
             }
         },
         //监听添加附加险
@@ -502,7 +528,7 @@ define([
             insured.gender = self.ui.firstInsured.find(".insured-sex").data("val");
             insured.jobCateId = self.ui.firstInsured.find(".insured-job").val();//职位
             insured.socialInsuranceIndi = self.ui.firstInsured.find(".insured-social").data("val");//社保
-            insured.smoking = self.ui.firstInsured.find(".insured-smoking").data("val");//吸烟
+            insured.smoking = self.ui.firstInsured.find(".insured-smoking").val();//吸烟
             insureds.push(insured);
             //是否存在第二被保人
             if(self.ui.secondInsured.find(".insured-name").size() > 0) {
@@ -514,7 +540,7 @@ define([
                 secInsured.gender = self.ui.secondInsured.find(".insured-sex").data("val");
                 secInsured.jobCateId = self.ui.secondInsured.find(".insured-job").val();//职位
                 secInsured.socialInsuranceIndi = self.ui.secondInsured.find(".insured-social").data("val");//社保
-                secInsured.smoking = self.ui.secondInsured.find(".insured-smoking").data("val");//吸烟
+                secInsured.smoking = self.ui.secondInsured.find(".insured-smoking").val();//吸烟
                 insureds.push(secInsured);
             }
             plan.insureds = insureds;
