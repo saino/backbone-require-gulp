@@ -341,7 +341,20 @@
     font-size: 26px;
     border-radius: 4px;
     background-color: #FFFFFF;
-
+    .plan-level{
+      margin:0 auto;
+      height: 110px;
+      border-bottom: 2px solid #ddd;
+      width:522px;
+    }
+    .plan-level-item{
+      width:138px; height:54px; float:left; margin-right: 54px;
+      background: #E4E0DF; text-align: center;
+      line-height: 54px; border-radius: 8px;
+      margin-top: 28px;
+    }
+    .plan-level-item:last-child{margin-right: 0;}
+    .plan-level-item-ck{background: #D7464C; color:#fff; text-align: center;}
     .demo-age-div{
       margin: 0 36px;
       height: 110px;

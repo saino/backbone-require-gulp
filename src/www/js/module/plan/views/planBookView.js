@@ -53,7 +53,8 @@ define([
             "tap .added-service-item-button":"clickShowValueAddedHandler",//点击查看增值服务详情
             "tap .type-button":"clickStopHandler",  //点击收起/展开险种保费表格
             "tap .btn-icon":"clickLiabilityHandler",  //点击收起/展开责任列表
-            "tap .item-right-btn":"clickOpenDescHandler" //点击展开/收起责任详情
+            "tap .item-right-btn":"clickOpenDescHandler", //点击展开/收起责任详情
+            "tap .plan-level-item":"clickLevenHandler"  //点击 利益演示低档、中档、高档
         },
 
         initialize:function(){
@@ -320,6 +321,17 @@ define([
             }else{//点击展开
                 target.parents(".info-btn-div").next(".info-desc").slideUp();
             }
+        },
+        //点击利益演示 低档 中档 高档
+        clickLevenHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var target = $(e.target);
+            if(target.hasClass("plan-level-item-ck")){
+                return;
+            }
+            target.addClass("plan-level-item-ck");
+            target.siblings(".plan-level-item").removeClass("plan-level-item-ck");
         },
         setRangeValue : function(val){
             var self = this;

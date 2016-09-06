@@ -8,7 +8,7 @@ define([
     'module/personalPlan/model/personalPlanModel',
     "msgbox"
 ], function (BaseView, Tpl, personalPlanModel, MsgBox) {
-    var planItemTemp = '<div class="personal-plan-item">' +
+    var planItemTemp = '<div class="personal-plan-item" data-id="{planId}">' +
         '<div class="personal-plan-item-title">' +
         '<div class="personal-plan-item-name"><img class="avatar-icon" src="./images/plan/icon12.png" /><span>{applicantName}</span></div>' +
         '<span class="personal-plan-item-date">{itemDate}</span>' +
@@ -39,7 +39,8 @@ define([
             "tap @ui.clearBtn": "onClearPlanHandler",      //清空计划书
             "tap @ui.personalPlanMain": "onDeletePlanItemHandler",      //清空计划书
             "tap @ui.planSearchBtn": "onPlanSearchBtnHandler",      //搜索计划书
-            "input @ui.planSearchTxt": "onPlanSearchInputHandler"      //输入内容实时搜索
+            "input @ui.planSearchTxt": "onPlanSearchInputHandler",      //输入内容实时搜索
+            "tap .personal-plan-item":"clickPlanHandler"  //点击查看计划书详情-保障计划
         },
         initialize:function(){
 
@@ -80,6 +81,7 @@ define([
                     var obj = list[i];
                     var date = utils.formattime(obj.generateDate, "yyyy年MM月dd日");      //格式最后需要转换
                     var applicantName = "投保人：" + obj.phName; //投保人名称
+                    var planId = obj.quotationId;
                     var planName = obj.packageName;    //计划书名称
                     var chargePeriod = obj.mainCoverage.chargePeriod;        //交费期限
                     var chargePeriodStr = utils.getPeriodText(1, chargePeriod.periodType, chargePeriod.periodValue);
@@ -91,7 +93,8 @@ define([
                     var objectId = obj.quotationId;    //计划ID
                     var realItemTemp = planItemTemp.replace("{applicantName}", applicantName).replace("{itemDate}", date)
                         .replace("{planName}", planName).replace("{recognizeeInfo}", recognizeeInfo)
-                        .replace("{costInfo}", costInfo).replace("{dataId}", objectId);
+                        .replace("{costInfo}", costInfo).replace("{dataId}", objectId)
+                        .replace("{planId}",planId);
                     planItemStr += realItemTemp;
                 }
                 self.ui.personalPlanMain.html(planItemStr);
@@ -113,9 +116,32 @@ define([
          *搜索按钮点击事件
          */
         onPlanSearchInputHandler :function(e){
+            e.stopPropagation();
+            e.preventDefault();
             var self = this;
             var text = self.ui.planSearchTxt.val();
             self.planSearchOperation(text);
+        },
+        //点击指向保障计划
+        clickPlanHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var self = this;
+            var target = $(e.target);
+            if(!target.hasClass(".personal-plan-item")){
+                target = target.parents(".personal-plan-item");
+            }
+
+            var id = target.data("id");
+            if(id){
+                target.css("opacity",".5")
+                setTimeout(function(){
+                    target.css("opacity","1")
+                },30);
+                app.navigate("in/plan/"+id,{trigger:true,replace:true});
+            }else{
+                MsgBox.alert("ID为空");
+            }
         },
         /**
          *搜索按钮点击事件

@@ -68,7 +68,6 @@ define([
             planTitle:"#planTitle",          //标题只一个主险时：投保选择   多个主险时：主险
             firstInsured:".first-insured",  //第一被保人
             secondInsured:".second-insured",  //第二被保人
-            secondInsured:".second-insured",  //第一被保人
             policyHolder:".policy-holder",    //投保人
             sendName:".send-input",//投保人名称 敬呈对象
             makePlanInput:"#make-plan-select", //主险输入区域
@@ -94,7 +93,8 @@ define([
             "tap #btnTotalFirstYear":"clickCalcPremiumHandler",//点击计算保费
             "tap #make-plan-btn":"clickMakePlanHandler",//点击生成计划书
             "tap #make-plan-add-additional":"addAdditionalPlanHandler",//点击添加附加险
-            "tap .additional-del":"delAdditionPlanHandler" //删除附加险
+            "tap .additional-del":"delAdditionPlanHandler", //删除附加险
+            "tap .import":"clickImportHandler"  //点击客户导入
         },
         /**初始化**/
         initialize : function(){
@@ -108,6 +108,7 @@ define([
         onRender : function(){
             var self = this;
             app.on("common:add:additional", self.onAddAdditional, self);
+            app.on("common:import:user", self.onImportUser, self);
             if(device.ios()){
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
                 self.ui.makePlanMain.css("height","-webkit-calc(100% - "+(85+utils.toolHeight)+"px)");
@@ -123,21 +124,21 @@ define([
                 });
                 return;
             }
-            //TODO 测试数据 待删
+//            //TODO 测试数据 待删
 //            var tempData = {planList:[
-////                {salesProductId:10001,unitFlag:1,insType:1,salesProductName:"中华人民共和国主险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:10002,unitFlag:3,insType:1,salesProductName:"中华人民共和国主险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
-////                {salesProductId:10003,unitFlag:4,insType:1,salesProductName:"中华人民共和国主险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[11,12,13,14,15]},
-////                {salesProductId:10004,unitFlag:6,amountLimit:{minAmount:100,maxAmount:999999999999},insType:1,salesProductName:"中华人民共和国主险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {salesProductId:10001,unitFlag:1,insType:1,salesProductName:"中华人民共和国主险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {salesProductId:10002,unitFlag:3,insType:1,salesProductName:"中华人民共和国主险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
+//                {salesProductId:10003,unitFlag:4,insType:1,salesProductName:"中华人民共和国主险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[11,12,13,14,15]},
+//                {salesProductId:10004,unitFlag:6,amountLimit:{minAmount:100,maxAmount:999999999999},insType:1,salesProductName:"中华人民共和国主险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
 //                {smokingIndi:1,pointToSecInsured:"Y",salesProductId:10005,unitFlag:7,insType:1,salesProductName:"中华人民共和国主险5",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
 //                {smokingIndi:0,salesProductId:10006,unitFlag:9,insType:1,salesProductName:"中主险不需要输入项",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:20001,unitFlag:1,insType:2,salesProductName:"中华人民共和国附加险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:20002,unitFlag:3,insType:2,salesProductName:"中华人民共附加险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
-////                {salesProductId:20003,unitFlag:4,insType:2,salesProductName:"中华人民共附加险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[17,12,13,14,16]},
-////                {salesProductId:20004,unitFlag:6,amountLimit:{minAmount:1000,maxAmount:999999999999},insType:2,salesProductName:"中华人民共附加险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:20005,unitFlag:7,insType:2,salesProductName:"中华人民共附加险5",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项一",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项二",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {salesProductId:20001,unitFlag:1,insType:2,salesProductName:"中华人民共和国附加险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {salesProductId:20002,unitFlag:3,insType:2,salesProductName:"中华人民共附加险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
+//                {salesProductId:20003,unitFlag:4,insType:2,salesProductName:"中华人民共附加险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[17,12,13,14,16]},
+//                {salesProductId:20004,unitFlag:6,amountLimit:{minAmount:1000,maxAmount:999999999999},insType:2,salesProductName:"中华人民共附加险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {salesProductId:20005,unitFlag:7,insType:2,salesProductName:"中华人民共附加险5",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项一",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项二",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
 //                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项三",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]}
 //            ]};
 //            self.initializeUI(tempData);
@@ -926,6 +927,43 @@ define([
                         console.log("取消删除");
                     }
                 });
+            }
+        },
+        //点击客户导入
+        clickImportHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var self = this;
+            var type = 1;//第一被保人   2第二被保人
+            var target = $(e.target);
+            if(target.parents(".second-insured").size() > 0){
+                type = 2;
+            }
+            app.navigate("in/personalCustomer/"+type,{trigger:true, replace:true});
+//            self.onImportUser();
+        },
+        //监听客户导入
+        onImportUser:function(obj){
+            var self = this;
+            console.log(obj);
+            obj = {
+                type:1, //1第一被保人  2第二被保人
+                name:"张d三",
+                age:18,
+                sex:"F" //M男  F女
+            };
+            if(obj.type == 1) {
+                self.ui.firstInsured.find(".insured-name").val(obj.name);
+                self.ui.firstInsured.find(".insured-old").val(obj.age);
+                if(self.ui.firstInsured.find(".insured-sex").data("val") != obj.sex) {
+                    self.ui.firstInsured.find(".insured-sex").data("val", obj.sex);
+                    self.ui.firstInsured.find(".insured-sex .property-radio-item").each(function(){
+                        $(this).removeClass("property-radio-item-ck");
+                        if($(this).data("val") == obj.sex){
+                            $(this).addClass("property-radio-item-ck");
+                        }
+                    });
+                }
             }
         },
         /**页面关闭时调用，此时不会销毁页面**/

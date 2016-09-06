@@ -35,6 +35,7 @@ define([
             self.currProductId = self.getOption("productId");
             self.addedList = self.getOption("list") || []
             additionalModel.getRiders(self.currProductId,self.addedList, function(data){
+                console.log(data);
                 self.initData(data);
             }, function(){
 
