@@ -18,8 +18,7 @@ define([
     'module/makePlan/controller',
     'module/personalPlan/controller',
     'module/personalCollect/controller',
-    'module/personalCustomer/controller',
-    'module/myCustomer/controller'
+    'module/personalCustomer/controller'
 ],function(){
     var controllers = {
     };

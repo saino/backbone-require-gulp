@@ -14,7 +14,7 @@ define([
 
         /**配置路由**/
         appRoutes: {
-            "": "insurance",
+            "": "lifeInsurance",
 
             "in/plan/:id": "plan",  //计划书页
             "in/additional/:planId":"additional",   //附加险列表
