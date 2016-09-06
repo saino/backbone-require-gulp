@@ -58,6 +58,23 @@ define([
             });
 
         },
+        show: function(){
+            var options = { 
+                "name": "",
+                "queryAll": true,
+                "encryptedUserData": utils.userObj.id,
+            };
+            personalCustomerModel.queryAgentCustomers(options, function(data){
+                console.log(data);
+                if(data.status == "0"){
+
+                }else{
+                    console.log("数据返回错误", data);
+                }
+            }, function(error){
+                console.log("数据查询异常", error);
+            });
+        },
         pageIn:function(){
             var self = this;
 

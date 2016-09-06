@@ -3,8 +3,8 @@ define([
     'marionette',
     'text!module/lifeInsurance/templates/lifeInsurance.html',
     'msgbox',
-    'module/lifeInsurance/model/lifeInsurance',
-    'module/myCustomer/model/myCustomer'
+    'module/lifeInsurance/model/lifeInsurance'
+    // 'module/myCustomer/model/myCustomer'
 ], function(BaseView, mn, tpl, MsgBox, lifeInsuranceModel, myCustomerModel) {
     return BaseView.extend({
         id: "lifeInsurancePage",
@@ -252,11 +252,12 @@ define([
             var options = {
 
             };
-            myCustomerModel.queryAgentCustomers(options, function(data){
-                console.log(data);
-            }, function(error){
-                console.log(error);
-            });
+            this.ui.topRitleRight.css("background-image","url(../images/history.png)");
+            // myCustomerModel.queryAgentCustomers(options, function(data){
+            //     console.log(data);
+            // }, function(error){
+            //     console.log(error);
+            // });
         },
 
         // 根据条件查找并加载数据
