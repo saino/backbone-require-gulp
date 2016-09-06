@@ -49,8 +49,7 @@ define([
                 customerObj.gender = $target.attr("data-gender");
                 customerObj.age = $target.attr("data-age");
                 customerObj.optionType = self.optionType;
-                // console.log(customerObj,"llll");
-                app.triggerMethod("common:import:user",customerObj);
+                app.triggerMethod("common:import:user", customerObj);
                 app.goBack();
             }
             // console.log(event.target);
@@ -86,10 +85,13 @@ define([
                 console.log(data);
                 if(data.status == "0"){
                     var customers = data.customers;
+                    // var customers = {"A": [{"id": 0, "name": "A0", "age": 19, "gender": "女"}, {"id": 1, "name": "A1", "age": 19, "gender": "女"}, {"id": 2, "name": "A2", "age": 19, "gender": "女"}], "B": [{"id": 3, "name": "B3", "age": 19, "gender": "女"}], "S": [{"id": 4, "name": "S4", "age": 19, "gender": "女"}], "H": [{"id": 5, "name": "H5", "age": 19, "gender": "女"}, {"id": 6, "name": "H6", "age": 19, "gender": "女"}, {"id": 7, "name": "H7", "age": 19, "gender": "女"}], "E": [{"id": 8, "name": "E8", "age": 19, "gender": "女"},{"id": 9, "name": "E9", "age": 19, "gender": "女"}]};
+
                     var customersArry = new Array(26);
                     for(key in customers){
                         customersArry[key.charCodeAt() - 65] = customers[key];
                     }
+                    var customerItemStr = "";
                     for(var i=0; i<customersArry.length; i++){
                         if(customersArry[i]){
                             var obj = customersArry[i];
@@ -108,7 +110,6 @@ define([
                         customerItemStr = '<div class="plan-item-noting">暂无用户数据</div>';
                     }
                     self.ui.personalCustomerMain.html(customerItemStr);
-                    // var customers = {"A": [{"id": 0, "name": "A0", "age": 19, "gender": "女"}, {"id": 1, "name": "A1", "age": 19, "gender": "女"}, {"id": 2, "name": "A2", "age": 19, "gender": "女"}], "B": [{"id": 3, "name": "B3", "age": 19, "gender": "女"}], "S": [{"id": 4, "name": "S4", "age": 19, "gender": "女"}], "H": [{"id": 5, "name": "H5", "age": 19, "gender": "女"}, {"id": 6, "name": "H6", "age": 19, "gender": "女"}, {"id": 7, "name": "H7", "age": 19, "gender": "女"}], "E": [{"id": 8, "name": "E8", "age": 19, "gender": "女"},{"id": 9, "name": "E9", "age": 19, "gender": "女"}]};
                 }else{
                     customerItemStr = '<div class="plan-item-noting">暂无用户数据</div>';
                     self.ui.personalCustomerMain.html(customerItemStr);

@@ -944,6 +944,7 @@ define([
         },
         //监听客户导入
         onImportUser:function(obj){
+            console.log(obj,"ssss");
             var self = this;
             obj = {
                 type:1, //1第一被保人  2第二被保人
