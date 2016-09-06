@@ -7,8 +7,8 @@ define([
     'module/personalCustomer/views/personalCustomerView'
 ],function(personalCustomerView){
     return {
-        personalCustomer : function(){
-            app.page.show(personalCustomerView);
+        personalCustomer : function(type){
+            app.page.show(personalCustomerView, {type: type});
         }
     };
 });

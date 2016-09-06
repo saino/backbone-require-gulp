@@ -20,6 +20,7 @@ define([
         currentUserId: "",     //当前用户ID
         initListData : [],     //初始化数据列表
         currentListData : [],     //当前用户数据的列表
+        optionType: "",   //路由参数类型
         ui:{
             topCon : ".top-title",
             backBtn : ".top-title-left", //点击返回
@@ -31,10 +32,31 @@ define([
         },
         events:{
             "tap @ui.backBtn":"onBackBtnHandler",
-            "tap @ui.customerSearchBtn": "onCustomerSearchBtnHandler",      //搜索计划书
-            "input @ui.customerSearchTxt": "onCustomerSearchInputHandler",      //输入内容实时搜索
-            "tap @ui.customerFilter": "onCustomerFilterBtnHandler"      //过滤定位
+            "tap @ui.customerSearchBtn": "onCustomerSearchBtnHandler",      //搜索按钮
+            // "input @ui.customerSearchTxt": "onCustomerSearchInputHandler",      //输入内容实时搜索
+            "tap @ui.customerFilter": "onCustomerFilterBtnHandler"     , //过滤定位
+            "tap @ui.personalCustomerMain": "onPersonalCustomerMainHandler"     //点击客户容器
         },
+
+        onPersonalCustomerMainHandler: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            var self = this;
+            var $target = $(event.target);
+            var customerObj = {};
+            if($target.attr("data-type") == "customer"){
+                customerObj.name = $target.attr("data-name");
+                customerObj.gender = $target.attr("data-gender");
+                customerObj.age = $target.attr("data-age");
+                customerObj.optionType = self.optionType;
+                // console.log(customerObj,"llll");
+                app.triggerMethod("common:import:user",customerObj);
+                app.goBack();
+            }
+            // console.log(event.target);
+        },
+
+
         initialize:function(){
 
         },
@@ -47,33 +69,67 @@ define([
                 var height = self.ui.topCon.outerHeight(true) + self.ui.customerSearchContainer.outerHeight(true);
                 self.ui.personalCustomerMain.css({height: "calc(100% - " + height + "px)"});
                 self.ui.customerFilter.css({height: "calc(100% - " + height + "px)", top : height + "px"});
-            }, 0)
-            //TODO 需要真实的接口和数据
-            personalCustomerModel.getCustomerItemList(self.currentUserId,  function(data){
-                var list = data.customerItemList;
-                self.initListData = list;
-                self.initView(list);
-            }, function(err){
-                console.log(err);
-            });
+            }, 0);
+            // //TODO 需要真实的接口和数据
+            // personalCustomerModel.getCustomerItemList(self.currentUserId,  function(data){
+            //     var list = data.customerItemList;
+            //     self.initListData = list;
+            //     self.initView(list);
+            // }, function(err){
+            //     console.log(err);
+            // });
 
         },
+        loadData: function(options){
+            var self = this;
+            personalCustomerModel.queryAgentCustomers(options, function(data){
+                console.log(data);
+                if(data.status == "0"){
+                    var customers = data.customers;
+                    var customersArry = new Array(26);
+                    for(key in customers){
+                        customersArry[key.charCodeAt() - 65] = customers[key];
+                    }
+                    for(var i=0; i<customersArry.length; i++){
+                        if(customersArry[i]){
+                            var obj = customersArry[i];
+                            var key = String.fromCharCode(i+65);
+                            var customerItems = "";
+                            for(var j=0; j<obj.length; j++){
+                                customerItems += '<p data-type="customer" data-name="'+obj[j].name+'" data-gender="'+obj[j].gender+'" data-age="'+obj[j].age+'">'+obj[j].name+'</p>';
+                            }
+                            var realItemTemp = customerItemTemp.replace(/\{data-filter\}/g, key)
+                                .replace("{customerItems}", customerItems);
+                            customerItemStr += realItemTemp;
+                        }
+                            // console.log(String.fromCharCode(i+65),customersArry[i]);
+                    }
+                    if(customersArry.length == 0){
+                        customerItemStr = '<div class="plan-item-noting">暂无用户数据</div>';
+                    }
+                    self.ui.personalCustomerMain.html(customerItemStr);
+                    // var customers = {"A": [{"id": 0, "name": "A0", "age": 19, "gender": "女"}, {"id": 1, "name": "A1", "age": 19, "gender": "女"}, {"id": 2, "name": "A2", "age": 19, "gender": "女"}], "B": [{"id": 3, "name": "B3", "age": 19, "gender": "女"}], "S": [{"id": 4, "name": "S4", "age": 19, "gender": "女"}], "H": [{"id": 5, "name": "H5", "age": 19, "gender": "女"}, {"id": 6, "name": "H6", "age": 19, "gender": "女"}, {"id": 7, "name": "H7", "age": 19, "gender": "女"}], "E": [{"id": 8, "name": "E8", "age": 19, "gender": "女"},{"id": 9, "name": "E9", "age": 19, "gender": "女"}]};
+                }else{
+                    customerItemStr = '<div class="plan-item-noting">暂无用户数据</div>';
+                    self.ui.personalCustomerMain.html(customerItemStr);
+                    console.log("数据返回错误", data);
+                }
+            }, function(error){
+                customerItemStr = '<div class="plan-item-noting">暂无用户数据</div>';
+                self.ui.personalCustomerMain.html(customerItemStr);
+                console.log("数据查询异常", error);
+            });
+        },
+
         show: function(){
+            var self = this;
             var options = { 
                 "name": "",
                 "queryAll": true,
                 "encryptedUserData": utils.userObj.id,
             };
-            personalCustomerModel.queryAgentCustomers(options, function(data){
-                console.log(data);
-                if(data.status == "0"){
-
-                }else{
-                    console.log("数据返回错误", data);
-                }
-            }, function(error){
-                console.log("数据查询异常", error);
-            });
+            self.loadData(options);
+            self.optionType = self.getOption("type");
         },
         pageIn:function(){
             var self = this;
@@ -138,9 +194,16 @@ define([
             e.preventDefault();
             var self = this;
             var text = self.ui.customerSearchTxt.val();
-            if (text){
-                self.customerSearchOperation(text);
-            }
+            // if (text){
+            //     self.customerSearchOperation(text);
+            // }
+            console.log(text);
+            var options = { 
+                "name": text,
+                "queryAll": true,
+                "encryptedUserData": utils.userObj.id,
+            };
+            self.loadData(data);
         },
         /**
          *具体搜索实现函数
@@ -164,7 +227,7 @@ define([
             //锚点定位
             if(dataTo){
                 var obj = document.getElementById(dataTo);
-                obj.scrollIntoView();
+                obj && obj.scrollIntoView();
             }
         },
         /**
