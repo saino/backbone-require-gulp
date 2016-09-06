@@ -20,6 +20,12 @@ define([
         currPlanId:0,       //当前已生成计划 ID
         planBook:{},            //当前计划书对象
         productInfoList:[],     //主险附加险名称等存放处
+        //利益演示相关
+        interestDemonstration:{}, //利益演示数据列表 属性“1”低级  “2”中级  “3”高级
+        interestAgeArr:[],   //利益演示年龄段数组
+        currInterset : [],//当前级别下列表
+        currAgeindex:0,      //当前年龄索引
+        currLevel:"1",  //当前等级  “1”低级  “2”中级  “3”高级
 //        forever:true,
         ui:{
             //banner
@@ -43,7 +49,8 @@ define([
             valueAddedList:".added-service-list",  //增值服务
             commentCon:".plan-message-txt",      //留言
             btnClause:".btn-clause",     //条款按钮
-            liabilityList:".plan-obligation-list"//保险责任
+            liabilityList:".plan-obligation-list",//保险责任
+            ageSelect:".demo-age-select" //年龄段下拉框
         },
 
         events:{
@@ -89,6 +96,8 @@ define([
                 }
                 //初始化责任列表
                 self.initLiability(self.planBook.planLiability);
+                //初始化利益演示
+                self.initInterestDemonstration(self.planBook.illustrationList);
             }, function(){
 
             })
@@ -228,6 +237,44 @@ define([
                 tempHtml += self.planLiabilityTpl({categoryName:liabCateList[i].categoryName,liabilityListHtml:liabilityListHtml});
             }
         },
+        //初始化利益演示
+        initInterestDemonstration:function(interestDemonstration){
+            var self = this;
+            self.interestDemonstration = interestDemonstration;
+            self.currLevel = "1";//初始化低级
+            self.interestAgeArr = [];
+            self.currInterset = [];//当前级别下列表
+            self.currAgeindex = 0;
+            self.initInterestByLevel(self.currLevel);
+        },
+        //根据利益演示等级 初始化年龄段下拉框等
+        initInterestByLevel:function(currLevel){
+            var self = this;
+            self.currAgeindex = currLevel;
+            self.interestAgeArr = [];
+            self.currInterset = [];//当前级别下列表
+            if(self.interestDemonstration[self.currLevel]) {
+                self.currInterset = self.interestDemonstration[self.currLevel];
+                for (var i = 0; i < self.currInterset.length; i++) {
+                    self.interestAgeArr.push(self.currInterset[i].insuredAge);
+                }
+                self.initInterestByAge(0);
+                //初始化年龄下拉框 self.interestAgeArr
+                var optionsHtml = '';
+                for(i = 0; i <self.interestAgeArr.length; i++){
+                    optionsHtml += '  <option value="'+self.interestAgeArr[i]+'">'+self.interestAgeArr[i]+'</option>';
+                }
+                self.ui.ageSelect.html($(optionsHtml));
+            }else{
+                console.log("当前等级下无年龄段数据"+self.currLevel);
+            }
+        },
+        //根据年龄索引字段取 列表self.currInterset下数据显示
+        initInterestByAge:function(ageIndex){
+            var self = this;
+            var list = self.currInterset[ageIndex];
+
+        },
         getProductName:function(id){
             var self = this;
             if(!self.productInfoList)return "";
@@ -326,16 +373,19 @@ define([
         clickLevenHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-            var target = $(e.target);
+            var target = $(e.target), self = this;
             if(target.hasClass("plan-level-item-ck")){
                 return;
             }
             target.addClass("plan-level-item-ck");
             target.siblings(".plan-level-item").removeClass("plan-level-item-ck");
+            self.currLevel = target.data("level");
+            self.initInterestByLevel(self.currLevel);
         },
         setRangeValue : function(val){
             var self = this;
             self.ui.rangeInput.val(val);
+
         }
     });
     return planBookView;

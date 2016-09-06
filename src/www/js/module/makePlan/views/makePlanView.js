@@ -723,7 +723,7 @@ define([
                     }
                 });
                 mainCoverage.planLiabilityList = planLiabilityList;
-                mainCoverage.insuredIds = [insured.id];
+                mainCoverage.insuredIds = [insured.id]; //险种对应被保人ID 跟后台商量一致 统一传“0”
                 mainCoverages.push(mainCoverage);
             });
             if(validateErrMsg != ""){
@@ -944,7 +944,7 @@ define([
         },
         //监听客户导入
         onImportUser:function(obj){
-            var self = this;
+            var self = this;    //TODO 导入客户接通测
             obj = {
                 type:1, //1第一被保人  2第二被保人
                 id:"10001",
