@@ -630,7 +630,7 @@ define([
             var insureds = [];//被保人数组
             //第一被保人
             var insured = {};
-            insured.id = 0;//自己填写的被保人信息 无ID
+            insured.id = "0";//自己填写的被保人信息 无ID
             insured.name = self.ui.firstInsured.find(".insured-name").val();
             insured.age = self.ui.firstInsured.find(".insured-old").val();
             insured.gender = self.ui.firstInsured.find(".insured-sex").data("val");
@@ -945,25 +945,31 @@ define([
         //监听客户导入
         onImportUser:function(obj){
             var self = this;
-            console.log(obj);
             obj = {
                 type:1, //1第一被保人  2第二被保人
+                id:"10001",
                 name:"张d三",
-                age:18,
+                age:18, //年龄不用
                 sex:"F" //M男  F女
             };
+            //依产品定义 客户导入只用名称 性别，不导入年龄
+            var target = self.ui.secondInsured;
             if(obj.type == 1) {
-                self.ui.firstInsured.find(".insured-name").val(obj.name);
-                self.ui.firstInsured.find(".insured-old").val(obj.age);
-                if(self.ui.firstInsured.find(".insured-sex").data("val") != obj.sex) {
-                    self.ui.firstInsured.find(".insured-sex").data("val", obj.sex);
-                    self.ui.firstInsured.find(".insured-sex .property-radio-item").each(function(){
-                        $(this).removeClass("property-radio-item-ck");
-                        if($(this).data("val") == obj.sex){
-                            $(this).addClass("property-radio-item-ck");
-                        }
-                    });
-                }
+                target = self.ui.firstInsured;
+            }
+            target.find(".insured-name").val(obj.name);
+//            target.find(".insured-old").val(obj.age);
+//            if(!target.find(".insured-old").val()){
+//                MsgBox.alert("温馨提示：导入客户不在被保人年龄范围内");
+//            }
+            if(target.find(".insured-sex").data("val") != obj.sex) {
+                target.find(".insured-sex").data("val", obj.sex);
+                target.find(".insured-sex .property-radio-item").each(function(){
+                    $(this).removeClass("property-radio-item-ck");
+                    if($(this).data("val") == obj.sex){
+                        $(this).addClass("property-radio-item-ck");
+                    }
+                });
             }
         },
         /**页面关闭时调用，此时不会销毁页面**/
