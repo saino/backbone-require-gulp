@@ -22,7 +22,7 @@ define([
             "in/disease/:packageId/:productId/:libId":"disease",   //病种详情
             "in/increment":"increment", //增值服务详情
             "in/clause/:id":"clause",   //条款详情
-            "in/clauseList/:id":"clauseList",   //条款列表
+            "in/clauseList":"clauseList",   //条款列表
             "in/companyIntro/:id":"companyIntro",   //寿险 公司简介
             "in/search":"search", //产品搜索
             'in/advanceQuery':"advanceQuery",//产品高级筛选

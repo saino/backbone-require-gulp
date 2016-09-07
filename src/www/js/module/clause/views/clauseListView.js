@@ -29,6 +29,18 @@ define([
             self.initData();
         },
         initData:function(){
+            var tempHtml = '', self = this;
+            if(utils.productInfoList && utils.productInfoList.length > 0){
+                for(var i = 0; i < utils.productInfoList.length; i++){
+                    tempHtml += '<div class="clause-item" data-id="'+utils.productInfoList[i].productId+'">'+utils.productInfoList[i].productName+'</div>';
+                }
+            }else{
+                tempHtml+= '<p class="no-data-p">该计划书下无产品信息列表</p>';
+            }
+            self.ui.mainCon.html($(tempHtml));
+        },
+        //原定取接口  需求修改，此函数暂不用
+        initData_old:function(){
             var self = this;
             var packageId = self.getOption("packageId");
             clauseModel.getClauseList(packageId,function(data){

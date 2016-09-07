@@ -35,7 +35,6 @@ define([
             self.currProductId = self.getOption("productId");
             self.addedList = self.getOption("list") || []
             additionalModel.getRiders(self.currProductId,self.addedList, function(data){
-                console.log(data);
                 self.initData(data);
             }, function(){
 
@@ -49,6 +48,9 @@ define([
             for(i=0; i<len;i++){
                 var obj = self.additionalList[i];
                 html += '<div class="additional-item" data-id="'+obj.attachId+'"><div class="content">'+obj.productName+'</div><div class="btnAdd">添加</div></div>'
+            }
+            if(len <= 0){
+                html += '<p class="no-data-p">该主险下还未添加附加险</p>';
             }
             self.ui.mainList.html(html);
         },
