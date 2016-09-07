@@ -1,2 +1,43 @@
 #insurance-concept-container{width:100%; height:100%;}
 #iframeDiv{width:100%; height:100%;}
+#pageswitch-content{
+	background-color: yellow;
+	position: relative;
+	height: 100%;
+	width: 100%;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.pageswitch-page-item{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+.pageswitch-page-item>img{
+	width: 100%;
+	position: absolute;
+}
+#pageswitch-image00{
+	position: absolute;
+	width: 43.751091703057%;
+	top: 64.5%;
+    left: -0.7%;
+}
+#pageswitch-image01{
+	position: absolute;
+	width: 76.563318777293%;
+	left: 12%;
+    top: 35%;
+}
+#pageswitch-image02{
+	position: absolute;
+	width: 76.564356435644%;
+	left: 12%;
+    top: 24%;
+}
+#pageswitch-image03{
+	position: absolute;
+	width: 13.126637554585%;
+	top: 51.5%;
+    left: 51.3%;
+}
