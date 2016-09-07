@@ -122,6 +122,7 @@ require.config({
         text : 'lib/require/text',
         jqtap : "lib/jquery.tap",
         utils : "utils/utils",
+        errorMsg : "utils/errorMsg",
         msgbox : "common/views/MsgBox",
         touch : "lib/touch-0.2.14.min",
         device : "lib/device"
@@ -142,7 +143,8 @@ require([
     "device",
     'jqtap',
     'utils',
-    'msgbox'
+    'msgbox',
+    ''
 ], function($, Backbone, BackboneHistory, app, controller, AppRouter) {
     if(!window.EventsName){
         window.EventsName = "tap";

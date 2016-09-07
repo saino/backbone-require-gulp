@@ -128,18 +128,18 @@ define([
 //            var tempData = {planList:[
 //                {salesProductId:10001,unitFlag:1,insType:1,salesProductName:"中华人民共和国主险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
 //                {salesProductId:10002,unitFlag:3,insType:1,salesProductName:"中华人民共和国主险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
-//                {salesProductId:10003,unitFlag:4,insType:1,salesProductName:"中华人民共和国主险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[11,12,13,14,15]},
-//                {salesProductId:10004,unitFlag:6,amountLimit:{minAmount:100,maxAmount:999999999999},insType:1,salesProductName:"中华人民共和国主险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-//                {smokingIndi:1,pointToSecInsured:"Y",salesProductId:10005,unitFlag:7,insType:1,salesProductName:"中华人民共和国主险5",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-//                {smokingIndi:0,salesProductId:10006,unitFlag:9,insType:1,salesProductName:"中主险不需要输入项",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-//                {salesProductId:20001,unitFlag:1,insType:2,salesProductName:"中华人民共和国附加险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-//                {salesProductId:20002,unitFlag:3,insType:2,salesProductName:"中华人民共附加险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
+//                {salesProductId:10003,unitFlag:4,insType:1,salesProductName:"中华人民共和国主险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[11,12,13,14,15]},//
+////                {salesProductId:10004,unitFlag:6,amountLimit:{minAmount:100,maxAmount:999999999999},insType:1,salesProductName:"中华人民共和国主险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {smokingIndi:1,pointToSecInsured:"Y",salesProductId:10005,unitFlag:7,insType:1,salesProductName:"中华人民共和国主险5",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {smokingIndi:0,salesProductId:10006,unitFlag:9,insType:1,salesProductName:"中主险不需要输入项",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {salesProductId:20001,unitFlag:1,insType:2,salesProductName:"中华人民共和国附加险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {salesProductId:20002,unitFlag:3,insType:2,salesProductName:"中华人民共附加险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
 //                {salesProductId:20003,unitFlag:4,insType:2,salesProductName:"中华人民共附加险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[17,12,13,14,16]},
 //                {salesProductId:20004,unitFlag:6,amountLimit:{minAmount:1000,maxAmount:999999999999},insType:2,salesProductName:"中华人民共附加险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
 //                {salesProductId:20005,unitFlag:7,insType:2,salesProductName:"中华人民共附加险5",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-//                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项一",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-//                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项二",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-//                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项三",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]}
+////                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项一",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项二",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+////                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项三",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]}
 //            ]};
 //            self.initializeUI(tempData);
 //            return;
@@ -149,6 +149,7 @@ define([
                 planModel.getPlanInitiaData(self.currProductId,function(data){
                     self.initializeUI(data);
                 },function(err){
+                    MsgBox.alert("初始化失败");
                     console.log(err);
                 });
             }
@@ -246,6 +247,11 @@ define([
             if(data.valueadded && data.valueadded.length > 0) {
                 valueAddedHtml = self.getValueAddedHtml(data.valueadded);
             }
+            if(data.valueadded && data.valueadded.length > 0){
+                self.ui.incrementCon.find(".increment-check").addClass("increment-check-ck");
+            }else{
+                self.ui.incrementCon.find(".increment-check").removeClass("increment-check-ck");
+            }
             self.ui.incrementCon.find(".accordion-list").append($(valueAddedHtml));
             //保险理念
             var ideaHtml = "";
@@ -256,6 +262,7 @@ define([
             if(self.ui.ideaCon.find(".accordion-list").find(".idea-item-ck").size() <=0){
                 self.ui.ideaCon.find(".accordion-list .idea-item:eq(0)").addClass("idea-item-ck");
             }
+            self.ui.ideaCon.find(".accordion-list").slideUp();//默认收起
         },
         //被保人属性
         insuredNameTpl: _.template('<div class="insured-property-item"><span>被保人姓名：</span><input type="text" class="property-input insured-name"/></div>'),
@@ -358,17 +365,17 @@ define([
                    minAmount = plan.amountLimit.minAmount;
                    maxAmount = plan.amountLimit.maxAmount;
                }
-               tempHtml = self.unitFlag1Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount});
+               tempHtml = self.unitFlag1Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount});
            }else if(plan.unitFlag == 7) {//保费
-               tempHtml = self.unitFlag2Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
+               tempHtml = self.unitFlag2Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
            }else if(plan.unitFlag == 1) {//份数
-               tempHtml = self.unitFlag3Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
+               tempHtml = self.unitFlag3Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
            }else if(plan.unitFlag == 3) {//份数 档次
-               tempHtml = self.unitFlag4Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml});
+               tempHtml = self.unitFlag4Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml});
            }else if(plan.unitFlag == 4) {//档次
-               tempHtml = self.unitFlag5Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml});
+               tempHtml = self.unitFlag5Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml});
            }else{
-               tempHtml = self.unitFlag6Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,dutyHtml:dutyHtml});
+               tempHtml = self.unitFlag6Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,dutyHtml:dutyHtml});
            }
            return tempHtml;
        },
@@ -386,7 +393,7 @@ define([
             var productId = isFromAdditionalList == 1 ? plan.attachId : plan.salesProductId;
             var productName = isFromAdditionalList == 1 ? plan.productName : plan.salesProductName;
             if(plan.prdtTermChargeList && plan.prdtTermChargeList.length > 0){
-                for(var i = 0; i < plan.prdtTermChargeList.length;)
+                for(var i = 0; i < plan.prdtTermChargeList.length; i++)
                 {
                     var typeName = "";
                     typeName = utils.getPeriodText(1,plan.prdtTermChargeList[i].periodType,plan.prdtTermChargeList[i].periodValue);
@@ -460,7 +467,6 @@ define([
             var self = this;
             //根据销售方式 定标题
             var saName = "保险金额";
-            console.log(self.coveragePrems);
             var headHtml = ' <tr><th width="20%">险种</th><th width="20%">'+saName+'</th><th width="20%">保障期限</th>' +
                 '<th width="20%">交费期限</th><th width="20%">首保保费</th></tr>';
             var tdHtml = "";
@@ -633,6 +639,10 @@ define([
             insured.id = "0";//自己填写的被保人信息 无ID
             insured.name = self.ui.firstInsured.find(".insured-name").val();
             insured.age = self.ui.firstInsured.find(".insured-old").val();
+            if(!insured.age && errorMsg.makePlanMsg1 != ""){      //验证第一被保人
+                MsgBox.alert(errorMsg.makePlanMsg1);
+                return false;
+            }
             insured.gender = self.ui.firstInsured.find(".insured-sex").data("val");
             insured.jobCateId = self.ui.firstInsured.find(".insured-job").val();//职位
             insured.socialInsuranceIndi = self.ui.firstInsured.find(".insured-social").data("val");//社保
@@ -645,6 +655,10 @@ define([
                 secInsured.id = 0;
                 secInsured.name = self.ui.secondInsured.find(".insured-name").val();
                 secInsured.age = self.ui.secondInsured.find(".insured-old").val();
+                if(!secInsured.age && errorMsg.makePlanMsg1 != ""){  //验证第二被保人
+                    MsgBox.alert(errorMsg.makePlanMsg1);
+                    return false;
+                }
                 secInsured.gender = self.ui.secondInsured.find(".insured-sex").data("val");
                 secInsured.jobCateId = self.ui.secondInsured.find(".insured-job").val();//职位
                 secInsured.socialInsuranceIndi = self.ui.secondInsured.find(".insured-social").data("val");//社保
@@ -667,50 +681,70 @@ define([
                 mainCoverage.productId = $(this).data("productid");
                 mainCoverage.unitFlag = $(this).data("unitflag");
                 mainCoverage.sa = $(this).find(".insured-sa").val();
+                var pName = $(this).data("productname");
                 if(mainCoverage.sa == ""){
-                    validateErrMsg = "请输入主险保额";
+                    validateErrMsg = pName+errorMsg.makePlanMsg5;
                     return false;
                 }
                 if(mainCoverage.sa){
                     var max = parseInt($(this).find(".insured-sa").attr("max"));
                     var min = parseInt($(this).find(".insured-sa").attr("min"));
                    if(parseInt(mainCoverage.sa) < min){
-                       validateErrMsg = "主险保额不得小于"+min;
+                       validateErrMsg = pName+"保额不得小于"+min;
                        return false;
                    }
                     if(parseInt(mainCoverage.sa) > max){
-                        validateErrMsg = "主险保额不得大于"+max;
+                        validateErrMsg = pName+"保额不得大于"+max;
                         return false;
                     }
                 }
                 //保额需验证最小值 最大值
                 mainCoverage.premium = $(this).find(".insured-premium").val();
                 if(mainCoverage.premium == ""){
-                    validateErrMsg = "请输入主险保费";
+                    validateErrMsg = pName+errorMsg.makePlanMsg6;
                     return false;
                 }
                 mainCoverage.unit = $(this).find(".insured-unit").val();
                 if(mainCoverage.unit == ""){
-                    validateErrMsg = "请输入主险份数";
+                    validateErrMsg = pName+errorMsg.makePlanMsg7;
                     return false;
                 }
                 if(mainCoverage.unit && !utils.isPositiveNum(mainCoverage.unit)){
-                    validateErrMsg = "份数必须整数";
+                    validateErrMsg = pName+errorMsg.makePlanMsg9;
                     return false;
                 }
                 mainCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
+                //为null表示 有此下拉选项 但无值
+                if(mainCoverage.benefitlevel == null && typeof mainCoverage.benefitlevel == "object"){
+                    validateErrMsg = pName+errorMsg.makePlanMsg8;
+                    return false;
+                }else{
+                    //存在档次时，如果份数=null,赋值=1   *****重要****
+                    if(!mainCoverage.unit || isNaN(mainCoverage.unit)){
+                        mainCoverage.unit = 1;
+                    }
+                }
+
                 //交费期限
                 var chargePeriod = {};
                 var type = $(this).find(".payment-period").find("option:selected").data("type");
                 chargePeriod.periodType = type;
                 chargePeriod.periodValue = parseInt($(this).find(".payment-period").find("option:selected").val());
                 mainCoverage.chargePeriod = chargePeriod;
+                if($(this).find(".payment-period").size() > 0 && isNaN(chargePeriod.periodValue)){
+                    validateErrMsg = pName+errorMsg.makePlanMsg4;
+                    return false;
+                }
                 //保障期限
                 var  coveragePeriod = {};
                 type = $(this).find(".guarantee-period").find("option:selected").data("type");
-                coveragePeriod.periodType = type
+                coveragePeriod.periodType = type;
                 coveragePeriod.periodValue = parseInt($(this).find(".guarantee-period").find("option:selected").val());
                 mainCoverage.coveragePeriod = coveragePeriod;
+                if($(this).find(".guarantee-period").size() > 0 && isNaN(coveragePeriod.periodValue)){
+                    validateErrMsg = pName+errorMsg.makePlanMsg3;
+                    return false;
+                }
                 //责任数组
                 var planLiabilityList = [];
                 $(this).find(".duty-item").each(function(index){
@@ -718,7 +752,11 @@ define([
                     planLiability.unitFlag = mainCoverage.unitFlag;
                     if($(this).find(".duty-item-left-ck").size() > 0){
                         planLiability.liabId = $(this).find(".duty-item-left-ck").data("liabid");
-                        planLiability.value = $(this).find(".duty-item-input").val();
+                        if($(this).find(".insured-benefitlevel").size() > 0){
+                            planLiability.value = $(this).find(".insured-benefitlevel").val();
+                        }else {
+                            planLiability.value = $(this).find(".duty-item-input").val();
+                        }
                         planLiabilityList.push(planLiability);
                     }
                 });
@@ -738,57 +776,69 @@ define([
                 riderCoverage.productId = $(this).data("productid");
                 riderCoverage.unitFlag = $(this).data("unitflag");
                 riderCoverage.sa = $(this).find(".insured-sa").val();
+                var rName = $(this).find(".additional-name-span").html();
                 if(riderCoverage.sa == ""){
-                    validateErrMsg = "请输入附加险保额";
+                    validateErrMsg = rName+errorMsg.makePlanMsg5;
                     return false;
                 }
                 if(riderCoverage.sa){
                     var max = parseInt($(this).find(".insured-sa").attr("max"));
                     var min = parseInt($(this).find(".insured-sa").attr("min"));
                     if(parseInt(riderCoverage.sa) < min){
-                        validateErrMsg = "附加险保额不得小于"+min;
+                        validateErrMsg = rName+"保额不得小于"+min;
                         return false;
                     }
                     if(parseInt(riderCoverage.sa) > max){
-                        validateErrMsg = "附加险保额不得大于"+max;
+                        validateErrMsg = rName+"保额不得大于"+max;
                         return false;
                     }
                 }
                 riderCoverage.premium = $(this).find(".insured-premium").val();
                 if(riderCoverage.premium == ""){
-                    validateErrMsg = "请输入附加险保费";
+                    validateErrMsg =  rName+errorMsg.makePlanMsg6;
                     return false;
                 }
                 riderCoverage.unit = $(this).find(".insured-unit").val();
                 if(riderCoverage.unit == ""){
-                    validateErrMsg = "请输入附加险份费";
+                    validateErrMsg =  rName+errorMsg.makePlanMsg7;
                     return false;
                 }
                 if(riderCoverage.unit &&!utils.isPositiveNum(riderCoverage.unit)){
-                    validateErrMsg = "份数不能填小数";
+                    validateErrMsg = rName+errorMsg.makePlanMsg9;
                     return false;
                 }
                 riderCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
+                //为null表示 有此下拉选项 但无值
+                if(riderCoverage.benefitlevel == null && typeof riderCoverage.benefitlevel == "object"){
+                    validateErrMsg = rName+errorMsg.makePlanMsg8;
+                    return false;
+                }else{
+                    //存在档次时，如果份数=null,赋值=1   *****重要****
+                    if(!riderCoverage.unit || isNaN(riderCoverage.unit)){
+                        riderCoverage.unit = 1;
+                    }
+                }
+
                 //交费期限
                 var chargePeriod = {};
                 var type = $(this).find(".payment-period").find("option:selected").data("type");
                 chargePeriod.periodType = type
                 chargePeriod.periodValue = parseInt($(this).find(".payment-period").find("option:selected").val());
                 riderCoverage.chargePeriod = chargePeriod;
-//                if(!chargePeriod.periodType || !chargePeriod.periodValue){ //此处为空暂不做验证
-//                    validateErrMsg = "交费期限必选";
-//                    return false;
-//                }
+                if($(this).find(".payment-period").size() > 0 && isNaN(chargePeriod.periodValue)){
+                    validateErrMsg = rName+errorMsg.makePlanMsg4;
+                    return false;
+                }
                 //保障期限
                 var coveragePeriod = {};
                 type = $(this).find(".guarantee-period").find("option:selected").data("type");
                 coveragePeriod.periodType = type
                 coveragePeriod.periodValue = parseInt($(this).find(".guarantee-period").find("option:selected").val());
                 riderCoverage.coveragePeriod = coveragePeriod;
-//                if(!coveragePeriod.periodType || !coveragePeriod.periodValue){ //此处为空暂不做验证
-//                    validateErrMsg = "保障期限必选";
-//                    return false;
-//                }
+                if($(this).find(".guarantee-period").size() > 0 && isNaN(!coveragePeriod.periodValue)){
+                    validateErrMsg =  rName+errorMsg.makePlanMsg3;
+                    return false;
+                }
                 riderCoverage.insuredIds = [insured.id];
                 riderCoverages.push(riderCoverage);
             });
@@ -846,6 +896,7 @@ define([
                 self.ui.calcResultCon.prepend($(resultHtml));
                 self.isCalcOver = true;
             },function(err){
+                MsgBox.alert("计算保费失败");
                 console.log(err);
             });
         },
@@ -862,9 +913,8 @@ define([
             if(!responseData)return;
             planModel.savePlan(responseData,function(data){
                 app.navigate("in/plan/"+data.quotationId,{replace:true, trigger:true})
-                console.log("计划生成成功"+data.quotationId);
             },function(err){
-                MsgBox.alert(err);
+                MsgBox.alert("计划书生成失败");
             });
         },
         //点击添加附加险 指向附加险列表
@@ -891,7 +941,7 @@ define([
             var insType = target.data("insured-type");
             if(insType == 1){
                 if(self.mainPlanIdArr.length <= 1){
-                    MsgBox.alert("只剩一个主险，不可删除");
+                    MsgBox.alert(errorMsg.makePlanMsg10);
                     return;
                 }
                 MsgBox.ask("确定删除该主险吗？", "", function (type) {
