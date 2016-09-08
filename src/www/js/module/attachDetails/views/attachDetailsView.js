@@ -64,8 +64,11 @@ define([
                 console.log(data);
                 if(data.status == "0"){
                     self.initData(data);
+                }else{
+                    MsgBox.alert("数据获取失败");
                 }
             }, function(err){
+                MsgBox.alert("数据获取失败");
                 console.log(err);
             });
         },

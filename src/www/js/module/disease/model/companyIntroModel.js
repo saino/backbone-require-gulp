@@ -3,8 +3,9 @@
  * add by guYY 2016/8/24
  */
 define([
-    'backbone'
-],function(){
+    'backbone',
+    'msgbox'
+],function(backbone, MsgBox){
     var companyIntroModel = Backbone.Model.extend({
         constructor:function(){
             Backbone.Model.apply(this,arguments);
@@ -66,10 +67,12 @@ define([
                         self.setDetail(result.companyInfo[0].organDesc);
                         self.setPhoneNumber(result.companyInfo[0].telephone);
                     }
+                }else{
+                    MsgBox.alert("数据获取失败");
                 }
             };
             opt.error = function(err){
-
+                MsgBox.alert("数据获取失败");
             };
             utils.requestData(opt);
         }

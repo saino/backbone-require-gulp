@@ -5,8 +5,9 @@
 define([
     'common/base/base_view',
     'text!module/search/templates/advanceQuery.html',
-    'module/search/model/searchModel'
-],function(BaseView, queryTpl, searchModel){
+    'module/search/model/searchModel',
+    'msgbox'
+],function(BaseView, queryTpl, searchModel, Msgbox){
     var AdvanceQueryView = BaseView.extend({
         id:"advance-query-container",
         template: _.template(queryTpl),
@@ -36,11 +37,15 @@ define([
 
             searchModel.getAdvancedFilters(function(data){
                 console.log(data);
-                self.initProductList(data.salesTypeInfo);
-                self.initRightsInfoList(data.rightsInfo);
-                self.initCompanyList(data.companyVo);
+                if(data.status == "0"){
+                    self.initProductList(data.salesTypeInfo);
+                    self.initRightsInfoList(data.rightsInfo);
+                    self.initCompanyList(data.companyVo);
+                }else{
+                    Msgbox.alert("数据查询失败");
+                }
             }, function(){
-
+                Msgbox.alert("数据查询失败");
             })
         },
 

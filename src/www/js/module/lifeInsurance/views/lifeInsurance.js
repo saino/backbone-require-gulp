@@ -403,11 +403,13 @@ define([
                 } else{
                     lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
                     self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
+                    MsgBox.alert("获取数据失败");
                     console.log("数据返回错误", data.errorMessages);
                 }
             }, function(error){
                     lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
                     self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
+                    MsgBox.alert("获取数据失败");
                 console.log("数据查询失败", error);
             });
         },
