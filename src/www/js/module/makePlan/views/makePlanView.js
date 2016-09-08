@@ -148,6 +148,8 @@ define([
                 self.currProductId = tempProductId;
                 self.resetUI();
                 planModel.getPlanInitiaData(self.currProductId,function(data){
+                    console.log("*************制作计划书"+self.currProductId+"*************");
+                    console.log(data);
                     self.initializeUI(data);
                 },function(err){
                     MsgBox.alert("初始化失败");
@@ -166,7 +168,6 @@ define([
         //根据数据初始化UI
         initializeUI:function(data){
             var self = this;
-            console.log(data);
             //公司LOGO  计划书名称
             self.ui.planInfoCon.html(data.packageName || "");
             self.currCompany = data.company;
@@ -902,7 +903,8 @@ define([
             var self = this;
             var responseData = self.getPlanByInput();
             if(!responseData)return;
-            console.log(responseData);//TODO
+            console.log("*********计算保费 请求数据**********");
+            console.log(responseData);
             planModel.calcFirstYearPremium(responseData,function(data){
                 self.totalFirstYearPrem = data.totalFirstYearPrem;
                 self.coveragePrems = data.coveragePrems;
@@ -927,6 +929,8 @@ define([
             }
             var responseData = self.getPlanByInput();
             if(!responseData)return;
+            console.log("*********计算保费 请求数据**********");
+            console.log(responseData);
             planModel.savePlan(responseData,function(data){
                 app.navigate("in/plan/"+data.quotationId,{replace:true, trigger:true})
             },function(err){

@@ -5,8 +5,9 @@
 define([
     'common/base/base_view',
     'text!module/additional/templates/additional.html',
-    'module/additional/model/additionalModel'
-],function(BaseView, AdditionalTpl, additionalModel){
+    'module/additional/model/additionalModel',
+    'msgbox'
+],function(BaseView, AdditionalTpl, additionalModel,MsgBox){
     var AdditionalView = BaseView.extend({
         template: _.template(AdditionalTpl),
         id:"additional-container",
@@ -36,8 +37,8 @@ define([
             self.addedList = self.getOption("list") || []
             additionalModel.getRiders(self.currProductId,self.addedList, function(data){
                 self.initData(data);
-            }, function(){
-
+            }, function(e){
+                MsgBox.alert("附加险列表获取失败");
             })
         },
 

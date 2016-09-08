@@ -80,42 +80,8 @@ define([
             //length置0 确保清空
             utils.productInfoList = [];
             utils.productInfoList.length = 0;
-
-//            self.initInterestDemonstration({
-//                "1":[{
-//                    insuredAge:36,
-//                    policyYear:1,
-//                    deathBenefit:5000
-//                },{
-//                    insuredAge:37,
-//                    policyYear:1,
-//                    deathBenefit:5000
-//                },{
-//                    insuredAge:38,
-//                    policyYear:1,
-//                    deathBenefit:5000
-//                },{
-//                    insuredAge:39,
-//                    policyYear:1,
-//                    deathBenefit:5000
-//                },{
-//                    insuredAge:40,
-//                    policyYear:1,
-//                    deathBenefit:5000
-//                },{
-//                    insuredAge:41,
-//                    policyYear:1,
-//                    deathBenefit:5000
-//                },{
-//                    insuredAge:42,
-//                    policyYear:1,
-//                    deathBenefit:5000
-//                }],
-//                "2":[],
-//                "3":[]
-//            });//TODO 测试
-//return;
             planModel.getPlanInfo(planId, function(data){
+                console.log("*********保障计划 返回数据**********");
                 console.log(data);
                 self.planBook = data.planInfo;
                 self.productInfoList = self.planBook.productInfoList;

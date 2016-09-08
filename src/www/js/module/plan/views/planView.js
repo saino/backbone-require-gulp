@@ -27,7 +27,8 @@ define([
         //事件添加
         events : {
             "tap #top-title-left":"_clickBackHandler",
-            "tap .menu-item" : "onTabClickHandler"
+            "tap .menu-item" : "onTabClickHandler",
+            "tap #top-title-right-1":"clickShareHandler"
         },
 
         /**初始化**/
@@ -63,7 +64,14 @@ define([
                 self.changeMenuTab(tabIndex);
             }
         },
-
+        //分享计划书
+        clickShareHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var name = this.ui.planMain.find(".plan-book-company").html()+"计划书演示";
+            console.log(name)
+            utils.shareProduct(name);
+        },
         changeMenuTab : function(tabIndex){
             var self = this;
             if(tabIndex == 1){

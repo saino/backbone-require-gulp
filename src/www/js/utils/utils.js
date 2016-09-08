@@ -297,5 +297,11 @@
         }
         return results;
     };
-    
+    /**
+     * 分享产口 （调原生）
+     * @param productName
+     */
+    utils.shareProduct = function(productName){
+        window.JsTest && window.JsTest.jsCallAndroid(productName);
+    }
 })(window);
