@@ -182,7 +182,8 @@ define([
             utils.isLifeInsuranceRefresh = true;
             //是否初始化查询条件
             utils.isInitOption = true;
-            app.goBack();
+            window.kbFinish.toFinish();
+            // app.goBack();
         },
 
         // 点击保险责任
@@ -416,27 +417,27 @@ define([
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
                 self.ui.lifeInsuranceContent.css("height", "calc(100% - 255px - "+utils.toolHeight+"px)");
             }
-            //TODO
-//            if(utils.isLifeInsuranceRefresh){
-//                if(utils.isInitOption){
-//                    utils.lifeInsuranceOptions.encryptedUserData = "QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0=";
-//                    utils.lifeInsuranceOptions.searchWords = "华夏";
-//                    utils.lifeInsuranceOptions.saleTypeIds = null;  //选填，种类ID，来自高级过滤接口的返回值
-//                    utils.lifeInsuranceOptions.examPremOrder = "desc";    //选填，示例保费排序方式。asc:升序，desc: 降序
-//                    utils.lifeInsuranceOptions.rightIds = null;       //选填，权益ID，来自高级过滤接口的返回值
-//                    utils.lifeInsuranceOptions.companyIds = null; //选填，公司ID，来自高级过滤接口的返回值
-//                    utils.lifeInsuranceOptions.sortOption = 1;     //选填，排序选项。2：按浏览量排序，3：按上架时间排序
-//
-//                    utils.advanceSaleTypeIds = [];
-//                    utils.advanceRightIds = [];
-//                    utils.advancedCompanyId = [];
-//
-//                    console.log("initOption");
-//                }
-//                console.log("reloadData");
-//                self.loadData();
-//
-//            }
+            // TODO
+           if(utils.isLifeInsuranceRefresh){
+               if(utils.isInitOption){
+                   utils.lifeInsuranceOptions.encryptedUserData = utils.serverConfig.serverUrl;
+                   utils.lifeInsuranceOptions.searchWords = "";
+                   utils.lifeInsuranceOptions.saleTypeIds = null;  //选填，种类ID，来自高级过滤接口的返回值
+                   utils.lifeInsuranceOptions.examPremOrder = "desc";    //选填，示例保费排序方式。asc:升序，desc: 降序
+                   utils.lifeInsuranceOptions.rightIds = null;       //选填，权益ID，来自高级过滤接口的返回值
+                   utils.lifeInsuranceOptions.companyIds = null; //选填，公司ID，来自高级过滤接口的返回值
+                   utils.lifeInsuranceOptions.sortOption = 1;     //选填，排序选项。2：按浏览量排序，3：按上架时间排序
+
+                   utils.advanceSaleTypeIds = [];
+                   utils.advanceRightIds = [];
+                   utils.advancedCompanyId = [];
+
+                   console.log("initOption");
+               }
+               console.log("reloadData");
+               self.loadData();
+
+           }
             utils.isLifeInsuranceRefresh = false;
             utils.isInitOption = false;
 

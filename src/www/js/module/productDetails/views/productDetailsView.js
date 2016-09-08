@@ -102,6 +102,10 @@ define([
          * @param data
          */
         initView : function(data){
+            if(data.status !== "0"){
+                console.log("error", data);
+                return;
+            }
             console.log(data);
             var self = this;
             self.companyId = data.company.listId;
@@ -114,7 +118,7 @@ define([
 
             //设置用户信息
             var packageName = data.packageName; //保险名称
-            var organLogo =  data.company.organLogo;    //公司logo
+            var organLogo =  utils.serverConfig.serverUrl + data.company.organLogo;    //公司logo
             var totalVisitCount = data.totalVisitCount; //总PV数
             self.initInfoView(packageName, organLogo, totalVisitCount);
             //设置投保条件
@@ -262,7 +266,7 @@ define([
             var featureStr = "";
             for(var i = 0; i < productFeatureList.length; i++){
                 var obj = productFeatureList[i];
-                var realTemp = featureTemp.replace("{feature-pic}", obj.featurePic);
+                var realTemp = featureTemp.replace("{feature-pic}", utils.serverConfig.serverUrl + obj.featurePic);
                 featureStr += realTemp;
             }
             self.ui.featureContent.html(featureStr);

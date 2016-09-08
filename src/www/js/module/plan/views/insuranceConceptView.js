@@ -11,7 +11,9 @@ define([
         id:"insurance-concept-container",
         template: _.template(tpl),
         ui: {
-            pageswitchContent: "#pageswitch-content"
+            pageswitchContent: "#pageswitch-content",
+            allPageNum: "#all-page-num",
+            curPageNum: "#cur-page-num"
         },
         initialize:function(){
 
@@ -37,6 +39,10 @@ define([
                 arrowkey:false,         //bool 是否启用键盘方向切换
                 autoplay:false         //bool 是否自动播放幻灯 新增
                 // interval:int            //bool 幻灯播放时间间隔 新增
+            });
+            pw.on("after", function(){
+                var currentIndex = pw.current + 1;
+                self.ui.curPageNum.html(currentIndex);
             });
         }
     });
