@@ -81,40 +81,40 @@ define([
             utils.productInfoList = [];
             utils.productInfoList.length = 0;
 
-            self.initInterestDemonstration({
-                "1":[{
-                    insuredAge:36,
-                    policyYear:1,
-                    deathBenefit:5000
-                },{
-                    insuredAge:37,
-                    policyYear:1,
-                    deathBenefit:5000
-                },{
-                    insuredAge:38,
-                    policyYear:1,
-                    deathBenefit:5000
-                },{
-                    insuredAge:39,
-                    policyYear:1,
-                    deathBenefit:5000
-                },{
-                    insuredAge:40,
-                    policyYear:1,
-                    deathBenefit:5000
-                },{
-                    insuredAge:41,
-                    policyYear:1,
-                    deathBenefit:5000
-                },{
-                    insuredAge:42,
-                    policyYear:1,
-                    deathBenefit:5000
-                }],
-                "2":[],
-                "3":[]
-            });//TODO 测试
-return;
+//            self.initInterestDemonstration({
+//                "1":[{
+//                    insuredAge:36,
+//                    policyYear:1,
+//                    deathBenefit:5000
+//                },{
+//                    insuredAge:37,
+//                    policyYear:1,
+//                    deathBenefit:5000
+//                },{
+//                    insuredAge:38,
+//                    policyYear:1,
+//                    deathBenefit:5000
+//                },{
+//                    insuredAge:39,
+//                    policyYear:1,
+//                    deathBenefit:5000
+//                },{
+//                    insuredAge:40,
+//                    policyYear:1,
+//                    deathBenefit:5000
+//                },{
+//                    insuredAge:41,
+//                    policyYear:1,
+//                    deathBenefit:5000
+//                },{
+//                    insuredAge:42,
+//                    policyYear:1,
+//                    deathBenefit:5000
+//                }],
+//                "2":[],
+//                "3":[]
+//            });//TODO 测试
+//return;
             planModel.getPlanInfo(planId, function(data){
                 console.log(data);
                 self.planBook = data.planInfo;
@@ -141,12 +141,12 @@ return;
                 }
                 //初始化责任列表
                 self.initLiability(self.planBook.planLiability);
-                //初始化利益演示
-                self.initInterestDemonstration(self.planBook.illustrationList);
+                //初始化利益演示  TODO 暂不测
+//                self.initInterestDemonstration(self.planBook.illustrationList);
                 self.ui.userName.html(self.planBook.userName);//userPhone
                 self.ui.userPhone.html('<a href="tel:'+self.planBook.userPhone+'">'+self.planBook.userPhone+'</a>');
-            }, function(){
-
+            }, function(e){
+                MsgBox.alert("获取计划书信息失败");
             })
         },
         /***
@@ -217,7 +217,7 @@ return;
             if(featureList && featureList.length>0){
                 for(var i = 0; i <featureList.length; i++){
                     if(featureList[i].featurePic) {
-                        imgHtml += '<img src="'+featureList[i].featurePic+'" alt="" class="featureImg" data-id="' + featureList[0].listId + '"/>';
+                        imgHtml += '<img src="'+(utils.serverConfig.serverUrl+ featureList[i].featurePic)+'" alt="" class="featureImg" data-id="' + featureList[0].listId + '"/>';
                     }
                 }
             }

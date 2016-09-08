@@ -8,6 +8,7 @@ define([
         opt.url = "/ls/services/dt/planService/getPlanInfo";
         opt.type = "POST";
         var data = {};
+        data.encryptedUserData = utils.userObj.id;
         data.quotationId = planId;
         opt.data = data;
         opt.success = function(result){

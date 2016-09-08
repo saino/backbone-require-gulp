@@ -146,18 +146,26 @@ define([
             //返回进入 或进入不同产品计划书 重置输入
             if(self.currProductId == 0 || self.currProductId != tempProductId){
                 self.currProductId = tempProductId;
+                self.resetUI();
                 planModel.getPlanInitiaData(self.currProductId,function(data){
                     self.initializeUI(data);
                 },function(err){
                     MsgBox.alert("初始化失败");
-                    console.log(err);
+                    self.resetUI();
                 });
             }
+        },
+        //重置UI
+        resetUI:function(){
+            var self = this;
+            self.initializeUI({});
+            //计算结果清空
+            self.ui.calcResultCon.find(".first-year-table").remove();
+            self.ui.totalFirstYearPremium.html("0元");
         },
         //根据数据初始化UI
         initializeUI:function(data){
             var self = this;
-            console.log(data);
             //公司LOGO  计划书名称
             self.ui.planInfoCon.html(data.packageName || "");
             self.currCompany = data.company;
@@ -204,8 +212,8 @@ define([
                 }
                 self.ui.secondInsured.find(".insured-property").html(secondInsuredHtml);
             }
-            if(data.company && data.company.organLogo ){
-                self.ui.planInfoCon.css("background",'background: url("'+data.company.organLogo+'") no-repeat right 30px center #fff;');
+            if(data.company && data.company.organLogo){
+                self.ui.planInfoCon.css("background",'background: url("'+(utils.serverConfig.serverUrl+''+data.company.organLogo)+'") no-repeat right 30px center #fff;');
             }
             //是否显示投保人
             if(!self.hasPolicyHolder){
@@ -224,6 +232,8 @@ define([
             }
             //根据销售方式、主险个数拼接投保输入框html
             var inputHtml = "";
+            //添加前选清空原有
+            self.ui.makePlanInput.find(".main-insured-item").remove();
             if(self.currPlanList && self.currPlanList.length > 0) {
                 for (var i = 0; i < self.currPlanList.length; i++) {
                     if (self.currPlanList[i].insType == 1) {
@@ -235,15 +245,19 @@ define([
             self.ui.makePlanInput.append($(inputHtml));
             //根据销售方式，附加险拼接输入
             var additionalInputHtml = "";
-            for(var i = 0; i < self.currPlanList.length; i++){
-                if(self.currPlanList[i].insType == 2) {
-                    self.additionalIdArr.push(self.currPlanList[i].salesProductId);
-                    additionalInputHtml += self.getAdditionalPlanInputHtml(self.currPlanList[i],0);
+            self.ui.additionalPlanInput.find(".additional-item").remove();
+            if(self.currPlanList && self.currPlanList.length > 0) {
+                for (var i = 0; i < self.currPlanList.length; i++) {
+                    if (self.currPlanList[i].insType == 2) {
+                        self.additionalIdArr.push(self.currPlanList[i].salesProductId);
+                        additionalInputHtml += self.getAdditionalPlanInputHtml(self.currPlanList[i], 0);
+                    }
                 }
             }
             self.ui.additionalPlanInput.append($(additionalInputHtml));
             //增值服务
             var valueAddedHtml = "";
+            self.ui.incrementCon.find(".accordion-list").find(".increment-item").remove();
             if(data.valueadded && data.valueadded.length > 0) {
                 valueAddedHtml = self.getValueAddedHtml(data.valueadded);
             }
@@ -254,6 +268,7 @@ define([
             }
             self.ui.incrementCon.find(".accordion-list").append($(valueAddedHtml));
             //保险理念
+            self.ui.ideaCon.find(".accordion-list").find(".idea-item").remove();
             var ideaHtml = "";
             if(data.insuranceSpirit && data.insuranceSpirit.length > 0){
                 ideaHtml = self.getIdeaHtml(data.insuranceSpirit);
