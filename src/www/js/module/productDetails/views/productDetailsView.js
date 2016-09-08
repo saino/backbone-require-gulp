@@ -13,6 +13,7 @@ define([
         id:"product-details-container",
         currentUserId : "",     //当前用户ID
         productId : "",         //售卖产品ID
+        packageName: "",        //产品名称
         // forever: true,
         // forever: true,
         ui:{
@@ -119,10 +120,10 @@ define([
             }
 
             //设置用户信息
-            var packageName = data.packageName; //保险名称
+            self.packageName = data.packageName; //保险名称
             var organLogo =  utils.serverConfig.serverUrl + data.company.organLogo;    //公司logo
             var totalVisitCount = data.totalVisitCount; //总PV数
-            self.initInfoView(packageName, organLogo, totalVisitCount);
+            self.initInfoView(self.packageName, organLogo, totalVisitCount);
             //设置投保条件
             var amountLimit = data.amountLimit; //保额限制
             var ageRange = data.ageRange; //年龄区间
@@ -387,24 +388,26 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
-            // MsgBox.alert("点击了分享保险");
-            var options = {
-                "packageId": parseInt(self.productId),
-                "linkUrl": window.location.href,
-                "encryptedUserData": utils.userObj.id
-            };
-            // console.log(options);
-            productDetailsModel.sharePackage(options, function(data){
-                console.log("success", data);
-                if(data.status == "0"){
 
-                }else{
-                    MsgBox.alert("分享失败");
-                }
-            }, function(error){
-                MsgBox.alert("分享失败");
-                console.log(error);
-            });
+            utils.shareProduct(self.packageName);
+            // MsgBox.alert("点击了分享保险");
+            // var options = {
+            //     "packageId": parseInt(self.productId),
+            //     "linkUrl": window.location.href,
+            //     "encryptedUserData": utils.userObj.id
+            // };
+            // // console.log(options);
+            // productDetailsModel.sharePackage(options, function(data){
+            //     console.log("success", data);
+            //     if(data.status == "0"){
+
+            //     }else{
+            //         MsgBox.alert("分享失败");
+            //     }
+            // }, function(error){
+            //     MsgBox.alert("分享失败");
+            //     console.log(error);
+            // });
         },
         /**
          * 收藏保险
