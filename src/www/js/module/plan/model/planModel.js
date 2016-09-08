@@ -35,7 +35,7 @@ define([
             if(result.status == 0){
                 if (cb_ok) cb_ok(result);
             }else{
-                if(cb_err) cb_err(err)
+                if(cb_err) cb_err(result);
             }
         };
         opt.error = function(err){
