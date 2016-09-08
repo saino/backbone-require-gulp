@@ -110,7 +110,7 @@ define([
             }
             console.log(data);
             var self = this;
-            self.companyId = data.company.listId;
+            self.companyId = data.company && data.company.listId;
 
             if(data.isCollected == "Y"){
                 self.ui.collectBtn.attr("class", "top-title-right-2 hasCollection");

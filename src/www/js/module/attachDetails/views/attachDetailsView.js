@@ -45,7 +45,7 @@ define([
         initialize:function(){
 
         },
-        onRender:function(){
+        show:function(){
             var self = this;
             if(device.ios()){
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
