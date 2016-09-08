@@ -39,7 +39,10 @@ define([
 
             this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 details-description-rule-name-selected");
             this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2");
-            this.ui.detailsDescriptionRuleContent.html(this.descriptionData.productUnderwritingRule);
+            if(this.descriptionData){
+                this.ui.detailsDescriptionRuleContent.html(this.descriptionData.productUnderwritingRule);
+            }
+            
         },
         clickDetailsDescriptionRuleName2Handler: function(event){
             event.stopPropagation();
@@ -47,7 +50,9 @@ define([
 
             this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2 details-description-rule-name-selected");
             this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1");
-            this.ui.detailsDescriptionRuleContent.html(this.descriptionData.companyUnderwritingRule);
+            if(this.descriptionData){
+                this.ui.detailsDescriptionRuleContent.html(this.descriptionData.companyUnderwritingRule);
+            }
 
         },
         initialize: function(){
@@ -61,8 +66,8 @@ define([
 
         onRender: function(){
             var self = this;
-            var productId = self.getOption("detailsDescriptionId");
-            var organId = self.getOption("organId");
+            var productId = parseInt(self.getOption("detailsDescriptionId"));
+            var organId = parseInt(self.getOption("organId"));
             self.ui.detailsDescriptionName1.html(utils.productName); 
             detailsDescriptionModel.getRuleInfo(productId, organId, function(data){
                 console.log(data);

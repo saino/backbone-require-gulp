@@ -23,7 +23,7 @@ define([], function () {
         opt.type = "POST";
         var data = {};
         data.packageId = packageId;
-        data.productId = productId;
+        // data.productId = productId;
         data.salesProductId = salesProductId;
         opt.data = data;
         opt.success = function(result){

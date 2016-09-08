@@ -182,7 +182,12 @@ define([
             utils.isLifeInsuranceRefresh = true;
             //是否初始化查询条件
             utils.isInitOption = true;
-            window.kbFinish.toFinish();
+
+            if(window.kbFinish){
+                window.kbFinish.toFinish();
+            }else{
+                app.goBack();
+            }
             // app.goBack();
         },
 
