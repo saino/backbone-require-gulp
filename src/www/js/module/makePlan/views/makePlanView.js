@@ -488,7 +488,7 @@ define([
                 '<th width="20%">交费期限</th><th width="20%">首保保费</th></tr>';
             var tdHtml = "";
             for(var i = 0; i < self.coveragePrems.length; i++){
-                tdHtml += '<tr><td>'+self.coveragePrems[i].productName+'</td> <td>'+utils.formatNumber(self.coveragePrems[i].premium)+'</td> <td>'+
+                tdHtml += '<tr><td>'+self.coveragePrems[i].productName+'</td> <td>'+utils.formatNumber(self.coveragePrems[i].sa)+'</td> <td>'+
                     utils.getPeriodText(2,self.coveragePrems[i].coveragePeriod.periodType,self.coveragePrems[i].coveragePeriod.periodValue)+'</td> <td>'+
                     utils.getPeriodText(1,self.coveragePrems[i].chargePeriod.periodType,self.coveragePrems[i].chargePeriod.periodValue)+'</td> <td>'+
                     utils.formatNumber(self.coveragePrems[i].firstYearPrem)+'</td> </tr>';
@@ -906,6 +906,8 @@ define([
             console.log("*********计算保费 请求数据**********");
             console.log(responseData);
             planModel.calcFirstYearPremium(responseData,function(data){
+                console.log("************计算结果**************");
+                console.log(data);
                 self.totalFirstYearPrem = data.totalFirstYearPrem;
                 self.coveragePrems = data.coveragePrems;
                 self.ui.totalFirstYearPremium.html(utils.formatNumber2(self.totalFirstYearPrem));
@@ -929,7 +931,7 @@ define([
             }
             var responseData = self.getPlanByInput();
             if(!responseData)return;
-            console.log("*********计算保费 请求数据**********");
+            console.log("*********计划书生成 请求数据**********");
             console.log(responseData);
             planModel.savePlan(responseData,function(data){
                 app.navigate("in/plan/"+data.quotationId,{replace:true, trigger:true})

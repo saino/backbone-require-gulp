@@ -16,6 +16,7 @@ define([
         template : _.template(tpl),
         _mouseLock : false,
         forever : true,
+        currTab:1,
         ui : {
             "topCon":"#top-title",
             "planMain":"#plan-main",
@@ -50,17 +51,21 @@ define([
             }
 
             self.planId = self.getOption("planId");
-            self.changeMenuTab(1);
+//            self.changeMenuTab(self.currTab);
         },
 
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
         },
-
+        show:function(){
+            var self = this;
+            self.changeMenuTab(self.currTab);
+        },
         onTabClickHandler : function(e){
             var self = this, target  = e.currentTarget;
             var tabIndex = target.dataset.id;
             if(tabIndex){
+                self.currTab = tabIndex;
                 self.changeMenuTab(tabIndex);
             }
         },

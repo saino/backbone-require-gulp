@@ -75,7 +75,7 @@ define([
 
         show : function(planId){
             var self = this;
-            if(self.currPlanId == planId)return;
+//            if(self.currPlanId == planId)return;
             self.currPlanId = planId;
             //length置0 确保清空
             utils.productInfoList = [];
@@ -219,7 +219,7 @@ define([
         //责任
         initLiability:function(planLiability){
 //            var packageId = planLiability.packageId;
-            var liabCateList = planLiability.liabCateList;
+            var liabCateList = planLiability ? planLiability.liabCateList : [];
             var tempHtml = "", self = this;
             //嵌套三层循环，需求之复杂 只可意会 不可言传
             for(var i = 0; i < liabCateList.length; i++)
