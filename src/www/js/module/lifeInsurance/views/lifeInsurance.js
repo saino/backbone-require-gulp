@@ -264,7 +264,7 @@ define([
             var options = {
 
             };
-            this.ui.topRitleRight.css("background-image","url(../images/history.png)");
+            this.ui.topRitleRight.css("background-image","url(images/history.png)");
             // myCustomerModel.queryAgentCustomers(options, function(data){
             //     console.log(data);
             // }, function(error){
