@@ -155,6 +155,7 @@ require([
     });
 
     function readyHandle (){
+
         //基本数据初始化 add by guYY 2015/12/31 10：20
         if(device && device.ios())
             utils.topHeightForTime = 40;

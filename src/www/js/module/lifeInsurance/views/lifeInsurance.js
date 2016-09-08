@@ -26,8 +26,8 @@ define([
             searchText: "#search-text",                                 //搜索框
             searchAdvancedScreening: "#search-advanced-screening",      //高级筛选
             searchInsuranceCompany: "#search-insurance-company",        //保险公司
-            lifeInsuranceContent: "#life-insurance-content",             //寿险容器
-            searchIcon: "#search-icon",                                  //搜索框的放大镜
+            lifeInsuranceContent: "#life-insurance-content",            //寿险容器
+            searchIcon: "#search-icon",                                 //搜索框的放大镜
             // insuranceCompanyNameSelected: ".insurance-company-name-selected" //被选中的公司
 
 
@@ -302,6 +302,12 @@ define([
                         lifeInsuranceContentHtml += lifeInsuranceFlagHtml;
                         lifeInsuranceContentHtml += '<div class="life-insurance-name-title">'+ salesPackages[i].packageName +'</div>'+
                                                     '</div>';
+                        if(salesPackages[i].examPrem){
+                            lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
+                                                            '<div class="life-insurance-label-name">示例保费：</div>'+
+                                                            '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem +'</div>'+
+                                                        '</div>';
+                        }
 
                         lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
                                                         '<div class="life-insurance-label-name">年龄：</div>'+
@@ -339,6 +345,7 @@ define([
                                                         '<div class="life-insurance-label-name">保障期间：</div>'+
                                                         '<div class="life-insurance-label-message">'+lifeInsuranceLabelMessageHtml+'</div>'+
                                                     '</div>';
+
                         lifeInsuranceContentHtml += '<div class="life-insurance-equity-label">';
                         var equityLabelHtml = "";
                         var equityLabelWidth = (self.$el.width() - 100)/3;
