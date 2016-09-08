@@ -166,6 +166,7 @@ define([
         //根据数据初始化UI
         initializeUI:function(data){
             var self = this;
+            console.log(data);
             //公司LOGO  计划书名称
             self.ui.planInfoCon.html(data.packageName || "");
             self.currCompany = data.company;
