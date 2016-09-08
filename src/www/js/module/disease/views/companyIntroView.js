@@ -5,8 +5,9 @@
 define([
     'common/base/base_view',
     'module/disease/model/companyIntroModel',
-    'text!module/disease/templates/companyIntro.html'
-],function(BaseView, companyIntroModel, companyIntroTpl){
+    'text!module/disease/templates/companyIntro.html',
+    'msgbox'
+],function(BaseView, companyIntroModel, companyIntroTpl, MsgBox){
     var companyIntroView = BaseView.extend({
          id:'companyIntro-container',
          template: _.template(companyIntroTpl),

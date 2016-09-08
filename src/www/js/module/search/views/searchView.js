@@ -5,8 +5,9 @@
 define([
     'common/base/base_view',
     'text!module/search/templates/search.html',
-    'module/search/model/searchModel'
-],function(BaseView,searchTpl, searchModel){
+    'module/search/model/searchModel',
+    'msgbox'
+],function(BaseView,searchTpl, searchModel, Msgbox){
     var HistoryTpl = '<div class="history-item">' +
                             '<div class="history-item-name">{0}</div>' +
                              '<img class="history-item-del" src="images/delete2.png" alt="">' +
@@ -44,11 +45,15 @@ define([
             }
             searchModel.getSearchHistoryAndHotKeywords(function(data){
                 console.log(data)
-                self.initHotWordsList(data.hotkeywordsList || []);
-                self.initHistoryList(data.searchHistoryList || []);
-                self.initDefaultSearchWord(data.defaultSearchWords)
+                if(data.status == "0"){
+                    self.initHotWordsList(data.hotkeywordsList || []);
+                    self.initHistoryList(data.searchHistoryList || []);
+                    self.initDefaultSearchWord(data.defaultSearchWords)
+                }else{
+                    Msgbox.alert("数据获取失败");
+                }
             }, function(){
-
+                Msgbox.alert("数据获取失败");
             })
         },
 
@@ -135,10 +140,15 @@ define([
             var target = $(e.currentTarget);
             var searchWords = target.parent().find(".history-item-name").html();
             if(searchWords){
-                searchModel.clearSearchHistory(searchWords, function(){
-                    target.parent().remove();
+                searchModel.clearSearchHistory(searchWords, function(data){
+                    console.log(data);
+                    if(data.status == "0"){
+                        target.parent().remove();
+                    }else{
+                        Msgbox.alert("删除失败");
+                    }
                 }, function(){
-
+                    Msgbox.alert("删除失败");
                 });
             }
          },
@@ -151,10 +161,14 @@ define([
             e.preventDefault();
 
             var self = this;
-            searchModel.clearSearchHistory("", function(){
-                self.ui.historyList.html("");
+            searchModel.clearSearchHistory("", function(data){
+                if(data.status == "0"){
+                    self.ui.historyList.html("");
+                }else{
+                    Msgbox.alert("删除失败");
+                }
             }, function(){
-
+                    Msgbox.alert("删除失败");
             });
         },
 

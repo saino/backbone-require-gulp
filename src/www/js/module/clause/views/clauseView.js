@@ -5,8 +5,9 @@
 define([
     'common/base/base_view',
     'text!module/clause/templates/clause.html',
-    'module/clause/model/clauseModel'
-],function(BaseView, ClauseTpl, clauseModel){
+    'module/clause/model/clauseModel',
+    'msgbox'
+],function(BaseView, ClauseTpl, clauseModel, MsgBox){
     var ClauseView = BaseView.extend({
         template: _.template(ClauseTpl),
         id:"clause-container",
@@ -60,9 +61,15 @@ define([
             var productId = self.getOption("productId");
             clauseModel.getTermInfo(productId, function(data){
                 console.log(data, "llll");
-                self.initData(data);
+                if(data.status == "0"){
+                    self.initData(data);
+                }else{
+                    MsgBox.alert("数据获取失败");
+                }
+                
             }, function(){
-
+                MsgBox.alert("数据获取失败");
+                self.initData(data);
             })
         },
 

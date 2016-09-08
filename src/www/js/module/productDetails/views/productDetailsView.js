@@ -89,6 +89,7 @@ define([
                 };
             productDetailsModel.getProductInfo(options, self._initView, function(err){
                 console.log(err);
+                MsgBox.alert("数据获取失败");
             });
 
 
@@ -104,6 +105,7 @@ define([
         initView : function(data){
             if(data.status !== "0"){
                 console.log("error", data);
+                MsgBox.alert("数据获取失败");
                 return;
             }
             console.log(data);
@@ -394,7 +396,13 @@ define([
             // console.log(options);
             productDetailsModel.sharePackage(options, function(data){
                 console.log("success", data);
+                if(data.status == "0"){
+
+                }else{
+                    MsgBox.alert("分享失败");
+                }
             }, function(error){
+                MsgBox.alert("分享失败");
                 console.log(error);
             });
         },
@@ -416,9 +424,12 @@ define([
                 console.log("success", data);
                 if(data.status == "0"){
                     $target.toggleClass("hasCollection");
+                }else{
+                    MsgBox.alert("收藏失败");
                 }
             }, function(error){
                 console.log(error);
+                MsgBox.alert("收藏失败");
             });
             // MsgBox.alert("点击了收藏保险");
         },
