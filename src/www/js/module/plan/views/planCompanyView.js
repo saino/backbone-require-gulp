@@ -66,7 +66,7 @@ define([
                 self.ui.underwriterCompanyCon.addClass("content-ck");
             }
             if(companyLogo){
-                self.ui.planCompanyLogo.html('<img src="' + companyLogo +'" alt="">');
+                self.ui.planCompanyLogo.html('<img src="' + (utils.serverConfig.serverUrl+ companyLogo) +'" alt="">');
             }
         },
         //设置内容区域高度
