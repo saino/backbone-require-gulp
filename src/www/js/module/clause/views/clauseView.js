@@ -56,6 +56,7 @@ define([
             var self = this;
             if(device.ios()){
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
+                self.ui.infoDiv.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
             }
 
             var productId = self.getOption("productId");

@@ -305,7 +305,7 @@ define([
             var dutyStr = "";
             for(var i = 0; i < salesLiabilityList.length; i++){
                 var obj = salesLiabilityList[i];
-                var realTemp = dutyTemp.replace("{liabName}", obj.liabName).replace(/\{liabDesc\}/g, obj.liabDesc);
+                var realTemp = dutyTemp.replace("{liabName}", obj.liabDesc).replace(/\{liabDesc\}/g, obj.liabDescProd);
                 dutyStr += realTemp;
             }
             self.ui.dutyContent.html(dutyStr);

@@ -273,6 +273,12 @@ define([
                 self.ui.incrementCon.find(".increment-check").removeClass("increment-check-ck");
             }
             self.ui.incrementCon.find(".accordion-list").append($(valueAddedHtml));
+            if(valueAddedHtml == "")
+            {
+                self.ui.incrementCon.css("display","none");
+            }else{
+                self.ui.incrementCon.css("display","block");
+            }
             //保险理念
             self.ui.ideaCon.find(".accordion-list").find(".idea-item").remove();
             var ideaHtml = "";
@@ -334,6 +340,7 @@ define([
            var guaranteePeriodHtml = "";
            //可选责任列表
            var dutyHtml = "";
+           var dutyShow = "";
            if(plan.prdtTermChargeList && plan.prdtTermChargeList.length > 0){
                for(var i = 0; i < plan.prdtTermChargeList.length; i++)
                {
@@ -379,24 +386,26 @@ define([
                    }
                }
            }
-
+            if(dutyHtml == ""){
+                dutyShow = 'style="display:none;"';
+            }
            if(plan.unitFlag == 6) {//保额
                var minAmount = 0, maxAmount = 999999;
                if(plan.amountLimit){
                    minAmount = plan.amountLimit.minAmount;
                    maxAmount = plan.amountLimit.maxAmount;
                }
-               tempHtml = self.unitFlag1Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount});
+               tempHtml = self.unitFlag1Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount,dutyShow:dutyShow});
            }else if(plan.unitFlag == 7) {//保费
-               tempHtml = self.unitFlag2Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
+               tempHtml = self.unitFlag2Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,dutyShow:dutyShow});
            }else if(plan.unitFlag == 1) {//份数
-               tempHtml = self.unitFlag3Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml});
+               tempHtml = self.unitFlag3Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,dutyShow:dutyShow});
            }else if(plan.unitFlag == 3) {//份数 档次
-               tempHtml = self.unitFlag4Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml});
+               tempHtml = self.unitFlag4Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml,dutyShow:dutyShow});
            }else if(plan.unitFlag == 4) {//档次
-               tempHtml = self.unitFlag5Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml});
+               tempHtml = self.unitFlag5Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml,dutyShow:dutyShow});
            }else{
-               tempHtml = self.unitFlag6Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,dutyHtml:dutyHtml});
+               tempHtml = self.unitFlag6Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,dutyHtml:dutyHtml,dutyShow:dutyShow});
            }
            return tempHtml;
        },
@@ -409,8 +418,8 @@ define([
             var paymentPeriodHtml = "";
             //保障期限
             var guaranteePeriodHtml = "";
-            //可选责任列表
-            var dutyHtml = "";
+//            //可选责任列表
+//            var dutyHtml = "";
             var productId = isFromAdditionalList == 1 ? plan.attachId : plan.salesProductId;
             var productName = isFromAdditionalList == 1 ? plan.productName : plan.salesProductName;
             if(plan.prdtTermChargeList && plan.prdtTermChargeList.length > 0){
@@ -929,12 +938,12 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            var responseData = self.getPlanByInput();
+            if(!responseData)return;
             if(!self.isCalcOver){
                 MsgBox.alert("请先计算保费");
                 return;
             }
-            var responseData = self.getPlanByInput();
-            if(!responseData)return;
             console.log("*********计划书生成 请求数据**********");
             console.log(responseData);
             planModel.savePlan(responseData,function(data){
