@@ -939,6 +939,8 @@ define([
             console.log("*********计划书生成 请求数据**********");
             console.log(responseData);
             planModel.savePlan(responseData,function(data){
+                if(!data.quotationId)
+                    data.quotationId = "null";
                 app.navigate("in/plan/"+data.quotationId,{replace:true, trigger:true})
             },function(err){
                 MsgBox.alert("计划书生成失败");
@@ -1022,13 +1024,12 @@ define([
         //监听客户导入
         onImportUser:function(obj){
             var self = this;    //TODO 导入客户接通测
-            obj = {
-                type:1, //1第一被保人  2第二被保人
-                id:"10001",
-                name:"张d三",
-                age:18, //年龄不用
-                sex:"F" //M男  F女
-            };
+            if(obj.gender == "女"){
+                obj.self = "F";
+            }
+            if(obj.gender == "男"){
+                obj.self = "M";
+            }
             //依产品定义 客户导入只用名称 性别，不导入年龄
             var target = self.ui.secondInsured;
             if(obj.type == 1) {

@@ -65,7 +65,8 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var target = $(e.target);
-            app.navigate("in/clause/"+target.data("id"),{trigger:true,replace:true});
+            var id = target.data("id") || "null";
+            app.navigate("in/clause/"+id,{trigger:true,replace:true});
         }
     });
     return clauseListView;

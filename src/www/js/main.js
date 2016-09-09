@@ -125,7 +125,8 @@ require.config({
         errorMsg : "utils/errorMsg",
         msgbox : "common/views/MsgBox",
         touch : "lib/touch-0.2.14.min",
-        device : "lib/device"
+        device : "lib/device",
+        pageSwitch:"lib/pageSwitch"
 	},
     waitSeconds: 0
 });
@@ -144,7 +145,8 @@ require([
     'jqtap',
     'utils',
     'msgbox',
-    'errorMsg'
+    'errorMsg',
+    'pageSwitch'
 ], function($, Backbone, BackboneHistory, app, controller, AppRouter) {
     if(!window.EventsName){
         window.EventsName = "tap";

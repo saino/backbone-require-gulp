@@ -132,7 +132,7 @@ define([
                 target = target.parents(".personal-plan-item");
             }
 
-            var id = target.data("id");
+            var id = target.data("id")||"null";
             if(id){
                 target.css("opacity",".5")
                 setTimeout(function(){

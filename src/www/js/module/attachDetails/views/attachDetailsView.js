@@ -61,7 +61,6 @@ define([
 
             //TODO 需要真实的接口和数据
             attachDetailsModel.getRiderInfo(self.packageId, self.productId, self.salesProductId, function(data){
-                console.log(data);
                 if(data.status == "0"){
                     self.initData(data);
                 }else{

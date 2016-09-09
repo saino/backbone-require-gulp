@@ -74,11 +74,15 @@ define([
                 setTimeout(function(){
                         MsgBox.alert("数据获取失败");
                     }, 350);
-                self.initData(data);
+                self.initData({});
             })
         },
 
         initData : function(data){
+            if(!data || !data.itemDesc){
+                this.ui.infoDiv.html("");
+                return;
+            }
             this.ui.infoDiv.html(data.itemDesc);
         },
 

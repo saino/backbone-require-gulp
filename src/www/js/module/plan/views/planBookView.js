@@ -54,7 +54,8 @@ define([
             liabilityList:".plan-obligation-list",//保险责任
             ageSelect:".demo-age-select", //年龄段下拉框
             userName:".contact-name",
-            userPhone:".contact-phone"
+            userPhone:".contact-phone",
+            planDemo:".plan-demo" //利益演示
         },
 
         events:{
@@ -113,6 +114,7 @@ define([
                 //初始化责任列表
                 self.initLiability(self.planBook.planLiability);
                 //初始化利益演示  TODO 暂不测
+                self.ui.planDemo.css("display","none");
 //                self.initInterestDemonstration(self.planBook.illustrationList);
                 self.ui.userName.html(self.planBook.userName);//userPhone
                 self.ui.userPhone.html('<a href="tel:'+self.planBook.userPhone+'">'+self.planBook.userPhone+'</a>');

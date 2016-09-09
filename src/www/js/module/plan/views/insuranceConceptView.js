@@ -26,7 +26,7 @@ define([
             },function(err){
 
             });
-            var pw=new pageSwitch(self.ui.pageswitchContent[0], {
+            var pw = new pageSwitch(self.ui.pageswitchContent[0], {
                 duration:600,           //int 页面过渡时间
                 direction:1,            //int 页面切换方向，0横向，1纵向
                 start:0,                //int 默认显示页面
