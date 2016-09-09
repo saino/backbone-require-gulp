@@ -115,7 +115,7 @@ define([
                 } else{
                     var insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏的产品</div>';
                     self.ui.personalCollectMain.html(insuranceProductCardHtml);
-                    console("数据返回错误", data);
+                    console.log("数据返回错误", data);
                 }
             }, function(error){
                 var insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏的产品</div>';

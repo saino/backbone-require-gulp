@@ -7,7 +7,7 @@ define([
     'text!module/search/templates/advanceQuery.html',
     'module/search/model/searchModel',
     'msgbox'
-],function(BaseView, queryTpl, searchModel, Msgbox){
+],function(BaseView, queryTpl, searchModel, MsgBox){
     var AdvanceQueryView = BaseView.extend({
         id:"advance-query-container",
         template: _.template(queryTpl),
@@ -42,10 +42,14 @@ define([
                     self.initRightsInfoList(data.rightsInfo);
                     self.initCompanyList(data.companyVo);
                 }else{
-                    Msgbox.alert("数据查询失败");
+                    setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                    }, 350);
                 }
             }, function(){
-                Msgbox.alert("数据查询失败");
+                setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                }, 350);
             })
         },
 
@@ -112,27 +116,6 @@ define([
         initCompanyList : function(list){
             var self = this;
             var i, len = list.length,html = '';
-            // if(utils.companyId == "all"){
-            //     html = '<div class="type-item type-all type-item-ck">全部</div>';
-            //     for(i=0; i < len; i++){
-            //         var obj = list[i];
-            //         html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
-            //     }
-            //     utils.advancedCompanyId = [];
-            // }else{
-            //     html = '<div class="type-item type-all">全部</div>';
-            //     for(i=0; i < len; i++){
-            //         var obj = list[i];
-            //         if(utils.companyId == obj.listId){
-            //             // utils.advancedCompanyId = [];
-            //             // utils.advancedCompanyId[0] = utils.companyId;
-            //             html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
-            //         }else{
-            //             html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
-            //         }
-            //     }
-            // }
-
             if(utils.advancedCompanyId.length == 0){
                 if(utils.companyId == "all"){
                     html = '<div class="type-item type-all type-item-ck">全部</div>';
@@ -140,14 +123,11 @@ define([
                         var obj = list[i];
                         html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
                     }
-                    // utils.advancedCompanyId = [];
                 }else{
                     html = '<div class="type-item type-all">全部</div>';
                     for(i=0; i < len; i++){
                         var obj = list[i];
                         if(utils.companyId == obj.listId){
-                            // utils.advancedCompanyId = [];
-                            // utils.advancedCompanyId[0] = utils.companyId;
                             html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
                         }else{
                             html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>';
@@ -171,10 +151,7 @@ define([
             }
 
             self.ui.companyList.find('.list-item').remove();
-            // for(i=0; i < len; i++){
-            //     var obj = list[i];
-            //     html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.abbrName +'</div>'
-            // }
+
             self.ui.companyList.append(html);
         },
 

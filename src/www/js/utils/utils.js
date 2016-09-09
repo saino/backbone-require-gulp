@@ -101,7 +101,7 @@
     //寿险业查询条件
     utils.lifeInsuranceOptions = { 
             "encryptedUserData": "QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0=",
-            "searchWords": "安行无忧",
+            "searchWords": "",
             "saleTypeIds": [],  //选填，种类ID，来自高级过滤接口的返回值
             "examPremOrder": "desc",    //选填，示例保费排序方式。asc:升序，desc: 降序
             "rightIds": [],       //选填，权益ID，来自高级过滤接口的返回值
@@ -303,5 +303,15 @@
      */
     utils.shareProduct = function(productName){
         window.JsTest && window.JsTest.jsCallAndroid(productName);
-    }
+    };
+
+    /**
+     * 登录 （调原生）
+     * @param 
+     */
+    utils.toLogin = function(){
+        window.kbLogin && window.kbLogin.toLogin();
+    };
+    
+
 })(window);

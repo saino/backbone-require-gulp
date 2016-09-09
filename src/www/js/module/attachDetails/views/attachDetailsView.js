@@ -65,17 +65,21 @@ define([
                 if(data.status == "0"){
                     self.initData(data);
                 }else{
-                    MsgBox.alert("数据获取失败");
+                    setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                    }, 350);
                 }
             }, function(err){
-                MsgBox.alert("数据获取失败");
+                setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                }, 350);
                 console.log(err);
             });
         },
         initData : function(data){
             var self = this;
-            utils.productName = data.productName;
-            self.organId = data.organId;
+            utils.productName = data.productName + "";
+            self.organId = data.organId + "";
             self.ui.attachDetailsTitle.html(data.productName);
             self.ui.bxzrTxt.html(data.safeDuty);
             self.ui.bzxqTxt.html(data.diseaseDetails);
@@ -114,9 +118,12 @@ define([
             if(dataType){       //next 跳转
                 switch(dataType){
                     case "rule":
+                        self.organId = self.organId || "null";
+                        self.packageId = self.packageId || "null";
                         app.navigate("home/detailsDescription/"+self.packageId+"/" + self.organId, {replace: true,trigger: true})
                         break;
                     case "tk":
+                        self.productId = self.productId || "null";
                         app.navigate("in/clause/" + self.productId, {replace: true,trigger: true});
                         break;
                 }

@@ -71,10 +71,18 @@ define([
             self.ui.detailsDescriptionName1.html(utils.productName); 
             detailsDescriptionModel.getRuleInfo(productId, organId, function(data){
                 console.log(data);
-                self.descriptionData = data;
-                self.ui.detailsDescriptionRuleContent.html(self.descriptionData.productUnderwritingRule);
+                if(data.status == "0"){
+                    self.descriptionData = data;
+                    self.ui.detailsDescriptionRuleContent.html(self.descriptionData.productUnderwritingRule);
+                }else{
+                    setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                    }, 350);
+                }
             }, function(){
-
+                setTimeout(function(){
+                    MsgBox.alert("数据获取失败");
+                }, 350);
             });
         },
 

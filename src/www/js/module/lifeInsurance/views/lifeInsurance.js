@@ -68,6 +68,7 @@ define([
             var lifeInsuranceCard = $target.parents(".life-insurance-card")[0];
             if(lifeInsuranceCard){
                 var lifeInsuranceCardId = lifeInsuranceCard.getAttribute("data-id");
+                lifeInsuranceCardId = lifeInsuranceCardId || "null";
                 app.navigate("in/productDetails/"+ lifeInsuranceCardId, {replace: true, trigger: true});
             }
 
@@ -408,13 +409,17 @@ define([
                 } else{
                     lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
                     self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
-                    MsgBox.alert("获取数据失败");
+                    setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                    }, 350);
                     console.log("数据返回错误", data.errorMessages);
                 }
             }, function(error){
-                    lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
-                    self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
-                    MsgBox.alert("获取数据失败");
+                lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
+                self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
+                setTimeout(function(){
+                    MsgBox.alert("数据获取失败");
+                }, 350);
                 console.log("数据查询失败", error);
             });
         },

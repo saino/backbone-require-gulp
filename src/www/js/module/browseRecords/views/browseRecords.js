@@ -177,13 +177,17 @@ define([
                     var insuranceProductCardHtml = '<div id="browse-records-noting">暂无浏览记录</div>';
                     self.ui.browseRecordsContent.html(insuranceProductCardHtml);
                     console("数据返回错误", data);
-                    MsgBox.alert("获取数据失败");
+                    setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                    }, 350);
                 }
             }, function(error){
                 var insuranceProductCardHtml = '<div id="browse-records-noting">暂无浏览记录</div>';
                 self.ui.browseRecordsContent.html(insuranceProductCardHtml);
                 console.log("数据查询失败", error);
-                MsgBox.alert("获取数据失败");
+                setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                }, 350);
             });
         },
 

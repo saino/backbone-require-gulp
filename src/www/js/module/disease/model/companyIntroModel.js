@@ -68,11 +68,15 @@ define([
                         self.setPhoneNumber(result.companyInfo[0].telephone);
                     }
                 }else{
-                    MsgBox.alert("数据获取失败");
+                    setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                    }, 350);
                 }
             };
             opt.error = function(err){
-                MsgBox.alert("数据获取失败");
+                setTimeout(function(){
+                    MsgBox.alert("数据获取失败");
+                }, 350);
             };
             utils.requestData(opt);
         }

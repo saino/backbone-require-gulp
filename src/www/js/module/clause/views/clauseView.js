@@ -64,11 +64,16 @@ define([
                 if(data.status == "0"){
                     self.initData(data);
                 }else{
-                    MsgBox.alert("数据获取失败");
+                    setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                    }, 350);
+                    
                 }
                 
             }, function(){
-                MsgBox.alert("数据获取失败");
+                setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                    }, 350);
                 self.initData(data);
             })
         },

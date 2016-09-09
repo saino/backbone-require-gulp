@@ -62,7 +62,7 @@ define([
         onDetailsInfoTopHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
-
+            this.companyId = this.companyId || "null";
             app.navigate("in/companyIntro/" + this.companyId, {replace : true, trigger : true});
         },
 
@@ -90,7 +90,9 @@ define([
                 };
             productDetailsModel.getProductInfo(options, self._initView, function(err){
                 console.log(err);
-                MsgBox.alert("数据获取失败");
+                setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                }, 350);
             });
 
 
@@ -106,12 +108,15 @@ define([
         initView : function(data){
             if(data.status !== "0"){
                 console.log("error", data);
-                MsgBox.alert("数据获取失败");
+                setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                }, 350);
                 return;
             }
             console.log(data);
             var self = this;
             self.companyId = data.company && data.company.listId;
+            self.companyId += "";
 
             if(data.isCollected == "Y"){
                 self.ui.collectBtn.attr("class", "top-title-right-2 hasCollection");
@@ -423,6 +428,7 @@ define([
                 "encryptedUserData": utils.userObj.id,
                 "packageId": parseInt(self.productId)
             }
+            utils.toLogin();
             productDetailsModel.collectProduct(options, function(data){
                 console.log("success", data);
                 if(data.status == "0"){
@@ -493,6 +499,10 @@ define([
                 var packageId = self.productId;
                 var productId = $target.attr("data-productid");
                 var salesProductId = $target.attr("data-salesproductid");
+                packageId = packageId || "null";
+                productId = productId || "null";
+                salesProductId = salesProductId || "null";
+
                 if(packageId&&productId&&salesProductId){
                     app.navigate("in/attachDetails/"+packageId+"/"+productId+"/"+salesProductId, {replace : true, trigger : true}); 
                 }
@@ -527,6 +537,11 @@ define([
                 var packageId = self.productId;
                 var productId = $target.attr("data-productid");
                 var salesProductId = $target.attr("data-salesproductid");
+
+                packageId = packageId || "null";
+                productId = productId || "null";
+                salesProductId = salesProductId || "null";
+
                 if(packageId&&productId&&salesProductId){
                     app.navigate("in/attachDetails/"+packageId+"/"+productId+"/"+salesProductId, {replace : true, trigger : true}); 
                 }
@@ -542,6 +557,7 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            self.productId = self.productId || "null";
             app.navigate("in/makePlan/" + self.productId, {replace: true, trigger: true});
             // MsgBox.alert("去制作");in/makePlan/:productId
         },

@@ -7,7 +7,7 @@ define([
     'text!module/search/templates/search.html',
     'module/search/model/searchModel',
     'msgbox'
-],function(BaseView,searchTpl, searchModel, Msgbox){
+],function(BaseView,searchTpl, searchModel, MsgBox){
     var HistoryTpl = '<div class="history-item">' +
                             '<div class="history-item-name">{0}</div>' +
                              '<img class="history-item-del" src="images/delete2.png" alt="">' +
@@ -27,7 +27,8 @@ define([
             btnClearHistory : "#clear-history",
             searchInput : ".search-key",
             btnSearch : ".search-btn",
-            hotWordCon: "#hot-word-con" //热搜词
+            hotWordCon: "#hot-word-con", //热搜词
+            historyCon: "#history-con" //历史记录容器
         },
         events:{
             "tap #top-title-left-2":"_clickBackHandler",
@@ -50,10 +51,14 @@ define([
                     self.initHistoryList(data.searchHistoryList || []);
                     self.initDefaultSearchWord(data.defaultSearchWords)
                 }else{
-                    Msgbox.alert("数据获取失败");
+                    setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                    }, 350);
                 }
             }, function(){
-                Msgbox.alert("数据获取失败");
+                setTimeout(function(){
+                        MsgBox.alert("数据获取失败");
+                }, 350);
             })
         },
 
@@ -83,6 +88,11 @@ define([
                 html += HistoryTpl.replace("{0}", obj.searchwords);
             }
             self.ui.historyList.html(html);
+            if(len == 0){
+                self.ui.historyCon.hide();
+            }else{
+                self.ui.historyCon.show();
+            }
         },
 
         initHotWordsList : function(list){
@@ -137,13 +147,19 @@ define([
         onDeleteHistoryItemHandler : function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
             var target = $(e.currentTarget);
             var searchWords = target.parent().find(".history-item-name").html();
             if(searchWords){
+                console.log(searchWords);
                 searchModel.clearSearchHistory(searchWords, function(data){
                     console.log(data);
                     if(data.status == "0"){
                         target.parent().remove();
+                        // var pparent = target.parent().parent();
+                        if($.find("#history-list")[0].children.length == 0){
+                            self.ui.historyCon.hide();
+                        };
                     }else{
                         Msgbox.alert("删除失败");
                     }
@@ -164,6 +180,7 @@ define([
             searchModel.clearSearchHistory("", function(data){
                 if(data.status == "0"){
                     self.ui.historyList.html("");
+                    self.ui.historyCon.hide();
                 }else{
                     Msgbox.alert("删除失败");
                 }
