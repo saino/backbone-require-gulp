@@ -23,7 +23,8 @@ define([
         template: _.template(Tpl),
         id:"attach-details-container",
         currentUserId : "",     //当前用户ID
-        productId : "",         //售卖产品ID
+        productId : "",         //产品ID
+        salesProductId: "",     //售卖产品ID
         organId: "",        //投核保ID
         ui:{
             topCon : ".top-title",
@@ -118,8 +119,8 @@ define([
                 switch(dataType){
                     case "rule":
                         self.organId = self.organId || "null";
-                        self.productId = self.productId || "null";
-                        app.navigate("home/detailsDescription/"+self.productId+"/" + self.organId, {replace: true,trigger: true})
+                        self.salesProductId = self.salesProductId || "null";
+                        app.navigate("home/detailsDescription/"+self.salesProductId+"/" + self.organId, {replace: true,trigger: true})
                         break;
                     case "tk":
                         self.productId = self.productId || "null";

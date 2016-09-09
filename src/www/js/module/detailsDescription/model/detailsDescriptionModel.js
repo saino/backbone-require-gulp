@@ -15,7 +15,7 @@ define([], function () {
         opt.url = "/ls/services/dt/productService/getRuleInfo";
         opt.type = "POST";
         var data = {};
-        data.packageId = productId;
+        data.productId = productId;
         data.organId = organId;
         opt.data = data;
         opt.success = function(result){
