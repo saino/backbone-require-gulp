@@ -96,7 +96,7 @@ define([
 
         showPlan : function(){
             var self = this;
-            if(!self.planBookView)
+//            if(!self.planBookView)
                 self.planBookView = new PlayBookView();
             self.getRegion("planMain").show(self.planBookView);
             self.planBookView.show(self.planId);

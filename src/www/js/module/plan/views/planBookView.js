@@ -387,7 +387,6 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var target = $(e.target),self = this;
-            console.log(target.data("id"));
             var valueAdded = self.getValueAddedById(target.data("id"));
             utils.currValueAdded = valueAdded;
             app.navigate("in/increment",{replace:true, trigger:true});

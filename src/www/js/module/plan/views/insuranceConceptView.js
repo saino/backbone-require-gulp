@@ -20,6 +20,8 @@ define([
         },
         show:function(planId){
             var self = this;
+            self.ui.pageswitchContent.css("height","100%");
+            self.ui.pageswitchContent.css("width",(self.ui.pageswitchContent.height()*0.6349)+"px");
             planModel.getInsuranceConcept(planId,function(data){
                 self.url = data.spritDescPic;
                 console.log(self.url);

@@ -81,7 +81,8 @@
         mesnsApi : "common/mesns_api",
         base64Min : 'common/base64.min',
         piwik : 'common/api/piwik',
-        analytics : 'common/api/analytics'
+        analytics : 'common/api/analytics',
+        pageSwitch:"lib/pageSwitch"
 	},
     modules: [{
         name: 'main'

@@ -98,7 +98,6 @@ define([
         },
         /**初始化**/
         initialize : function(){
-
         },
         //在开始渲染模板前执行，此时当前page没有添加到document
         onBeforeRender : function(){

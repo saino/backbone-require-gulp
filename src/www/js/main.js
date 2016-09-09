@@ -139,13 +139,13 @@ require([
     'module/app/app',
     'module/app/controller',
     'router/AppRouter',
+    'errorMsg',
     'underscore',
     'text',
     "device",
     'jqtap',
     'utils',
     'msgbox',
-    'errorMsg',
     'pageSwitch'
 ], function($, Backbone, BackboneHistory, app, controller, AppRouter) {
     if(!window.EventsName){
