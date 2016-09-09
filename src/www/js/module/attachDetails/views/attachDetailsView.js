@@ -96,7 +96,7 @@ define([
             app.goBack();
         },
         /**
-         * 点击返回
+         * 点击内容
          * @param e
          */
         onAttachDetailsMainHandler:function(e){
@@ -118,8 +118,8 @@ define([
                 switch(dataType){
                     case "rule":
                         self.organId = self.organId || "null";
-                        self.packageId = self.packageId || "null";
-                        app.navigate("home/detailsDescription/"+self.packageId+"/" + self.organId, {replace: true,trigger: true})
+                        self.productId = self.productId || "null";
+                        app.navigate("home/detailsDescription/"+self.productId+"/" + self.organId, {replace: true,trigger: true})
                         break;
                     case "tk":
                         self.productId = self.productId || "null";
