@@ -144,7 +144,7 @@ require([
     'jqtap',
     'utils',
     'msgbox',
-    ''
+    'errorMsg'
 ], function($, Backbone, BackboneHistory, app, controller, AppRouter) {
     if(!window.EventsName){
         window.EventsName = "tap";

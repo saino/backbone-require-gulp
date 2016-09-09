@@ -124,9 +124,9 @@ define([
                 });
                 return;
             }
-//            //TODO 测试数据 待删
+////            //TODO 测试数据 待删
 //            var tempData = {planList:[
-//                {salesProductId:10001,unitFlag:1,insType:1,salesProductName:"中华人民共和国主险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
+//                {salesProductId:10001,pointToPH:"Y",unitFlag:1,insType:1,salesProductName:"中华人民共和国主险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
 //                {salesProductId:10002,unitFlag:3,insType:1,salesProductName:"中华人民共和国主险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
 //                {salesProductId:10003,unitFlag:4,insType:1,salesProductName:"中华人民共和国主险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[11,12,13,14,15]},//
 ////                {salesProductId:10004,unitFlag:6,amountLimit:{minAmount:100,maxAmount:999999999999},insType:1,salesProductName:"中华人民共和国主险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
@@ -163,7 +163,7 @@ define([
             self.initializeUI({});
             //计算结果清空
             self.ui.calcResultCon.find(".first-year-table").remove();
-            self.ui.totalFirstYearPremium.html("0元");
+            self.ui.totalFirstYearPremium.html("");
         },
         //根据数据初始化UI
         initializeUI:function(data){
@@ -174,6 +174,10 @@ define([
             self.currPlanList = data.planList;
             self.ageRangeOfLifeAssured = data.ageRangeOfLifeAssured;
             self.ageRangeOfPolicyHolder = data.ageRangeOfPolicyHolder;
+            self.ui.commentTxt.val("");
+            if(data.suggestReason){
+                self.ui.commentTxt.val(data.suggestReason);
+            }
             //根据对象初始化
             self.setRelevantProperty();
             //拼接第一被保人信息
@@ -221,6 +225,7 @@ define([
             if(!self.hasPolicyHolder){
                 self.ui.policyHolder.css("display","none");
             }else{
+                self.ui.policyHolder.css("display","block");
                 var policyHolderHtml = "";
                 policyHolderHtml += self.policyHolderOldTpl({oldOptions:self.ageRangeOfPolicyHolderHtml});
                 policyHolderHtml += self.policyHolderSexTpl();

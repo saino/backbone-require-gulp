@@ -37,6 +37,8 @@ define([
             self.addedList = self.getOption("list") || []
             additionalModel.getRiders(self.currProductId,self.addedList, function(data){
                 self.initData(data);
+                console.log("*************附加险列表*************currProductId="+self.currProductId+",addedList="+self.addedList);
+                console.log(data);
             }, function(e){
                 MsgBox.alert("附加险列表获取失败");
             })

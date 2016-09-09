@@ -3,7 +3,7 @@
  * add by guYY 2016/8/24
  */
 define([
-    'backbone'
+    'backbone',
 ],function(){
     var detailModel = Backbone.Model.extend({
         constructor:function(){
@@ -49,7 +49,7 @@ define([
         /**
          * 获取某一产品的病种详情
          */
-        getDeseaseInfo : function(packageId,productId,libId){
+        getDeseaseInfo : function(packageId,productId,libId,cb_err){
             var self = this;
             var opt = {};
             opt.url = "/ls/services/dt/planService/getLiabDiseaseInfo";
@@ -62,10 +62,14 @@ define([
             opt.success = function(result){
                 if(result.status == 0){
                     self.setDetail(result.diseaseDesc||"");
+                }else{
+                    self.setDetail('<p class="no-data-p2">病种详情查询失败</p>');
+                    console.log("病种详情加载失败packageId="+packageId+",productId="+productId+",libId="+libId);
                 }
             };
             opt.error = function(err){
-                console.log(err);
+                self.setDetail('<p class="no-data-p2">病种详情查询失败</p>');
+                console.log("病种详情加载失败packageId="+packageId+",productId="+productId+",libId="+libId);
             };
             utils.requestData(opt);
         }

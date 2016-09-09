@@ -5,8 +5,9 @@
 define([
     'common/base/base_view',
     'module/disease/model/detailModel',
-    'text!module/disease/templates/disease.html'
-],function(BaseView, detailModel,DiseaseTpl){
+    'text!module/disease/templates/disease.html',
+    'msgbox'
+],function(BaseView, detailModel,DiseaseTpl,MsgBox){
     var DiseaseView = BaseView.extend({
         template: _.template(DiseaseTpl),
         id:"disease-container",

@@ -67,7 +67,8 @@ define([
             "tap .item-right-btn":"clickOpenDescHandler", //点击展开/收起责任详情
             "tap .plan-level-item":"clickLevenHandler",  //点击 利益演示低档、中档、高档
             "change .input-range":"changeRandeHandler",     //滑动条滑动
-            "change .demo-age-select":"changeSelectHandler" //年龄段下拉框更新
+            "change .demo-age-select":"changeSelectHandler", //年龄段下拉框更新
+            "tap .item-right-disease":"clickDiseaseHandler"//点击“病种”
         },
 
         initialize:function(){
@@ -75,7 +76,10 @@ define([
 
         show : function(planId){
             var self = this;
-//            if(self.currPlanId == planId)return;
+            //同一个计划书 数据无需刷新
+            if(self.currPlanId == planId)return;
+            //新计划书 置顶
+            console.log(self.$el);
             self.currPlanId = planId;
             //length置0 确保清空
             utils.productInfoList = [];
@@ -90,6 +94,7 @@ define([
                 self.ui.planBannerName.html(self.planBook.packageName);
                 self.initBannerData(plan);
                 self.initInsuredData(plan);
+                self.ui.coverageFirst.html(utils.formatNumber2(plan.totalFirstYearPrem));//首年保费
                 if(plan.mainCoverages &&plan.mainCoverages.length > 0) {
                     self.initMainCoverages(plan.mainCoverages[0]);//初始化主险
                 }
@@ -151,7 +156,6 @@ define([
             self.ui.paymentDate.html(utils.getPeriodText(1,mainCoverage.chargePeriod.periodType,mainCoverage.chargePeriod.periodValue));//交费期限
             self.ui.guaranteeDate.html(utils.getPeriodText(2,mainCoverage.coveragePeriod.periodType,mainCoverage.coveragePeriod.periodValue));//保障期限
             self.ui.coverageTotal.html(utils.formatNumber2(mainCoverage.sa));//此处只显示SA 不管哪种销售方式
-            self.ui.coverageFirst.html(utils.formatNumber2(mainCoverage.firstYearPrem));//首年保费
         },
         //初始化险种保费说明表
         showInsuredTable:function(plan){
@@ -218,17 +222,20 @@ define([
         },
         //责任
         initLiability:function(planLiability){
-//            var packageId = planLiability.packageId;
             var liabCateList = planLiability ? planLiability.liabCateList : [];
             var tempHtml = "", self = this;
             //嵌套三层循环，需求之复杂 只可意会 不可言传
             for(var i = 0; i < liabCateList.length; i++)
             {
                 var liabilityListHtml = "";
-                //只有是1时，参与计算，才有amount。否则取liabCalcMethod描述
-                var libCalcType = liabCateList[i].libCalcMethod;
+                //列表为空，不显示
+                if(!liabCateList[i].simpleLiabList){
+                    liabCateList[i].simpleLiabList = [];
+                }
                 for(var j =0 ; j < liabCateList[i].simpleLiabList.length; j++){
                     var obj = liabCateList[i].simpleLiabList[j];
+                    //只有是1时，参与计算，才有amount。否则取liabCalcMethod描述
+                    var libCalcType = obj.libCalcMethod;
                     var liabilityList2Html = "";
                     var totalAmount = "";
                     if(libCalcType == 1){
@@ -237,20 +244,30 @@ define([
                     for(var k = 0; k < obj.liabList.length; k++){
                         var itemObj = obj.liabList[k];
                         var liabAmount = itemObj.libCalcType;
-                        var packageId = itemObj.packageId;
+                        var packageId = itemObj.packageId?itemObj.packageId:0;
+                        var needDiseaseIndi = itemObj.needDiseaseIndi;
+                        var showStyle = 'style="display:none"';
+                        if(needDiseaseIndi == "Y")
+                        {
+                            showStyle = "";
+                        }
                         var rightClass = "";
                         if(libCalcType == 1){
                             rightClass = "item-right-mr88"; //显示金额时需距离右边88px
                             liabAmount = itemObj.liabAmount;
                         }
-                        var libId = itemObj.libId;
-                        var productId = itemObj.productId;
-                        liabilityList2Html += self.planLiabilityItemItemTpl({liabDisplayName:itemObj.liabDisplayName,liabAmount:liabAmount,libDescQuote:itemObj.libDescQuote,rightClass:rightClass});
+                        var libId = itemObj.liabId?itemObj.liabId:0;
+                        var productId = itemObj.productId?itemObj.productId:0;
+                        liabilityList2Html += self.planLiabilityItemItemTpl({liabDisplayName:itemObj.liabDisplayName,showStyle:showStyle,liabAmount:liabAmount,libDescQuote:itemObj.libDescQuote,rightClass:rightClass,packageId:packageId,productId:productId,libId:libId});
                     }
                     liabilityListHtml += self.planLiabilityItemTpl({liabDisplayName:obj.liabDisplayName,totalAmount:totalAmount,liabilityList2Html:liabilityList2Html});
                 }
-                tempHtml += self.planLiabilityTpl({categoryName:liabCateList[i].categoryName,liabilityListHtml:liabilityListHtml});
+                //列表为空，大类也不显示
+                if(liabilityListHtml.trim().length > 0){
+                    tempHtml += self.planLiabilityTpl({categoryName:liabCateList[i].categoryName,liabilityListHtml:liabilityListHtml});
+                }
             }
+            self.ui.liabilityList.html($(tempHtml));
         },
         //初始化利益演示
         initInterestDemonstration:function(interestDemonstration){
@@ -332,6 +349,17 @@ define([
             e.preventDefault();
             self.setRangeValue(self.ui.ageSelect.val());
         },
+        //点击病种
+        clickDiseaseHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var target = $(e.target);
+            var packageId = 0, productId = 0, libId = 0;
+            packageId = target.data("packageid");
+            productId = target.data("productid");
+            libId = target.data("libid");
+            app.navigate("in/disease/"+packageId+"/"+productId+"/"+libId, {trigger:true, replace:true});
+        },
         //加1
         onRangeAddHandler : function(e){
             e.stopPropagation();
@@ -390,10 +418,10 @@ define([
             var target = $(e.target);
             var self = this;
             target.toggleClass("down");
-            if(target.hasClass("down")){//点击展开
-                self.ui.liabilityList.slideDown();
-            }else{//点击收起
+            if(target.hasClass("down")){//收起
                 self.ui.liabilityList.slideUp();
+            }else{//点击收起
+                self.ui.liabilityList.slideDown();
             }
         },
         //点击展开或收起责任描述

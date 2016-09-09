@@ -49,9 +49,6 @@ define([
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
                 self.ui.planMain.css("height","-webkit-calc(100% - "+(183+utils.toolHeight)+"px)");
             }
-
-            self.planId = self.getOption("planId");
-//            self.changeMenuTab(self.currTab);
         },
 
         //页间动画已经完成，当前page已经加入到document
@@ -59,6 +56,7 @@ define([
         },
         show:function(){
             var self = this;
+            self.planId = self.getOption("planId");
             self.changeMenuTab(self.currTab);
         },
         onTabClickHandler : function(e){
@@ -98,7 +96,8 @@ define([
 
         showPlan : function(){
             var self = this;
-            self.planBookView = new PlayBookView();
+            if(!self.planBookView)
+                self.planBookView = new PlayBookView();
             self.getRegion("planMain").show(self.planBookView);
             self.planBookView.show(self.planId);
         },
