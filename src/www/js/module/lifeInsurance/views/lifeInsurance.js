@@ -29,8 +29,6 @@ define([
             lifeInsuranceContent: "#life-insurance-content",            //寿险容器
             searchIcon: "#search-icon",                                 //搜索框的放大镜
             // insuranceCompanyNameSelected: ".insurance-company-name-selected" //被选中的公司
-
-
         },
 
         events: {
@@ -310,12 +308,16 @@ define([
                         lifeInsuranceContentHtml += lifeInsuranceFlagHtml;
                         lifeInsuranceContentHtml += '<div class="life-insurance-name-title">'+ salesPackages[i].packageName +'</div>'+
                                                     '</div>';
-                        if(salesPackages[i].examPrem){
-                            lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
-                                                            '<div class="life-insurance-label-name">示例保费：</div>'+
-                                                            '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem +'</div>'+
-                                                        '</div>';
-                        }
+                        // if(salesPackages[i].examPrem){
+                            // lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
+                            //                                 '<div class="life-insurance-label-name">示例保费：</div>'+
+                            //                                 // '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem +'</div>'+
+                            //                                 '<div class="life-insurance-label-message">'+ "你好你好0099" +
+                            //                                     '<img class="sample-premium" src="./images/tip.png"/>'+
+                            //                                     '<div class="sample-premium-message">你好你好0099你好你好0099</div>'+
+                            //                                 '</div>'+
+                            //                             '</div>';
+                        // }
 
                         lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
                                                         '<div class="life-insurance-label-name">年龄：</div>'+

@@ -107,6 +107,7 @@
 .life-insurance-label{
   padding-top: 30px;
   padding-left: 36px;
+  position: relative;
 }
 .life-insurance-label-name{
   font-size: 3.0em;
@@ -213,4 +214,18 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap
+}
+.sample-premium{
+  margin-left: 16px;
+  height:30px; 
+  width: 30px
+}
+.sample-premium-message{
+  width: 286px;
+  font-size: 26px;
+  border: solid red 2px;
+  border-radius: 10px;
+  position: absolute;
+  right: 0;
+  top: 34px;
 }
