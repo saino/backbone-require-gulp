@@ -68,7 +68,7 @@
                     str = "趸交";
                     break;
                 case 2:
-                    str = "交"+value+"年";
+                    str = value+"年交"; //由交5年 改5年交  9.11 20:59
                     break;
                 case 3:
                     str = "交到"+value+"岁";
@@ -80,7 +80,7 @@
         }else if(type == 2){
             switch (periodType){
                 case 1:
-                    str = "保终身";
+                    str = "终身";//保终身  改为终身 9.11 20:56
                     break;
                 case 2:
                     str = "保"+value+"年";

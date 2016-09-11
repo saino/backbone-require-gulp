@@ -3,7 +3,7 @@
         <span class="additional-name-span"><%=additionalName %></span>
         <div class="additional-del" data-insured-type="<%=insType %>"></div>
     </div>
-    <div class="insured-property" >
+    <div class="insured-property" <%=showProperty %>>
         <div class="insured-property-item">
             <span>保额：</span>
             <input type="number" class="property-input insured-sa" max="<%=maxAmount%>" min="<%=minAmount%>"/>

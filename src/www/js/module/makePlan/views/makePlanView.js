@@ -75,7 +75,7 @@ define([
             incrementCon:"#make-plan-increment",//增值服务
             ideaCon:"#make-plan-idea",              //保险理念
             planInfoCon:"#make-plane-title", //计划书名称及所属公司
-            incrementCheck:"#make-plan-comment", //增值服务勾选框
+            incrementCheck:"#make-plan-comment", //留言勾选框
             commentTxt:"#comment", //留言框
             totalFirstYearPremium:"#totalFirstYearPremium", //总保费
             calcResultCon:".first-year-list"        //计算结果
@@ -171,8 +171,8 @@ define([
             self.ui.planInfoCon.html(data.packageName || "");
             self.currCompany = data.company;
             self.currPlanList = data.planList;
-            self.ageRangeOfLifeAssured = data.ageRangeOfLifeAssured;
-            self.ageRangeOfPolicyHolder = data.ageRangeOfPolicyHolder;
+            self.ageRangeOfLifeAssured = null;//年龄段修改后取自险种列表
+            self.ageRangeOfPolicyHolder = null;
             self.ui.commentTxt.val("");
             if(data.suggestReason){
                 self.ui.commentTxt.val(data.suggestReason);
@@ -261,24 +261,25 @@ define([
                 }
             }
             self.ui.additionalPlanInput.append($(additionalInputHtml));
-            //增值服务
-            var valueAddedHtml = "";
-            self.ui.incrementCon.find(".accordion-list").find(".increment-item").remove();
-            if(data.valueadded && data.valueadded.length > 0) {
-                valueAddedHtml = self.getValueAddedHtml(data.valueadded);
-            }
-            if(data.valueadded && data.valueadded.length > 0){
-                self.ui.incrementCon.find(".increment-check").addClass("increment-check-ck");
-            }else{
-                self.ui.incrementCon.find(".increment-check").removeClass("increment-check-ck");
-            }
-            self.ui.incrementCon.find(".accordion-list").append($(valueAddedHtml));
-            if(valueAddedHtml == "")
-            {
-                self.ui.incrementCon.css("display","none");
-            }else{
-                self.ui.incrementCon.css("display","block");
-            }
+            //增值服务 初始化不显示增值服务
+            self.ui.incrementCon.css("display","none");
+//            var valueAddedHtml = "";
+//            self.ui.incrementCon.find(".accordion-list").find(".increment-item").remove();
+//            if(data.valueadded && data.valueadded.length > 0) {
+//                valueAddedHtml = self.getValueAddedHtml(data.valueadded);
+//            }
+//            if(data.valueadded && data.valueadded.length > 0){
+//                self.ui.incrementCon.find(".increment-check").addClass("increment-check-ck");
+//            }else{
+//                self.ui.incrementCon.find(".increment-check").removeClass("increment-check-ck");
+//            }
+//            self.ui.incrementCon.find(".accordion-list").append($(valueAddedHtml));
+//            if(valueAddedHtml == "")
+//            {
+//                self.ui.incrementCon.css("display","none");
+//            }else{
+//                self.ui.incrementCon.css("display","block");
+//            }
             //保险理念
             self.ui.ideaCon.find(".accordion-list").find(".idea-item").remove();
             var ideaHtml = "";
@@ -290,6 +291,26 @@ define([
                 self.ui.ideaCon.find(".accordion-list .idea-item:eq(0)").addClass("idea-item-ck");
             }
             self.ui.ideaCon.find(".accordion-list").slideUp();//默认收起
+        },
+        //渲染增值服务列表
+        renderValueAdded:function(valueadded){
+            var self = this;
+            var valueAddedHtml = "";
+            self.ui.incrementCon.css("display","block");
+            self.ui.incrementCon.find(".accordion-list").find(".increment-item").remove();
+            if(valueadded && valueadded.length > 0) {
+                valueAddedHtml = self.getValueAddedHtml(valueadded);
+            }
+            if(valueadded && valueadded.length > 0){
+                self.ui.incrementCon.find(".increment-check").addClass("increment-check-ck");
+            }else{
+                self.ui.incrementCon.find(".increment-check").removeClass("increment-check-ck");
+            }
+            self.ui.incrementCon.find(".accordion-list").append($(valueAddedHtml));
+            if(valueAddedHtml == "")
+            {
+                self.ui.incrementCon.css("display","none");
+            }
         },
         //被保人属性
         insuredNameTpl: _.template('<div class="insured-property-item"><span>被保人姓名：</span><input type="text" class="property-input insured-name"/></div>'),
@@ -447,23 +468,31 @@ define([
                     }
                 }
             }
+            //是否豁免型附加险
+            var isExemption = true; //默认不是豁免型
+            //TODO 取后端豁免状态
+
+            var showProperty = "";
+            if(isExemption){
+                showProperty = 'style="display:none;"';
+            }
             if(plan.unitFlag == 6) {//保额
                 var minAmount = 0, maxAmount = 999999;
                 if(plan.amountLimit){
                     minAmount = plan.amountLimit.minAmount;
                     maxAmount = plan.amountLimit.maxAmount;
                 }
-                tempHtml = self.additionalUnitFlag1Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,minAmount:minAmount,maxAmount:maxAmount});
+                tempHtml = self.additionalUnitFlag1Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,minAmount:minAmount,maxAmount:maxAmount});
             }else if(plan.unitFlag == 7) {//保费
-                tempHtml = self.additionalUnitFlag2Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
+                tempHtml = self.additionalUnitFlag2Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
             }else if(plan.unitFlag == 1) {//份数
-                tempHtml = self.additionalUnitFlag3Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
+                tempHtml = self.additionalUnitFlag3Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
             }else if(plan.unitFlag == 3) {//份数 档次
-                tempHtml = self.additionalUnitFlag4Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
+                tempHtml = self.additionalUnitFlag4Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
             }else if(plan.unitFlag == 4) {//档次
-                tempHtml = self.additionalUnitFlag5Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
+                tempHtml = self.additionalUnitFlag5Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
             }else{
-                tempHtml = self.additionalUnitFlag6Tpl({insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag});
+                tempHtml = self.additionalUnitFlag6Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag});
             }
             return tempHtml;
         },
@@ -517,6 +546,8 @@ define([
             self.smokingType = 0;//和吸烟无关  1下拉框 2下拉框
             self.hasJob = false;
             self.hasSocialInsure = false;
+            self.ageRangeOfLifeAssured = null;//年龄段修改后取自险种列表
+            self.ageRangeOfPolicyHolder = null;
             if(!self.currPlanList || self.currPlanList.length <= 0)
                 return false;
             var mainPlanNum = 0;
@@ -524,8 +555,16 @@ define([
                 if(self.currPlanList[i].insType == 1){
                     mainPlanNum += 1;
                 }
+                //TODO 明天需确认是不是所有险种产品都有被保人年龄区别对象
+                if(!self.ageRangeOfLifeAssured || self.ageRangeOfLifeAssured.length <=0) {//有数据后不用再赋值
+                    self.ageRangeOfLifeAssured = self.currPlanList[i].ageRangeOfLifeAssured;
+                }
                 if(self.currPlanList[i].pointToPH == "Y"){
                     self.hasPolicyHolder = true;
+                    //TODO 明天需确认是不是所有相关投保人 都有投保人年龄区别对象
+                    if(!self.ageRangeOfPolicyHolder || self.ageRangeOfPolicyHolder.length <= 0){//有数据后不用再赋值
+                        self.ageRangeOfPolicyHolder = self.currPlanList[i].ageRangeOfPolicyHolder;
+                    }
                 }
                 if(self.currPlanList[i].pointToSecInsured == "Y")//第二被保人
                 {
@@ -897,6 +936,8 @@ define([
             plan.advice = self.ui.commentTxt.val();
             if(self.ui.incrementCheck.find(".increment-check").hasClass("increment-check-ck")){
                 plan.showAdvice = "Y";
+            }else{
+                plan.advice = "";
             }
             responseData.plan = plan;
             return responseData;
@@ -928,6 +969,8 @@ define([
                 self.ui.calcResultCon.find(".first-year-table").remove();
                 self.ui.calcResultCon.prepend($(resultHtml));
                 self.isCalcOver = true;
+                //debugger TODO 测试增值服务 计算后返回列表
+                self.renderValueAdded(data.valueAddedList);
             },function(err){
                 MsgBox.alert("计算保费失败");
                 console.log(err);
