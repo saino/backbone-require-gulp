@@ -6,8 +6,9 @@ define([
     'common/base/base_view',
     'text!module/productDetails/templates/productDetails.html',
     'module/productDetails/model/productDetailsModel',
-    "msgbox"
-],function(BaseView, Tpl, productDetailsModel, MsgBox){
+    "msgbox",
+    'module/personalCollect/model/personalCollectModel'
+],function(BaseView, Tpl, productDetailsModel, MsgBox, personalCollectModel){
     var ProductDetailsView = BaseView.extend({
         template: _.template(Tpl),
         id:"product-details-container",
@@ -423,11 +424,26 @@ define([
             e.preventDefault();
             var self = this;
             var $target = $(e.target);
-            if($target.hasClass("hasCollection")) return;
             var options = {
                 "encryptedUserData": utils.userObj.id,
                 "packageId": parseInt(self.productId)
             }
+            if($target.hasClass("hasCollection")){
+
+                personalCollectModel.deleteCollectProduct(options, function(data){
+                    console.log(data);
+                    if(data.status == "0"){
+                        $target.toggleClass("hasCollection");
+                    }else{
+                        MsgBox.alert("取消收藏失败");
+                    }
+                }, function(error){
+                    MsgBox.alert("取消收藏失败");
+                });
+
+                return;
+            }
+
             utils.toLogin();
             productDetailsModel.collectProduct(options, function(data){
                 console.log("success", data);
@@ -451,17 +467,24 @@ define([
             e.preventDefault();
             var self = this;
             self.ui.dutyTitle.toggleClass("on");
-            self.ui.dutyTitle.next().slideToggle();
+            self.ui.dutyTitle.next().slideToggle(function(){
+                if(e.pageY > 800 && self.ui.dutyTitle.next().css("display") == "block"){
+                    self.ui.productDetailsMain.animate({
+                        scrollTop: self.ui.productDetailsMain.scrollTop() + 350
+                    }, 600);
+
+                }
+            });
         },
         /**
          *点击显示或者隐藏保险责任列表的简介
          * @param e
          */
-        onToggleDutyItemSummaryHandler : function(e) {
-            e.stopPropagation();
-            e.preventDefault();
+        onToggleDutyItemSummaryHandler : function(event) {
+            event.stopPropagation();
+            event.preventDefault();
             var self = this;
-            var target = e.target;
+            var target = event.target;
             var $target = $(target);
             var parent = null;
             if($target.hasClass("pull-icon-small")){
@@ -469,7 +492,15 @@ define([
             }
             if(parent){
                 parent.toggleClass("on");
-                parent.next().slideToggle();
+                // parent.next().slideToggle();
+                parent.next().slideToggle(function(){
+                    if(event.pageY > 800 && parent.next().css("display") == "block"){
+                        self.ui.productDetailsMain.animate({
+                            scrollTop: self.ui.productDetailsMain.scrollTop() + 350
+                        }, 600);
+
+                    }
+                });
             }
         },
         /**
@@ -481,7 +512,14 @@ define([
             e.preventDefault();
             var self = this;
             self.ui.planTitle.toggleClass("on");
-            self.ui.planTitle.next().slideToggle();
+            self.ui.planTitle.next().slideToggle(function(){
+                if(e.pageY > 800 && self.ui.planTitle.next().css("display") == "block"){
+                    self.ui.productDetailsMain.animate({
+                        scrollTop: self.ui.productDetailsMain.scrollTop() + 350
+                    }, 600);
+
+                }
+            });
         },
         /**
          * 跳转到计划组合列表的选项页
@@ -519,7 +557,14 @@ define([
             e.preventDefault();
             var self = this;
             self.ui.subjoinTitle.toggleClass("on");
-            self.ui.subjoinTitle.next().slideToggle();
+            self.ui.subjoinTitle.next().slideToggle(function(){
+                if(e.pageY > 800 && self.ui.subjoinTitle.next().css("display") == "block"){
+                    self.ui.productDetailsMain.animate({
+                        scrollTop: self.ui.productDetailsMain.scrollTop() + 350
+                    }, 600);
+
+                }
+            });
         },
         /**
          * 跳转到附加险列表的选项页

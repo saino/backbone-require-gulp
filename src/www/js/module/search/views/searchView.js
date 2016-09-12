@@ -113,7 +113,12 @@ define([
         initDefaultSearchWord : function(obj){
             var self = this;
             self.defaultSearchWordObj = obj;
+            if(utils.searchText){
+                self.ui.searchInput.attr("value", utils.searchText);
+            }
+
             self.ui.searchInput.attr("placeholder", obj.hotKeyWords);
+            
         },
 
         pageIn:function(){
@@ -129,6 +134,7 @@ define([
 
             var self = this;
             var keywords = self.ui.searchInput.val();
+            utils.searchText = keywords;
             if(keywords == "" && self.defaultSearchWordObj){
                 keywords = self.defaultSearchWordObj.actualSearchWords;
             }

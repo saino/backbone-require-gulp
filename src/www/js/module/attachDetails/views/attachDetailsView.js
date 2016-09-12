@@ -63,6 +63,7 @@ define([
             //TODO 需要真实的接口和数据
             attachDetailsModel.getRiderInfo(self.packageId, self.productId, self.salesProductId, function(data){
                 if(data.status == "0"){
+                    console.log(data);
                     self.initData(data);
                 }else{
                     setTimeout(function(){
@@ -123,8 +124,8 @@ define([
                         app.navigate("home/detailsDescription/"+self.salesProductId+"/" + self.organId, {replace: true,trigger: true})
                         break;
                     case "tk":
-                        self.productId = self.productId || "null";
-                        app.navigate("in/clause/" + self.productId, {replace: true,trigger: true});
+                        self.salesProductId = self.salesProductId || "null";
+                        app.navigate("in/clause/" + self.salesProductId, {replace: true,trigger: true});
                         break;
                 }
             }

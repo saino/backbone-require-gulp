@@ -27,6 +27,9 @@
     utils.companyId = "all";
     utils.advancedCompanyId = [];
 
+    //输入的搜索词
+    utils.searchText = "";
+
     //当前增值服务详情对象
     utils.currValueAdded = null;
     //格式化金额

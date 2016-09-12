@@ -209,7 +209,14 @@ define([
                 parent.toggleClass("on-big");
             }
             if(parent){
-               parent.next().slideToggle();
+                parent.next().slideToggle(function(){
+                    if(event.pageY > 1000 && parent.next().css("display") == "block"){
+                        self.ui.lifeInsuranceContent.animate({
+                            scrollTop: self.ui.lifeInsuranceContent.scrollTop() + 350
+                        }, 600);
+
+                    }
+                });
             }
         },
 
@@ -234,7 +241,7 @@ define([
                 self.ui.defaultSortLayoutFloat.find(".default-sort-item-selected").attr("class", "default-sort-item");
                 $target.attr("class","default-sort-item default-sort-item-selected");
 
-                if(target.innerHTML == "推荐排序"){
+                if(target.innerHTML == "推荐排序" || target.innerHTML == "默认排序"){
                     utils.lifeInsuranceOptions.sortOption = 1;
                 }
                 if(target.innerHTML == "浏览量"){
@@ -243,6 +250,7 @@ define([
                 if(target.innerHTML == "上架时间"){
                     utils.lifeInsuranceOptions.sortOption = 3;
                 }
+                self.ui.searchDefaultSort.find(".screening-condition-name").html(target.innerHTML);
                 self.loadData();      
             }
             self.ui.defaultSortLayoutFloat.hide();
@@ -318,10 +326,22 @@ define([
                             //                                 '</div>'+
                             //                             '</div>';
                         // }
+                        var minAgeUnitStr = "";
+                        if(salesPackages[i].minAgeUnit == 1){
+                            minAgeUnitStr = "周岁";
+                        }else if(salesPackages[i].minAgeUnit == 5){
+                            minAgeUnitStr = "天";
+                        }
+                        var maxAgeUnitStr = "";
+                         if(salesPackages[i].maxAgeUnit == 1){
+                            maxAgeUnitStr = "周岁";
+                        }else if(salesPackages[i].maxAgeUnit == 5){
+                            maxAgeUnitStr = "天";
+                        }
 
                         lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
                                                         '<div class="life-insurance-label-name">年龄：</div>'+
-                                                        '<div class="life-insurance-label-message">'+ salesPackages[i].minAge+'周岁-'+salesPackages[i].maxAge +'周岁</div>'+
+                                                        '<div class="life-insurance-label-message">'+ salesPackages[i].minAge+ minAgeUnitStr+'-'+salesPackages[i].maxAge+maxAgeUnitStr+'</div>'+
                                                     '</div>';
                         var lifeInsuranceLabelMessageHtml = "";
                         for(var v=0; salesPackages[i].coveragePeriods&&v<salesPackages[i].coveragePeriods.length; v++){
@@ -387,10 +407,10 @@ define([
                         for(var k=0; salesPackages[i].liabilities&&k<salesPackages[i].liabilities.length; k++){
                             insureDutyItemHtml += '<div class="insure-duty-item">'+
                                                     '<div class="duty-item-title">'+
-                                                        '<span class="duty-item-title-span">'+salesPackages[i].liabilities[k].liabName+'</span>'+
+                                                        '<span class="duty-item-title-span">'+salesPackages[i].liabilities[k].liabDesc+'</span>'+
                                                         '<span class="pull-icon-small"></span>'+
                                                     '</div>'+
-                                                    '<div class="duty-item-content">'+salesPackages[i].liabilities[k].liabDesc+'</div>'+
+                                                    '<div class="duty-item-content">'+salesPackages[i].liabilities[k].liabDescProd+'</div>'+
                                                   '</div>';
                         }
                         lifeInsuranceContentHtml += insureDutyItemHtml;
