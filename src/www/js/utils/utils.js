@@ -29,6 +29,14 @@
 
     //当前增值服务详情对象
     utils.currValueAdded = null;
+    //年龄单位  暂只判断  天  年
+    utils.AGE_0 = 0; //NA
+    utils.AGE_1 = 1; //年
+    utils.AGE_2 = 2; //半年
+    utils.AGE_3 = 3; //季
+    utils.AGE_4 = 4; //月
+    utils.AGE_5 = 5; //天
+
     //格式化金额
     utils.formatNumber = function(num){
         if(!num)

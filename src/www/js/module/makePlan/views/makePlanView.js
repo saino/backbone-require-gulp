@@ -62,6 +62,7 @@ define([
         ageRangeOfPolicyHolderHtml:"",//投保人年龄范围html
         ageRangeSecondOfLifeAssured:null, //第二被保人年龄范围对象
         ageRangeSecondOfLifeAssuredHtml:"",//第二被保人年龄范围html
+        focusInput:null,//验证失败后 获取焦点对象
 
         totalFirstYearPrem:0,       //首年总保费
         ui : {
@@ -557,10 +558,12 @@ define([
             if(!self.currPlanList || self.currPlanList.length <= 0)
                 return false;
             var mainPlanNum = 0;
+            //多个a类产品（a被保人对应   b投保人对应   c第二被保人对应）各产品类型存在多个时，取交集年龄区间，无交集下拉为空
+//            var aRange = [], bRange = [], cRange = [];
             for(var i = 0; i < self.currPlanList.length; i++){
                 if(self.currPlanList[i].insType == 1){
                     mainPlanNum += 1;
-                    //被保人年龄段是跟着主险走的
+                    //被保人年龄段是跟着主险走的  //TODO del
                     if(!self.ageRangeOfLifeAssured || self.ageRangeOfLifeAssured.length <=0) {//有数据后不用再赋值
                         self.ageRangeOfLifeAssured = self.currPlanList[i].ageRange;
                     }
@@ -608,17 +611,41 @@ define([
             self.smokingListHtml = "";
             self.smokingList2Html = "";
             if(self.ageRangeOfLifeAssured) {
-                for (var i = self.ageRangeOfLifeAssured.minAge; i <= self.ageRangeOfLifeAssured.maxAge; i++) {
+                var minAge = self.ageRangeOfLifeAssured.minAge;
+                if(self.ageRangeOfLifeAssured.minUnit == utils.AGE_5){
+                    minAge = 0;
+                }
+                var maxAge = self.ageRangeOfLifeAssured.maxAge;
+                if(self.ageRangeOfLifeAssured == utils.AGE_5){
+                    maxAge = 0;
+                }
+                for (var i = minAge; i <= maxAge; i++) {
                     self.ageRangeOfLifeAssuredHtml += '<option value="' + i + '">' + i + '</option>';
                 }
             }
             if(self.ageRangeOfPolicyHolder) {
-                for (i = self.ageRangeOfPolicyHolder.minAge; i <= self.ageRangeOfPolicyHolder.maxAge; i++) {
+                var minAge = self.ageRangeOfPolicyHolder.minAge;
+                if(self.ageRangeOfPolicyHolder.minUnit == utils.AGE_5){
+                    minAge = 0;
+                }
+                var maxAge = self.ageRangeOfPolicyHolder.maxAge;
+                if(self.ageRangeOfPolicyHolder == utils.AGE_5){
+                    maxAge = 0;
+                }
+                for (i = minAge; i <= maxAge; i++) {
                     self.ageRangeOfPolicyHolderHtml += '<option value="' + i + '">' + i + '</option>';
                 }
             }
             if(self.ageRangeSecondOfLifeAssuredHtml) {
-                for (i = self.ageRangeSecondOfLifeAssured.minAge; i <= self.ageRangeSecondOfLifeAssured.maxAge; i++) {
+                var minAge =  self.ageRangeSecondOfLifeAssured.minAge;
+                if(self.ageRangeSecondOfLifeAssured.minUnit == utils.AGE_5){
+                    minAge = 0;
+                }
+                var maxAge = self.ageRangeSecondOfLifeAssured.maxAge;
+                if(self.ageRangeSecondOfLifeAssured == utils.AGE_5){
+                    maxAge = 0;
+                }
+                for (i = minAge; i <= maxAge; i++) {
                     self.ageRangeSecondOfLifeAssuredHtml += '<option value="' + i + '">' + i + '</option>';
                 }
             }
@@ -746,6 +773,7 @@ define([
             var self = this;
             var responseData = {};
             var plan = {};
+            self.focusInput = null;
             responseData.encryptedUserData = utils.userObj.id;
             plan.packageId = self.currProductId;//产品计划ID
             var insureds = [];//被保人数组
@@ -756,6 +784,7 @@ define([
             insured.age = self.ui.firstInsured.find(".insured-old").val();
             if(!insured.age && errorMsg.makePlanMsg1 != ""){      //验证第一被保人
                 MsgBox.alert(errorMsg.makePlanMsg1);
+                self.ui.firstInsured.find(".insured-old").focus();
                 return false;
             }
             insured.gender = self.ui.firstInsured.find(".insured-sex").data("val");
@@ -772,6 +801,7 @@ define([
                 secInsured.age = self.ui.secondInsured.find(".insured-old").val();
                 if(!secInsured.age && errorMsg.makePlanMsg1 != ""){  //验证第二被保人
                     MsgBox.alert(errorMsg.makePlanMsg1);
+                    self.ui.secondInsured.find(".insured-old").focus();
                     return false;
                 }
                 secInsured.gender = self.ui.secondInsured.find(".insured-sex").data("val");
@@ -799,6 +829,7 @@ define([
                 var pName = $(this).data("productname");
                 if(mainCoverage.sa == ""){
                     validateErrMsg = pName+errorMsg.makePlanMsg5;
+                    self.focusInput = $(this).find(".insured-sa");
                     return false;
                 }
                 if(mainCoverage.sa){
@@ -806,10 +837,12 @@ define([
                     var min = parseInt($(this).find(".insured-sa").attr("min"));
                    if(parseInt(mainCoverage.sa) < min){
                        validateErrMsg = pName+"保额不得小于"+min;
+                       self.focusInput = $(this).find(".insured-sa");
                        return false;
                    }
                     if(parseInt(mainCoverage.sa) > max){
                         validateErrMsg = pName+"保额不得大于"+max;
+                        self.focusInput = $(this).find(".insured-sa");
                         return false;
                     }
                 }
@@ -817,21 +850,25 @@ define([
                 mainCoverage.premium = $(this).find(".insured-premium").val();
                 if(mainCoverage.premium == ""){
                     validateErrMsg = pName+errorMsg.makePlanMsg6;
+                    self.focusInput = $(this).find(".insured-premium");
                     return false;
                 }
                 mainCoverage.unit = $(this).find(".insured-unit").val();
                 if(mainCoverage.unit == ""){
                     validateErrMsg = pName+errorMsg.makePlanMsg7;
+                    self.focusInput = $(this).find(".insured-unit");
                     return false;
                 }
                 if(mainCoverage.unit && !utils.isPositiveNum(mainCoverage.unit)){
                     validateErrMsg = pName+errorMsg.makePlanMsg9;
+                    self.focusInput = $(this).find(".insured-unit");
                     return false;
                 }
                 mainCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
                 //为null表示 有此下拉选项 但无值
                 if(mainCoverage.benefitlevel == null && typeof mainCoverage.benefitlevel == "object"){
                     validateErrMsg = pName+errorMsg.makePlanMsg8;
+                    self.focusInput = $(this).find(".insured-benefitlevel");
                     return false;
                 }else{
                     //存在档次时，如果份数=null,赋值=1   *****重要****
@@ -848,6 +885,7 @@ define([
                 mainCoverage.chargePeriod = chargePeriod;
                 if($(this).find(".payment-period").size() > 0 && isNaN(chargePeriod.periodValue)){
                     validateErrMsg = pName+errorMsg.makePlanMsg4;
+                    self.focusInput = $(this).find(".payment-period");
                     return false;
                 }
                 //保障期限
@@ -858,6 +896,7 @@ define([
                 mainCoverage.coveragePeriod = coveragePeriod;
                 if($(this).find(".guarantee-period").size() > 0 && isNaN(coveragePeriod.periodValue)){
                     validateErrMsg = pName+errorMsg.makePlanMsg3;
+                    self.focusInput = $(this).find(".guarantee-period");
                     return false;
                 }
                 //责任数组
@@ -881,6 +920,7 @@ define([
             });
             if(validateErrMsg != ""){
                 MsgBox.alert(validateErrMsg);
+                self.focusInput && self.focusInput.focus();
                 return false;
             }
             plan.mainCoverages = mainCoverages;
@@ -890,75 +930,93 @@ define([
                 var riderCoverage = {};
                 riderCoverage.productId = $(this).data("productid");
                 riderCoverage.unitFlag = $(this).data("unitflag");
-                riderCoverage.sa = $(this).find(".insured-sa").val();
-                var rName = $(this).find(".additional-name-span").html();
-                if(riderCoverage.sa == ""){
-                    validateErrMsg = rName+errorMsg.makePlanMsg5;
-                    return false;
+                //是否豁免附加险  默认不是,是的话不需要验证输入
+                var isWaiver = false;
+                if($(this).find(".insured-property")[0] && $(this).find(".insured-property")[0].style.display == "none"){
+                    isWaiver = true;
                 }
-                if(riderCoverage.sa){
-                    var max = parseInt($(this).find(".insured-sa").attr("max"));
-                    var min = parseInt($(this).find(".insured-sa").attr("min"));
-                    if(parseInt(riderCoverage.sa) < min){
-                        validateErrMsg = rName+"保额不得小于"+min;
+                if(!isWaiver) {
+                    console.log(rName+",为豁免产品，不验证输入");
+                    riderCoverage.sa = $(this).find(".insured-sa").val();
+                    var rName = $(this).find(".additional-name-span").html();
+                    if (riderCoverage.sa == "") {
+                        validateErrMsg = rName + errorMsg.makePlanMsg5;
+                        self.focusInput = $(this).find(".insured-sa");
                         return false;
                     }
-                    if(parseInt(riderCoverage.sa) > max){
-                        validateErrMsg = rName+"保额不得大于"+max;
+                    if (riderCoverage.sa) {
+                        var max = parseInt($(this).find(".insured-sa").attr("max"));
+                        var min = parseInt($(this).find(".insured-sa").attr("min"));
+                        if (parseInt(riderCoverage.sa) < min) {
+                            validateErrMsg = rName + "保额不得小于" + min;
+                            self.focusInput = $(this).find(".insured-sa");
+                            return false;
+                        }
+                        if (parseInt(riderCoverage.sa) > max) {
+                            validateErrMsg = rName + "保额不得大于" + max;
+                            self.focusInput = $(this).find(".insured-sa");
+                            return false;
+                        }
+                    }
+                    riderCoverage.premium = $(this).find(".insured-premium").val();
+                    if (riderCoverage.premium == "") {
+                        validateErrMsg = rName + errorMsg.makePlanMsg6;
+                        self.focusInput = $(this).find(".insured-premium");
                         return false;
                     }
-                }
-                riderCoverage.premium = $(this).find(".insured-premium").val();
-                if(riderCoverage.premium == ""){
-                    validateErrMsg =  rName+errorMsg.makePlanMsg6;
-                    return false;
-                }
-                riderCoverage.unit = $(this).find(".insured-unit").val();
-                if(riderCoverage.unit == ""){
-                    validateErrMsg =  rName+errorMsg.makePlanMsg7;
-                    return false;
-                }
-                if(riderCoverage.unit &&!utils.isPositiveNum(riderCoverage.unit)){
-                    validateErrMsg = rName+errorMsg.makePlanMsg9;
-                    return false;
-                }
-                riderCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
-                //为null表示 有此下拉选项 但无值
-                if(riderCoverage.benefitlevel == null && typeof riderCoverage.benefitlevel == "object"){
-                    validateErrMsg = rName+errorMsg.makePlanMsg8;
-                    return false;
-                }else{
-                    //存在档次时，如果份数=null,赋值=1   *****重要****
-                    if(!riderCoverage.unit || isNaN(riderCoverage.unit)){
-                        riderCoverage.unit = 1;
+                    riderCoverage.unit = $(this).find(".insured-unit").val();
+                    if (riderCoverage.unit == "") {
+                        validateErrMsg = rName + errorMsg.makePlanMsg7;
+                        self.focusInput = $(this).find(".insured-unit");
+                        return false;
                     }
-                }
+                    if (riderCoverage.unit && !utils.isPositiveNum(riderCoverage.unit)) {
+                        validateErrMsg = rName + errorMsg.makePlanMsg9;
+                        self.focusInput = $(this).find(".insured-unit");
+                        return false;
+                    }
+                    riderCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
+                    //为null表示 有此下拉选项 但无值
+                    if (riderCoverage.benefitlevel == null && typeof riderCoverage.benefitlevel == "object") {
+                        validateErrMsg = rName + errorMsg.makePlanMsg8;
+                        self.focusInput = $(this).find(".insured-benefitlevel");
+                        return false;
+                    } else {
+                        //存在档次时，如果份数=null,赋值=1   *****重要****
+                        if (!riderCoverage.unit || isNaN(riderCoverage.unit)) {
+                            riderCoverage.unit = 1;
+                        }
+                    }
 
-                //交费期限
-                var chargePeriod = {};
-                var type = $(this).find(".payment-period").find("option:selected").data("type");
-                chargePeriod.periodType = type
-                chargePeriod.periodValue = parseInt($(this).find(".payment-period").find("option:selected").val());
-                riderCoverage.chargePeriod = chargePeriod;
-                if($(this).find(".payment-period").size() > 0 && isNaN(chargePeriod.periodValue)){
-                    validateErrMsg = rName+errorMsg.makePlanMsg4;
-                    return false;
+                    //交费期限
+                    var chargePeriod = {};
+                    var type = $(this).find(".payment-period").find("option:selected").data("type");
+                    chargePeriod.periodType = type
+                    chargePeriod.periodValue = parseInt($(this).find(".payment-period").find("option:selected").val());
+                    riderCoverage.chargePeriod = chargePeriod;
+                    if ($(this).find(".payment-period").size() > 0 && isNaN(chargePeriod.periodValue)) {
+                        validateErrMsg = rName + errorMsg.makePlanMsg4;
+                        self.focusInput = $(this).find(".payment-period");
+                        return false;
+                    }
+                    //保障期限
+                    var coveragePeriod = {};
+                    type = $(this).find(".guarantee-period").find("option:selected").data("type");
+                    coveragePeriod.periodType = type
+                    coveragePeriod.periodValue = parseInt($(this).find(".guarantee-period").find("option:selected").val());
+                    riderCoverage.coveragePeriod = coveragePeriod;
+                    if ($(this).find(".guarantee-period").size() > 0 && isNaN(!coveragePeriod.periodValue)) {
+                        validateErrMsg = rName + errorMsg.makePlanMsg3;
+                        self.focusInput = $(this).find(".guarantee-period");
+                        return false;
+                    }
+                    riderCoverage.insuredIds = [insured.id];
                 }
-                //保障期限
-                var coveragePeriod = {};
-                type = $(this).find(".guarantee-period").find("option:selected").data("type");
-                coveragePeriod.periodType = type
-                coveragePeriod.periodValue = parseInt($(this).find(".guarantee-period").find("option:selected").val());
-                riderCoverage.coveragePeriod = coveragePeriod;
-                if($(this).find(".guarantee-period").size() > 0 && isNaN(!coveragePeriod.periodValue)){
-                    validateErrMsg =  rName+errorMsg.makePlanMsg3;
-                    return false;
-                }
-                riderCoverage.insuredIds = [insured.id];
                 riderCoverages.push(riderCoverage);
             });
             if(validateErrMsg != ""){
                 MsgBox.alert(validateErrMsg);
+                self.focusInput && self.focusInput.focus();
                 return false;
             }
             plan.riderCoverages = riderCoverages;
@@ -1146,6 +1204,10 @@ define([
                     }
                 });
             }
+        },
+        //取年龄段交集
+        getRange:function(arr1,arr2){
+
         },
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
