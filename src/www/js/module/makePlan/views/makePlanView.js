@@ -60,6 +60,9 @@ define([
         ageRangeOfLifeAssuredHtml:"",//被保人年龄范围html
         ageRangeOfPolicyHolder:null, //投保人年龄范围对象
         ageRangeOfPolicyHolderHtml:"",//投保人年龄范围html
+        ageRangeSecondOfLifeAssured:null, //第二被保人年龄范围对象
+        ageRangeSecondOfLifeAssuredHtml:"",//第二被保人年龄范围html
+
         totalFirstYearPrem:0,       //首年总保费
         ui : {
             topTitleLeft : "#top-title-left",
@@ -78,7 +81,8 @@ define([
             incrementCheck:"#make-plan-comment", //留言勾选框
             commentTxt:"#comment", //留言框
             totalFirstYearPremium:"#totalFirstYearPremium", //总保费
-            calcResultCon:".first-year-list"        //计算结果
+            calcResultCon:".first-year-list",        //计算结果
+            sendSex:"#send-sex"  //页面底部的 先生  女士
         },
         //事件添加
         events : {
@@ -94,7 +98,8 @@ define([
             "tap #make-plan-btn":"clickMakePlanHandler",//点击生成计划书
             "tap #make-plan-add-additional":"addAdditionalPlanHandler",//点击添加附加险
             "tap .additional-del":"delAdditionPlanHandler", //删除附加险
-            "tap .import":"clickImportHandler"  //点击客户导入
+            "tap .import":"clickImportHandler",  //点击客户导入
+            "change #send-sex":"changeSexHandler"
         },
         /**初始化**/
         initialize : function(){
@@ -172,7 +177,11 @@ define([
             self.currCompany = data.company;
             self.currPlanList = data.planList;
             self.ageRangeOfLifeAssured = null;//年龄段修改后取自险种列表
+            self.ageRangeOfLifeAssuredHtml = "";
             self.ageRangeOfPolicyHolder = null;
+            self.ageRangeOfPolicyHolderHtml = "";
+            self.ageRangeSecondOfLifeAssured = null;
+            self.ageRangeSecondOfLifeAssuredHtml = "";
             self.ui.commentTxt.val("");
             if(data.suggestReason){
                 self.ui.commentTxt.val(data.suggestReason);
@@ -202,7 +211,7 @@ define([
             }else{
                 var secondInsuredHtml = "";
                 secondInsuredHtml += self.insuredNameTpl();
-                secondInsuredHtml += self.insuredOldTpl({oldOptions:self.ageRangeOfLifeAssuredHtml});
+                secondInsuredHtml += self.insuredOldTpl({oldOptions:self.ageRangeSecondOfLifeAssuredHtml});
                 secondInsuredHtml += self.insuredSexTpl();
                 if(self.hasJob){  //职位
                     secondInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
@@ -377,14 +386,13 @@ define([
                    guaranteePeriodHtml += '<option data-type="'+plan.prdtTermCoverageList[j].periodType+'" value="'+plan.prdtTermCoverageList[j].periodValue+'">'+typeName+'</option>';
                }
            }
-           //档次下拉框
+           //档次下拉框   修改成后台取的9.12 12:05
            var benefitLevelHtml = "";
            if(plan.benefitPlan && plan.benefitPlan.length > 0){
                for(i = 0; i < plan.benefitPlan.length; i++){
-                   var num = parseInt(plan.benefitPlan[i]);
-                   if(!isNaN(num) && num >=0 && num < utils.benefitPlan.length){
-                       benefitLevelHtml += '<option value="'+num+'">'+utils.benefitPlan[num]+'</option>';
-                   }
+                   var num = plan.benefitPlan[i].benefitLevel || "";
+                   var levelName = plan.benefitPlan[i].levelDesc || "";
+                   benefitLevelHtml += '<option value="'+num+'">'+levelName+'</option>';
                }
            }
            //可选责任列表
@@ -458,20 +466,17 @@ define([
                     guaranteePeriodHtml += '<option data-type="'+plan.prdtTermCoverageList[j].periodType+'" value="'+plan.prdtTermCoverageList[j].periodValue+'">'+typeName+'</option>';
                 }
             }
-            //档次
+            //档次下拉框   修改成后台取的9.12 12:05
             var benefitLevelHtml = "";
             if(plan.benefitPlan && plan.benefitPlan.length > 0){
                 for(i = 0; i < plan.benefitPlan.length; i++){
-                    var num = parseInt(plan.benefitPlan[i]);
-                    if(!isNaN(num) && num >=0 && num < utils.benefitPlan.length){
-                        benefitLevelHtml += '<option value="'+num+'">'+utils.benefitPlan[num]+'</option>';
-                    }
+                    var num = plan.benefitPlan[i].benefitLevel || "";
+                    var levelName = plan.benefitPlan[i].levelDesc || "";
+                    benefitLevelHtml += '<option value="'+num+'">'+levelName+'</option>';
                 }
             }
             //是否豁免型附加险
-            var isExemption = true; //默认不是豁免型
-            //TODO 取后端豁免状态
-
+            var isExemption = plan.isWaiver=="Y"; //默认不是豁免型
             var showProperty = "";
             if(isExemption){
                 showProperty = 'style="display:none;"';
@@ -546,25 +551,22 @@ define([
             self.smokingType = 0;//和吸烟无关  1下拉框 2下拉框
             self.hasJob = false;
             self.hasSocialInsure = false;
-            self.ageRangeOfLifeAssured = null;//年龄段修改后取自险种列表
+            self.ageRangeOfLifeAssured = null;//年龄段修改后取至 险种列表
             self.ageRangeOfPolicyHolder = null;
+            self.ageRangeSecondOfLifeAssured = null;
             if(!self.currPlanList || self.currPlanList.length <= 0)
                 return false;
             var mainPlanNum = 0;
             for(var i = 0; i < self.currPlanList.length; i++){
                 if(self.currPlanList[i].insType == 1){
                     mainPlanNum += 1;
-                }
-                //TODO 明天需确认是不是所有险种产品都有被保人年龄区别对象
-                if(!self.ageRangeOfLifeAssured || self.ageRangeOfLifeAssured.length <=0) {//有数据后不用再赋值
-                    self.ageRangeOfLifeAssured = self.currPlanList[i].ageRangeOfLifeAssured;
+                    //被保人年龄段是跟着主险走的
+                    if(!self.ageRangeOfLifeAssured || self.ageRangeOfLifeAssured.length <=0) {//有数据后不用再赋值
+                        self.ageRangeOfLifeAssured = self.currPlanList[i].ageRange;
+                    }
                 }
                 if(self.currPlanList[i].pointToPH == "Y"){
                     self.hasPolicyHolder = true;
-                    //TODO 明天需确认是不是所有相关投保人 都有投保人年龄区别对象
-                    if(!self.ageRangeOfPolicyHolder || self.ageRangeOfPolicyHolder.length <= 0){//有数据后不用再赋值
-                        self.ageRangeOfPolicyHolder = self.currPlanList[i].ageRangeOfPolicyHolder;
-                    }
                 }
                 if(self.currPlanList[i].pointToSecInsured == "Y")//第二被保人
                 {
@@ -581,6 +583,20 @@ define([
                 {
                     self.hasSocialInsure = true;
                 }
+                //投保人、第二被保人  年龄段跟着附加险走
+                if(self.currPlanList[i].insType == 2){
+                    if(self.currPlanList[i].pointToPH == "Y"){
+                        if(!self.ageRangeOfPolicyHolder || self.ageRangeOfPolicyHolder.length <= 0){//有数据后不用再赋值
+                            self.ageRangeOfPolicyHolder = self.currPlanList[i].ageRange;
+                        }
+                    }
+                    if(self.currPlanList[i].pointToSecInsured == "Y")//第二被保人
+                    {
+                        if(!self.ageRangeSecondOfLifeAssured || self.ageRangeSecondOfLifeAssured.length <= 0){//有数据后不用再赋值
+                            self.ageRangeSecondOfLifeAssured = self.currPlanList[i].ageRange;
+                        }
+                    }
+                }
             }
             //主险个数
             self.mainPlanNum = mainPlanNum;
@@ -588,6 +604,7 @@ define([
             self.occupationListHtml = "";
             self.ageRangeOfLifeAssuredHtml = "";
             self.ageRangeOfPolicyHolderHtml = "";
+            self.ageRangeSecondOfLifeAssuredHtml = "";
             self.smokingListHtml = "";
             self.smokingList2Html = "";
             if(self.ageRangeOfLifeAssured) {
@@ -598,6 +615,11 @@ define([
             if(self.ageRangeOfPolicyHolder) {
                 for (i = self.ageRangeOfPolicyHolder.minAge; i <= self.ageRangeOfPolicyHolder.maxAge; i++) {
                     self.ageRangeOfPolicyHolderHtml += '<option value="' + i + '">' + i + '</option>';
+                }
+            }
+            if(self.ageRangeSecondOfLifeAssuredHtml) {
+                for (i = self.ageRangeSecondOfLifeAssured.minAge; i <= self.ageRangeSecondOfLifeAssured.maxAge; i++) {
+                    self.ageRangeSecondOfLifeAssuredHtml += '<option value="' + i + '">' + i + '</option>';
                 }
             }
             for(i = 0; i < self.occupationList.length;i++){
@@ -633,13 +655,37 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var target = $(event.target);
+            var self = this;
             if(!target.hasClass("property-radio-item"))return;
             if(target.hasClass("property-radio-item-ck")){
                 return;
             }
             target.siblings(".property-radio-item").removeClass("property-radio-item-ck");
             target.addClass("property-radio-item-ck")
-            target.parent().attr("data-val",target.data("val"))
+            target.parent().attr("data-val",target.data("val"));
+
+            //判断 如果点击的是投保人性别，跟页面底部“先生 女士”下拉性别选项同步
+            if(target.parents("#make-plan-policy-holder").size() > 0){
+                if(target.data("val") == "F"){
+                    self.ui.sendSex.val("1");
+                }else{
+                    self.ui.sendSex.val("0");
+                }
+            }
+        },
+        changeSexHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var self = this;
+            if(self.ui.sendSex.val() == "1"){//女士F  policyHolder
+                self.ui.policyHolder.find(".insured-sex").attr("data-val","F");
+                self.ui.policyHolder.find(".property-radio-item").removeClass("property-radio-item-ck");
+                self.ui.policyHolder.find(".property-radio-item:eq(1)").addClass("property-radio-item-ck");
+            }else{ //先生
+                self.ui.policyHolder.find(".insured-sex").attr("data-val","M");
+                self.ui.policyHolder.find(".property-radio-item").removeClass("property-radio-item-ck");
+                self.ui.policyHolder.find(".property-radio-item:eq(0)").addClass("property-radio-item-ck");
+            }
         },
         //点击可选责任
         clickLiabilityHandler:function(e){
