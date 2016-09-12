@@ -110,6 +110,8 @@ define([
                 if(plan.showAdvice=="Y" && plan.advice != "")
                 {
                     self.ui.commentCon.html(plan.advice);
+                }else{
+                    self.ui.commentCon.html("");
                 }
                 //初始化责任列表
                 self.initLiability(self.planBook.planLiability);
