@@ -33,10 +33,14 @@ define([
             attachDetailsMain : "#attach-details-main",
 
             bxzrTxt : ".bxzr-txt",      //保险责任
+            bxzrItem: ".bxzr-item",
             bzxqTxt : ".bzxq-txt",      //病种详情
+            bzxqItem: ".bzxq-item",
 
             thbzTxt : ".thbgz-txt",     //投核保规则
-            xxtkTxt : ".xxtk-txt"       //详细条款
+            xxtkTxt : ".xxtk-txt",      //详细条款
+
+            caseExplainNext: "#case-explain-next" //案例说明
 
         },
         events:{
@@ -80,10 +84,27 @@ define([
         initData : function(data){
             var self = this;
             utils.productName = data.productName + "";
+            utils.caseExplain = data.caseExplain;
             self.organId = data.organId + "";
             self.ui.attachDetailsTitle.html(data.productName);
-            self.ui.bxzrTxt.html(data.safeDuty);
-            self.ui.bzxqTxt.html(data.diseaseDetails);
+            if(data.safeDuty){
+                self.ui.bxzrTxt.html(data.safeDuty);
+                self.ui.bxzrItem.show();
+            }else{
+                self.ui.bxzrItem.hide();
+            }
+            if(data.diseaseDetails){
+                self.ui.bzxqTxt.html(data.diseaseDetails);
+                self.ui.bzxqItem.show();
+            }else{
+                self.ui.bzxqItem.hide();
+            }
+            if(data.caseExplain){
+                self.ui.caseExplainNext.show();
+            }else{
+                self.ui.caseExplainNext.hide();
+            }
+            // self.ui.bzxqTxt.html(data.diseaseDetails);
         },
         pageIn:function(){
             var self = this;
@@ -126,6 +147,9 @@ define([
                     case "tk":
                         self.salesProductId = self.salesProductId || "null";
                         app.navigate("in/clause/" + self.salesProductId, {replace: true,trigger: true});
+                        break;
+                    case "alsm":
+                        app.navigate("home/caseExplain", {replace: true, trigger: true});
                         break;
                 }
             }
