@@ -456,7 +456,7 @@ define([
             if(utils.isLifeInsuranceRefresh){
                 if(utils.isInitOption){
                     utils.lifeInsuranceOptions.encryptedUserData = utils.userObj.id;
-                    utils.lifeInsuranceOptions.searchWords = "华夏";
+                    utils.lifeInsuranceOptions.searchWords = "";
                     utils.lifeInsuranceOptions.saleTypeIds = null;  //选填，种类ID，来自高级过滤接口的返回值
                     utils.lifeInsuranceOptions.examPremOrder = "desc";    //选填，示例保费排序方式。asc:升序，desc: 降序
                     utils.lifeInsuranceOptions.rightIds = null;       //选填，权益ID，来自高级过滤接口的返回值
