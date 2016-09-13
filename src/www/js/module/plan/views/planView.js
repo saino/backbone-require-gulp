@@ -9,8 +9,9 @@ define([
     'marionette',
     "msgbox",
     'module/plan/views/planBookView',
-    'module/plan/views/insuranceConceptView'
-],function(BaseView, tpl, planCompanyView, mn, MsgBox, PlayBookView, InsuranceConceptView) {
+    'module/plan/views/insuranceConceptView',
+    'module/plan/model/planModel'
+],function(BaseView, tpl, planCompanyView, mn, MsgBox, PlayBookView, InsuranceConceptView,planModel) {
     return BaseView.extend({
         id: "plan-container",
         template : _.template(tpl),
@@ -53,10 +54,14 @@ define([
 
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
+
         },
         show:function(){
             var self = this;
-            self.planId = self.getOption("planId");
+            var tempPlanId = self.getOption("planId");
+            if(self.planId == tempPlanId)
+                return;
+            self.planId = tempPlanId;
             self.changeMenuTab(self.currTab);
         },
         onTabClickHandler : function(e){
@@ -96,8 +101,7 @@ define([
 
         showPlan : function(){
             var self = this;
-//            if(!self.planBookView)
-                self.planBookView = new PlayBookView();
+            self.planBookView = new PlayBookView();
             self.getRegion("planMain").show(self.planBookView);
             self.planBookView.show(self.planId);
         },
@@ -112,15 +116,20 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            //点击返回时 清理本地缓存 不能放在close TODO 要注意安卓物理返回键
+            if(self.planId) {
+                utils.delLocalStorageObject("planObject", self.planId);
+            }
             app.goBack();
         },
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
+            var self = this;
             if(MsgBox && MsgBox.isShow()){
                 MsgBox.clear();
             }
         },
-
         /*点击事件不可以重复点*/
         _checkMouseLock : function () {
             var self = this;
