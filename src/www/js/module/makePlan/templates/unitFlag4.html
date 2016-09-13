@@ -1,4 +1,4 @@
-<div class="main-insured-item" data-productid="<%=productId %>"  data-productName="<%=productName %>" data-unitflag="<%=unitflag %>">
+<div class="main-insured-item" data-productid="<%=productId %>"  data-productName="<%=productName %>" data-unitflag="<%=unitflag %>" data-annuity="<%=isAnnuity%>">
     <div class="additional-name main-insured-name" <%=displayClass %>>
         <span class="additional-name-span"><%=mainPlanName %></span>
         <div class="additional-del" data-insured-type="<%=insType %>"></div>
@@ -24,6 +24,12 @@
             <span>保障期限：</span>
             <select name="old" class="property-input property-select guarantee-period">
                 <%=guaranteePeriodHtml %>
+            </select>
+        </div>
+        <div class="insured-property-item" <%=showAnnuity %>>
+            <span>年金领取：</span>
+            <select name="old" class="property-input property-select annuity">
+                <%=annuityHtml %>
             </select>
         </div>
     </div>

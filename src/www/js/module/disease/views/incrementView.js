@@ -39,7 +39,7 @@ define([
         },
         pageIn:function(){
             if(utils.currValueAdded != null) {
-                this.model.setDetail(utils.currValueAdded.valueAddedDesc);
+                this.model.setDetail(utils.currValueAdded?utils.currValueAdded.valueAddedDesc:"");
             }
         },
         //点击返回

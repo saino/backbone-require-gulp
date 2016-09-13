@@ -65,6 +65,7 @@ define([
         focusInput:null,//验证失败后 获取焦点对象
 
         totalFirstYearPrem:0,       //首年总保费
+        valueadded:[],  //增值服务列表
         ui : {
             topTitleLeft : "#top-title-left",
             topCon : "#top-title",
@@ -100,7 +101,8 @@ define([
             "tap #make-plan-add-additional":"addAdditionalPlanHandler",//点击添加附加险
             "tap .additional-del":"delAdditionPlanHandler", //删除附加险
             "tap .import":"clickImportHandler",  //点击客户导入
-            "change #send-sex":"changeSexHandler"
+            "change #send-sex":"changeSexHandler",
+            "tap .increment-item":"clickIncrementHandler"//点击查看增值服务详情
         },
         /**初始化**/
         initialize : function(){
@@ -273,23 +275,6 @@ define([
             self.ui.additionalPlanInput.append($(additionalInputHtml));
             //增值服务 初始化不显示增值服务
             self.ui.incrementCon.css("display","none");
-//            var valueAddedHtml = "";
-//            self.ui.incrementCon.find(".accordion-list").find(".increment-item").remove();
-//            if(data.valueadded && data.valueadded.length > 0) {
-//                valueAddedHtml = self.getValueAddedHtml(data.valueadded);
-//            }
-//            if(data.valueadded && data.valueadded.length > 0){
-//                self.ui.incrementCon.find(".increment-check").addClass("increment-check-ck");
-//            }else{
-//                self.ui.incrementCon.find(".increment-check").removeClass("increment-check-ck");
-//            }
-//            self.ui.incrementCon.find(".accordion-list").append($(valueAddedHtml));
-//            if(valueAddedHtml == "")
-//            {
-//                self.ui.incrementCon.css("display","none");
-//            }else{
-//                self.ui.incrementCon.css("display","block");
-//            }
             //保险理念
             self.ui.ideaCon.find(".accordion-list").find(".idea-item").remove();
             var ideaHtml = "";
@@ -305,6 +290,7 @@ define([
         //渲染增值服务列表
         renderValueAdded:function(valueadded){
             var self = this;
+            self.valueadded = valueadded;//存全局
             var valueAddedHtml = "";
             self.ui.incrementCon.css("display","block");
             self.ui.incrementCon.find(".accordion-list").find(".increment-item").remove();
@@ -316,7 +302,7 @@ define([
             }else{
                 self.ui.incrementCon.find(".increment-check").removeClass("increment-check-ck");
             }
-            self.ui.incrementCon.find(".accordion-list").append($(valueAddedHtml));
+            self.ui.incrementCon.find(".accordion-list").html($(valueAddedHtml));
             if(valueAddedHtml == "")
             {
                 self.ui.incrementCon.css("display","none");
@@ -419,23 +405,37 @@ define([
             if(dutyHtml == ""){
                 dutyShow = 'style="display:none;"';
             }
+           //年金
+           var annuityHtml = "";
+           var showAnnuity = "style='display:none'";
+           var isAnnuityProduct = plan.isAnnuityProduct;
+           if(isAnnuityProduct == "Y"){
+               showAnnuity = "";
+               if(plan.payPeriod && plan.payPeriod.length > 0){
+                   for(var i = 0;i < plan.payPeriod.length; i++){
+                       if(!plan.payPeriod[i])continue;
+                       var typeName = utils.getAnnuityText(plan.payPeriod[i].periodType,plan.payPeriod[i].periodValue);
+                       annuityHtml += '<option data-type="'+plan.payPeriod[i].periodType+'" value="'+plan.payPeriod[i].periodValue+'">'+typeName+'</option>';
+                   }
+               }
+           }
            if(plan.unitFlag == 6) {//保额
-               var minAmount = 0, maxAmount = 999999;
+               var minAmount = 1, maxAmount = 999999; //保额区间限制
                if(plan.amountLimit){
                    minAmount = plan.amountLimit.minAmount;
                    maxAmount = plan.amountLimit.maxAmount;
                }
-               tempHtml = self.unitFlag1Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount,dutyShow:dutyShow});
+               tempHtml = self.unitFlag1Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
            }else if(plan.unitFlag == 7) {//保费
-               tempHtml = self.unitFlag2Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,dutyShow:dutyShow});
+               tempHtml = self.unitFlag2Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
            }else if(plan.unitFlag == 1) {//份数
-               tempHtml = self.unitFlag3Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,dutyShow:dutyShow});
+               tempHtml = self.unitFlag3Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
            }else if(plan.unitFlag == 3) {//份数 档次
-               tempHtml = self.unitFlag4Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml,dutyShow:dutyShow});
+               tempHtml = self.unitFlag4Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
            }else if(plan.unitFlag == 4) {//档次
-               tempHtml = self.unitFlag5Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml,dutyShow:dutyShow});
+               tempHtml = self.unitFlag5Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
            }else{
-               tempHtml = self.unitFlag6Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,dutyHtml:dutyHtml,dutyShow:dutyShow});
+               tempHtml = self.unitFlag6Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,dutyHtml:dutyHtml,dutyShow:dutyShow,isAnnuity:isAnnuityProduct});
            }
            return tempHtml;
        },
@@ -482,23 +482,37 @@ define([
             if(isExemption){
                 showProperty = 'style="display:none;"';
             }
+            //年金
+            var annuityHtml = "";
+            var showAnnuity = "style='display:none'";
+            var isAnnuityProduct = plan.isAnnuityProduct;
+            if(isAnnuityProduct == "Y"){
+                showAnnuity = "";
+                if(plan.payPeriod && plan.payPeriod.length > 0){
+                    for(var i = 0;i < plan.payPeriod.length; i++){
+                        if(!plan.payPeriod[i])continue;
+                        var typeName = utils.getAnnuityText(plan.payPeriod[i].periodType,plan.payPeriod[i].periodValue);
+                        annuityHtml += '<option data-type="'+plan.payPeriod[i].periodType+'" value="'+plan.payPeriod[i].periodValue+'">'+typeName+'</option>';
+                    }
+                }
+            }
             if(plan.unitFlag == 6) {//保额
-                var minAmount = 0, maxAmount = 999999;
+                var minAmount = 1, maxAmount = 999999;
                 if(plan.amountLimit){
                     minAmount = plan.amountLimit.minAmount;
                     maxAmount = plan.amountLimit.maxAmount;
                 }
-                tempHtml = self.additionalUnitFlag1Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,minAmount:minAmount,maxAmount:maxAmount});
+                tempHtml = self.additionalUnitFlag1Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,minAmount:minAmount,maxAmount:maxAmount,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
             }else if(plan.unitFlag == 7) {//保费
-                tempHtml = self.additionalUnitFlag2Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
+                tempHtml = self.additionalUnitFlag2Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
             }else if(plan.unitFlag == 1) {//份数
-                tempHtml = self.additionalUnitFlag3Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml});
+                tempHtml = self.additionalUnitFlag3Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
             }else if(plan.unitFlag == 3) {//份数 档次
-                tempHtml = self.additionalUnitFlag4Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
+                tempHtml = self.additionalUnitFlag4Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
             }else if(plan.unitFlag == 4) {//档次
-                tempHtml = self.additionalUnitFlag5Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml});
+                tempHtml = self.additionalUnitFlag5Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,benefitLevelHtml:benefitLevelHtml,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
             }else{
-                tempHtml = self.additionalUnitFlag6Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag});
+                tempHtml = self.additionalUnitFlag6Tpl({showProperty:showProperty,insType:2,productId:productId,additionalName:productName,unitflag:plan.unitFlag,isAnnuity:isAnnuityProduct});
             }
             return tempHtml;
         },
@@ -714,6 +728,27 @@ define([
                 self.ui.policyHolder.find(".property-radio-item:eq(0)").addClass("property-radio-item-ck");
             }
         },
+        //点击查看增值服务详情
+        clickIncrementHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var self = this;
+            var target = $(e.target);
+            var valueAdded = self.getValueAddedById(target.data("id"));
+            utils.currValueAdded = valueAdded;
+            app.navigate("in/increment",{replace:true, trigger:true});
+        },
+        getValueAddedById:function(id){
+            var self = this;
+            if(self.valueadded && self.valueadded.length > 0){
+                for(var i = 0; i < self.valueadded.length; i++){
+                    if(self.valueadded[i].valueAddedId == id){
+                        return self.valueadded[i];
+                    }
+                }
+            }
+            return {};
+        },
         //点击可选责任
         clickLiabilityHandler:function(e){
             e.stopPropagation();
@@ -899,6 +934,21 @@ define([
                     self.focusInput = $(this).find(".guarantee-period");
                     return false;
                 }
+                //年金领取时间 判断是否函年金选项
+                if($(this).data("annuity") == "Y") {
+                    var payPeriod = {};
+                    type = $(this).find(".annuity").find("option:selected").data("type");
+                    payPeriod.periodType = type;
+                    payPeriod.periodValue = parseInt($(this).find(".annuity").find("option:selected").val());
+                    mainCoverage.payPeriod = payPeriod;
+                    if ($(this).find(".annuity").size() > 0 && isNaN(payPeriod.periodValue)) {
+                        validateErrMsg = pName + errorMsg.makePlanMsg11;
+                        self.focusInput = $(this).find(".annuity");
+                        return false;
+                    }
+                }else {
+                    mainCoverage.payPeriod = null;
+                }
                 //责任数组
                 var planLiabilityList = [];
                 $(this).find(".duty-item").each(function(index){
@@ -1010,6 +1060,21 @@ define([
                         self.focusInput = $(this).find(".guarantee-period");
                         return false;
                     }
+                    //年金领取时间 判断是否函年金选项
+                    if($(this).data("annuity") == "Y") {
+                        var payPeriod = {};
+                        type = $(this).find(".annuity").find("option:selected").data("type");
+                        payPeriod.periodType = type;
+                        payPeriod.periodValue = parseInt($(this).find(".annuity").find("option:selected").val());
+                        riderCoverage.payPeriod = payPeriod;
+                        if ($(this).find(".annuity").size() > 0 && isNaN(payPeriod.periodValue)) {
+                            validateErrMsg = rName + errorMsg.makePlanMsg11;
+                            self.focusInput = $(this).find(".annuity");
+                            return false;
+                        }
+                    }else {
+                        riderCoverage.payPeriod = null;
+                    }
                     riderCoverage.insuredIds = [insured.id];
                 }
                 riderCoverages.push(riderCoverage);
@@ -1073,7 +1138,6 @@ define([
                 self.ui.calcResultCon.find(".first-year-table").remove();
                 self.ui.calcResultCon.prepend($(resultHtml));
                 self.isCalcOver = true;
-                //debugger TODO 测试增值服务 计算后返回列表
                 self.renderValueAdded(data.valueAddedList);
             },function(err){
                 MsgBox.alert("计算保费失败");

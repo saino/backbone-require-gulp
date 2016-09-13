@@ -63,6 +63,16 @@
         var re = /^[0-9]*[1-9][0-9]*$/ ;
         return re.test(s)
     }
+    //获取年金领取时间 periodType=2 value年后领    periodType=3时 value岁
+    utils.getAnnuityText = function(periodType,value){
+        var str = "";
+        if(periodType == 2){
+            str = value+"年后领";
+        }else if(periodType == 3){
+            str = value+"岁";
+        }
+        return str;
+    }
     /**
      * 交费期限、保障期限
      * @param type  1交费期限   2保障期限
