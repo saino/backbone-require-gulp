@@ -83,11 +83,12 @@ define([
                         "encryptedUserData": utils.userObj.id,
                     };
                     browseRecordsModel.clearBrowseHistory(options, function(data){
+                        console.log(data);
                         if(data.status == "0"){
                           self.ui.browseRecordsContent.html('<div id="browse-records-noting">暂无浏览记录</div>');
                         }else{
                             MsgBox.alert("删除失败");
-                            console.log("删除失败",data);
+                            // console.log("删除失败",data);
                         }
                     }, function(error){
                         MsgBox.alert("删除失败");
