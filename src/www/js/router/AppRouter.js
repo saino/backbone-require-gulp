@@ -35,7 +35,8 @@ define([
             "in/makePlan/:productId": "makePlan",  //制作计划书
             "in/personalPlan": "personalPlan",  //个人计划书， 这里默认有当前用户ID
             "in/personalCollect": "personalCollect",  //个人收藏， 这里默认有当前用户ID
-            "in/personalCustomer/:type": "personalCustomer"  //个人客户， 这里默认有当前用户ID
+            "in/personalCustomer/:type": "personalCustomer",  //个人客户， 这里默认有当前用户ID
+            "home/caseExplain": "caseExplain"   //案例说明
         },
 
         /**未登陆时需要过滤的路由**/

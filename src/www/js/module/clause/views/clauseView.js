@@ -17,19 +17,20 @@ define([
             "termSearchText": "#term-search-text",  //搜索框
             "termTextClear": "#term-text-clear",  //搜索词删除
             "termSearchIcon": "#term-search-icon",  //搜索按钮
-            infoDiv : "#clause-main"
-            // "topTitleRight": "#top-title-right"
+            "infoDiv" : "#clause-main",
+            "topTitleRight": "#top-title-right"
         },
         events:{
             "tap #top-title-left":"_clickBackHandler",
             "input @ui.termSearchText": "inputTextHandler",
             "tap @ui.termTextClear": "clickTermTextClearHandler",
-            "tap @ui.termSearchIcon": "clickTermSearchIconHandler"
-            // "tap @ui.topTitleRight": "clickTopTitleRightHandler"
+            "tap @ui.termSearchIcon": "clickTermSearchIconHandler",
+            "tap @ui.topTitleRight": "clickTopTitleRightHandler"
         },
         clickTopTitleRightHandler: function(event){
             // event.stopPropagation();
             // event.preventDefault();
+            // window.open("./images/ggg.pdf", "Download");
             console.log("llll");
         },
         inputTextHandler: function(event){

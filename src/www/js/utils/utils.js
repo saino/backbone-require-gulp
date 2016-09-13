@@ -29,7 +29,8 @@
 
     //输入的搜索词
     utils.searchText = "";
-
+    //案例说明的图片地址
+    utils.caseExplain = "";
     //当前增值服务详情对象
     utils.currValueAdded = null;
     //年龄单位  暂只判断  天  年
