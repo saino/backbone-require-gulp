@@ -28,6 +28,8 @@ define([
             searchInsuranceCompany: "#search-insurance-company",        //保险公司
             lifeInsuranceContent: "#life-insurance-content",            //寿险容器
             searchIcon: "#search-icon",                                 //搜索框的放大镜
+            samplePremium: ".sample-premium",
+            samplePremiumMessage: ".sample-premium-message"    
             // insuranceCompanyNameSelected: ".insurance-company-name-selected" //被选中的公司
         },
 
@@ -43,7 +45,7 @@ define([
             "tap @ui.insuranceCompanyFloat": "clickInsuranceCompanyFloatHandler",
             "tap @ui.lifeInsuranceContent": "clickLifeInsuranceContentHandler",
             "tap @ui.topRitleRight": "clickTopRitleRightHandler",
-            "tap .sample":"clickSampleHandler" //点击示例保费
+            "tap @ui.samplePremium":"clickSampleHandler", //点击示例保费
         },
 
         //点击右上角浏览记录
@@ -56,7 +58,10 @@ define([
         clickSampleHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-            console.log("点击示例保费");
+            var $target = $(e.target);
+            $target.parent().find(".sample-premium-message").toggle();
+            // this.ui.samplePremiumMessage.hide();
+            // console.log("点击示例保费");
         },
         //点击寿险容器
         clickLifeInsuranceContentHandler: function(event){
@@ -316,16 +321,16 @@ define([
                         lifeInsuranceContentHtml += lifeInsuranceFlagHtml;
                         lifeInsuranceContentHtml += '<div class="life-insurance-name-title">'+ salesPackages[i].packageName +'</div>'+
                                                     '</div>';
-                        // if(salesPackages[i].examPrem){
-                            // lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
-                            //                                 '<div class="life-insurance-label-name">示例保费：</div>'+
-                            //                                 // '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem +'</div>'+
-                            //                                 '<div class="life-insurance-label-message">'+ "你好你好0099" +
-                            //                                     '<img class="sample-premium" src="./images/tip.png"/>'+
-                            //                                     '<div class="sample-premium-message">你好你好0099你好你好0099</div>'+
-                            //                                 '</div>'+
-                            //                             '</div>';
-                        // }
+                        if(salesPackages[i].examPrem){
+                            lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
+                                                            '<div class="life-insurance-label-name">示例保费：</div>'+
+                                                            // '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem +'</div>'+
+                                                            '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem +
+                                                                '<img class="sample-premium" src="./images/tip.png"/>'+
+                                                                '<div class="sample-premium-message">统一文本</div>'+
+                                                            '</div>'+
+                                                        '</div>';
+                        }
                         var minAgeUnitStr = "";
                         if(salesPackages[i].minAgeUnit == 1){
                             minAgeUnitStr = "周岁";

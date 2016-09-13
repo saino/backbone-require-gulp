@@ -18,12 +18,19 @@ define([
             "termTextClear": "#term-text-clear",  //搜索词删除
             "termSearchIcon": "#term-search-icon",  //搜索按钮
             infoDiv : "#clause-main"
+            // "topTitleRight": "#top-title-right"
         },
         events:{
             "tap #top-title-left":"_clickBackHandler",
             "input @ui.termSearchText": "inputTextHandler",
             "tap @ui.termTextClear": "clickTermTextClearHandler",
             "tap @ui.termSearchIcon": "clickTermSearchIconHandler"
+            // "tap @ui.topTitleRight": "clickTopTitleRightHandler"
+        },
+        clickTopTitleRightHandler: function(event){
+            // event.stopPropagation();
+            // event.preventDefault();
+            console.log("llll");
         },
         inputTextHandler: function(event){
             event.stopPropagation();
