@@ -18,16 +18,14 @@ define([
         planLiabilityItemTpl: _.template(planLiabilityItemTpl),
         planLiabilityItemItemTpl: _.template(planLiabilityItemItemTpl),
         inited : false,       //初始化完毕
+        insuredAge:0,           //被保人年龄
         currPlanId:0,       //当前已生成计划 ID
         planBook:{},            //当前计划书对象
         productInfoList:[],     //主险附加险名称等存放处
         //利益演示相关
         interestDemonstration:{}, //利益演示数据列表 属性“1”低级  “2”中级  “3”高级
-        interestAgeArr:[],   //利益演示年龄段数组
-        currInterset : [],//当前级别下列表
-//        currAgeindex:0,      //当前年龄索引
-        currAge:0,      //当前年龄
-        currLevel:"1",  //当前等级  “1”低级  “2”中级  “3”高级
+        isULProduct:"N",    //是否高级  高级显示“低 中 高”本档
+        currLevel:"1",      //当前等级  “1”低级  “2”中级  “3”高级
 //        forever:true,
         ui:{
             //banner
@@ -55,7 +53,10 @@ define([
             ageSelect:".demo-age-select", //年龄段下拉框
             userName:".contact-name",
             userPhone:".contact-phone",
-            planDemo:".plan-demo" //利益演示
+            planDemo:".plan-demo", //利益演示
+            planLevel:".plan-level",  //三档
+            yearTitle:".demo-first-title", //第几年度
+            demoListCon:".demo-list" //利益演示列表
         },
 
         events:{
@@ -80,49 +81,97 @@ define([
             //同一个计划书 数据无需刷新
             if(self.currPlanId == planId)return;
             //新计划书 置顶
-            console.log(self.$el);
             self.currPlanId = planId;
             //length置0 确保清空
             utils.productInfoList = [];
             utils.productInfoList.length = 0;
-            planModel.getPlanInfo(planId, function(data){
-                console.log("*********保障计划 返回数据**********");
-                console.log(data);
-                self.planBook = data.planInfo;
-                self.productInfoList = self.planBook.productInfoList;
-                utils.productInfoList = self.productInfoList;
-                var plan = self.planBook.plan;
-                self.ui.planBannerName.html(self.planBook.packageName);
-                self.initBannerData(plan);
-                self.initInsuredData(plan);
-                self.ui.coverageFirst.html(utils.formatNumber2(plan.totalFirstYearPrem));//首年保费
-                if(plan.mainCoverages &&plan.mainCoverages.length > 0) {
-                    self.initMainCoverages(plan.mainCoverages[0]);//初始化主险
-                }
-                //初始化险种保费说明表
-                self.showInsuredTable(plan);
-                //产品特色
-                self.initFeature(self.planBook.feature);
-                //保障概览
-                self.initRights(self.planBook.rights);
-                //增值服务
-                self.initValueAdded(self.planBook.salesValueAdded);
-                if(plan.showAdvice=="Y" && plan.advice != "")
-                {
-                    self.ui.commentCon.html(plan.advice);
-                }else{
-                    self.ui.commentCon.html("");
-                }
-                //初始化责任列表
-                self.initLiability(self.planBook.planLiability);
-                //初始化利益演示  TODO 暂不测
-                self.ui.planDemo.css("display","none");
-//                self.initInterestDemonstration(self.planBook.illustrationList);
-                self.ui.userName.html(self.planBook.userName);//userPhone
-                self.ui.userPhone.html('<a href="tel:'+self.planBook.userPhone+'">'+self.planBook.userPhone+'</a>');
-            }, function(e){
-                MsgBox.alert("获取计划书信息失败");
-            })
+            self.insuredAge = 0;
+            self.ui.yearTitle.html("");
+//      TODO del
+//            self.isULProduct = "Y";
+//            if(self.isULProduct == "Y"){
+//                self.ui.planLevel.css("display","block");
+//                self.currLevel = "1";
+//            }else{
+//                self.ui.planLevel.css("display","none");
+//                self.currLevel = "2";
+//            }
+//            var testMap = {"1":{
+//                "1":[{type:1,value:10000},{type:2,value:20000},{type:3,value:3000}],
+//                "2":[{type:11,value:40000},{type:12,value:50000},{type:13,value:6000}],
+//                "3":[{type:21,value:70000},{type:22,value:80000},{type:23,value:9000}],
+//                "4":[{type:31,value:10000},{type:32,value:20000},{type:33,value:3000}]
+//            },"2":{
+//                "1":[{type:41,value:30000},{type:42,value:20000},{type:43,value:1000}],
+//                "2":[{type:51,value:10000},{type:52,value:20000},{type:53,value:3000}],
+//                "3":[{type:54,value:10000},{type:55,value:20000},{type:56,value:3000}],
+//                "4":[{type:57,value:10000},{type:58,value:20000},{type:59,value:3000}]
+//            },"3":{
+//                "1":[{type:1,value:10000},{type:2,value:20000},{type:3,value:3000}],
+//                "2":[{type:1,value:10000},{type:2,value:20000},{type:3,value:3000}],
+//                "3":[{type:1,value:10000},{type:2,value:20000},{type:3,value:3000}],
+//                "4":[{type:1,value:10000},{type:2,value:20000},{type:3,value:3000}]
+//            }};
+//            self.initInterestDemonstration(testMap);//self.planBook.illusMap TODO
+            var planFromLocalStory = utils.getLocalStorageValue("planObject",planId);
+            if(planFromLocalStory){
+                console.log("*********保障计划 缓存数据**********");
+                console.log(planFromLocalStory);
+                self.renderData(planFromLocalStory);
+            }else {
+                planModel.getPlanInfo(planId, function (data) {
+                    console.log("*********保障计划 返回数据**********");
+                    console.log(data);
+                    utils.addLocalStorageObject("planObject",planId,data);
+                    self.renderData(data);
+                }, function (e) {
+                    MsgBox.alert("获取计划书信息失败");
+                })
+            }
+        },
+        //根据计划书对象 渲染页面
+        renderData:function(data){
+            var self = this;
+            self.planBook = data.planInfo;
+            self.productInfoList = self.planBook.productInfoList;
+            utils.productInfoList = self.productInfoList;
+            var plan = self.planBook.plan;
+            self.ui.planBannerName.html(self.planBook.packageName);
+            self.initBannerData(plan);
+            self.initInsuredData(plan);
+            self.ui.coverageFirst.html(utils.formatNumber2(plan.totalFirstYearPrem));//首年保费
+            if(plan.mainCoverages &&plan.mainCoverages.length > 0) {
+                self.initMainCoverages(plan.mainCoverages[0]);//初始化主险
+            }
+            //初始化险种保费说明表
+            self.showInsuredTable(plan);
+            //产品特色
+            self.initFeature(self.planBook.feature);
+            //保障概览
+            self.initRights(self.planBook.rights);
+            //增值服务
+            self.initValueAdded(self.planBook.salesValueAdded);
+            if(plan.showAdvice=="Y" && plan.advice != "")
+            {
+                self.ui.commentCon.html(plan.advice);
+            }else{
+                self.ui.commentCon.html("");
+            }
+            //初始化责任列表
+            self.initLiability(self.planBook.planLiability);
+            //初始化利益演示
+//                self.ui.planDemo.css("display","none");
+            self.isULProduct = "Y";
+            if(self.isULProduct == "Y"){
+                self.ui.planLevel.css("display","block");
+                self.currLevel = "1";
+            }else{
+                self.ui.planLevel.css("display","none");
+                self.currLevel = "2";
+            }
+            self.initInterestDemonstration(self.planBook.illusMap);
+            self.ui.userName.html(self.planBook.userName);//userPhone
+            self.ui.userPhone.html('<a href="tel:'+self.planBook.userPhone+'">'+self.planBook.userPhone+'</a>');
         },
         /***
          * initBanner
@@ -147,6 +196,7 @@ define([
             var self = this, insureds = data.insureds;
             if(insureds.length){
                 var insuredObj = insureds[0];
+                self.insuredAge = insuredObj.age;
                 var age = insuredObj.age + "岁";
                 var sex = insuredObj.gender == "F" ? "女" : "男";
                 self.ui.ageTxt.html(age);
@@ -227,8 +277,9 @@ define([
         //责任
         initLiability:function(planLiability){
             var liabCateList = planLiability ? planLiability.liabCateList : [];
+            var multiProduct = planLiability ? planLiability.multiProduct : true;//是否多个产品
             var tempHtml = "", self = this;
-            //嵌套三层循环，需求之复杂 只可意会 不可言传
+            //嵌套三层循环，逻辑之复杂 只可意会 不可言传
             for(var i = 0; i < liabCateList.length; i++)
             {
                 var liabilityListHtml = "";
@@ -238,33 +289,53 @@ define([
                 }
                 for(var j =0 ; j < liabCateList[i].simpleLiabList.length; j++){
                     var obj = liabCateList[i].simpleLiabList[j];
-                    //只有是1时，参与计算，才有amount。否则取liabCalcMethod描述
-                    var libCalcType = obj.libCalcMethod;
-                    var liabilityList2Html = "";
-                    var totalAmount = "";
-                    if(libCalcType == 1){
-                        totalAmount = obj.totalAmount;
-                    }
-                    for(var k = 0; k < obj.liabList.length; k++){
-                        var itemObj = obj.liabList[k];
-                        var liabAmount = itemObj.libCalcType;
-                        var packageId = itemObj.packageId?itemObj.packageId:0;
-                        var needDiseaseIndi = itemObj.needDiseaseIndi;
-                        var showStyle = 'style="display:none"';
-                        if(needDiseaseIndi == "Y")
-                        {
-                            showStyle = "";
+                    if(multiProduct) {
+                        //只有是1时，参与计算，才有amount。否则取liabCalcMethod描述
+                        var libCalcType = obj.libCalcMethod;
+                        var liabilityList2Html = "";
+                        var totalAmount = "";
+                        if (libCalcType == 1) {
+                            totalAmount = obj.totalAmount;
                         }
-                        var rightClass = "";
-                        if(libCalcType == 1){
-                            rightClass = "item-right-mr88"; //显示金额时需距离右边88px
-                            liabAmount = itemObj.liabAmount;
+                        for (var k = 0; k < obj.liabList.length; k++) {
+                            var itemObj = obj.liabList[k];
+                            var liabAmount = itemObj.libCalcType;
+                            var packageId = itemObj.packageId ? itemObj.packageId : 0;
+                            var needDiseaseIndi = itemObj.needDiseaseIndi;
+                            var showStyle = 'style="display:none"';
+                            if (needDiseaseIndi == "Y") {
+                                showStyle = "";
+                            }
+                            var rightClass = "";
+                            if (libCalcType == 1) {
+                                rightClass = "item-right-mr88"; //显示金额时需距离右边88px
+                                liabAmount = utils.formatNumber(itemObj.liabAmount);
+                            }
+                            var libId = itemObj.liabId ? itemObj.liabId : 0;
+                            var productId = itemObj.productId ? itemObj.productId : 0;
+                            liabilityList2Html += self.planLiabilityItemItemTpl({liabDisplayName: itemObj.liabDisplayName, showStyle: showStyle, liabAmount: liabAmount, libDescQuote: itemObj.libDescQuote, rightClass: rightClass, packageId: packageId, productId: productId, libId: libId,multiProductClass:""});
                         }
-                        var libId = itemObj.liabId?itemObj.liabId:0;
-                        var productId = itemObj.productId?itemObj.productId:0;
-                        liabilityList2Html += self.planLiabilityItemItemTpl({liabDisplayName:itemObj.liabDisplayName,showStyle:showStyle,liabAmount:liabAmount,libDescQuote:itemObj.libDescQuote,rightClass:rightClass,packageId:packageId,productId:productId,libId:libId});
+                        liabilityListHtml += self.planLiabilityItemTpl({liabDisplayName:obj.liabDisplayName,totalAmount:totalAmount,liabilityList2Html:liabilityList2Html});
+                    }else{
+                        var singleObj = obj.liabList[0];//单个产品取第一个
+                        var libCalcType2 = singleObj.libCalcMethod;
+                        var liabAmount2 = singleObj.libCalcType;
+                        var liabilityList2Html = "";
+                        var showStyle2 = 'style="display:none"';
+                        if (needDiseaseIndi == "Y") {
+                            showStyle2 = "";
+                        }
+                        var rightClass2 = "";
+                        if (libCalcType2 == 1) {
+                            rightClass2 = "item-right-mr88"; //显示金额时需距离右边88px
+                            liabAmount2 = utils.formatNumber(singleObj.liabAmount);
+                        }
+                        var packageId2 = singleObj.packageId ? singleObj.packageId : 0;
+                        var libId2 = singleObj.liabId ? singleObj.liabId : 0;
+                        var productId2 = singleObj.productId ? singleObj.productId : 0;
+                       liabilityListHtml += self.planLiabilityItemItemTpl({liabDisplayName: singleObj.liabDisplayName, showStyle: showStyle2, liabAmount: liabAmount2, libDescQuote: singleObj.libDescQuote, rightClass: rightClass2, packageId: packageId2, productId: productId2, libId: libId2,multiProductClass:"info-btn-div-single"});
                     }
-                    liabilityListHtml += self.planLiabilityItemTpl({liabDisplayName:obj.liabDisplayName,totalAmount:totalAmount,liabilityList2Html:liabilityList2Html});
+
                 }
                 //列表为空，大类也不显示
                 if(liabilityListHtml.trim().length > 0){
@@ -273,51 +344,37 @@ define([
             }
             self.ui.liabilityList.html($(tempHtml));
         },
-        //初始化利益演示
-        initInterestDemonstration:function(interestDemonstration){
+        //初始化年龄段
+        initInterestAgeList:function(illusMap){
             var self = this;
-            self.interestDemonstration = interestDemonstration;
-            self.currLevel = "1";//初始化低级
-            self.interestAgeArr = [];
-            self.currInterset = [];//当前级别下列表
-            self.currAge = -1;
-            self.initInterestByLevel(self.currLevel);
-        },
-        /**
-         * 根据利益演示等级 初始化年龄段下拉框等
-         * @param currLevel  当前等级 "1" "2" "3"
-         */
-        initInterestByLevel:function(currLevel){
-            console.log(currLevel+"等级下数据");
-            var self = this;
-            self.currAge = -1;
-            self.interestAgeArr = [];//TODO 测试
-            self.currInterset = [];//当前级别下列表
-            self.ui.ageSelect.html("");
             self.ui.rangeInput.attr("min",0);
             self.ui.rangeInput.attr("max",0);
-            if(self.interestDemonstration[self.currLevel] && self.interestDemonstration[self.currLevel].length >0) {
-                self.currInterset = self.interestDemonstration[self.currLevel];
-                for (var i = 0; i < self.currInterset.length; i++) {
-                    if(i==0){
-                        self.ui.rangeInput.attr("min",self.currInterset[i].insuredAge);
-                    }
-                    if(i == self.currInterset.length-1){
-                        self.ui.rangeInput.attr("max",self.currInterset[i].insuredAge);
-                    }
-                    self.interestAgeArr.push(self.currInterset[i].insuredAge);
-                }
-                self.currAge = self.interestAgeArr.length > 0 ? self.interestAgeArr[0]:-1;
-                //初始化年龄下拉框 self.interestAgeArr
-                var optionsHtml = '';
-                for(i = 0; i < self.interestAgeArr.length; i++){
-                    optionsHtml += '<option value="'+self.interestAgeArr[i]+'">'+self.interestAgeArr[i]+'</option>';
-                }
-                self.ui.ageSelect.html($(optionsHtml));
-            }else{
-                console.log("当前等级下无年龄段数据"+self.currLevel);
+            var map = illusMap[self.currLevel] || {};
+            var minAge = 1, maxAge = 1;
+            for(var key in map){
+                minAge = Math.min(parseInt(key), minAge);
+                maxAge = Math.max(parseInt(key), maxAge);
             }
-            self.setRangeValue(self.currAge);
+
+            minAge = self.insuredAge + minAge;
+            maxAge =  self.insuredAge + maxAge;
+            var ageHtml = "";
+            if(minAge != maxAge) {
+                //初始化年龄段下拉
+                for (var i = minAge; i <= maxAge; i++) {
+                    ageHtml += '<option value="' + (i - self.insuredAge) + '">' + i + '</option>';
+                }
+            }
+            self.ui.rangeInput.attr("min",(minAge-self.insuredAge));
+            self.ui.rangeInput.attr("max",(maxAge-self.insuredAge));
+            self.ui.ageSelect.html($(ageHtml));
+        },
+        //初始化利益演示
+        initInterestDemonstration:function(illusMap){
+            var self = this;
+            self.interestDemonstration = illusMap||{};
+            self.initInterestAgeList(illusMap||{});
+            self.setRangeValue(1);//初始化第一年度信息
         },
         getProductName:function(id){
             var self = this;
@@ -453,37 +510,31 @@ define([
             target.addClass("plan-level-item-ck");
             target.siblings(".plan-level-item").removeClass("plan-level-item-ck");
             self.currLevel = target.data("level");
-            self.initInterestByLevel(self.currLevel);
+            self.setRangeValue(1);
         },
-        //当前年龄 显示数据
-        setRangeValue : function(age){
+        //当前第num年度
+        setRangeValue : function(num){
             var self = this;
-            if(self.currAge == age)
-                return;
-            if(age < 0){
-                MsgBox.alert("年龄数据为空");
-                return;
+            self.ui.rangeInput.val(num);
+            self.ui.ageSelect.val(num);
+            self.ui.yearTitle.html("第"+num+"保单年度");
+            var list = [];
+            if(self.interestDemonstration[self.currLevel]){
+                list = self.interestDemonstration[self.currLevel][num+""] || [];
             }
-            self.ui.rangeInput.val(age);
-            self.ui.ageSelect.val(age);
-            self.currAge = age;
-            console.log("加载年龄下数据"+age);
-            var item = self.getIntersetByAgeAndLevel(self.currAge);
-            if(item){
-                //TODO 渲染对象数据  demo-list
-            }
-        },
-        //根据当前年龄 取当前级别列表数据下的对应
-        getIntersetByAgeAndLevel:function(age){
-            var self = this;
-            for(var i = 0; i < self.currInterset.length; i++){
-                if(self.currInterset[i].insuredAge == age){
-                    return self.currInterset[i];
+            var demoHtml = "";
+            if(list && list.length > 0) {
+                for (var i = 0; i < list.length; i++) {
+                    var type = parseInt(list[i].type);
+                    var value = utils.formatNumber2(list[i].value);
+                    demoHtml += '<div class="demo-list-item">'+
+                        '<div class="demo-list-item-txt">'+utils.illusType[type]+'</div>'+
+                    '<div class="demo-list-item-money">'+value+'</div></div>';
                 }
             }
-            return null;
+            self.ui.demoListCon.html($(demoHtml));
         },
-        close:function(){
+        destroy:function(){
             utils.productInfoList.length = 0;
             utils.productInfoList = [];
         }

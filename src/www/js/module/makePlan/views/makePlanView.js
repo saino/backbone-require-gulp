@@ -228,7 +228,7 @@ define([
                 self.ui.secondInsured.find(".insured-property").html(secondInsuredHtml);
             }
             if(data.company && data.company.organLogo){
-                self.ui.planInfoCon.css("background",'background: url("'+(utils.serverConfig.serverUrl+''+data.company.organLogo)+'") no-repeat right 30px center #fff;');
+                self.ui.planInfoCon.css("background",'url("'+(utils.serverConfig.serverUrl+data.company.organLogo)+'") no-repeat right 30px center #fff');
             }
             //是否显示投保人
             if(!self.hasPolicyHolder){

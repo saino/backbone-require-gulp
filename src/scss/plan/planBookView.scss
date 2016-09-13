@@ -306,13 +306,13 @@
             margin-right: 88px;
           }
         }
-
         .info-btn-div{
           margin-bottom: 20px;
           width: 100%;
           .item-title{
             float: left;
             color: #7994f9;
+            width:50%;
           }
           .item-right-btn{
             float: right;
@@ -338,6 +338,14 @@
           .item-right{
             margin-right: 22px;
             float: right;
+            height: 44px;     //9.13 16:31新加 by guYY
+            line-height: 44px;
+          }
+        }
+        .info-btn-div-single {
+          padding-top: 10px;
+          .item-title {
+            color: #666666;
           }
         }
         .info-desc{ color: #7994f9; background: #EEEEEE; display: none;}
