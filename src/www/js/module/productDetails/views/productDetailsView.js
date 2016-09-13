@@ -43,7 +43,8 @@ define([
             subjoinTitleBtn : ".insure-subjoin-title .pull-icon-big",   //附加下拉按钮
             subjoinContent : ".insure-subjoin-content",     //推荐附加险
             productInsureSubjoin: ".product-insure-subjoin", //附加险容器
-            insureMake : ".product-insure-make"        //制作企划书
+            insureMake : ".product-insure-make",        //制作企划书
+            productCompanyLogo: ".product-company-logo"   //公司logo
         },
         events:{
             "tap @ui.backBtn":"onBackBtnHandler",
@@ -56,7 +57,7 @@ define([
             "tap @ui.subjoinTitleBtn":"onToggleSubjoinContentHandler",
             "tap @ui.subjoinContent" : "onGoToSubjoinItemHandler",
             "tap @ui.insureMake" : "onGoToInsureMakeHandler",        //去制作
-            "tap @ui.detailsInfoTop": "onDetailsInfoTopHandler"            //去公司详情
+            "tap @ui.productCompanyLogo": "onDetailsInfoTopHandler"            //去公司详情
         },
 
         // 去公司详情
@@ -161,7 +162,8 @@ define([
         initInfoView : function(packageName, organLogo, totalVisitCount){
             var self = this;
             self.ui.detailsInfoTop.text(packageName);
-            self.ui.detailsInfoTop.css({"background" : "url("+organLogo+") 100% center no-repeat"});
+            self.ui.productCompanyLogo.css({"background" : "url("+organLogo+") 100% center no-repeat"});
+            // self.ui.detailsInfoTop.css({"background" : "url("+organLogo+") 100% center no-repeat"});
             self.ui.productDetailsPv.text(totalVisitCount);
         },
         /**
@@ -175,12 +177,24 @@ define([
             var self = this;
             //投保年龄
             var minAge = (ageRange && ageRange.minAge);       //最小年龄
+            var minAgeUnitStr = "";
+            if(ageRange.minUnit == "1"){
+                minAgeUnitStr = "周岁";
+            }else if(ageRange.minUnit == "5"){
+                minAgeUnitStr = "天";
+            }
             minAge = minAge == null ? "" : minAge;
             // var minAgeUnit = ageRange.minUnit;  //最小年龄单位
             var maxAge = (ageRange && ageRange.maxAge);       //最小年龄
+            var maxAgeUnitStr = "";
+            if(ageRange.maxUnit == "1"){
+                maxAgeUnitStr = "周岁";
+            }else if(ageRange.maxUnit == "5"){
+                maxAgeUnitStr = "天";
+            }
             maxAge = maxAge == null ? "" : maxAge;
             // var maxAgeUnit = ageRange.maxUnit;  //最小年龄单位
-            self.ui.insureAge.text(minAge+"周岁-"+maxAge+"周岁");
+            self.ui.insureAge.text(minAge+minAgeUnitStr+"-"+maxAge+maxAgeUnitStr);
             //最低保额
             var minAmount = (amountLimit && amountLimit.minAmount);      //最低保额
             minAmount = minAmount == null ? "" : minAmount;
