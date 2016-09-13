@@ -115,11 +115,13 @@ define([
                 } else{
                     var insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏的产品</div>';
                     self.ui.personalCollectMain.html(insuranceProductCardHtml);
+                    MsgBox.alert("获取数据失败");
                     console.log("数据返回错误", data);
                 }
             }, function(error){
                 var insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏的产品</div>';
                 self.ui.personalCollectMain.html(insuranceProductCardHtml);
+                MsgBox.alert("获取数据失败");
                 console.log("数据查询失败", error);
             });
         },
@@ -151,8 +153,10 @@ define([
                           self.ui.personalCollectMain.html('<div id="browse-records-noting">暂无收藏的产品</div>');
                         }else{
                             console.log("删除失败",data);
+                            MsgBox.alert("删除失败");
                         }
                     }, function(error){
+                        MsgBox.alert("删除失败");
                         console.log("删除失败",error);
                     });
                 }
@@ -190,9 +194,11 @@ define([
                                     }
                                 });
                             }else{
+                                MsgBox.alert("删除失败");
                                 console.log("删除失败");
                             }
                         }, function(error){
+                            MsgBox.alert("删除失败");
                             console.log("删除失败");
                         });
                   
