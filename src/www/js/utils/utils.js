@@ -324,5 +324,16 @@
         window.kbLogin && window.kbLogin.toLogin();
     };
     
-
+    utils.illusType = {
+        1:"Sum Assured",2:"Accumulated Premium",3:"Annual Basic Premium",4:"Regular Topup Premium",5:"Annual Investment Premium",
+        6:"Annual Invest Top-up",7:"COI",8:"Annual Admin Cost",9:"Total Charges Deducted",10:"Fund Net Value",11:"Basic Yearly Return",
+        12:"Basic Investment Fee",13:"Total Investment Value",14:"Net Premium",15:"Regular Investment Premium",16:"Total Investment Premium",
+        17:"现金价值",18:"Paidup Value",19:"Cash Bonus",20:"Survival Benefit",21:"退保金",
+        22:"身故保险金",23:"Maturity Amount",24:"RB Surrender Value",25:"Annuity Payment",26:"GMDB Amount",27:"GMAB Amount",28:"GMWB Amount",
+        29:"GMIB Amount",30:"Annual Withdraw Amount",31:"Annual Recurring Top-up",32:"Adhoc Topup",33:"Adhoc Topup Investment Part",34:"Fund Management Fee",
+        35:"Total Fund Value",36:"Accumulated Topup",37:"Accumulated Cash Bonus",38:"Accumulated Reversionary Bonus",39:"Accumulated Survival Benefit",
+        40:"生存金",41:"投保人豁免利益",42:"被保人豁免利益",43:"全残保险金",44:"残疾保险金",45:"轻症保险金",46:"重疾保险金",47:"疾病末期保险金",
+        48:"特定疾病保险金",49:"医疗保险金",50:"万能账户",51:"疾病身故保险金",52:"护理保险金",53:"特定重疾保险金",54:"身故保险金-rider",55:"生存金-rider",
+        56:"投保人豁免利益-rider",57:"投保人豁免利益-rider",58:"残疾保险金-rider",59:"医疗保险金-rider",60:"被保人豁免利益-rider"
+    };
 })(window);

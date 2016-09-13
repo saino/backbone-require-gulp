@@ -25,7 +25,7 @@ define([
             this.model = new detailModel();
             this.model.on("change",this.render,this);
             this.model.setTitle("增值服务详情");
-            this.model.setHasShare(true);
+            this.model.setHasShare(false);
         },
         render: function() {
             this.$el.html(this.template(this.model.attributes));
