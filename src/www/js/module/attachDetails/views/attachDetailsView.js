@@ -99,7 +99,7 @@ define([
             }else{
                 self.ui.bzxqItem.hide();
             }
-            if(data.caseExplain){
+            if(data.caseExplain && utils.isShowExample){
                 self.ui.caseExplainNext.show();
             }else{
                 self.ui.caseExplainNext.hide();

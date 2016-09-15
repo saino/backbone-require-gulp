@@ -93,7 +93,7 @@ define([
             productDetailsModel.getProductInfo(options, self._initView, function(err){
                 console.log(err);
                 setTimeout(function(){
-                        MsgBox.alert("数据获取失败");
+                    MsgBox.alert("数据获取失败");
                 }, 350);
             });
 
@@ -335,9 +335,9 @@ define([
          */
         initPlanView : function (productList){
             var self = this;
-            var planTemp =  '<div class="insure-plan-item" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
-                                '<span class="duty-item-title-span" data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
-                                '<span class="pull-icon-next" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
+            var planTemp =  '<div class="insure-plan-item" data-instype="{insType}" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
+                                '<span class="duty-item-title-span" data-instype="{insType}" data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
+                                '<span class="pull-icon-next" data-instype="{insType}" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
                             '</div>';
             if(!productList || productList.length==0){
                 self.ui.productInsurePlan.hide();
@@ -346,14 +346,14 @@ define([
             }else if(productList.length==1){
                 self.ui.productInsurePlan.find(".insure-plan-title").hide();
                 var obj = productList[0];
-                var str = planTemp.replace("{salesProductName}", "详细说明").replace(/\{productId\}/g, obj.productId).replace(/\{salesProductId\}/g, obj.salesProductId);
+                var str = planTemp.replace("{salesProductName}", "详细说明").replace(/\{productId\}/g, obj.productId).replace(/\{salesProductId\}/g, obj.salesProductId).replace(/\{insType\}/g, obj.insType);
                 self.ui.planContent.html(str);
                 self.ui.planContent.show();
             }else{
                 var planStr = "";
                 for(var i = 0; i < productList.length; i++){
                     var obj = productList[i];
-                    var realTemp = planTemp.replace("{salesProductName}", obj.salesProductName).replace(/\{productId\}/g, obj.productId).replace(/\{salesProductId\}/g, obj.salesProductId);
+                    var realTemp = planTemp.replace("{salesProductName}", obj.salesProductName).replace(/\{productId\}/g, obj.productId).replace(/\{salesProductId\}/g, obj.salesProductId).replace(/\{insType\}/g, obj.insType);;
                     planStr += realTemp;
                 }
                 self.ui.planContent.html(planStr);
@@ -374,14 +374,14 @@ define([
                 self.ui.productInsureSubjoin.show();
             }
 
-            var subjoinTemp = '<div class="insure-subjoin-item" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
-                '<span class="duty-item-title-span" data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
-                '<span class="pull-icon-next" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
+            var subjoinTemp = '<div class="insure-subjoin-item" data-instype="{insType}" data-productId="{productId}" data-salesProductId="{salesProductId}">'+
+                '<span class="duty-item-title-span" data-instype="{insType}" data-productId="{productId}" data-salesProductId="{salesProductId}">{salesProductName}</span>'+
+                '<span class="pull-icon-next" data-instype="{insType}" data-productId="{productId}" data-salesProductId="{salesProductId}"></span>'+
                 '</div>';
             var subjoinStr = "";
             for(var i = 0; attachProductList&&i<attachProductList.length; i++){
                 var obj = attachProductList[i];
-                var realTemp = subjoinTemp.replace("{salesProductName}", obj.attachProductName).replace(/\{productId\}/g, obj.attachId).replace(/\{salesProductId\}/g, obj.salesProductId);
+                var realTemp = subjoinTemp.replace("{salesProductName}", obj.attachProductName).replace(/\{productId\}/g, obj.attachId).replace(/\{salesProductId\}/g, obj.salesProductId).replace(/\{insType\}/g, obj.insType);
                 subjoinStr += realTemp;
             }
             self.ui.subjoinContent.html(subjoinStr);
@@ -551,6 +551,12 @@ define([
                 var packageId = self.productId;
                 var productId = $target.attr("data-productid");
                 var salesProductId = $target.attr("data-salesproductid");
+                var isMain = $target.attr("data-instype");
+                if(isMain == "1"){     //如果是主险需要显示案例说明
+                    utils.isShowExample = true;
+                }else{                  //不是主险则隐藏案例说明
+                    utils.isShowExample = false;
+                }
                 packageId = packageId || "null";
                 productId = productId || "null";
                 salesProductId = salesProductId || "null";
@@ -596,7 +602,12 @@ define([
                 var packageId = self.productId;
                 var productId = $target.attr("data-productid");
                 var salesProductId = $target.attr("data-salesproductid");
-
+                var isMain = $target.attr("data-instype");
+                if(isMain == "1"){     //如果是主险需要显示案例说明
+                    utils.isShowExample = true;
+                }else{                  //不是主险则隐藏案例说明
+                    utils.isShowExample = false;
+                }
                 packageId = packageId || "null";
                 productId = productId || "null";
                 salesProductId = salesProductId || "null";

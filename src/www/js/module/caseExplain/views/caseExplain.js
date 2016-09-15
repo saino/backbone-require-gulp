@@ -44,10 +44,11 @@ define([
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
                 self.ui.caseExplainContent.css("height", "calc(100% - 84px - "+utils.toolHeight+"px)");
             }
-
-
         	if(utils.caseExplain){
-        		var imgHtml = '<img style="width: 100%" src="'+ utils.serverConfig.serverUrl + utils.caseExplain +'"/>';
+                var imgHtml = "";
+                for(var i=0; i<utils.caseExplain.length; i++){
+                    imgHtml += '<img style="width: 100%" src="'+ utils.serverConfig.serverUrl + utils.caseExplain[i] +'"/>';
+                }
         		self.ui.caseExplainContent.html(imgHtml);
         	}else{
         		self.ui.caseExplainContent.html("");
