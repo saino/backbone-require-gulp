@@ -57,28 +57,42 @@ define([
             var self = this;
             var i, len = list.length, html = '';
             if(utils.advanceSaleTypeIds.length == 0){
-                html = '<div class="type-item type-all type-item-ck">全部</div>';
+                html = '<div class="type-item type-all type-item-ck" data-premium="N">全部</div>';
                 self.ui.productList.find('.list-item').remove();
                 for(i=0; i < len; i++){
                     var obj = list[i];
-                    html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.typeName +'</div>'
+                    var isPremium = obj.ifFilterByPrem;
+                    html += '<div class="type-item list-item" data-premium="'+isPremium+'" data-id='+obj.listId+'>'+ obj.typeName +'</div>'
                 }
             }else{
-                html = '<div class="type-item type-all">全部</div>';
+                html = '<div class="type-item type-all" data-premium="N">全部</div>';
                 self.ui.productList.find('.list-item').remove();
+                // console.log(list);
                 for(i=0; i < len; i++){
                     var obj = list[i];
+                    var isPremium = obj.ifFilterByPrem;
+                    // console.log(isPremium);
                     for(var j=0; j<utils.advanceSaleTypeIds.length; j++){
                         if(obj.listId == utils.advanceSaleTypeIds[j]){
-                            html += '<div class="type-item list-item type-item-ck" data-id='+obj.listId+'>'+ obj.typeName +'</div>';
+                            html += '<div class="type-item list-item type-item-ck" data-premium="'+isPremium+'" data-id='+obj.listId+'>'+ obj.typeName +'</div>';
                             break;
                         }
                     }
-                    if(j == utils.advanceRightIds.length){
-                        html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.typeName +'</div>';
+                    if(j == utils.advanceSaleTypeIds.length){
+                        html += '<div class="type-item list-item" data-premium="'+isPremium+'" data-id='+obj.listId+'>'+ obj.typeName +'</div>';
                     }
                     // html += '<div class="type-item list-item" data-id='+obj.listId+'>'+ obj.typeName +'</div>'
                 }
+            }
+            if(utils.advanceSaleTypeIds.length == 2){
+                if(utils.advanceSaleTypeIds[1] == "-1"){
+                    html += '<div style="display: block" class="type-item type-item-ck list-item type-sample-premium" data-id="-1">示例保费从高到低</div><div style="display: block;" class="type-item list-item type-sample-premium"  data-type="exprem" data-id="-100">示例保费从低到高</div>'
+                }else{
+                    html += '<div style="display: block" class="type-item list-item type-sample-premium" data-id="-1">示例保费从高到低</div><div style="display: block;" class="type-item type-item-ck list-item type-sample-premium"  data-type="exprem" data-id="-100">示例保费从低到高</div>'
+                }
+            }else{
+                html += '<div class="type-item list-item type-sample-premium" data-id="-1">示例保费从高到低</div><div class="type-item list-item type-sample-premium"  data-type="exprem" data-id="-100">示例保费从低到高</div>'
+  
             }
             self.ui.productList.append(html);
         },
@@ -174,6 +188,7 @@ define([
             var self = this;
             self.ui.productList.find(".type-all").addClass("type-item-ck");
             self.ui.productList.find(".list-item").removeClass("type-item-ck");
+            self.ui.productList.find(".type-sample-premium").hide();
             self.ui.rightsInfoList.find(".type-all").addClass("type-item-ck");
             self.ui.rightsInfoList.find(".list-item").removeClass("type-item-ck");
             self.ui.companyList.find(".type-all").addClass("type-item-ck");
@@ -195,8 +210,28 @@ define([
 
 
             //种类ID
-            utils.lifeInsuranceOptions.saleTypeIds = productLists;
+            // utils.lifeInsuranceOptions.saleTypeIds = productLists;
+            if(productLists.length == 2){
+                utils.lifeInsuranceOptions.saleTypeIds = [];
+                utils.lifeInsuranceOptions.saleTypeIds[0] = productLists[0];
+                if(productLists[1] == "-1"){
+                    utils.lifeInsuranceOptions.examPremOrder = "desc";
+                    utils.preSortOption = utils.lifeInsuranceOptions.sortOption;
+                    utils.lifeInsuranceOptions.sortOption = null;
+                }
+                if(productLists[1] == "-100"){
+                    utils.lifeInsuranceOptions.examPremOrder = "asc";
+                    utils.preSortOption = utils.lifeInsuranceOptions.sortOption;
+                    utils.lifeInsuranceOptions.sortOption = null;
+                }
+                // console.
+            }else{
+                utils.lifeInsuranceOptions.saleTypeIds = productLists;
+                utils.lifeInsuranceOptions.sortOption = utils.preSortOption
+                utils.lifeInsuranceOptions.examPremOrder = null;
+            }
             utils.advanceSaleTypeIds = productLists;
+
             //权益ID
             utils.lifeInsuranceOptions.rightIds = infoLists;
             utils.advanceRightIds = infoLists;
@@ -240,6 +275,25 @@ define([
 
             var target  = e.target;
             var $target = $(target);
+            if($target.parent().attr("id") == "product-type-list"){
+                var isPremium = $target.attr("data-premium");
+                if(isPremium){
+                    $target.parent().children().removeClass("type-item-ck");
+
+                    if(isPremium == "Y"){
+                        $target.parent().find(".type-sample-premium").show();
+                    }
+                    if(isPremium == "N"){
+                        $target.parent().find(".type-sample-premium").hide();
+                    }
+
+                }else{
+                    $target.parent().find(".type-sample-premium").removeClass("type-item-ck");
+                }
+                $target.addClass("type-item-ck");
+                return;
+            }
+
 
             if(target.className.indexOf("type-item-ck")>=0 ){
                 $target.removeClass("type-item-ck");

@@ -224,10 +224,17 @@
 .sample-premium-message{
   width: 286px;
   font-size: 26px;
-  border: solid red 2px;
+  border: solid #e49e30 2px;
   border-radius: 10px;
   position: absolute;
-  right: 0;
-  top: 34px;
+  right: 70px;
+  top: 18px;
   display: none;
+  color: #e49e30;
+  padding: 16px;
+}
+.sample-tip-icon{
+  position: absolute;
+  right: 282px;
+  top: 14px;
 }
