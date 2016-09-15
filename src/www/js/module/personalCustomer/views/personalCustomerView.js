@@ -81,6 +81,7 @@ define([
         },
         loadData: function(options){
             var self = this;
+            // console.log(options,"sssss");
             personalCustomerModel.queryAgentCustomers(options, function(data){
                 console.log(data);
                 if(data.status == "0"){
@@ -123,10 +124,11 @@ define([
         },
 
         show: function(){
+            // console.log("ccccccc");
             var self = this;
             var options = { 
                 "name": "",
-                "queryAll": true,
+                "queryAll": false,
                 "encryptedUserData": utils.userObj.id,
             };
             self.loadData(options);

@@ -28,7 +28,7 @@ define([], function () {
         }
     };
     PersonalCustomerModel.prototype.queryAgentCustomers = function(options, cb_ok, cb_err){
-        var url = utils.serverConfig.serverUrl + "/ls/services/dt/productService/getClientList";
+        var url = utils.serverConfig.serverUrl + "/ls/services/dt/planService/getClientList";
         console.log(options);
         $.ajax({
             method: "POST",

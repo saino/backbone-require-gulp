@@ -7,9 +7,11 @@
     //IOS顶部工具栏高度
     utils.toolHeight = 40;
 //    utils.userObj = {id:"QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0="};
+    // utils.userObj = {id:"1"};
     utils.userObj = {id:"mO9Ck8aUljOXBglrKYPu/1gd7T4nTzEFxN0+GruRM9JMCq8a8qRyTaWs7Sh2FpFemRJK6aVGIN7SOThIPHmwbamJKNrEMOsjBQloOj54UxDHBXYmpBSazn0lYxr1LcaTWtPGUGwP2pOXUwo79/4d6IuAy/CEUBIAEufB8NRO2xMxCtW4EiZxxF6VSzigsCXWOWSUcJbNct1igGjl4N/RfwULsNptX/MkfVR+QnppvTwbaU+V9JJ9TisLic14zAAxYoMg8V4ySrwAEtG6WjEoz4Ndm/1wOvgrjtrxwW3KVdGtNWs9ph85f0ejjWN5sAX6/lecd27hhDW60aOGPOhJYg=="};
     utils.serverConfig = {
-       serverUrl: "http://172.25.13.166:8080"       //内网开发环境
+        // serverUrl: "http://210.13.77.75:8080"       //开发
+        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
         // serverUrl: "http://120.55.176.131:8080"  //外网测试环境
     };
 
@@ -122,7 +124,8 @@
     }
     //寿险业查询条件
     utils.lifeInsuranceOptions = { 
-            "encryptedUserData": "QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0=",
+            "encryptedUserData": "mO9Ck8aUljOXBglrKYPu/1gd7T4nTzEFxN0+GruRM9JMCq8a8qRyTaWs7Sh2FpFemRJK6aVGIN7SOThIPHmwbamJKNrEMOsjBQloOj54UxDHBXYmpBSazn0lYxr1LcaTWtPGUGwP2pOXUwo79/4d6IuAy/CEUBIAEufB8NRO2xMxCtW4EiZxxF6VSzigsCXWOWSUcJbNct1igGjl4N/RfwULsNptX/MkfVR+QnppvTwbaU+V9JJ9TisLic14zAAxYoMg8V4ySrwAEtG6WjEoz4Ndm/1wOvgrjtrxwW3KVdGtNWs9ph85f0ejjWN5sAX6/lecd27hhDW60aOGPOhJYg==",
+            // "encryptedUserData": "QKHoHCHlTFwrBzCO8oY0l3S/TYOEKh66n5TxkNeVCuA3wOlrnDesxD7eOFE1VqVToOYrXB5X5CkCx3huc3yXfvknChUaBEjKeGyYfJSKzUVZA+1gisIy5aUmEZZSZimrHKT0NWJ9IwnRQxCdPsXKSK5k1noMI7C3LxZYwl2dcm0=",
             "searchWords": "",
             "saleTypeIds": [],  //选填，种类ID，来自高级过滤接口的返回值
             "examPremOrder": "desc",    //选填，示例保费排序方式。asc:升序，desc: 降序

@@ -463,10 +463,10 @@ define([
                 if(utils.isInitOption){
                     utils.lifeInsuranceOptions.encryptedUserData = utils.userObj.id;
                     utils.lifeInsuranceOptions.searchWords = "";
-                    utils.lifeInsuranceOptions.saleTypeIds = null;  //选填，种类ID，来自高级过滤接口的返回值
+                    utils.lifeInsuranceOptions.saleTypeIds = [];  //选填，种类ID，来自高级过滤接口的返回值
                     utils.lifeInsuranceOptions.examPremOrder = null;    //选填，示例保费排序方式。asc:升序，desc: 降序
-                    utils.lifeInsuranceOptions.rightIds = null;       //选填，权益ID，来自高级过滤接口的返回值
-                    utils.lifeInsuranceOptions.companyIds = null; //选填，公司ID，来自高级过滤接口的返回值
+                    utils.lifeInsuranceOptions.rightIds = [];       //选填，权益ID，来自高级过滤接口的返回值
+                    utils.lifeInsuranceOptions.companyIds = []; //选填，公司ID，来自高级过滤接口的返回值
                     utils.lifeInsuranceOptions.sortOption = 1;     //选填，排序选项。2：按浏览量排序，3：按上架时间排序
 
                     utils.advanceSaleTypeIds = [];
