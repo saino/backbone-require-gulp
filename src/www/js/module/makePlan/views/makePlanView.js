@@ -131,25 +131,6 @@ define([
                 });
                 return;
             }
-////            //TODO 测试数据 待删
-//            var tempData = {planList:[
-//                {salesProductId:10001,pointToPH:"Y",unitFlag:1,insType:1,salesProductName:"中华人民共和国主险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-//                {salesProductId:10002,unitFlag:3,insType:1,salesProductName:"中华人民共和国主险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
-//                {salesProductId:10003,unitFlag:4,insType:1,salesProductName:"中华人民共和国主险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[11,12,13,14,15]},//
-////                {salesProductId:10004,unitFlag:6,amountLimit:{minAmount:100,maxAmount:999999999999},insType:1,salesProductName:"中华人民共和国主险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {smokingIndi:1,pointToSecInsured:"Y",salesProductId:10005,unitFlag:7,insType:1,salesProductName:"中华人民共和国主险5",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {smokingIndi:0,salesProductId:10006,unitFlag:9,insType:1,salesProductName:"中主险不需要输入项",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:20001,unitFlag:1,insType:2,salesProductName:"中华人民共和国附加险1",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:20002,unitFlag:3,insType:2,salesProductName:"中华人民共附加险2",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[1,2,3,4,6]},
-//                {salesProductId:20003,unitFlag:4,insType:2,salesProductName:"中华人民共附加险3",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}],benefitPlan:[17,12,13,14,16]},
-//                {salesProductId:20004,unitFlag:6,amountLimit:{minAmount:1000,maxAmount:999999999999},insType:2,salesProductName:"中华人民共附加险4",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-//                {salesProductId:20005,unitFlag:7,insType:2,salesProductName:"中华人民共附加险5",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项一",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项二",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]},
-////                {salesProductId:20006,unitFlag:9,insType:2,salesProductName:"中该附加险不需要输入项三",productLiabilityList:[{liabId:"1001",liabName:"我是责任一",liabType:"1"},{liabId:"1002",liabName:"我是责任二",liabType:"1"}]}
-//            ]};
-//            self.initializeUI(tempData);
-//            return;
             //返回进入 或进入不同产品计划书 重置输入
             if(self.currProductId == 0 || self.currProductId != tempProductId){
                 self.currProductId = tempProductId;
@@ -178,69 +159,22 @@ define([
             //公司LOGO  计划书名称
             self.ui.planInfoCon.html(data.packageName || "");
             self.currCompany = data.company;
-            self.currPlanList = data.planList;
+            self.currPlanList = data.planList || [];
             self.ageRangeOfLifeAssured = null;//年龄段修改后取自险种列表
             self.ageRangeOfLifeAssuredHtml = "";
             self.ageRangeOfPolicyHolder = null;
             self.ageRangeOfPolicyHolderHtml = "";
             self.ageRangeSecondOfLifeAssured = null;
             self.ageRangeSecondOfLifeAssuredHtml = "";
-            self.ui.commentTxt.val("");
             if(data.suggestReason){
                 self.ui.commentTxt.val(data.suggestReason);
-            }
-            //根据对象初始化
-            self.setRelevantProperty();
-            //拼接第一被保人信息
-            var firstInsuredHtml = "";
-            firstInsuredHtml += self.insuredNameTpl();
-            firstInsuredHtml += self.insuredOldTpl({oldOptions:self.ageRangeOfLifeAssuredHtml});
-            firstInsuredHtml += self.insuredSexTpl();
-            if(self.hasJob){  //职位
-                firstInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
-            }
-            if(self.smokingType == 1){
-                firstInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingListHtml});
-            }else if(self.smokingType == 2){
-                firstInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingList2Html});
-            }
-            if(self.hasSocialInsure){ //社保
-                firstInsuredHtml += self.insuredSocialTpl();
-            }
-            self.ui.firstInsured.find(".insured-property").html(firstInsuredHtml);
-            //拼接第二被保人
-            if(!self.hasSecInsured){
-                self.ui.secondInsured.css("display","none");
             }else{
-                var secondInsuredHtml = "";
-                secondInsuredHtml += self.insuredNameTpl();
-                secondInsuredHtml += self.insuredOldTpl({oldOptions:self.ageRangeSecondOfLifeAssuredHtml});
-                secondInsuredHtml += self.insuredSexTpl();
-                if(self.hasJob){  //职位
-                    secondInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
-                }
-                if(self.smokingType == 1){
-                    secondInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingListHtml});
-                }else if(self.smokingType == 2){
-                    secondInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingList2Html});
-                }
-                if(self.hasSocialInsure){ //社保
-                    secondInsuredHtml += self.insuredSocialTpl();
-                }
-                self.ui.secondInsured.find(".insured-property").html(secondInsuredHtml);
+                self.ui.commentTxt.val("");
             }
+            //初始化根据险种列表初始化 被保人、第二被保人、投保人 输入
+            self.resetAllInput();
             if(data.company && data.company.organLogo){
                 self.ui.planInfoCon.css("background",'url("'+(utils.serverConfig.serverUrl+data.company.organLogo)+'") no-repeat right 30px center #fff');
-            }
-            //是否显示投保人
-            if(!self.hasPolicyHolder){
-                self.ui.policyHolder.css("display","none");
-            }else{
-                self.ui.policyHolder.css("display","block");
-                var policyHolderHtml = "";
-                policyHolderHtml += self.policyHolderOldTpl({oldOptions:self.ageRangeOfPolicyHolderHtml});
-                policyHolderHtml += self.policyHolderSexTpl();
-                self.ui.policyHolder.find(".insured-property").html(policyHolderHtml);
             }
             //主险标题
             if(self.mainPlanNum > 1){
@@ -287,6 +221,211 @@ define([
             }
             self.ui.ideaCon.find(".accordion-list").slideUp();//默认收起
         },
+        //添加删除险种后 数据重置
+        resetAllInput:function(){
+            var self = this;
+            self.setRelevantProperty();
+            self.renderInsured();
+            self.renderSecondInsured();
+            self.renderPolicyHolder();
+        },
+        /**
+         * 根据全局属性，渲染被保人输入框
+         * 吸烟类型smokingType,职业hasJob，社保hasSocialInsure
+         * ageRangeOfLifeAssuredHtml 被保人年龄段
+          */
+        renderInsured:function(){
+            var self = this;
+            //如果原始有值，需取出再赋值
+            var insured = {};
+            insured.name = self.ui.firstInsured.find(".insured-name").val();
+            insured.age = self.ui.firstInsured.find(".insured-old").val();
+            insured.gender = self.ui.firstInsured.find(".insured-sex").data("val");
+            insured.jobCateId = self.ui.firstInsured.find(".insured-job").val();//职位
+            insured.socialInsuranceIndi = self.ui.firstInsured.find(".insured-social").data("val");//社保
+            insured.smoking = self.ui.firstInsured.find(".insured-smoking").val();//吸烟
+
+            var firstInsuredHtml = "";
+            firstInsuredHtml += self.insuredNameTpl({nameTxt:insured.name});
+            firstInsuredHtml += self.insuredOldTpl({oldOptions:self.ageRangeOfLifeAssuredHtml});
+            firstInsuredHtml += self.insuredSexTpl();
+            if(self.hasJob){  //职位
+                firstInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
+            }
+            if(self.smokingType == 1){
+                firstInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingListHtml});
+            }else if(self.smokingType == 2){
+                firstInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingList2Html});
+            }
+            if(self.hasSocialInsure){ //社保
+                firstInsuredHtml += self.insuredSocialTpl();
+            }
+            self.ui.firstInsured.find(".insured-property").html(firstInsuredHtml);
+            //如果有年龄值
+            if(insured.age){
+                self.ui.firstInsured.find(".insured-old").val(insured.age);
+                if(!self.ui.firstInsured.find(".insured-old").val() && self.ui.firstInsured.find(".insured-old").get(0)){ //如果原始值不在下拉范围 选第一个
+                    self.ui.firstInsured.find(".insured-old").get(0).selectedIndex = 0;
+                }
+            }
+            //赋值性别
+            if(insured.gender){
+                self.ui.firstInsured.find(".insured-sex").attr("data-val",insured.gender);
+                self.ui.firstInsured.find(".insured-sex .property-radio-item").removeClass("property-radio-item-ck");
+                if(insured.gender == "F"){//女士F
+                    self.ui.firstInsured.find(".insured-sex .property-radio-item:eq(1)").addClass("property-radio-item-ck");
+                }else{ //先生
+                    self.ui.firstInsured.find(".insured-sex .property-radio-item:eq(0)").addClass("property-radio-item-ck");
+                }
+            }
+            //职位
+            if(insured.jobCateId){
+                self.ui.firstInsured.find(".insured-job").val(insured.jobCateId);
+                if(!self.ui.firstInsured.find(".insured-job").val() && self.ui.firstInsured.find(".insured-job").get(0)){
+                     self.ui.firstInsured.find(".insured-job").get(0).selectedIndex = 0;
+                }
+            }
+            //吸烟属性
+            if(insured.smoking){
+                self.ui.firstInsured.find(".insured-smoking").val(insured.smoking);
+                if(!self.ui.firstInsured.find(".insured-smoking").val() && self.ui.firstInsured.find(".insured-smoking").get(0)){
+                    self.ui.firstInsured.find(".insured-smoking").get(0).selectedIndex = 0;
+                }
+            }
+            //社保
+            if(insured.socialInsuranceIndi){
+                self.ui.firstInsured.find(".insured-social").attr("data-val",insured.socialInsuranceIndi);
+                self.ui.firstInsured.find(".insured-social .property-radio-item").removeClass("property-radio-item-ck");
+                if(insured.socialInsuranceIndi == "Y"){//有社保
+                    self.ui.firstInsured.find(".insured-social .property-radio-item:eq(0)").addClass("property-radio-item-ck");
+                }else{ //先生
+                    self.ui.firstInsured.find(".insured-social .property-radio-item:eq(1)").addClass("property-radio-item-ck");
+                }
+            }
+        },
+        /**
+         * 根据全局属性，渲染第二被保人输入框
+         * hasSecInsured是否存在第二被保人
+         * 吸烟类型smokingType,职业hasJob，社保hasSocialInsure
+         * ageRangeSecondOfLifeAssuredHtml 第二被保人年龄段
+         */
+        renderSecondInsured:function(){
+            var self = this;
+            //如果无第二被保人相关，直接隐藏 并清除属性项
+            if(!self.hasSecInsured){
+                self.ui.secondInsured.find(".insured-property").html("");
+                self.ui.secondInsured.css("display","none");
+                return;
+            }
+            self.ui.secondInsured.css("display","block");
+            //第二被保人
+            var secInsured = {};
+            secInsured.name = self.ui.secondInsured.find(".insured-name").val();
+            secInsured.age = self.ui.secondInsured.find(".insured-old").val();
+            secInsured.gender = self.ui.secondInsured.find(".insured-sex").data("val");
+            secInsured.jobCateId = self.ui.secondInsured.find(".insured-job").val();//职位
+            secInsured.socialInsuranceIndi = self.ui.secondInsured.find(".insured-social").data("val");//社保
+            secInsured.smoking = self.ui.secondInsured.find(".insured-smoking").val();//吸烟
+
+            //拼接第二被保人
+            var secondInsuredHtml = "";
+            secondInsuredHtml += self.insuredNameTpl({nameTxt:secInsured.name});
+            secondInsuredHtml += self.insuredOldTpl({oldOptions:self.ageRangeSecondOfLifeAssuredHtml});
+            secondInsuredHtml += self.insuredSexTpl();
+            if(self.hasJob){  //职位
+                secondInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
+            }
+            if(self.smokingType == 1){
+                secondInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingListHtml});
+            }else if(self.smokingType == 2){
+                secondInsuredHtml += self.insuredSmokingTpl2({smokingOptions:self.smokingList2Html});
+            }
+            if(self.hasSocialInsure){ //社保
+                secondInsuredHtml += self.insuredSocialTpl();
+            }
+            self.ui.secondInsured.find(".insured-property").html(secondInsuredHtml);
+            //如果有年龄值
+            if(secInsured.age){
+                self.ui.secondInsured.find(".insured-old").val(secInsured.age);
+                if(!self.ui.secondInsured.find(".insured-old").val() && self.ui.secondInsured.find(".insured-old").get(0)){ //如果原始值不在下拉范围 选第一个
+                    self.ui.secondInsured.find(".insured-old").get(0).selectedIndex = 0;
+                }
+            }
+            //赋值性别
+            if(secInsured.gender){
+                self.ui.secondInsured.find(".insured-sex").attr("data-val",secInsured.gender);
+                self.ui.secondInsured.find(".insured-sex .property-radio-item").removeClass("property-radio-item-ck");
+                if(secInsured.gender == "F"){//女士F
+                    self.ui.secondInsured.find(".insured-sex .property-radio-item:eq(1)").addClass("property-radio-item-ck");
+                }else{ //先生
+                    self.ui.secondInsured.find(".insured-sex .property-radio-item:eq(0)").addClass("property-radio-item-ck");
+                }
+            }
+            //职位
+            if(secInsured.jobCateId){
+                self.ui.secondInsured.find(".insured-job").val(secInsured.jobCateId);
+                if(!self.ui.secondInsured.find(".insured-job").val() && self.ui.secondInsured.find(".insured-job").get(0)){
+                    self.ui.secondInsured.find(".insured-job").get(0).selectedIndex = 0;
+                }
+            }
+            //吸烟属性
+            if(secInsured.smoking){
+                self.ui.secondInsured.find(".insured-smoking").val(secInsured.smoking);
+                if(!self.ui.secondInsured.find(".insured-smoking").val() && self.ui.secondInsured.find(".insured-smoking").get(0)){
+                    self.ui.secondInsured.find(".insured-smoking").get(0).selectedIndex = 0;
+                }
+            }
+            //社保
+            if(secInsured.socialInsuranceIndi){
+                self.ui.secondInsured.find(".insured-social").attr("data-val",secInsured.socialInsuranceIndi);
+                self.ui.secondInsured.find(".insured-social .property-radio-item").removeClass("property-radio-item-ck");
+                if(secInsured.socialInsuranceIndi == "Y"){//有社保
+                    self.ui.secondInsured.find(".insured-social .property-radio-item:eq(0)").addClass("property-radio-item-ck");
+                }else{ //先生
+                    self.ui.secondInsured.find(".insured-social .property-radio-item:eq(1)").addClass("property-radio-item-ck");
+                }
+            }
+        },
+        /**
+         * hasPolicyHolder 是否存在投保人
+         * ageRangeOfPolicyHolderHtml 投保人年龄段
+         */
+        renderPolicyHolder:function(){
+            var self = this;
+            //是否显示投保人
+            if(!self.hasPolicyHolder){
+                self.ui.policyHolder.css("display","none");
+                self.ui.policyHolder.find(".insured-property").html("");
+                return;
+            }
+            var proposer = {};
+            proposer.name = self.ui.sendName.val();
+            proposer.age = self.ui.policyHolder.find(".insured-old").val();
+            proposer.gender = self.ui.policyHolder.find(".insured-sex").data("val");
+
+            self.ui.policyHolder.css("display","block");
+            var policyHolderHtml = "";
+            policyHolderHtml += self.policyHolderOldTpl({oldOptions:self.ageRangeOfPolicyHolderHtml});
+            policyHolderHtml += self.policyHolderSexTpl();
+            self.ui.policyHolder.find(".insured-property").html(policyHolderHtml);
+            //如果有年龄值
+            if(proposer.age){
+                self.ui.policyHolder.find(".insured-old").val(proposer.age);
+                if(!self.ui.policyHolder.find(".insured-old").val() && self.ui.policyHolder.find(".insured-old").get(0)){ //如果原始值不在下拉范围 选第一个
+                    self.ui.policyHolder.find(".insured-old").get(0).selectedIndex = 0;
+                }
+            }
+            //赋值性别
+            if(proposer.gender){
+                self.ui.policyHolder.find(".insured-sex").attr("data-val",proposer.gender);
+                self.ui.policyHolder.find(".insured-sex .property-radio-item").removeClass("property-radio-item-ck");
+                if(proposer.gender == "F"){//女士F
+                    self.ui.policyHolder.find(".insured-sex .property-radio-item:eq(1)").addClass("property-radio-item-ck");
+                }else{ //先生
+                    self.ui.policyHolder.find(".insured-sex .property-radio-item:eq(0)").addClass("property-radio-item-ck");
+                }
+            }
+        },
         //渲染增值服务列表
         renderValueAdded:function(valueadded){
             var self = this;
@@ -309,7 +448,7 @@ define([
             }
         },
         //被保人属性
-        insuredNameTpl: _.template('<div class="insured-property-item"><span>被保人姓名：</span><input type="text" class="property-input insured-name"/></div>'),
+        insuredNameTpl: _.template('<div class="insured-property-item"><span>被保人姓名：</span><input type="text" class="property-input insured-name" value="<%=nameTxt %>"/></div>'),
         insuredOldTpl: _.template('<div class="insured-property-item"> <span>被保人年龄：</span><select class="property-input property-select insured-old"><%=oldOptions %></select></div>'),
         insuredSexTpl: _.template('<div class="insured-property-item"><span>被保人性别：</span><div class="property-radio insured-sex" data-val="M">' +
                             '<div class="property-radio-item property-radio-item-ck" data-val="M"><span class="circle"><span class="circle-ck"></span></span>男</div>'+
@@ -417,6 +556,10 @@ define([
                        var typeName = utils.getAnnuityText(plan.payPeriod[i].periodType,plan.payPeriod[i].periodValue);
                        annuityHtml += '<option data-type="'+plan.payPeriod[i].periodType+'" value="'+plan.payPeriod[i].periodValue+'">'+typeName+'</option>';
                    }
+                   //如果列表只有1个，也不显示，但值需要
+                   if(plan.payPeriod.length == 1 && (plan.payPeriod[0].periodType == "1" || plan.payPeriod[0].periodType == "4" || plan.payPeriod[0].periodType == "5")){
+                       showAnnuity = "style='display:none'";
+                   }
                }
            }
            if(plan.unitFlag == 6) {//保额
@@ -494,9 +637,13 @@ define([
                         var typeName = utils.getAnnuityText(plan.payPeriod[i].periodType,plan.payPeriod[i].periodValue);
                         annuityHtml += '<option data-type="'+plan.payPeriod[i].periodType+'" value="'+plan.payPeriod[i].periodValue+'">'+typeName+'</option>';
                     }
+                    //如果列表只有1个，也不显示，但值需要
+                    if(plan.payPeriod.length == 1 && (plan.payPeriod[0].periodType == "1" || plan.payPeriod[0].periodType == "4" || plan.payPeriod[0].periodType == "5")){
+                        showAnnuity = "style='display:none'";
+                    }
                 }
             }
-            if(plan.unitFlag == 6) {//保额
+            if(plan.unitFlag == 6) { //保额
                 var minAmount = 1, maxAmount = 999999;
                 if(plan.amountLimit){
                     minAmount = plan.amountLimit.minAmount;
@@ -547,7 +694,7 @@ define([
             //根据销售方式 定标题
             var saName = "保险金额";
             var headHtml = ' <tr><th width="20%">险种</th><th width="20%">'+saName+'</th><th width="20%">保障期限</th>' +
-                '<th width="20%">交费期限</th><th width="20%">首保保费</th></tr>';
+                '<th width="20%">交费期限</th><th width="20%">首年保费</th></tr>';
             var tdHtml = "";
             for(var i = 0; i < self.coveragePrems.length; i++){
                 tdHtml += '<tr><td>'+self.coveragePrems[i].productName+'</td> <td>'+utils.formatNumber(self.coveragePrems[i].sa)+'</td> <td>'+
@@ -558,72 +705,84 @@ define([
             tempHtml = self.calcResultTpl({headHtml:headHtml, tdHtml:tdHtml});
             return tempHtml;
         },
-        //设置被保人相关属性 否存在第二被保人、是否与被保人吸烟有关、是否与被保人职业有关、是否与被保人社保有关
-        setRelevantProperty:function(){
+        //根据当前的险种产品列表（包括添加进来的附加险)设置 三类产品（被保人，第二被保人，投保人）年龄段对象
+        setAgeRange:function(){
             var self = this;
-            self.hasPolicyHolder = false;//投保人
-            self.hasSecInsured = false;
-            self.smokingType = 0;//和吸烟无关  1下拉框 2下拉框
-            self.hasJob = false;
-            self.hasSocialInsure = false;
-            self.ageRangeOfLifeAssured = null;//年龄段修改后取至 险种列表
-            self.ageRangeOfPolicyHolder = null;
-            self.ageRangeSecondOfLifeAssured = null;
+            self.ageRangeOfLifeAssured = null;//被保人年龄段   aRange
+            self.ageRangeSecondOfLifeAssured = null;//第二被保人年龄段  bRange
+            self.ageRangeOfPolicyHolder = null;//投保人  cRange
             if(!self.currPlanList || self.currPlanList.length <= 0)
                 return false;
-            var mainPlanNum = 0;
-            //多个a类产品（a被保人对应   b投保人对应   c第二被保人对应）各产品类型存在多个时，取交集年龄区间，无交集下拉为空
-//            var aRange = [], bRange = [], cRange = [];
+            var aRangeArr = [], bRangeArr = [], cRangeArr = [];
             for(var i = 0; i < self.currPlanList.length; i++){
-                if(self.currPlanList[i].insType == 1){
-                    mainPlanNum += 1;
-                    //被保人年龄段是跟着主险走的  //TODO del
-                    if(!self.ageRangeOfLifeAssured || self.ageRangeOfLifeAssured.length <=0) {//有数据后不用再赋值
-                        self.ageRangeOfLifeAssured = self.currPlanList[i].ageRange;
+                var plan = self.currPlanList[i];
+                var rangeStr = JSON.stringify(plan.ageRange);//todo
+                if(plan.pointToSecInsured == "Y"){//第二被保人
+                    if(plan.ageRange) {
+                        bRangeArr.push(JSON.parse(rangeStr));
                     }
-                }
-                if(self.currPlanList[i].pointToPH == "Y"){
-                    self.hasPolicyHolder = true;
-                }
-                if(self.currPlanList[i].pointToSecInsured == "Y")//第二被保人
-                {
-                    self.hasSecInsured = true;
-                }
-                if(self.smokingType == 0) {
-                    self.smokingType = self.currPlanList[i].smokingIndi;
-                }
-                if(self.currPlanList[i].jobIndi == "Y")    //职业
-                {
-                    self.hasJob = true;
-                }
-                if(self.currPlanList[i].socialInsureIndi == "Y") //社保
-                {
-                    self.hasSocialInsure = true;
-                }
-                //投保人、第二被保人  年龄段跟着附加险走
-                if(self.currPlanList[i].insType == 2){
-                    if(self.currPlanList[i].pointToPH == "Y"){
-                        if(!self.ageRangeOfPolicyHolder || self.ageRangeOfPolicyHolder.length <= 0){//有数据后不用再赋值
-                            self.ageRangeOfPolicyHolder = self.currPlanList[i].ageRange;
-                        }
+                }else if(plan.pointToPH == "Y"){//投保人
+                    if(plan.ageRange) {
+                        cRangeArr.push(JSON.parse(rangeStr));
                     }
-                    if(self.currPlanList[i].pointToSecInsured == "Y")//第二被保人
-                    {
-                        if(!self.ageRangeSecondOfLifeAssured || self.ageRangeSecondOfLifeAssured.length <= 0){//有数据后不用再赋值
-                            self.ageRangeSecondOfLifeAssured = self.currPlanList[i].ageRange;
-                        }
+                }else{
+                    if(plan.ageRange) {
+                        aRangeArr.push(JSON.parse(rangeStr));
                     }
                 }
             }
-            //主险个数
-            self.mainPlanNum = mainPlanNum;
-            //设置职位列表HTML、被保人年龄限制列表HTML，投保人年龄限制列表HTML
-            self.occupationListHtml = "";
-            self.ageRangeOfLifeAssuredHtml = "";
-            self.ageRangeOfPolicyHolderHtml = "";
-            self.ageRangeSecondOfLifeAssuredHtml = "";
-            self.smokingListHtml = "";
-            self.smokingList2Html = "";
+            //分别获取交集年龄段对象  注意：此处已将所有单位为天的年龄转成了年，当然，value也重置为0了，计划书显示只需要显示0岁，所以没有什么问题。
+            var aRange = null;
+            if(aRangeArr.length > 0){
+                aRange = aRangeArr[0];
+            }
+            for(var i = 1; i < aRangeArr.length; i++){
+                var temMin = aRangeArr[i].minAge;
+                var temMax = aRangeArr[i].maxAge;
+                //如果单位是“天”，值为0岁
+                if(aRangeArr[i].minUnit == utils.AGE_5)temMin = 0;
+                if(aRangeArr[i].maxUnit == utils.AGE_5)temMax = 0;
+                aRange.minAge = Math.max(aRange.minAge, temMin);
+                aRange.maxAge = Math.min(aRange.maxAge, temMax);
+            }
+            if(aRange && aRange.minAge != aRange.maxAge){
+                self.ageRangeOfLifeAssured = aRange;
+            }
+            var bRange = null;
+            if(bRangeArr.length > 0){
+                bRange = bRangeArr[0];
+            }
+            for(i = 1; i < bRangeArr.length; i++){
+                var temMin = bRangeArr[i].minAge;
+                var temMax = bRangeArr[i].maxAge;
+                //如果单位是“天”，值为0岁
+                if(bRangeArr[i].minUnit == utils.AGE_5)temMin = 0;
+                if(bRangeArr[i].maxUnit == utils.AGE_5)temMax = 0;
+                bRange.minAge = Math.max(bRange.minAge, temMin);
+                bRange.maxAge = Math.min(bRange.maxAge, temMax);
+            }
+            if(bRange && bRange.minAge != bRange.maxAge){
+                self.ageRangeSecondOfLifeAssured = bRange;
+            }
+            var cRange = null;
+            if(cRangeArr.length > 0){
+                cRange = cRangeArr[0];
+            }
+            for(i = 1; i < cRangeArr.length; i++){
+                var temMin = cRangeArr[i].minAge;
+                var temMax = cRangeArr[i].maxAge;
+                //如果单位是“天”，值为0岁
+                if(cRangeArr[i].minUnit == utils.AGE_5)temMin = 0;
+                if(cRangeArr[i].maxUnit == utils.AGE_5)temMax = 0;
+                cRange.minAge = Math.max(cRange.minAge, temMin);
+                cRange.maxAge = Math.min(cRange.maxAge, temMax);
+            }
+            if(cRange && cRange.minAge != cRange.maxAge){
+                self.ageRangeOfPolicyHolder = cRange;
+            }
+            self.ageRangeOfLifeAssuredHtml = "";//被保人
+            self.ageRangeSecondOfLifeAssuredHtml = "";//第二被保人
+            self.ageRangeOfPolicyHolderHtml = "";//投保人
             if(self.ageRangeOfLifeAssured) {
                 var minAge = self.ageRangeOfLifeAssured.minAge;
                 if(self.ageRangeOfLifeAssured.minUnit == utils.AGE_5){
@@ -650,7 +809,7 @@ define([
                     self.ageRangeOfPolicyHolderHtml += '<option value="' + i + '">' + i + '</option>';
                 }
             }
-            if(self.ageRangeSecondOfLifeAssuredHtml) {
+            if(self.ageRangeSecondOfLifeAssured) {
                 var minAge =  self.ageRangeSecondOfLifeAssured.minAge;
                 if(self.ageRangeSecondOfLifeAssured.minUnit == utils.AGE_5){
                     minAge = 0;
@@ -663,6 +822,53 @@ define([
                     self.ageRangeSecondOfLifeAssuredHtml += '<option value="' + i + '">' + i + '</option>';
                 }
             }
+        },
+        /**
+         * 设置全局相关属性 否存在第二被保人、是否与被保人吸烟有关、是否与被保人职业有关、是否与被保人社保有关
+         * 根据险种产品列表 重置被保人年龄段、第二被保人年龄段、投保人年龄段html
+          * @returns {boolean}
+         */
+        setRelevantProperty:function(){
+            var self = this;
+            self.hasPolicyHolder = false;//投保人
+            self.hasSecInsured = false;
+            self.smokingType = 0;//和吸烟无关  1下拉框 2下拉框
+            self.hasJob = false;//是否与被保人职业有关
+            self.hasSocialInsure = false;//是否与被保人社保有关
+            if(!self.currPlanList)
+                self.currPlanList = [];
+            self.setAgeRange(); //根据当前产品列表 重置年龄段对象 并拼接下拉Html
+            var mainPlanNum = 0;
+            //设置当前主险个数，
+            for(var i = 0; i < self.currPlanList.length; i++){
+                if(self.currPlanList[i].insType == 1){
+                    mainPlanNum += 1;
+                }
+                if(self.currPlanList[i].pointToPH == "Y"){
+                    self.hasPolicyHolder = true;
+                }
+                if(self.currPlanList[i].pointToSecInsured == "Y")//第二被保人
+                {
+                    self.hasSecInsured = true;
+                }
+                if(self.smokingType == 0) {
+                    self.smokingType = self.currPlanList[i].smokingIndi;
+                }
+                if(self.currPlanList[i].jobIndi == "Y")    //职业
+                {
+                    self.hasJob = true;
+                }
+                if(self.currPlanList[i].socialInsureIndi == "Y") //社保
+                {
+                    self.hasSocialInsure = true;
+                }
+            }
+            //主险个数
+            self.mainPlanNum = mainPlanNum;
+            //设置职位列表HTML、被保人年龄限制列表HTML，投保人年龄限制列表HTML
+            self.occupationListHtml = "";
+            self.smokingListHtml = "";
+            self.smokingList2Html = "";
             for(i = 0; i < self.occupationList.length;i++){
                 self.occupationListHtml += '<option value="'+self.occupationList[i].id+'">'+self.occupationList[i].name+'</option>';
             }
@@ -676,12 +882,17 @@ define([
         //监听添加附加险
         onAddAdditional:function(obj){
             var self = this;
+            if(!self.currPlanList)
+                self.currPlanList = [];
             var tempHtml = self.getAdditionalPlanInputHtml(obj,1);
             if(tempHtml != "")
             {
                 self.additionalIdArr.push(obj.attachId);
             }
             self.ui.additionalPlanInput.append($(tempHtml));
+            self.currPlanList.push(obj);
+            //添加险种 重置 被保人、第二被保人、投保人
+            self.resetAllInput();
         },
         //点击返回
         clickTopTitleLeftHandler: function(e){
@@ -734,9 +945,8 @@ define([
             e.preventDefault();
             var self = this;
             var target = $(e.target);
-            var valueAdded = self.getValueAddedById(target.data("id"));
-            utils.currValueAdded = valueAdded;
-            app.navigate("in/increment",{replace:true, trigger:true});
+            var valueAddedId = target.data("id") || "null";
+            app.navigate("in/increment/"+valueAddedId,{replace:true, trigger:true});
         },
         getValueAddedById:function(id){
             var self = this;
@@ -986,7 +1196,6 @@ define([
                     isWaiver = true;
                 }
                 if(!isWaiver) {
-                    console.log(rName+",为豁免产品，不验证输入");
                     riderCoverage.sa = $(this).find(".insured-sa").val();
                     var rName = $(this).find(".additional-name-span").html();
                     if (riderCoverage.sa == "") {
@@ -1178,7 +1387,7 @@ define([
                 app.navigate("#in/additional/"+self.currProductId,{replace:true,trigger:true});
             }
         },
-        //点击删除附加险
+        //点击删除附加险/主险
         delAdditionPlanHandler:function(e){
             var self  = this;
             e.stopPropagation();
@@ -1199,6 +1408,7 @@ define([
                         var index = productId ? self.mainPlanIdArr.indexOf(productId) : -1;
                         if (index >= 0) {
                             self.mainPlanIdArr.splice(index, 1);
+                            self.delPlan(productId,1);
                         }
                         parent.slideUp(function () {
                             parent.remove();
@@ -1216,6 +1426,7 @@ define([
                         var index = additionalId ? self.additionalIdArr.indexOf(additionalId) : -1;
                         if (index >= 0) {
                             self.additionalIdArr.splice(index, 1);
+                            self.delPlan(additionalId,2);
                         }
                         parent.slideUp(function () {
                             parent.remove();
@@ -1225,6 +1436,33 @@ define([
                         console.log("取消删除");
                     }
                 });
+            }
+        },
+        /**
+         * 删除险种产品
+         * @param productId
+         * @param type 1主险  2附加险
+         */
+        delPlan:function(productId,type){
+            var self = this;
+            var has = false;
+            for(var i = 0; self.currPlanList.length; i++){
+                var pType = self.currPlanList[i].insType;
+                var pId = self.currPlanList[i].salesProductId;
+                //如何存在attchId 表示为附加险
+                var attachId = self.currPlanList[i].attachId;
+                if(attachId){
+                    pId = attachId;
+                    pType = 2;
+                }
+                if(pId == productId && pType == type){
+                    self.currPlanList.splice(i,1);
+                    has = true;
+                    break;
+                }
+            }
+            if(has){//险种列表有变化 需重置 被保人、第二被保人、投保人
+                self.resetAllInput();
             }
         },
         //点击客户导入

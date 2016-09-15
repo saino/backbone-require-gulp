@@ -46,7 +46,9 @@ define([
             calcResultTable:"#calcResultTable", //计算结果显示容器
             featureImgList:"#featureImgList",  //产品特色容器
             guaranteeList:".guarantee-list",  //保障概览容器
+            valueAddedCon:".plan-added-service",//增值服务区域
             valueAddedList:".added-service-list",  //增值服务
+            planMessage:".plan-message", //留言区域
             commentCon:".plan-message-txt",      //留言
             btnClause:".btn-clause",     //条款按钮
             liabilityList:".plan-obligation-list",//保险责任
@@ -87,32 +89,8 @@ define([
             utils.productInfoList.length = 0;
             self.insuredAge = 0;
             self.ui.yearTitle.html("");
-//      TODO del
-//            self.isULProduct = "Y";
-//            if(self.isULProduct == "Y"){
-//                self.ui.planLevel.css("display","block");
-//                self.currLevel = "1";
-//            }else{
-//                self.ui.planLevel.css("display","none");
-//                self.currLevel = "2";
-//            }
-//            var testMap = {"1":{
-//                "1":[{type:1,value:10000},{type:2,value:20000},{type:3,value:3000}],
-//                "2":[{type:11,value:40000},{type:12,value:50000},{type:13,value:6000}],
-//                "3":[{type:21,value:70000},{type:22,value:80000},{type:23,value:9000}],
-//                "4":[{type:31,value:10000},{type:32,value:20000},{type:33,value:3000}]
-//            },"2":{
-//                "1":[{type:41,value:30000},{type:42,value:20000},{type:43,value:1000}],
-//                "2":[{type:51,value:10000},{type:52,value:20000},{type:53,value:3000}],
-//                "3":[{type:54,value:10000},{type:55,value:20000},{type:56,value:3000}],
-//                "4":[{type:57,value:10000},{type:58,value:20000},{type:59,value:3000}]
-//            },"3":{
-//                "1":[{type:1,value:10000},{type:2,value:20000},{type:3,value:3000}],
-//                "2":[{type:1,value:10000},{type:2,value:20000},{type:3,value:3000}],
-//                "3":[{type:1,value:10000},{type:2,value:20000},{type:3,value:3000}],
-//                "4":[{type:1,value:10000},{type:2,value:20000},{type:3,value:3000}]
-//            }};
-//            self.initInterestDemonstration(testMap);//self.planBook.illusMap TODO
+            self.ui.valueAddedCon.css("display","none");
+            self.ui.planMessage.css("display","none");
             var planFromLocalStory = utils.getLocalStorageValue("planObject",planId);
             if(planFromLocalStory){
                 console.log("*********保障计划 缓存数据**********");
@@ -150,18 +128,20 @@ define([
             //保障概览
             self.initRights(self.planBook.rights);
             //增值服务
-            self.initValueAdded(self.planBook.salesValueAdded);
+            self.initValueAdded(self.planBook.salesValueAdded,self.planBook.showValueAdded);
             if(plan.showAdvice=="Y" && plan.advice != "")
             {
                 self.ui.commentCon.html(plan.advice);
+                self.ui.planMessage.css("display","block");
             }else{
                 self.ui.commentCon.html("");
+                self.ui.planMessage.css("display","none");
             }
             //初始化责任列表
             self.initLiability(self.planBook.planLiability);
             //初始化利益演示
 //                self.ui.planDemo.css("display","none");
-            self.isULProduct = "Y";
+            self.isULProduct = self.planBook.isULProduct;
             if(self.isULProduct == "Y"){
                 self.ui.planLevel.css("display","block");
                 self.currLevel = "1";
@@ -264,13 +244,19 @@ define([
             self.ui.guaranteeList.html($(tempHtml));
         },
         //增值服务
-        initValueAdded:function(valueAddedList){
+        initValueAdded:function(valueAddedList,showValueAdded){
             var tempHtml = "", self = this;
             if(valueAddedList && valueAddedList.length > 0){
                 for(var i = 0; i < valueAddedList.length; i++){
                     tempHtml += '<div class="added-service-item"><div class="added-service-item-txt">'+valueAddedList[i].valueAddedName+'</div>' +
                         '<div class="added-service-item-button" data-id="'+valueAddedList[i].valueAddedId+'">查看详情</div></div>';
                 }
+                if(showValueAdded == "Y")
+                    self.ui.valueAddedCon.css("display","block");
+                else
+                    self.ui.valueAddedCon.css("display","none");
+            }else{
+                self.ui.valueAddedCon.css("display","none");
             }
             self.ui.valueAddedList.html($(tempHtml));
         },
@@ -446,11 +432,10 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var target = $(e.target),self = this;
-            var valueAdded = self.getValueAddedById(target.data("id"));
-            utils.currValueAdded = valueAdded;
-            app.navigate("in/increment",{replace:true, trigger:true});
+            var valueAddedId = target.data("id") || "null";
+            app.navigate("in/increment/"+valueAddedId,{replace:true, trigger:true});
         },
-        //根据增值服务ID获取对象
+        //根据增值服务ID获取对象 暂不用
         getValueAddedById:function(id){
             var self = this;
             if(!self.planBook.salesValueAdded || self.planBook.salesValueAdded.length<=0)
