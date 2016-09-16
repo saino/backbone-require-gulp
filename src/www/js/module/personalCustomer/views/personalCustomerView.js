@@ -49,6 +49,7 @@ define([
                 customerObj.gender = $target.attr("data-gender");
                 customerObj.age = $target.attr("data-age");
                 customerObj.optionType = self.optionType;
+                console.log(customerObj);
                 app.triggerMethod("common:import:user", customerObj);
                 app.goBack();
             }
