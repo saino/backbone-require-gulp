@@ -31,34 +31,19 @@ define([
             this.$el.html(this.template(this.model.attributes));
             return this;
         },
-        onRender:function(){
-            // if(device.ios()){
-            //     self.ui.topCon.css("padding-top",utils.toolHeight+"px");
-            //     self.ui.diseaseContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
-            // }
-        },
         pageIn:function(){
-            if(utils.currValueAdded != null) {
-                this.model.setDetail(utils.currValueAdded?utils.currValueAdded.valueAddedDesc:"");
-            }
+//            if(utils.currValueAdded != null) {
+//                this.model.setDetail(utils.currValueAdded?utils.currValueAdded.valueAddedDesc:"");
+//            }
+            var self = this;
+            var valueAddedId = self.getOption("valueAddedId");
+            self.model.getIncrementInfo(valueAddedId);
         },
         //点击返回
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
             app.goBack();
-        },
-        //点击分享
-        _clickShareHandler:function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            alert("点击分享");
-        },
-        //点击收藏
-        _clickCollectHandler:function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            alert("点击收藏");
         },
         close:function(){
 

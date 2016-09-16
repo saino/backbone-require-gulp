@@ -16,8 +16,8 @@ define([
             opt.libId = libId;
             app.page.show(DiseaseView, opt);
         },
-        increment: function(){      //增值服务详情
-            app.page.show(IncrementView);
+        increment: function(valueAddedId){      //增值服务详情
+            app.page.show(IncrementView,{valueAddedId:valueAddedId});
         },
         companyIntro:function(id){    //寿险-公司简介
             var opt = {};

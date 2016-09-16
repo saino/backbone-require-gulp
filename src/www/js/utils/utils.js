@@ -10,8 +10,8 @@
     // utils.userObj = {id:"1"};
     utils.userObj = {id:"mO9Ck8aUljOXBglrKYPu/1gd7T4nTzEFxN0+GruRM9JMCq8a8qRyTaWs7Sh2FpFemRJK6aVGIN7SOThIPHmwbamJKNrEMOsjBQloOj54UxDHBXYmpBSazn0lYxr1LcaTWtPGUGwP2pOXUwo79/4d6IuAy/CEUBIAEufB8NRO2xMxCtW4EiZxxF6VSzigsCXWOWSUcJbNct1igGjl4N/RfwULsNptX/MkfVR+QnppvTwbaU+V9JJ9TisLic14zAAxYoMg8V4ySrwAEtG6WjEoz4Ndm/1wOvgrjtrxwW3KVdGtNWs9ph85f0ejjWN5sAX6/lecd27hhDW60aOGPOhJYg=="};
     utils.serverConfig = {
-        // serverUrl: "http://210.13.77.75:8080"       //开发
-        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
+        serverUrl: "http://210.13.77.75:8080"       //开发
+//        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
         // serverUrl: "http://120.55.176.131:8080"  //外网测试环境
     };
 
@@ -69,9 +69,9 @@
     //获取年金领取时间 periodType=2 value年后领    periodType=3时 value岁
     utils.getAnnuityText = function(periodType,value){
         var str = "";
-        if(periodType == 2){
+        if(periodType == 3){
             str = value+"年后领";
-        }else if(periodType == 3){
+        }else if(periodType == 2){
             str = value+"岁";
         }
         return str;

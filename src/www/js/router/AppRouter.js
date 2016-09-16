@@ -20,7 +20,7 @@ define([
             "in/additional/:planId":"additional",   //附加险列表
             "in/additional/:planId/:list":"additional",   //附加险列表
             "in/disease/:packageId/:productId/:libId":"disease",   //病种详情
-            "in/increment":"increment", //增值服务详情
+            "in/increment/:valueAddedId":"increment", //增值服务详情
             "in/clause/:id":"clause",   //条款详情
             "in/clauseList":"clauseList",   //条款列表
             "in/companyIntro/:id":"companyIntro",   //寿险 公司简介

@@ -45,11 +45,42 @@ define([
                 this.set({"btnsHtml":''});
             }            
         },
-
+        /**
+         * 增值服务详情
+         * @param valueAddedId
+         * @param cb_err
+         * add by guYY 2016.9.14 15:13
+         */
+        getIncrementInfo:function(valueAddedId){
+            var self = this;
+            var opt = {};
+            opt.url = "/ls/services/dt/planService/getSalesValueAdded";
+            opt.type = "POST";
+            var data = {};
+            data.valueAddedId = valueAddedId;
+            opt.data = data;
+            opt.success = function(result){
+                if(result.status == 0){
+                    var url = "";
+                    if(result.salesValueAdded){
+                        url = result.salesValueAdded.valueAddedDescPic;
+                    }
+                    self.setDetail('<img style="width:100%;" src="'+utils.serverConfig.serverUrl+url+'"/>');
+                }else{
+                    self.setDetail('<p class="no-data-p2">增值服务查询失败</p>');
+                    console.log("增值服务加载失败valueAddedId="+valueAddedId);
+                }
+            };
+            opt.error = function(err){
+                self.setDetail('<p class="no-data-p2">增值服务查询失败</p>');
+                console.log("增值服务加载失败valueAddedId="+valueAddedId);
+            };
+            utils.requestData(opt);
+        },
         /**
          * 获取某一产品的病种详情
          */
-        getDeseaseInfo : function(packageId,productId,libId,cb_err){
+        getDeseaseInfo : function(packageId,productId,libId){
             var self = this;
             var opt = {};
             opt.url = "/ls/services/dt/planService/getLiabDiseaseInfo";
