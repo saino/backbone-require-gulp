@@ -23,10 +23,11 @@ define([
             self.ui.pageswitchContent.css("height","100%");
             self.ui.pageswitchContent.css("width",(self.ui.pageswitchContent.height()*0.6349)+"px");
             planModel.getInsuranceConcept(planId,function(data){
+                console.log("***************保险理念数据**************");
+                console.log(data);
                 self.url = data.spritDescPic;
-                console.log(self.url);
             },function(err){
-
+                console.log("保险理念获取失败")
             });
             var pw = new pageSwitch(self.ui.pageswitchContent[0], {
                 duration:600,           //int 页面过渡时间

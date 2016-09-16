@@ -45,7 +45,7 @@ define([
             self.ui.serverCompanyCon.removeClass("content-ck");
             self.ui.underwriterCompanyCon.removeClass("content-ck");
             if(index == 0){
-                companyDesc = '<img class="big-img" src="'+(utils.serverConfig.serverUrl+self.companyInfoData.daTongLogo)+'"/>';
+                companyDesc = '<img class="big-img"  src="'+(utils.serverConfig.serverUrl+self.companyInfoData.daTongLogo)+'"/>';
                 self.ui.serverCompanyCon.addClass("content-ck");
                 self.ui.serverCompanyCon.html($(companyDesc));
             }else{

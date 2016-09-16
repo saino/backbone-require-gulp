@@ -735,6 +735,14 @@ define([
             var aRange = null;
             if(aRangeArr.length > 0){
                 aRange = aRangeArr[0];
+                if(aRange.minUnit == utils.AGE_5) {
+                    aRange.minAge = 0;
+                    aRange.minUnit = utils.AGE_1;
+                }
+                if(aRange.maxUnit == utils.AGE_5)  {
+                    aRange.maxAge = 0;
+                    aRange.maxUnit = utils.AGE_1;
+                }
             }
             for(var i = 1; i < aRangeArr.length; i++){
                 var temMin = aRangeArr[i].minAge;
@@ -751,6 +759,14 @@ define([
             var bRange = null;
             if(bRangeArr.length > 0){
                 bRange = bRangeArr[0];
+                if(bRange.minUnit == utils.AGE_5) {
+                    bRange.minAge = 0;
+                    bRange.minUnit = utils.AGE_1;
+                }
+                if(bRange.maxUnit == utils.AGE_5)  {
+                    bRange.maxAge = 0;
+                    bRange.maxUnit = utils.AGE_1;
+                }
             }
             for(i = 1; i < bRangeArr.length; i++){
                 var temMin = bRangeArr[i].minAge;
@@ -767,6 +783,14 @@ define([
             var cRange = null;
             if(cRangeArr.length > 0){
                 cRange = cRangeArr[0];
+                if(cRange.minUnit == utils.AGE_5) {
+                    cRange.minAge = 0;
+                    cRange.minUnit = utils.AGE_1;
+                }
+                if(cRange.maxUnit == utils.AGE_5)  {
+                    cRange.maxAge = 0;
+                    cRange.maxUnit = utils.AGE_1;
+                }
             }
             for(i = 1; i < cRangeArr.length; i++){
                 var temMin = cRangeArr[i].minAge;
