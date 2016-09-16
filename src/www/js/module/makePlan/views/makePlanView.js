@@ -1241,17 +1241,11 @@ define([
 //            self.onImportUser();
         },
         //监听客户导入
-        onImportUser:function(obj){
+        onImportUser:function(obj){ 
             var self = this;    //TODO 导入客户接通测
-            if(obj.gender == "女"){
-                obj.self = "F";
-            }
-            if(obj.gender == "男"){
-                obj.self = "M";
-            }
             //依产品定义 客户导入只用名称 性别，不导入年龄
             var target = self.ui.secondInsured;
-            if(obj.type == 1) {
+            if(obj.optionType == 1) {
                 target = self.ui.firstInsured;
             }
             target.find(".insured-name").val(obj.name);
@@ -1259,11 +1253,11 @@ define([
 //            if(!target.find(".insured-old").val()){
 //                MsgBox.alert("温馨提示：导入客户不在被保人年龄范围内");
 //            }
-            if(target.find(".insured-sex").data("val") != obj.sex) {
-                target.find(".insured-sex").data("val", obj.sex);
+            if(target.find(".insured-sex").data("val") != obj.gender) {
+                target.find(".insured-sex").data("val", obj.gender);
                 target.find(".insured-sex .property-radio-item").each(function(){
                     $(this).removeClass("property-radio-item-ck");
-                    if($(this).data("val") == obj.sex){
+                    if($(this).data("val") == obj.gender){
                         $(this).addClass("property-radio-item-ck");
                     }
                 });
