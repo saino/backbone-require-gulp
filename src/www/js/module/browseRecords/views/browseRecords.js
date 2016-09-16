@@ -3,8 +3,9 @@ define([
     'marionette',
     'text!module/browseRecords/templates/browseRecords.html',
     'msgbox',
-    'module/browseRecords/model/browseRecords'
-], function(BaseView, mn, tpl, MsgBox, browseRecordsModel) {
+    'module/browseRecords/model/browseRecords',
+    'common/views/circle'
+], function(BaseView, mn, tpl, MsgBox, browseRecordsModel, loadingCircle) {
     return BaseView.extend({
         id: "browseRecordsPage",
         template : _.template(tpl),
@@ -46,6 +47,7 @@ define([
                             "encryptedUserData": utils.userObj.id,
                             "packageId": packageId,
                         };
+                        LoadingCircle && LoadingCircle.start();
                         browseRecordsModel.clearBrowseHistory(options, function(data){
                             if(data.status == "0"){
                                 var pparent = parent.parent();
@@ -59,8 +61,10 @@ define([
                                 MsgBox.alert("删除失败");
                                 console.log("删除失败");
                             }
+                            LoadingCircle && LoadingCircle.end();
                         }, function(error){
                             MsgBox.alert("删除失败");
+                            LoadingCircle && LoadingCircle.end();
                             console.log("删除失败");
                         });
                   
@@ -82,6 +86,7 @@ define([
                     var options = {
                         "encryptedUserData": utils.userObj.id,
                     };
+                    LoadingCircle && LoadingCircle.start();
                     browseRecordsModel.clearBrowseHistory(options, function(data){
                         console.log(data);
                         if(data.status == "0"){
@@ -90,8 +95,10 @@ define([
                             MsgBox.alert("删除失败");
                             // console.log("删除失败",data);
                         }
+                        LoadingCircle && LoadingCircle.end();
                     }, function(error){
                         MsgBox.alert("删除失败");
+                        LoadingCircle && LoadingCircle.end();
                         console.log("删除失败",error);
                     });
                 }
@@ -120,6 +127,7 @@ define([
             var options = {
                 "encryptedUserData": utils.userObj.id
             }
+            LoadingCircle && LoadingCircle.start();
             browseRecordsModel.getProductBrowseHistory(options, function(data){
                 console.log(data);
                 if(data.status == "0"){
@@ -174,6 +182,7 @@ define([
                         insuranceProductCardHtml = '<div id="browse-records-noting">暂无浏览记录</div>';
                     }
                     self.ui.browseRecordsContent.html(insuranceProductCardHtml);
+                    LoadingCircle && LoadingCircle.end();
                 } else{
                     var insuranceProductCardHtml = '<div id="browse-records-noting">暂无浏览记录</div>';
                     self.ui.browseRecordsContent.html(insuranceProductCardHtml);
@@ -181,6 +190,7 @@ define([
                     setTimeout(function(){
                         MsgBox.alert("数据获取失败");
                     }, 350);
+                    LoadingCircle && LoadingCircle.end();
                 }
             }, function(error){
                 var insuranceProductCardHtml = '<div id="browse-records-noting">暂无浏览记录</div>';
@@ -189,6 +199,7 @@ define([
                 setTimeout(function(){
                         MsgBox.alert("数据获取失败");
                 }, 350);
+                LoadingCircle && LoadingCircle.end();
             });
         },
 

@@ -6,8 +6,9 @@ define([
     'common/base/base_view',
     'text!module/search/templates/search.html',
     'module/search/model/searchModel',
-    'msgbox'
-],function(BaseView,searchTpl, searchModel, MsgBox){
+    'msgbox',
+    'common/views/circle'
+],function(BaseView,searchTpl, searchModel, MsgBox, loadingCircle){
     var HistoryTpl = '<div class="history-item">' +
                             '<div class="history-item-name">{0}</div>' +
                              '<img class="history-item-del" src="images/delete2.png" alt="">' +
@@ -45,6 +46,7 @@ define([
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
                 self.ui.historyContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
             }
+            LoadingCircle && LoadingCircle.start();
             searchModel.getSearchHistoryAndHotKeywords(function(data){
                 console.log(data)
                 if(data.status == "0"){
@@ -56,10 +58,12 @@ define([
                         MsgBox.alert("数据获取失败");
                     }, 350);
                 }
+                LoadingCircle && LoadingCircle.end();
             }, function(){
                 setTimeout(function(){
                         MsgBox.alert("数据获取失败");
                 }, 350);
+                LoadingCircle && LoadingCircle.end();
             })
         },
 
@@ -172,6 +176,7 @@ define([
             var searchWords = target.parent().find(".history-item-name").html();
             if(searchWords){
                 console.log(searchWords);
+                LoadingCircle && LoadingCircle.start();
                 searchModel.clearSearchHistory(searchWords, function(data){
                     console.log(data);
                     if(data.status == "0"){
@@ -183,8 +188,10 @@ define([
                     }else{
                         Msgbox.alert("删除失败");
                     }
+                    LoadingCircle && LoadingCircle.end();
                 }, function(){
                     Msgbox.alert("删除失败");
+                    LoadingCircle && LoadingCircle.end();
                 });
             }
          },
@@ -197,6 +204,7 @@ define([
             e.preventDefault();
 
             var self = this;
+            LoadingCircle && LoadingCircle.start();
             searchModel.clearSearchHistory("", function(data){
                 if(data.status == "0"){
                     self.ui.historyList.html("");
@@ -204,8 +212,10 @@ define([
                 }else{
                     Msgbox.alert("删除失败");
                 }
+                LoadingCircle && LoadingCircle.end();
             }, function(){
-                    Msgbox.alert("删除失败");
+                Msgbox.alert("删除失败");
+                LoadingCircle && LoadingCircle.end();
             });
         },
 

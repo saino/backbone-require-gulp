@@ -3,9 +3,9 @@ define([
     'marionette',
     'text!module/lifeInsurance/templates/lifeInsurance.html',
     'msgbox',
-    'module/lifeInsurance/model/lifeInsurance'
-    // 'module/myCustomer/model/myCustomer'
-], function(BaseView, mn, tpl, MsgBox, lifeInsuranceModel, myCustomerModel) {
+    'module/lifeInsurance/model/lifeInsurance',
+    'common/views/circle'
+], function(BaseView, mn, tpl, MsgBox, lifeInsuranceModel, loadingCircle) {
     return BaseView.extend({
         id: "lifeInsurancePage",
         template: _.template(tpl),
@@ -291,6 +291,7 @@ define([
         loadData: function(){
             var self = this;
             console.log(utils.lifeInsuranceOptions);
+            LoadingCircle && LoadingCircle.start();
             lifeInsuranceModel.getLifeInsuranceCard(utils.lifeInsuranceOptions, function(data){
                 console.log(data);
                 var lifeInsuranceContentHtml = "";
@@ -445,17 +446,20 @@ define([
                     }, 350);
                     console.log("数据返回错误", data.errorMessages);
                 }
+                LoadingCircle && LoadingCircle.end();
             }, function(error){
                 lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
                 self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
                 setTimeout(function(){
                     MsgBox.alert("数据获取失败");
                 }, 350);
+                LoadingCircle && LoadingCircle.end();
                 console.log("数据查询失败", error);
             });
         },
 
         show: function(){
+            // LoadingCircle && LoadingCircle.start();
             var self = this;
             if(device.ios()){
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");

@@ -7,8 +7,9 @@ define([
     'text!module/productDetails/templates/productDetails.html',
     'module/productDetails/model/productDetailsModel',
     "msgbox",
-    'module/personalCollect/model/personalCollectModel'
-],function(BaseView, Tpl, productDetailsModel, MsgBox, personalCollectModel){
+    'module/personalCollect/model/personalCollectModel',
+    'common/views/circle'
+],function(BaseView, Tpl, productDetailsModel, MsgBox, personalCollectModel, loadingCircle){
     var ProductDetailsView = BaseView.extend({
         template: _.template(Tpl),
         id:"product-details-container",
@@ -90,11 +91,13 @@ define([
                     "encryptedUserData": utils.userObj.id,
                     "salesPackageId": self.productId
                 };
+            LoadingCircle && LoadingCircle.start();
             productDetailsModel.getProductInfo(options, self._initView, function(err){
                 console.log(err);
                 setTimeout(function(){
                     MsgBox.alert("数据获取失败");
                 }, 350);
+                LoadingCircle && LoadingCircle.end();
             });
 
 
@@ -152,6 +155,7 @@ define([
             //附加险
             var attachProductList = data.attachProductList;
             self.initSubjoinView(attachProductList);
+            LoadingCircle && LoadingCircle.end();
         },
         /**
          * 初始化投保信息
@@ -443,7 +447,7 @@ define([
                 "packageId": parseInt(self.productId)
             }
             if($target.hasClass("hasCollection")){
-
+                LoadingCircle && LoadingCircle.start();
                 personalCollectModel.deleteCollectProduct(options, function(data){
                     console.log(data);
                     if(data.status == "0"){
@@ -451,14 +455,17 @@ define([
                     }else{
                         MsgBox.alert("取消收藏失败");
                     }
+                    LoadingCircle && LoadingCircle.end();
                 }, function(error){
                     MsgBox.alert("取消收藏失败");
+                    LoadingCircle && LoadingCircle.end();
                 });
 
                 return;
             }
 
             utils.toLogin();
+            LoadingCircle && LoadingCircle.start();
             productDetailsModel.collectProduct(options, function(data){
                 console.log("success", data);
                 if(data.status == "0"){
@@ -466,9 +473,11 @@ define([
                 }else{
                     MsgBox.alert("收藏失败");
                 }
+                LoadingCircle && LoadingCircle.end();
             }, function(error){
                 console.log(error);
                 MsgBox.alert("收藏失败");
+                LoadingCircle && LoadingCircle.end();
             });
             // MsgBox.alert("点击了收藏保险");
         },

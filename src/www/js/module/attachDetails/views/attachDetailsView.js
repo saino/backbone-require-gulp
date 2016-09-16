@@ -6,8 +6,9 @@ define([
     'common/base/base_view',
     'text!module/attachDetails/templates/attachDetails.html',
     'module/attachDetails/model/attachDetailsModel',
-    "msgbox"
-],function(BaseView, Tpl, attachDetailsModel, MsgBox){
+    "msgbox",
+    'common/views/circle'
+],function(BaseView, Tpl, attachDetailsModel, MsgBox, loadingCircle){
     var pullTemp = '<div class="attach-pull-item">'+
         '<div class="attach-item-title">'+
         '<span>{liabName}</span>'+
@@ -65,6 +66,7 @@ define([
             self.salesProductId = self.getOption("salesProductId");     //销售产品ID
 
             //TODO 需要真实的接口和数据
+            LoadingCircle && LoadingCircle.start();
             attachDetailsModel.getRiderInfo(self.packageId, self.productId, self.salesProductId, function(data){
                 if(data.status == "0"){
                     console.log(data);
@@ -74,11 +76,13 @@ define([
                         MsgBox.alert("数据获取失败");
                     }, 350);
                 }
+                LoadingCircle && LoadingCircle.end();
             }, function(err){
                 setTimeout(function(){
                         MsgBox.alert("数据获取失败");
                 }, 350);
                 console.log(err);
+                LoadingCircle && LoadingCircle.end();
             });
         },
         initData : function(data){

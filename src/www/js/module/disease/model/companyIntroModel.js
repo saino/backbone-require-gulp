@@ -4,8 +4,9 @@
  */
 define([
     'backbone',
-    'msgbox'
-],function(backbone, MsgBox){
+    'msgbox',
+    'common/views/circle'
+],function(backbone, MsgBox, loadingCircle){
     var companyIntroModel = Backbone.Model.extend({
         constructor:function(){
             Backbone.Model.apply(this,arguments);
@@ -53,6 +54,7 @@ define([
         },
 
         getCompanyInfo : function(organId){
+            LoadingCircle && LoadingCircle.start();
             var self = this;
             var opt = {};
             opt.url = "/ls/services/dt/productService/getCompanyInfo";
@@ -72,11 +74,13 @@ define([
                         MsgBox.alert("数据获取失败");
                     }, 350);
                 }
+                LoadingCircle && LoadingCircle.end();
             };
             opt.error = function(err){
                 setTimeout(function(){
                     MsgBox.alert("数据获取失败");
                 }, 350);
+                LoadingCircle && LoadingCircle.end();
             };
             utils.requestData(opt);
         }

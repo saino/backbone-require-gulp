@@ -3,8 +3,9 @@ define([
     'marionette',
     'text!module/detailsDescription/templates/detailsDescription.html',
     'msgbox',
-    'module/detailsDescription/model/detailsDescriptionModel'
-], function(BaseView, mn, tpl, MsgBox, detailsDescriptionModel) {
+    'module/detailsDescription/model/detailsDescriptionModel',
+    'common/views/circle'
+], function(BaseView, mn, tpl, MsgBox, detailsDescriptionModel, loadingCircle) {
     return BaseView.extend({
         id: "detailsDescriptionPage",
         template: _.template(tpl),
@@ -69,6 +70,7 @@ define([
             var productId = parseInt(self.getOption("detailsDescriptionId"));
             var organId = parseInt(self.getOption("organId"));
             self.ui.detailsDescriptionName1.html(utils.productName); 
+            LoadingCircle && LoadingCircle.start();
             detailsDescriptionModel.getRuleInfo(productId, organId, function(data){
                 console.log(data);
                 if(data.status == "0"){
@@ -79,10 +81,12 @@ define([
                         MsgBox.alert("数据获取失败");
                     }, 350);
                 }
+                LoadingCircle && LoadingCircle.end();
             }, function(){
                 setTimeout(function(){
                     MsgBox.alert("数据获取失败");
                 }, 350);
+                LoadingCircle && LoadingCircle.end();
             });
         },
 

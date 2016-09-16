@@ -6,8 +6,9 @@ define([
     'common/base/base_view',
     'text!module/search/templates/advanceQuery.html',
     'module/search/model/searchModel',
-    'msgbox'
-],function(BaseView, queryTpl, searchModel, MsgBox){
+    'msgbox',
+    'common/views/circle'
+],function(BaseView, queryTpl, searchModel, MsgBox, loadingCircle){
     var AdvanceQueryView = BaseView.extend({
         id:"advance-query-container",
         template: _.template(queryTpl),
@@ -34,7 +35,7 @@ define([
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
                 self.ui.advanceQueryContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
             }
-
+            LoadingCircle && LoadingCircle.start();
             searchModel.getAdvancedFilters(function(data){
                 console.log(data);
                 if(data.status == "0"){
@@ -46,10 +47,12 @@ define([
                         MsgBox.alert("数据获取失败");
                     }, 350);
                 }
+                LoadingCircle && LoadingCircle.end();
             }, function(){
                 setTimeout(function(){
                         MsgBox.alert("数据获取失败");
                 }, 350);
+                LoadingCircle && LoadingCircle.end();
             })
         },
 

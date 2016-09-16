@@ -6,8 +6,9 @@ define([
     'common/base/base_view',
     'text!module/clause/templates/clause.html',
     'module/clause/model/clauseModel',
-    'msgbox'
-],function(BaseView, ClauseTpl, clauseModel, MsgBox){
+    'msgbox',
+    'common/views/circle'
+],function(BaseView, ClauseTpl, clauseModel, MsgBox, loadingCircle){
     var ClauseView = BaseView.extend({
         template: _.template(ClauseTpl),
         id:"clause-container",
@@ -71,6 +72,7 @@ define([
             }
 
             var productId = self.getOption("productId");
+            LoadingCircle && LoadingCircle.start();
             clauseModel.getTermInfo(productId, function(data){
                 console.log(data);
                 if(data.status == "0"){
@@ -81,12 +83,14 @@ define([
                     }, 350);
                     
                 }
+                LoadingCircle && LoadingCircle.end();
                 
             }, function(){
                 setTimeout(function(){
                         MsgBox.alert("数据获取失败");
                     }, 350);
                 self.initData({});
+                LoadingCircle && LoadingCircle.end();
             })
         },
 
