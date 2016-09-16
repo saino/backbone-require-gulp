@@ -9,8 +9,9 @@ define([
     'text!module/plan/templates/planLiability.html',
     'text!module/plan/templates/planLiabilityItem.html',
     'text!module/plan/templates/planLiabilityItemItem.html',
+    'common/views/circle',
     'msgbox'
-],function(BaseView, planModel, tpl,planLiabilityTpl,planLiabilityItemTpl,planLiabilityItemItemTpl,MsgBox){
+],function(BaseView, planModel, tpl,planLiabilityTpl,planLiabilityItemTpl,planLiabilityItemItemTpl,loadingCircle,MsgBox){
     var planBookView = BaseView.extend({
         id:"plan-book-container",
         template: _.template(tpl),
@@ -97,12 +98,15 @@ define([
                 console.log(planFromLocalStory);
                 self.renderData(planFromLocalStory);
             }else {
+                LoadingCircle && LoadingCircle.start();
                 planModel.getPlanInfo(planId, function (data) {
+                    LoadingCircle && LoadingCircle.end();
                     console.log("*********保障计划 返回数据**********");
                     console.log(data);
                     utils.addLocalStorageObject("planObject",planId,data);
                     self.renderData(data);
                 }, function (e) {
+                    LoadingCircle && LoadingCircle.end();
                     MsgBox.alert("获取计划书信息失败");
                 })
             }

@@ -6,8 +6,9 @@ define([
     'common/base/base_view',
     'text!module/additional/templates/additional.html',
     'module/additional/model/additionalModel',
+    'common/views/circle',
     'msgbox'
-],function(BaseView, AdditionalTpl, additionalModel,MsgBox){
+],function(BaseView, AdditionalTpl, additionalModel,loadingCircle,MsgBox){
     var AdditionalView = BaseView.extend({
         template: _.template(AdditionalTpl),
         id:"additional-container",
@@ -34,12 +35,15 @@ define([
             self.additionalList = [];
             self.currProductId = 0;
             self.currProductId = self.getOption("productId");
-            self.addedList = self.getOption("list") || []
+            self.addedList = self.getOption("list") || [];
+            LoadingCircle && LoadingCircle.start();
             additionalModel.getRiders(self.currProductId,self.addedList, function(data){
+                LoadingCircle && LoadingCircle.end();
                 self.initData(data);
                 console.log("*************附加险列表*************currProductId="+self.currProductId+",addedList="+self.addedList);
                 console.log(data);
             }, function(e){
+                LoadingCircle && LoadingCircle.end();
                 MsgBox.alert("附加险列表获取失败");
             })
         },

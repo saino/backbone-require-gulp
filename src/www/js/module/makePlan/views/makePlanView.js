@@ -17,8 +17,9 @@ define([
     'text!module/makePlan/templates/calculationResult.html',
     'module/plan/model/planModel',
     'marionette',
+    'common/views/circle',
     'msgbox'
-],function(BaseView, tpl,unitFlag1Tpl,unitFlag2Tpl,unitFlag3Tpl,unitFlag4Tpl,unitFlag5Tpl,unitFlag6Tpl,additionalUnitFlag1Tpl,additionalUnitFlag2Tpl,additionalUnitFlag3Tpl,additionalUnitFlag4Tpl,additionalUnitFlag5Tpl,additionalUnitFlag6Tpl ,calcResultTpl,planModel, mn,MsgBox) {
+],function(BaseView, tpl,unitFlag1Tpl,unitFlag2Tpl,unitFlag3Tpl,unitFlag4Tpl,unitFlag5Tpl,unitFlag6Tpl,additionalUnitFlag1Tpl,additionalUnitFlag2Tpl,additionalUnitFlag3Tpl,additionalUnitFlag4Tpl,additionalUnitFlag5Tpl,additionalUnitFlag6Tpl ,calcResultTpl,planModel, mn,loadingCircle,MsgBox) {
     var makePlanView =  BaseView.extend({
         id : "make-plan-container",
         template : _.template(tpl),
@@ -84,6 +85,7 @@ define([
             commentTxt:"#comment", //留言框
             totalFirstYearPremium:"#totalFirstYearPremium", //总保费
             calcResultCon:".first-year-list",        //计算结果
+            testInput:"#test-input",//todo
             sendSex:"#send-sex"  //页面底部的 先生  女士
         },
         //事件添加
@@ -135,11 +137,14 @@ define([
             if(self.currProductId == 0 || self.currProductId != tempProductId){
                 self.currProductId = tempProductId;
                 self.resetUI();
+                LoadingCircle && LoadingCircle.start();
                 planModel.getPlanInitiaData(self.currProductId,function(data){
+                    LoadingCircle && LoadingCircle.end();
                     console.log("*************制作计划书"+self.currProductId+"*************");
                     console.log(data);
                     self.initializeUI(data);
                 },function(err){
+                    LoadingCircle && LoadingCircle.end();
                     MsgBox.alert("初始化失败");
                     self.resetUI();
                 });
@@ -240,9 +245,9 @@ define([
             var insured = {};
             insured.name = self.ui.firstInsured.find(".insured-name").val();
             insured.age = self.ui.firstInsured.find(".insured-old").val();
-            insured.gender = self.ui.firstInsured.find(".insured-sex").data("val");
+            insured.gender = self.ui.firstInsured.find(".insured-sex").attr("data-val");
             insured.jobCateId = self.ui.firstInsured.find(".insured-job").val();//职位
-            insured.socialInsuranceIndi = self.ui.firstInsured.find(".insured-social").data("val");//社保
+            insured.socialInsuranceIndi = self.ui.firstInsured.find(".insured-social").attr("data-val");//社保
             insured.smoking = self.ui.firstInsured.find(".insured-smoking").val();//吸烟
 
             var firstInsuredHtml = "";
@@ -322,9 +327,9 @@ define([
             var secInsured = {};
             secInsured.name = self.ui.secondInsured.find(".insured-name").val();
             secInsured.age = self.ui.secondInsured.find(".insured-old").val();
-            secInsured.gender = self.ui.secondInsured.find(".insured-sex").data("val");
+            secInsured.gender = self.ui.secondInsured.find(".insured-sex").attr("data-val");
             secInsured.jobCateId = self.ui.secondInsured.find(".insured-job").val();//职位
-            secInsured.socialInsuranceIndi = self.ui.secondInsured.find(".insured-social").data("val");//社保
+            secInsured.socialInsuranceIndi = self.ui.secondInsured.find(".insured-social").attr("data-val");//社保
             secInsured.smoking = self.ui.secondInsured.find(".insured-smoking").val();//吸烟
 
             //拼接第二被保人
@@ -401,7 +406,7 @@ define([
             var proposer = {};
             proposer.name = self.ui.sendName.val();
             proposer.age = self.ui.policyHolder.find(".insured-old").val();
-            proposer.gender = self.ui.policyHolder.find(".insured-sex").data("val");
+            proposer.gender = self.ui.policyHolder.find(".insured-sex").attr("data-val");
 
             self.ui.policyHolder.css("display","block");
             var policyHolderHtml = "";
@@ -556,8 +561,9 @@ define([
                        var typeName = utils.getAnnuityText(plan.payPeriod[i].periodType,plan.payPeriod[i].periodValue);
                        annuityHtml += '<option data-type="'+plan.payPeriod[i].periodType+'" value="'+plan.payPeriod[i].periodValue+'">'+typeName+'</option>';
                    }
-                   //如果列表只有1个，也不显示，但值需要
-                   if(plan.payPeriod.length == 1 && (plan.payPeriod[0].periodType == "1" || plan.payPeriod[0].periodType == "4" || plan.payPeriod[0].periodType == "5")){
+                   //如果列表只有1个，也不显示，但值需要(改为只要1个就不显示12:07)
+//                   if(plan.payPeriod.length == 1 && (plan.payPeriod[0].periodType == "1" || plan.payPeriod[0].periodType == "4" || plan.payPeriod[0].periodType == "5")){
+                   if(plan.payPeriod.length == 1){
                        showAnnuity = "style='display:none'";
                    }
                }
@@ -637,8 +643,9 @@ define([
                         var typeName = utils.getAnnuityText(plan.payPeriod[i].periodType,plan.payPeriod[i].periodValue);
                         annuityHtml += '<option data-type="'+plan.payPeriod[i].periodType+'" value="'+plan.payPeriod[i].periodValue+'">'+typeName+'</option>';
                     }
-                    //如果列表只有1个，也不显示，但值需要
-                    if(plan.payPeriod.length == 1 && (plan.payPeriod[0].periodType == "1" || plan.payPeriod[0].periodType == "4" || plan.payPeriod[0].periodType == "5")){
+                    //如果列表只有1个，也不显示，但值需要（改后 只有一个的情况不显示）
+//                    if(plan.payPeriod.length == 1 && (plan.payPeriod[0].periodType == "1" || plan.payPeriod[0].periodType == "4" || plan.payPeriod[0].periodType == "5")){
+                    if(plan.payPeriod.length == 1){
                         showAnnuity = "style='display:none'";
                     }
                 }
@@ -716,7 +723,7 @@ define([
             var aRangeArr = [], bRangeArr = [], cRangeArr = [];
             for(var i = 0; i < self.currPlanList.length; i++){
                 var plan = self.currPlanList[i];
-                var rangeStr = JSON.stringify(plan.ageRange);//todo
+                var rangeStr = JSON.stringify(plan.ageRange);
                 if(plan.pointToSecInsured == "Y"){//第二被保人
                     if(plan.ageRange) {
                         bRangeArr.push(JSON.parse(rangeStr));
@@ -938,11 +945,11 @@ define([
             }
             target.siblings(".property-radio-item").removeClass("property-radio-item-ck");
             target.addClass("property-radio-item-ck")
-            target.parent().attr("data-val",target.data("val"));
+            target.parent().attr("data-val",target.attr("data-val"));
 
             //判断 如果点击的是投保人性别，跟页面底部“先生 女士”下拉性别选项同步
             if(target.parents("#make-plan-policy-holder").size() > 0){
-                if(target.data("val") == "F"){
+                if(target.attr("data-val") == "F"){
                     self.ui.sendSex.val("1");
                 }else{
                     self.ui.sendSex.val("0");
@@ -1056,9 +1063,9 @@ define([
                 self.ui.firstInsured.find(".insured-old").focus();
                 return false;
             }
-            insured.gender = self.ui.firstInsured.find(".insured-sex").data("val");
+            insured.gender = self.ui.firstInsured.find(".insured-sex").attr("data-val");
             insured.jobCateId = self.ui.firstInsured.find(".insured-job").val();//职位
-            insured.socialInsuranceIndi = self.ui.firstInsured.find(".insured-social").data("val");//社保
+            insured.socialInsuranceIndi = self.ui.firstInsured.find(".insured-social").attr("data-val");//社保
             insured.smoking = self.ui.firstInsured.find(".insured-smoking").val();//吸烟
             insureds.push(insured);
             //是否存在第二被保人
@@ -1073,9 +1080,9 @@ define([
                     self.ui.secondInsured.find(".insured-old").focus();
                     return false;
                 }
-                secInsured.gender = self.ui.secondInsured.find(".insured-sex").data("val");
+                secInsured.gender = self.ui.secondInsured.find(".insured-sex").attr("data-val");
                 secInsured.jobCateId = self.ui.secondInsured.find(".insured-job").val();//职位
-                secInsured.socialInsuranceIndi = self.ui.secondInsured.find(".insured-social").data("val");//社保
+                secInsured.socialInsuranceIndi = self.ui.secondInsured.find(".insured-social").attr("data-val");//社保
                 secInsured.smoking = self.ui.secondInsured.find(".insured-smoking").val();//吸烟
                 insureds.push(secInsured);
             }
@@ -1084,7 +1091,7 @@ define([
             var proposer = {};
             proposer.name = self.ui.sendName.val();
             proposer.age = self.ui.policyHolder.find(".insured-old").val();
-            proposer.gender = self.ui.policyHolder.find(".insured-sex").data("val");
+            proposer.gender = self.ui.policyHolder.find(".insured-sex").attr("data-val");
             plan.proposer = proposer;
 
             //主险数据
@@ -1361,7 +1368,9 @@ define([
             if(!responseData)return;
             console.log("*********计算保费 请求数据**********");
             console.log(responseData);
+            LoadingCircle && LoadingCircle.start();
             planModel.calcFirstYearPremium(responseData,function(data){
+                LoadingCircle && LoadingCircle.end();
                 console.log("************计算结果**************");
                 console.log(data);
                 self.totalFirstYearPrem = data.totalFirstYearPrem;
@@ -1373,6 +1382,7 @@ define([
                 self.isCalcOver = true;
                 self.renderValueAdded(data.valueAddedList);
             },function(err){
+                LoadingCircle && LoadingCircle.end();
                 MsgBox.alert("计算保费失败");
                 console.log(err);
             });
@@ -1390,11 +1400,14 @@ define([
             }
             console.log("*********计划书生成 请求数据**********");
             console.log(responseData);
+            LoadingCircle && LoadingCircle.start();
             planModel.savePlan(responseData,function(data){
+                LoadingCircle && LoadingCircle.end();
                 if(!data.quotationId)
                     data.quotationId = "null";
                 app.navigate("in/plan/"+data.quotationId,{replace:true, trigger:true})
             },function(err){
+                LoadingCircle && LoadingCircle.end();
                 MsgBox.alert("计划书生成失败");
             });
         },
@@ -1504,34 +1517,26 @@ define([
         },
         //监听客户导入
         onImportUser:function(obj){ 
-            var self = this;    //TODO 导入客户接通测
+            var self = this;
             //依产品定义 客户导入只用名称 性别，不导入年龄
             var target = self.ui.secondInsured;
             if(obj.optionType == 1) {
                 target = self.ui.firstInsured;
             }
             target.find(".insured-name").val(obj.name);
-//            target.find(".insured-old").val(obj.age);
-//            if(!target.find(".insured-old").val()){
-//                MsgBox.alert("温馨提示：导入客户不在被保人年龄范围内");
-//            }
-            if(target.find(".insured-sex").data("val") != obj.gender) {
-                target.find(".insured-sex").data("val", obj.gender);
+            if(target.find(".insured-sex").attr("data-val") != obj.gender) {
+                target.find(".insured-sex").attr("data-val", obj.gender);
                 target.find(".insured-sex .property-radio-item").each(function(){
                     $(this).removeClass("property-radio-item-ck");
-                    if($(this).data("val") == obj.gender){
+                    if($(this).attr("data-val") == obj.gender){
                         $(this).addClass("property-radio-item-ck");
                     }
                 });
             }
         },
-        //取年龄段交集
-        getRange:function(arr1,arr2){
-
-        },
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
-
+            LoadingCircle && LoadingCircle.end();
         },
 
         //当页面销毁时触发
