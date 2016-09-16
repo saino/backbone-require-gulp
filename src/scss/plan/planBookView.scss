@@ -340,12 +340,16 @@
             float: right;
             height: 44px;     //9.13 16:31新加 by guYY
             line-height: 44px;
+            color:#7994f9; //9.16 11:48
           }
         }
         .info-btn-div-single {
           padding-top: 10px;
           .item-title {
             color: #666666;
+          }
+          .item-right{
+            color:#666666;
           }
         }
         .info-desc{ color: #7994f9; background: #EEEEEE; display: none;}

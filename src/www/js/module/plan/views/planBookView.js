@@ -280,8 +280,10 @@ define([
                         var libCalcType = obj.libCalcMethod;
                         var liabilityList2Html = "";
                         var totalAmount = "";
+                        var rightClass = "";
                         if (libCalcType == 1) {
-                            totalAmount = obj.totalAmount;
+                            totalAmount = utils.formatNumber(obj.totalAmount);
+                            rightClass = "item-right-mr88"; //显示金额时需距离右边88px
                         }
                         for (var k = 0; k < obj.liabList.length; k++) {
                             var itemObj = obj.liabList[k];
@@ -292,7 +294,6 @@ define([
                             if (needDiseaseIndi == "Y") {
                                 showStyle = "";
                             }
-                            var rightClass = "";
                             if (libCalcType == 1) {
                                 rightClass = "item-right-mr88"; //显示金额时需距离右边88px
                                 liabAmount = utils.formatNumber(itemObj.liabAmount);
@@ -301,7 +302,7 @@ define([
                             var productId = itemObj.productId ? itemObj.productId : 0;
                             liabilityList2Html += self.planLiabilityItemItemTpl({liabDisplayName: itemObj.liabDisplayName, showStyle: showStyle, liabAmount: liabAmount, libDescQuote: itemObj.libDescQuote, rightClass: rightClass, packageId: packageId, productId: productId, libId: libId,multiProductClass:""});
                         }
-                        liabilityListHtml += self.planLiabilityItemTpl({liabDisplayName:obj.liabDisplayName,totalAmount:totalAmount,liabilityList2Html:liabilityList2Html});
+                        liabilityListHtml += self.planLiabilityItemTpl({liabDisplayName:obj.liabDisplayName,totalAmount:totalAmount,liabilityList2Html:liabilityList2Html, rightClass: rightClass});
                     }else{
                         var singleObj = obj.liabList[0];//单个产品取第一个
                         var libCalcType2 = singleObj.libCalcMethod;
