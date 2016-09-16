@@ -14,7 +14,7 @@ define([
         currIndex: 0,        //默认显示服务商对象
         serverCompany:{},   //服务商对象
         underwriterCompnay :{}, //承保商对象
-        underwriterTpl:_.template('<div class="line"></div><div class="intro"><%=introHtml %></div><%=addServicePicHtml %>'),
+        underwriterTpl:_.template('<div id="plan-company-logo"><%=logoHtml %></div><div class="line"></div><div class="intro"><%=introHtml %></div><%=addServicePicHtml %>'),
         ui:{
             "planCompanyCon":"#plan-company-content",
             "planCompanyLogo":"#plan-company-logo",
@@ -42,18 +42,17 @@ define([
             if(!self.inited)return;
             if(!self.companyInfoData) return;
             var companyLogo = "", companyName = "", companyDesc = "";
-
             self.ui.serverCompanyCon.removeClass("content-ck");
             self.ui.underwriterCompanyCon.removeClass("content-ck");
             if(index == 0){
-                companyName = self.companyInfoData.daTongName;
-                companyLogo = self.companyInfoData.daTongLogo;
-                companyDesc = self.companyInfoData.daTongDesc;
+                companyDesc = '<img class="big-img" src="'+(utils.serverConfig.serverUrl+self.companyInfoData.daTongLogo)+'"/>';
                 self.ui.serverCompanyCon.addClass("content-ck");
-                self.ui.serverCompanyCon.html(companyDesc);
+                self.ui.serverCompanyCon.html($(companyDesc));
             }else{
-                companyName = self.companyInfoData.companyName;
                 companyLogo = self.companyInfoData.organLogo;
+                var logoHtml = '';
+                if(companyLogo)
+                    logoHtml = '<img src="' + (utils.serverConfig.serverUrl+ companyLogo) +'" alt="">';
                 companyDesc = self.companyInfoData.organDesc || "";
                 var addServicePicHtml = "";
                 for(var i = 0; i < self.companyInfoData.valueAddedList.length; i++){
@@ -62,7 +61,7 @@ define([
                         addServicePicHtml += '<div class="vip-increment-content vip-content"><div class="title">' + obj.valueAddedName + '</div><div class="vip-increment-content-main">'+obj.valueAddedDesc+'</div></div>';
                     }
                 }
-                self.ui.underwriterCompanyCon.html(self.underwriterTpl({introHtml:companyDesc,addServicePicHtml:addServicePicHtml}));
+                self.ui.underwriterCompanyCon.html(self.underwriterTpl({logoHtml:logoHtml,introHtml:companyDesc,addServicePicHtml:addServicePicHtml}));
                 self.ui.underwriterCompanyCon.addClass("content-ck");
             }
             if(companyLogo){
@@ -74,10 +73,12 @@ define([
             //hei为所放容易高度  - 70(切换tab高度) - 139（logo高度）
             var self = this;
             self.inited = true;
-            self.ui.planCompanyCon.css({"height":(hei-70-139)+"px"});
+            self.ui.planCompanyCon.css({"height":(hei-70)+"px"});
 
             //查询服务商对象、承保商对象
             planModel.getCompanyInfo(planId, function(data){
+                console.log("***********公司介绍数据************");
+                console.log(data);
                 self.companyInfoData = data;
                 self.showCompany(self.currIndex);
             });
