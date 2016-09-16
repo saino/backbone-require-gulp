@@ -102,8 +102,11 @@ define([
                             for(var j=0; j<obj.length; j++){
                                 customerItems += '<p data-type="customer" data-name="'+obj[j].name+'" data-gender="'+obj[j].gender+'" data-age="'+obj[j].age+'">'+obj[j].name+'</p>';
                             }
-                            var realItemTemp = customerItemTemp.replace(/\{data-filter\}/g, key)
+                            var realItemTemp = "";
+                            if(obj.length){
+                                realItemTemp = customerItemTemp.replace(/\{data-filter\}/g, key)
                                 .replace("{customerItems}", customerItems);
+                            }
                             customerItemStr += realItemTemp;
                         }
                             // console.log(String.fromCharCode(i+65),customersArry[i]);
@@ -204,10 +207,10 @@ define([
             console.log(text);
             var options = { 
                 "name": text,
-                "queryAll": true,
+                "queryAll": false,
                 "encryptedUserData": utils.userObj.id,
             };
-            self.loadData(data);
+            self.loadData(options);
         },
         /**
          *具体搜索实现函数

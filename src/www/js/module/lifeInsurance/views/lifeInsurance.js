@@ -248,12 +248,15 @@ define([
 
                 if(target.innerHTML == "推荐排序" || target.innerHTML == "默认排序"){
                     utils.lifeInsuranceOptions.sortOption = 1;
+                    utils.preSortOption = 1;
                 }
                 if(target.innerHTML == "浏览量"){
                     utils.lifeInsuranceOptions.sortOption = 2;
+                    utils.preSortOption = 2;
                 }
                 if(target.innerHTML == "上架时间"){
                     utils.lifeInsuranceOptions.sortOption = 3;
+                    utils.preSortOption = 3;
                 }
                 self.ui.searchDefaultSort.find(".screening-condition-name").html(target.innerHTML);
                 self.loadData();      
@@ -468,7 +471,7 @@ define([
                     utils.lifeInsuranceOptions.rightIds = [];       //选填，权益ID，来自高级过滤接口的返回值
                     utils.lifeInsuranceOptions.companyIds = []; //选填，公司ID，来自高级过滤接口的返回值
                     utils.lifeInsuranceOptions.sortOption = 1;     //选填，排序选项。2：按浏览量排序，3：按上架时间排序
-
+                    utils.preSortOption = 1;
                     utils.advanceSaleTypeIds = [];
                     utils.advanceRightIds = [];
                     utils.advancedCompanyId = [];

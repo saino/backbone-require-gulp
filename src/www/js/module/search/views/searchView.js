@@ -35,7 +35,8 @@ define([
             "tap @ui.btnClearHistory" : "onClearHistoryHandler",
             "tap @ui.btnSearch" : "onBtnSearchHandler",
             "tap .history-item-del" : "onDeleteHistoryItemHandler",
-            "tap @ui.hotWordCon": "clickHotWordConHandler"      //点击热搜词
+            "tap @ui.hotWordCon": "clickHotWordConHandler",      //点击热搜词
+            "tap .history-item-name": "onHistoryItemName"       //点击历史收拾记录词
         },
 
         onRender:function(){
@@ -139,6 +140,19 @@ define([
                 keywords = self.defaultSearchWordObj.actualSearchWords;
             }
             utils.lifeInsuranceOptions.searchWords = keywords || "";
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = true;
+            //是否初始化查询条件
+            utils.isInitOption = false;
+            app.goBack();
+        },
+
+        onHistoryItemName: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            var searchWords = event.target.innerHTML;
+
+            utils.lifeInsuranceOptions.searchWords = searchWords;
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = true;
             //是否初始化查询条件
