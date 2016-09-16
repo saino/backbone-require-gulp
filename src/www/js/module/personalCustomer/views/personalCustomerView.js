@@ -132,7 +132,7 @@ define([
             var self = this;
             var options = { 
                 "name": "",
-                "queryAll": false,
+                "queryAll": true,
                 "encryptedUserData": utils.userObj.id,
             };
             self.loadData(options);

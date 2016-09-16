@@ -328,7 +328,7 @@ define([
                             lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
                                                             '<div class="life-insurance-label-name">示例保费：</div>'+
                                                             // '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem +'</div>'+
-                                                            '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem +
+                                                            '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem + '元'+
                                                                 '<img class="sample-premium" src="./images/tip.png"/>'+
                                                                 '<div class="sample-premium-message"><img class="sample-tip-icon" src="./images/tipIcon.png">30岁，男性，20年交，保额10万的示例保费</div>'+
             
