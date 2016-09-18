@@ -11,16 +11,16 @@ var timeTemp = null;    //android 物理返回键的间隔时间
 window.IS_PAUSE = false; //app是否在后台
 //点击物理返回键
 function clickAndroidReturn(){
+    alert("点击物理返回");//todo
     var url = window.location.href;
     if(url.lastIndexOf("lifeInsurance") > 1){	//在寿险页时 退出
         app.triggerMethod("insurance:exit");	//退出制作
+        alert("触发物理返回");//todo
     }else{
-        if(timeTemp &&(new Date - timeTemp < 1000)){ //防止连续点击,两次点击小于1S的时候不执行
+        if(timeTemp &&((new Date().getTime() - timeTemp) < 1000)){ //防止连续点击,两次点击小于1S的时候不执行
             return;
         }
-        if(url.lastIndexOf("index.html")){
-
-        }else if(url.lastIndexOf("makePlan") > 0){
+       if(url.lastIndexOf("makePlan") > 0){
             app.triggerMethod("makePlan:exit");	//退出制作计划书
         }else if(url.lastIndexOf("in/plan") > 0){
             app.triggerMethod("plan:exit");	//退出制作计划书

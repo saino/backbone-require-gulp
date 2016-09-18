@@ -172,6 +172,7 @@ define([
             var self = this;
             if(self.currPlanId != data.quotationId)return;
             self.isULProduct = data.isULProduct;
+            self.insuredAge = data.mainAssuredAge;//被保人年龄
             if(self.isULProduct == "Y"){
                 self.ui.planLevel.css("display","block");
                 self.currLevel = "1";
