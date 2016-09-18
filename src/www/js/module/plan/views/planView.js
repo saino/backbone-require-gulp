@@ -59,6 +59,7 @@ define([
         show:function(){
             var self = this;
             var tempPlanId = self.getOption("planId");
+            app.on("plan:exit", this._goBackHandler,this);
             if(self.planId == tempPlanId)
                 return;
             self.planId = tempPlanId;
@@ -117,7 +118,17 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
-            //点击返回时 清理本地缓存 不能放在close TODO 要注意安卓物理返回键
+            //点击返回时 清理本地缓存
+            if(self.planId) {
+                utils.delLocalStorageObject("planObject", self.planId);
+                utils.delLocalStorageObject("planObjectIllus", self.planId);//对应利益演示部份
+            }
+            app.goBack();
+        },
+        //物理返回
+        _goBackHandler:function(e){
+            var self = this;
+            //点击返回时 清理本地缓存
             if(self.planId) {
                 utils.delLocalStorageObject("planObject", self.planId);
                 utils.delLocalStorageObject("planObjectIllus", self.planId);//对应利益演示部份
@@ -130,6 +141,7 @@ define([
             if(MsgBox && MsgBox.isShow()){
                 MsgBox.clear();
             }
+            app.off("plan:exit", self._goBackHandler,this);
         },
         /*点击事件不可以重复点*/
         _checkMouseLock : function () {

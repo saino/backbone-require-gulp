@@ -18,8 +18,12 @@ function clickAndroidReturn(){
         if(timeTemp &&(new Date - timeTemp < 1000)){ //防止连续点击,两次点击小于1S的时候不执行
             return;
         }
-        if(url.lastIndexOf("makePlan") > 0){
+        if(url.lastIndexOf("index.html")){
+
+        }else if(url.lastIndexOf("makePlan") > 0){
             app.triggerMethod("makePlan:exit");	//退出制作计划书
+        }else if(url.lastIndexOf("in/plan") > 0){
+            app.triggerMethod("plan:exit");	//退出制作计划书
         }else{
             backApp();	//直接返回
         }
@@ -174,7 +178,11 @@ require([
 
     function readyHandle (){
         utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
-
+        console.log("id="+utils.userObj.id);
+        //todo
+//        if(!utils.userObj.id || utils.userObj.id == ""){
+//            utils.userObj.id = "mO9Ck8aUljOXBglrKYPu/1gd7T4nTzEFxN0+GruRM9JMCq8a8qRyTaWs7Sh2FpFemRJK6aVGIN7SOThIPHmwbamJKNrEMOsjBQloOj54UxDHBXYmpBSazn0lYxr1LcaTWtPGUGwP2pOXUwo79/4d6IuAy/CEUBIAEufB8NRO2xMxCtW4EiZxxF6VSzigsCXWOWSUcJbNct1igGjl4N/RfwULsNptX/MkfVR+QnppvTwbaU+V9JJ9TisLic14zAAxYoMg8V4ySrwAEtG6WjEoz4Ndm/1wOvgrjtrxwW3KVdGtNWs9ph85f0ejjWN5sAX6/lecd27hhDW60aOGPOhJYg==";
+//        }
         //基本数据初始化 add by guYY 2015/12/31 10：20
         if(device && device.ios())
             utils.topHeightForTime = 40;
