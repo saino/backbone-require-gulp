@@ -19,6 +19,7 @@ define([
             productInsureDuty: ".product-insure-duty",
             searchDefaultSort: "#search-default-sort",                  //默认排序
             defaultSortLayoutFloat: "#default-sort-layout-float",       //默认排序浮层
+            defaultSortContent: ".default-sort-content",                //排序选项容器
 
             insuranceCompanyFloat: "#insurance-company-float",        //保险公司浮层
             insuranceCompanyContent: "#insurance-company-content",      //保险公司容器
@@ -118,6 +119,22 @@ define([
             var self = this;
             // utils.lifeInsuranceOptions.searchWords = self.ui.searchText.attr("value") || self.ui.searchText.attr("placeholder") || "";
             utils.lifeInsuranceOptions.searchWords = self.actualSearchWords || "";
+            
+            utils.advanceSaleTypeIds = [];
+            utils.advanceRightIds = [];
+            utils.companyId = "all";
+            utils.advancedCompanyId = [];
+            utils.preSortOption = null;
+            utils.lifeInsuranceOptions.examPremOrder = null;
+            utils.lifeInsuranceOptions.saleTypeIds = []
+            utils.lifeInsuranceOptions.rightIds  = []
+            utils.lifeInsuranceOptions.companyIds = [],  //选填，种类ID，来自高级过滤接口的返回值
+            utils.lifeInsuranceOptions.sortOption = null;
+
+            //是否为关键字查询;
+            utils.isKeyWordSearch = true;
+
+
             self.loadData();
 
         },
@@ -437,6 +454,14 @@ define([
                        lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
                     }
 
+                   if(utils.isKeyWordSearch){   //如果是关键字搜出来的，需重置查询条件的UI状态
+                        utils.isKeyWordSearch = false;
+                        self.ui.searchDefaultSort.find(".screening-condition-name").html("默认排序");
+                        self.ui.defaultSortContent.find(".default-sort-item-selected").attr("class", "default-sort-item");
+                        self.ui.defaultSortContent.children()[0].setAttribute("class", "default-sort-item default-sort-item-selected");
+
+                        utils.isInitCompany = true;
+                    }
                     self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
                 } else{
                     lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
@@ -489,10 +514,19 @@ define([
             utils.isLifeInsuranceRefresh = false;
             utils.isInitOption = false;
 
+            // if(utils.isKeyWordSearch){
+            //     utils.isKeyWordSearch = false;
+            //     self.ui.searchDefaultSort.find(".screening-condition-name").html("默认排序");
+            //     self.ui.defaultSortContent.find(".default-sort-item-selected").attr("class", "default-sort-item");
+            //     self.ui.defaultSortContent.children()[0].setAttribute("class", "default-sort-item default-sort-item-selected");
+            //     self.ui.insuranceCompanyContent.find(".insurance-company-name-selected").attr("class", "insurance-company-name");
+            //     self.ui.insuranceCompanyContent.children()[0].setAttribute("class", "insurance-company-name insurance-company-name-selected");               
+            // }
+// console.log();
         },
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
-            utils.toLogin();
+            // utils.toLogin();
             app.on("insurance:exit", this._goBackHandler,this);
         },
         _goBackHandler: function(){

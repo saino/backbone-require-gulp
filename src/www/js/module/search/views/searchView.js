@@ -78,6 +78,20 @@ define([
                 utils.lifeInsuranceOptions.searchWords = event.target.innerHTML || "";
                 //进入寿险列表查询也是否需要重新加载数据
                 utils.isLifeInsuranceRefresh = true;
+
+                utils.advanceSaleTypeIds = [];
+                utils.advanceRightIds = [];
+                utils.companyId = "all";
+                utils.advancedCompanyId = [];
+                utils.preSortOption = null;
+                utils.lifeInsuranceOptions.examPremOrder = null;
+                utils.lifeInsuranceOptions.saleTypeIds = []
+                utils.lifeInsuranceOptions.rightIds  = []
+                utils.lifeInsuranceOptions.companyIds = [],  //选填，种类ID，来自高级过滤接口的返回值
+                utils.lifeInsuranceOptions.sortOption = null;
+
+                //是否为关键字查询;
+                utils.isKeyWordSearch = true;
                 //是否初始化查询条件
                 utils.isInitOption = false;
                 app.goBack();
@@ -146,11 +160,27 @@ define([
             utils.lifeInsuranceOptions.searchWords = keywords || "";
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = true;
+
+            utils.advanceSaleTypeIds = [];
+            utils.advanceRightIds = [];
+            utils.companyId = "all";
+            utils.advancedCompanyId = [];
+            utils.preSortOption = null;
+            utils.lifeInsuranceOptions.examPremOrder = null;
+            utils.lifeInsuranceOptions.saleTypeIds = []
+            utils.lifeInsuranceOptions.rightIds  = []
+            utils.lifeInsuranceOptions.companyIds = [],  //选填，种类ID，来自高级过滤接口的返回值
+            utils.lifeInsuranceOptions.sortOption = null;
+
+            //是否为关键字查询;
+            utils.isKeyWordSearch = true;
+
             //是否初始化查询条件
             utils.isInitOption = false;
             app.goBack();
         },
 
+        // 点击历史记录词
         onHistoryItemName: function(event){
             event.stopPropagation();
             event.preventDefault();
@@ -159,6 +189,21 @@ define([
             utils.lifeInsuranceOptions.searchWords = searchWords;
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = true;
+
+            utils.advanceSaleTypeIds = [];
+            utils.advanceRightIds = [];
+            utils.companyId = "all";
+            utils.advancedCompanyId = [];
+            utils.preSortOption = null;
+            utils.lifeInsuranceOptions.examPremOrder = null;
+            utils.lifeInsuranceOptions.saleTypeIds = []
+            utils.lifeInsuranceOptions.rightIds  = []
+            utils.lifeInsuranceOptions.companyIds = [],  //选填，种类ID，来自高级过滤接口的返回值
+            utils.lifeInsuranceOptions.sortOption = null;
+
+            //是否为关键字查询;
+            utils.isKeyWordSearch = true;
+
             //是否初始化查询条件
             utils.isInitOption = false;
             app.goBack();
