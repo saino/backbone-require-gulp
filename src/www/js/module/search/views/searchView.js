@@ -37,9 +37,15 @@ define([
             "tap @ui.btnSearch" : "onBtnSearchHandler",
             "tap .history-item-del" : "onDeleteHistoryItemHandler",
             "tap @ui.hotWordCon": "clickHotWordConHandler",      //点击热搜词
-            "tap .history-item-name": "onHistoryItemName"       //点击历史收拾记录词
+            "tap .history-item-nsearchInputme": "onHistoryItemName"       //点击历史收拾记录词
+            // "input @ui.searchInput": "onSearchInput"    //输入搜索词事件
         },
+        // onSearchInput: function(event){
+        //     event.stopPropagation();
+        //     event.preventDefault();
+        //     console.log(this.ui.searchInput[0].value);
 
+        // },
         onRender:function(){
             var self = this;
             if(device.ios()){

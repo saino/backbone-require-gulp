@@ -142,6 +142,11 @@ define([
             event.stopPropagation();
             event.preventDefault();
             var self = this;
+            if(!(self.ui.personalCollectMain.find(".insurance-product-card").length)){
+                MsgBox.alert("收藏记录为空");
+                return;
+            }
+
              MsgBox.ask("你确定删除所有浏览记录吗？","bbbbbbb",function(type){
                 if(type == 2) { //确定  0=取消
                     var options = {

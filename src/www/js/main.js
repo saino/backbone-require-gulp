@@ -177,7 +177,7 @@ require([
     });
 
     function readyHandle (){
-        utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
+        // utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
         console.log("id="+utils.userObj.id);
         //todo
 //        if(!utils.userObj.id || utils.userObj.id == ""){
