@@ -530,7 +530,6 @@ define([
             app.on("insurance:exit", this._goBackHandler,this);
         },
         _goBackHandler: function(){
-            MsgBox.alert("监听返回");//todo
             if(window.kbFinish){
                 window.kbFinish.toFinish();
             }else{

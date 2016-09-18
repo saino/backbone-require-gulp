@@ -50,6 +50,7 @@ define([
         },
         pageIn:function(){
             var self = this;
+            app.on("personalCollect:exit",self._goBackHandler,this);
             self.loadData();
         },
 
@@ -132,7 +133,11 @@ define([
         onBackBtnHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-            app.goBack();
+            if(window.kbFinish){
+                window.kbFinish.toFinish();
+            }else{
+                app.goBack();
+            }
         },
         /**
          * 点击清空所有收藏
@@ -215,9 +220,18 @@ define([
                 });
             }
         },
+        //物理返回
+        _goBackHandler:function(){
+            if(window.kbFinish){
+                window.kbFinish.toFinish();
+            }else{
+                app.goBack();
+            }
+        },
         close:function(){
             var self = this;
             self.remove();
+            app.off("personalCollect:exit",self._goBackHandler,this);
             if(MsgBox && MsgBox.isShow()) {
                 MsgBox.clear();
             }

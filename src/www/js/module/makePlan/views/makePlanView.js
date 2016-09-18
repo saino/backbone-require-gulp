@@ -85,7 +85,6 @@ define([
             commentTxt:"#comment", //留言框
             totalFirstYearPremium:"#totalFirstYearPremium", //总保费
             calcResultCon:".first-year-list",        //计算结果
-            testInput:"#test-input",//todo
             sendSex:"#send-sex"  //页面底部的 先生  女士
         },
         //事件添加

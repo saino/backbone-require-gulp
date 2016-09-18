@@ -67,7 +67,7 @@ define([
         },
         pageIn:function(){
             var self = this;
-
+            app.on("personalPlan:exit", self._goBackHandler,this);
         },
         /**
          * 初始化界面的动态数据
@@ -110,7 +110,19 @@ define([
         onBackBtnHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-            app.goBack();
+            if(window.kbFinish){
+                window.kbFinish.toFinish();
+            }else{
+                app.goBack();
+            }
+        },
+        //物理返回
+        _goBackHandler:function(){
+            if(window.kbFinish){
+                window.kbFinish.toFinish();
+            }else{
+                app.goBack();
+            }
         },
         /**
          *搜索按钮点击事件
@@ -133,15 +145,11 @@ define([
             }
 
             var id = target.data("id")||"null";
-            if(id){
-                target.css("opacity",".5")
-                setTimeout(function(){
-                    target.css("opacity","1")
-                },30);
-                app.navigate("in/plan/"+id,{trigger:true,replace:true});
-            }else{
-                MsgBox.alert("ID为空");
-            }
+            target.css("opacity",".5")
+            setTimeout(function(){
+                target.css("opacity","1")
+            },30);
+            app.navigate("in/plan/"+id,{trigger:true,replace:true});
         },
         /**
          *搜索按钮点击事件
@@ -245,6 +253,7 @@ define([
         close:function(){
             var self = this;
             self.remove();
+            app.off("personalPlan:exit", self._goBackHandler,this);
             if(MsgBox && MsgBox.isShow()) {
                 MsgBox.clear();
             }

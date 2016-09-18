@@ -11,26 +11,25 @@ var timeTemp = null;    //android 物理返回键的间隔时间
 window.IS_PAUSE = false; //app是否在后台
 //登录成功
 function loginSuccess(userData){
-    alert("登录成功"+userData);//todo
     utils.userObj.id = userData;
 }
 //点击物理返回键
 function clickAndroidReturn(){
     var url = window.location.href;
-    alert("点击物理返回="+url);//todo
     if(url.lastIndexOf("lifeInsurance") > 1){	//在寿险页时 退出
-        alert("触发物理返回");//todo
         app.triggerMethod("insurance:exit");	//退出制作
     }else{
         if(timeTemp &&((new Date().getTime() - timeTemp) < 1000)){ //防止连续点击,两次点击小于1S的时候不执行
             return;
         }
-       if(url.lastIndexOf("makePlan") > 0){
-            app.triggerMethod("makePlan:exit");	//退出制作计划书
+        if(url.lastIndexOf("in/personalPlan") > 0){
+            app.triggerMethod("personalPlan:exit");//返回个人中心
         }else if(url.lastIndexOf("in/plan") > 0){
             app.triggerMethod("plan:exit");	//退出制作计划书
+        }else if(url.lastIndexOf("in/personalCollect") > 0){
+            app.triggerMethod("personalCollect:exit");	//退出制作计划书
         }else{
-            backApp();	//直接返回
+           backApp();	//直接返回
         }
         timeTemp = new Date();
     }
@@ -182,7 +181,7 @@ require([
     });
 
     function readyHandle (){
-        // utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
+        utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
         console.log("id="+utils.userObj.id);
         //todo
 //        if(!utils.userObj.id || utils.userObj.id == ""){

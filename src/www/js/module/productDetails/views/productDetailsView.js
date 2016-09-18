@@ -441,6 +441,10 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(!utils.userObj.id || utils.userObj.id == ""){
+                utils.toLogin();
+                return;
+            }
             var $target = $(e.target);
             var options = {
                 "encryptedUserData": utils.userObj.id,
@@ -464,11 +468,8 @@ define([
 
                 return;
             }
-            
+
             // 收藏
-             if(!utils.userObj.id || utils.userObj.id == ""){
-                utils.toLogin();
-            }
             LoadingCircle && LoadingCircle.start();
             productDetailsModel.collectProduct(options, function(data){
                 console.log("success", data);
@@ -642,7 +643,6 @@ define([
             e.preventDefault();
             var self = this;
             self.productId = self.productId || "null";
-            alert("点击去制作"+utils.userObj.id);//todo
             if(!utils.userObj.id || utils.userObj.id == ""){
                 utils.toLogin();
             }else {
