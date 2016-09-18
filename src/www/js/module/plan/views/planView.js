@@ -20,6 +20,8 @@ define([
         currTab:1,
         ui : {
             "topCon":"#top-title",
+            "titleLeft":"#top-title-left",
+            "titleShare":"#top-title-right-1",
             "planMain":"#plan-main",
             menuTab : "#plan-menu"
         },
@@ -58,6 +60,15 @@ define([
         },
         show:function(){
             var self = this;
+            console.log("utils.isShare="+utils.isShare);//todo
+            //分享进入 顶部返回按钮 分享按钮需隐藏
+            if(utils.isShare){
+                self.ui.titleLeft.css("visibility","hidden");
+                self.ui.titleShare.css("visibility","hidden");
+            }else{
+                self.ui.titleLeft.css("visibility","visible");
+                self.ui.titleShare.css("visibility","visible");
+            }
             var tempPlanId = self.getOption("planId");
             app.on("plan:exit", this._goBackHandler,this);
             if(self.planId == tempPlanId)
@@ -78,7 +89,13 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var name = this.ui.planMain.find(".plan-book-company").html()+"计划书演示";
-            utils.shareProduct(name,"分享计划",window.location.href);
+            var advice = this.ui.planMain.find(".plan-book-company").attr("data-advice");
+            alert(name+","+advice);//todo
+            if(name == "" || advice == ""){
+                MsgBox.alert("分享标题与描述不能为空!");
+            }else{
+                utils.shareProduct(name,"分享计划",window.location.href);
+            }
         },
         changeMenuTab : function(tabIndex){
             var self = this;

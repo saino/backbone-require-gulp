@@ -181,12 +181,15 @@ require([
     });
 
     function readyHandle (){
-        utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
-        console.log("id="+utils.userObj.id);
-        //todo
-//        if(!utils.userObj.id || utils.userObj.id == ""){
-//            utils.userObj.id = "mO9Ck8aUljOXBglrKYPu/1gd7T4nTzEFxN0+GruRM9JMCq8a8qRyTaWs7Sh2FpFemRJK6aVGIN7SOThIPHmwbamJKNrEMOsjBQloOj54UxDHBXYmpBSazn0lYxr1LcaTWtPGUGwP2pOXUwo79/4d6IuAy/CEUBIAEufB8NRO2xMxCtW4EiZxxF6VSzigsCXWOWSUcJbNct1igGjl4N/RfwULsNptX/MkfVR+QnppvTwbaU+V9JJ9TisLic14zAAxYoMg8V4ySrwAEtG6WjEoz4Ndm/1wOvgrjtrxwW3KVdGtNWs9ph85f0ejjWN5sAX6/lecd27hhDW60aOGPOhJYg==";
-//        }
+        if(utils.isDebug){
+            utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
+        }
+        var isShare = getParameter(window.location.href, "isShare");
+        if(isShare && isShare == 1){
+            utils.isShare = true;
+        }else{
+            utils.isShare = false;
+        }
         //基本数据初始化 add by guYY 2015/12/31 10：20
         if(device && device.ios())
             utils.topHeightForTime = 40;

@@ -415,7 +415,6 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
-            // var str = "点击了"+self.packageName+"的分享"
             utils.shareProduct(self.packageName, "分享了这个保险", window.location.href);
             // MsgBox.alert("点击了分享保险");
             // var options = {
