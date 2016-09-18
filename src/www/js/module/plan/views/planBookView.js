@@ -103,6 +103,7 @@ define([
                 self.renderData(planFromLocalStory);
             }else {
                 LoadingCircle && LoadingCircle.start();
+                console.log("*********请求保障计划**********");
                 planModel.getPlanInfo(planId, function (data) {
                     LoadingCircle && LoadingCircle.end();
                     console.log("*********保障计划 返回数据**********");
@@ -121,6 +122,7 @@ define([
                 self.ui.planDemo.css("display","block");
                 self.renderIllusData(planIllusFromLocalStory);
             }else{
+                console.log("*********请求保障计划利益演示**********");
                 planModel.getPlanIllus(planId, function (data) {
                     console.log("*********保障计划利益演示 返回数据**********");
                     console.log(data);

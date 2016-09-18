@@ -78,14 +78,13 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var name = this.ui.planMain.find(".plan-book-company").html()+"计划书演示";
-            console.log(name)
-            utils.shareProduct(name);
+            utils.shareProduct(name,"分享计划",window.location.href);
         },
         changeMenuTab : function(tabIndex){
             var self = this;
             if(tabIndex == 1){
                 self.showPlan();
-            }else if(tabIndex == 2){
+            }else if(tabIndex == 2){s
                 self.showInsuranceConcept();
             }else if(tabIndex == 3){
                 self.showCompany();

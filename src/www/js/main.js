@@ -9,13 +9,18 @@ window.onLineError = true;  //是否是有网加载情况
 
 var timeTemp = null;    //android 物理返回键的间隔时间
 window.IS_PAUSE = false; //app是否在后台
+//登录成功
+function loginSuccess(userData){
+    alert("登录成功"+userData);//todo
+    utils.userObj.id = userData;
+}
 //点击物理返回键
 function clickAndroidReturn(){
-    alert("点击物理返回");//todo
     var url = window.location.href;
+    alert("点击物理返回="+url);//todo
     if(url.lastIndexOf("lifeInsurance") > 1){	//在寿险页时 退出
-        app.triggerMethod("insurance:exit");	//退出制作
         alert("触发物理返回");//todo
+        app.triggerMethod("insurance:exit");	//退出制作
     }else{
         if(timeTemp &&((new Date().getTime() - timeTemp) < 1000)){ //防止连续点击,两次点击小于1S的时候不执行
             return;

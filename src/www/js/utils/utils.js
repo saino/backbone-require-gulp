@@ -330,12 +330,11 @@
      * 分享产口 （调原生）
      * @param productName
      */
-    utils.shareProduct = function(productName){
-
+    utils.shareProduct = function(title,des,utl){
         if(device.ios()){
             kbShareAction(title, des, url);
         }else{
-          window.kbShare && window.kbShare.kbShareAction(title, des, url);
+            window.kbShare && window.kbShare.kbShareAction(title, des, url);
         }
         // window.JsTest && window.JsTest.jsCallAndroid(productName);
     };
@@ -345,7 +344,9 @@
      * @param 
      */
     utils.toLogin = function(){
-        window.kbLogin && window.kbLogin.toLogin();
+        alert("点击登录");//todo
+        alert(window.kbLogin);//todo
+        window.kbLogin && window.kbLogin.toLogin("0");
     };
     
     utils.illusType = {

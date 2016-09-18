@@ -637,11 +637,12 @@ define([
             e.preventDefault();
             var self = this;
             self.productId = self.productId || "null";
-
+            alert("点击去制作"+utils.userObj.id);//todo
             if(!utils.userObj.id || utils.userObj.id == ""){
                 utils.toLogin();
+            }else {
+                app.navigate("in/makePlan/" + self.productId, {replace: true, trigger: true});
             }
-            app.navigate("in/makePlan/" + self.productId, {replace: true, trigger: true});
             // MsgBox.alert("去制作");in/makePlan/:productId
         },
         close:function(){
