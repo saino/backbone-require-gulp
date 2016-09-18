@@ -2,7 +2,7 @@ define([
 
 ],function(){
     var PlanModel = function(){};
-
+    //获取计划书信息
     PlanModel.prototype.getPlanInfo = function(planId, cb_ok, cb_err){
         var opt = {};
         opt.url = "/ls/services/dt/planService/getPlanInfo";
@@ -23,6 +23,27 @@ define([
         };
         utils.requestData(opt);
     };
+    //获取计划书利益演示部份
+    PlanModel.prototype.getPlanIllus = function(planId, cb_ok, cb_err){
+        var opt = {};
+        opt.url = "/ls/services/dt/planService/getPlanIllustration";
+        opt.type = "POST";
+        var data = {};
+//        data.encryptedUserData = utils.userObj.id;
+        data.quotationId = planId;
+        opt.data = data;
+        opt.success = function(result){
+            if(result.status == 0){
+                if (cb_ok) cb_ok(result);
+            }else{
+                if(cb_err) cb_err("数据错误")
+            }
+        };
+        opt.error = function(err){
+            if(cb_err) cb_err(err)
+        };
+        utils.requestData(opt);
+    }
     //获取保险理念
     PlanModel.prototype.getInsuranceConcept = function(planId, cb_ok, cb_err){
         var opt = {};

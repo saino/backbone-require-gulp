@@ -9,7 +9,23 @@ window.onLineError = true;  //是否是有网加载情况
 
 var timeTemp = null;    //android 物理返回键的间隔时间
 window.IS_PAUSE = false; //app是否在后台
-
+//点击物理返回键
+function clickAndroidReturn(){
+    var url = window.location.href;
+    if(url.lastIndexOf("lifeInsurance") > 1){	//在寿险页时 退出
+        app.triggerMethod("insurance:exit");	//退出制作
+    }else{
+        if(timeTemp &&(new Date - timeTemp < 1000)){ //防止连续点击,两次点击小于1S的时候不执行
+            return;
+        }
+        if(url.lastIndexOf("makePlan") > 0){
+            app.triggerMethod("makePlan:exit");	//退出制作计划书
+        }else{
+            backApp();	//直接返回
+        }
+        timeTemp = new Date();
+    }
+}
 document.addEventListener("deviceready", onDeviceReady, false);
 document.body.addEventListener("touchstart", function(){}, false);
 
@@ -157,6 +173,7 @@ require([
     });
 
     function readyHandle (){
+        utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
 
         //基本数据初始化 add by guYY 2015/12/31 10：20
         if(device && device.ios())

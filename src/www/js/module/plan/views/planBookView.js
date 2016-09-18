@@ -92,7 +92,11 @@ define([
             self.ui.yearTitle.html("");
             self.ui.valueAddedCon.css("display","none");
             self.ui.planMessage.css("display","none");
+            //利益演示默认隐藏，请求成功再显示
+            self.ui.planDemo.css("display","none");
             var planFromLocalStory = utils.getLocalStorageValue("planObject",planId);
+            var planIllusFromLocalStory = utils.getLocalStorageValue("planObjectIllus",planId);//利益演示部份
+            //初始化基本数据，先判断缓存，没有则取服务器
             if(planFromLocalStory){
                 console.log("*********保障计划 缓存数据**********");
                 console.log(planFromLocalStory);
@@ -107,7 +111,24 @@ define([
                     self.renderData(data);
                 }, function (e) {
                     LoadingCircle && LoadingCircle.end();
-                    MsgBox.alert("获取计划书信息失败");
+                    MsgBox.alert("获取保障计划信息失败");
+                })
+            }
+            //初始化利益演示部份，先判断缓存，没有则取服务器
+            if(planIllusFromLocalStory){
+                console.log("*********保障计划-利益演示 缓存数据**********");
+                console.log(planIllusFromLocalStory);
+                self.ui.planDemo.css("display","block");
+                self.renderIllusData(planIllusFromLocalStory);
+            }else{
+                planModel.getPlanIllus(planId, function (data) {
+                    console.log("*********保障计划利益演示 返回数据**********");
+                    console.log(data);
+                    self.ui.planDemo.css("display","block");
+                    utils.addLocalStorageObject("planObjectIllus",planId,data);
+                    self.renderIllusData(data);
+                }, function (e) {
+                    MsgBox.alert("获取保障计划利益演示接口失败");
                 })
             }
         },
@@ -143,9 +164,14 @@ define([
             }
             //初始化责任列表
             self.initLiability(self.planBook.planLiability);
-            //初始化利益演示
-//                self.ui.planDemo.css("display","none");
-            self.isULProduct = self.planBook.isULProduct;
+            self.ui.userName.html(self.planBook.userName);//userPhone
+            self.ui.userPhone.html('<a href="tel:'+self.planBook.userPhone+'">'+self.planBook.userPhone+'</a>');
+        },
+        //渲染利益演示部分
+        renderIllusData:function(data){
+            var self = this;
+            if(self.currPlanId != data.quotationId)return;
+            self.isULProduct = data.isULProduct;
             if(self.isULProduct == "Y"){
                 self.ui.planLevel.css("display","block");
                 self.currLevel = "1";
@@ -153,9 +179,7 @@ define([
                 self.ui.planLevel.css("display","none");
                 self.currLevel = "2";
             }
-            self.initInterestDemonstration(self.planBook.illusMap);
-            self.ui.userName.html(self.planBook.userName);//userPhone
-            self.ui.userPhone.html('<a href="tel:'+self.planBook.userPhone+'">'+self.planBook.userPhone+'</a>');
+            self.initInterestDemonstration(data.illusMap);
         },
         /***
          * initBanner

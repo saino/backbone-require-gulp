@@ -18,6 +18,22 @@
     ///////////////////////////-->
 
     <!--<script src="debug.js"></script>-->
+    <script type="text/javascript">
+        function getParameter(url, param){
+            var iLen = param.length;
+            var iStart = url.indexOf(param);
+            if (iStart == -1){
+                return "";
+            }
+            iStart += iLen + 1;
+            var iEnd = url.indexOf("&", iStart);
+            if (iEnd == -1){
+                return url.substring(iStart);
+            }
+            return url.substring(iStart, iEnd);
+        }
+
+    </script>
     <script src="js/lib/require/require.js" data-main="js/main.js"></script>
 </head>
 <body>

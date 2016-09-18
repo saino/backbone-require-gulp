@@ -120,6 +120,7 @@ define([
             //点击返回时 清理本地缓存 不能放在close TODO 要注意安卓物理返回键
             if(self.planId) {
                 utils.delLocalStorageObject("planObject", self.planId);
+                utils.delLocalStorageObject("planObjectIllus", self.planId);//对应利益演示部份
             }
             app.goBack();
         },
