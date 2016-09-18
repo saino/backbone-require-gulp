@@ -102,6 +102,19 @@ define([
 
 
         },
+        show: function(){
+            var self = this;
+            if(utils.isShare){
+            //     backBtn : ".top-title-left", //点击返回
+            // shareBtn : ".top-title-right-1",              //分享按钮
+            // collectBtn : ".top-title-right-2", 
+            // insureMake
+                self.ui.backBtn.css("visibility", "hidden");
+                self.ui.shareBtn.css("visibility", "hidden");
+                self.ui.collectBtn.css("visibility", "hidden");
+                self.ui.insureMake.css("visibility", "hidden");
+            }
+        },
         pageIn:function(){
             var self = this;
 
