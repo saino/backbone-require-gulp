@@ -173,7 +173,7 @@ require([
     });
 
     function readyHandle (){
-        utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
+        // utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
 
         //基本数据初始化 add by guYY 2015/12/31 10：20
         if(device && device.ios())

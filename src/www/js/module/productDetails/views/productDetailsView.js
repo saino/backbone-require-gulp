@@ -412,7 +412,7 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
-            var str = "点击了"+self.packageName+"的分享"
+            // var str = "点击了"+self.packageName+"的分享"
             utils.shareProduct(self.packageName);
             // MsgBox.alert("点击了分享保险");
             // var options = {
@@ -637,6 +637,10 @@ define([
             e.preventDefault();
             var self = this;
             self.productId = self.productId || "null";
+
+            if(!userObj.userObj.id){
+                utils.toLogin();
+            }
             app.navigate("in/makePlan/" + self.productId, {replace: true, trigger: true});
             // MsgBox.alert("去制作");in/makePlan/:productId
         },

@@ -492,14 +492,19 @@ define([
         },
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
-            // utils.isInitOption = false;
-            // utils.isLifeInsuranceRefresh = false;
+            utils.toLogin();
+            app.on("insurance:exit", this._goBackHandler,this);
         },
-
+        _goBackHandler: function(){
+            if(window.kbFinish){
+                window.kbFinish.toFinish();
+            }else{
+                app.goBack();
+            }
+        },
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
-            //是否初始化保险公司
-             // utils.isInitCompany = true;
+            app.off("insurance:exit", this._goBackHandler,this);
         },
 
         //当页面销毁时触发
