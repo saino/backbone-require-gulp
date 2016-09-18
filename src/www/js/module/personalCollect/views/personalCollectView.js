@@ -152,7 +152,7 @@ define([
                 return;
             }
 
-             MsgBox.ask("你确定删除所有浏览记录吗？","bbbbbbb",function(type){
+             MsgBox.ask("你确定删除所有收藏产品吗？","bbbbbbb",function(type){
                 if(type == 2) { //确定  0=取消
                     var options = {
                         "encryptedUserData": utils.userObj.id,

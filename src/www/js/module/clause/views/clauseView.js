@@ -33,8 +33,9 @@ define([
             event.stopPropagation();
             event.preventDefault();
             var self = this;
-            // window.open(utils.serverConfig.serverUrl+self.pdfUrl, "_blank", "Download");
-            window.open("http://media.winbaoxian.com/static%2Fpdf%2Fhuaxia%2Fflm2016.pdf?ob=1", "_blank", "Download");
+            console.log(utils.serverConfig.serverUrl+self.pdfUrl);
+            window.open(utils.serverConfig.serverUrl+self.pdfUrl, "_blank", "Download");
+            // window.open("http://media.winbaoxian.com/static%2Fpdf%2Fhuaxia%2Fflm2016.pdf?ob=1", "_blank", "Download");
             // console.log("llll");
         },
         inputTextHandler: function(event){

@@ -15,10 +15,19 @@ define([
          ui:{
             "topCon":"#top-title",
             "diseaseContent":"#disease-main",
-            "btnBack":"#top-title-left" //点击返回
+            "btnBack":"#top-title-left", //点击返回
+            "btnCall": "#btnCall"     //拨打电话
         },
         events:{
-            "tap #top-title-left":"_clickBackHandler"
+            "tap #top-title-left":"_clickBackHandler",
+            "tap @ui.btnCall": "_clickBtnCall"
+        },
+        _clickBtnCall: function(event){
+            // console.log(this.model.attributes);
+            var companyPhone = this.model.get("companyPhone");
+            // var aaa = this.model.attributes.companyPhone;
+            // console.log(number,aaa);
+            window.open(companyPhone, "_blank");
         },
         initialize:function(){
             this.model = new companyIntroModel();
