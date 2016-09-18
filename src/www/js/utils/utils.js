@@ -135,6 +135,8 @@
         };
     //记录上次排序条件
     utils.preSortOption = 1;
+
+    utils.isKeyWordSearch = false;
     //每个计划书内保障计划下条款(产品)列表，打开保障计划时初始化，离开进清空 add by guYY
     utils.productInfoList = [];
     /**
@@ -329,7 +331,13 @@
      * @param productName
      */
     utils.shareProduct = function(productName){
-        window.JsTest && window.JsTest.jsCallAndroid(productName);
+
+        if(device.ios()){
+            kbShareAction(title, des, url);
+        }else{
+          window.kbShare && window.kbShare.kbShareAction(title, des, url);
+        }
+        // window.JsTest && window.JsTest.jsCallAndroid(productName);
     };
 
     /**
