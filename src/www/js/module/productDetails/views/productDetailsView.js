@@ -446,12 +446,13 @@ define([
                 "encryptedUserData": utils.userObj.id,
                 "packageId": parseInt(self.productId)
             }
-            if($target.hasClass("hasCollection")){
+            if($target.hasClass("hasCollection")){      //取消收藏
                 LoadingCircle && LoadingCircle.start();
                 personalCollectModel.deleteCollectProduct(options, function(data){
                     console.log(data);
                     if(data.status == "0"){
                         $target.toggleClass("hasCollection");
+                        MsgBox.alert("取消收藏成功");
                     }else{
                         MsgBox.alert("取消收藏失败");
                     }
@@ -463,13 +464,17 @@ define([
 
                 return;
             }
-
-            utils.toLogin();
+            
+            // 收藏
+             if(!utils.userObj.id || utils.userObj.id == ""){
+                utils.toLogin();
+            }
             LoadingCircle && LoadingCircle.start();
             productDetailsModel.collectProduct(options, function(data){
                 console.log("success", data);
                 if(data.status == "0"){
                     $target.toggleClass("hasCollection");
+                    MsgBox.alert("收藏成功");
                 }else{
                     MsgBox.alert("收藏失败");
                 }

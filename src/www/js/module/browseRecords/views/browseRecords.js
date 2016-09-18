@@ -76,11 +76,20 @@ define([
                 });
             }
         },
+
+        //删除所有
         clickDeleteAllHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
 
             var self = this;
+            console.log(self.ui.browseRecordsContent.find(".insurance-product-card").length);
+            if(!(self.ui.browseRecordsContent.find(".insurance-product-card").length)){
+                MsgBox.alert("浏览记录为空");
+                return;
+            }
+            
+
             MsgBox.ask("你确定删除所有浏览记录吗？","bbbbbbb",function(type){
                 if(type == 2) { //确定  0=取消
                     var options = {
