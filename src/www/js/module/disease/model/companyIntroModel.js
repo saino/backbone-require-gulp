@@ -39,7 +39,7 @@ define([
 
         setPhoneNumber : function(number){
             if(number){
-                number = "tel:"+number;
+                number = "tel://"+number;
             }else{
                 number = "";
             }

@@ -223,9 +223,9 @@ define([
                     paymentStr += "/";
                 }
                 if(obj1.periodType == 1){
-                    if(!obj1.periodValue){
+                    // if(!obj1.periodValue ){
                         obj1.periodValue = "";
-                    }
+                    // }
                     paymentStr += obj1.periodValue + "趸交";
                 }
                 if(obj1.periodType == 2){
