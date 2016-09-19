@@ -68,7 +68,6 @@ define([
             this.companyId = this.companyId || "null";
             app.navigate("in/companyIntro/" + this.companyId, {replace : true, trigger : true});
         },
-
         initialize:function(){
 
         },
@@ -99,8 +98,6 @@ define([
                 }, 350);
                 LoadingCircle && LoadingCircle.end();
             });
-
-
         },
         show: function(){
             var self = this;

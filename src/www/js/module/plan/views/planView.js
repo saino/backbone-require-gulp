@@ -101,7 +101,7 @@ define([
             var self = this;
             if(tabIndex == 1){
                 self.showPlan();
-            }else if(tabIndex == 2){s
+            }else if(tabIndex == 2){
                 self.showInsuranceConcept();
             }else if(tabIndex == 3){
                 self.showCompany();
