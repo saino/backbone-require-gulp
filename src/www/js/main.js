@@ -182,10 +182,9 @@ require([
 
     function readyHandle (){
         if(utils.isDebug){
-            // utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
+            utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
         }
         var isShare = getParameter(window.location.href, "isShare");
-//        alert("isShare="+isShare);
         if(isShare && isShare == 1){
             utils.isShare = true;
         }else{
