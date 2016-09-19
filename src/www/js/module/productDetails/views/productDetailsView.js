@@ -16,7 +16,7 @@ define([
         currentUserId : "",     //当前用户ID
         productId : "",         //售卖产品ID
         packageName: "",        //产品名称
-        // forever: true,
+        forever: true,
         // forever: true,
         ui:{
             topCon : ".top-title",
@@ -68,7 +68,6 @@ define([
             this.companyId = this.companyId || "null";
             app.navigate("in/companyIntro/" + this.companyId, {replace : true, trigger : true});
         },
-
         initialize:function(){
 
         },
@@ -82,25 +81,23 @@ define([
                 self.ui.productDetailsMain.css({height: "calc(100% - " + height + "px)"});
             }, 0)
 
-            self.productId = self.getOption("productId");   //获取产品ID
+            // self.productId = self.getOption("productId");   //获取产品ID
             // console.log(self.productId);
             //根据用户ID 和保险售卖ID查询数据
             self._initView = self.initView.bind(self);
             //TODO 需要真实的接口和数据
-            var options =  {
-                    "encryptedUserData": utils.userObj.id,
-                    "salesPackageId": self.productId
-                };
-            LoadingCircle && LoadingCircle.start();
-            productDetailsModel.getProductInfo(options, self._initView, function(err){
-                console.log(err);
-                setTimeout(function(){
-                    MsgBox.alert("数据获取失败");
-                }, 350);
-                LoadingCircle && LoadingCircle.end();
-            });
-
-
+            // var options =  {
+            //     "encryptedUserData": utils.userObj.id,
+            //     "salesPackageId": self.productId
+            // };
+            // LoadingCircle && LoadingCircle.start();
+            // productDetailsModel.getProductInfo(options, self._initView, function(err){
+            //     console.log(err);
+            //     setTimeout(function(){
+            //         MsgBox.alert("数据获取失败");
+            //     }, 350);
+            //     LoadingCircle && LoadingCircle.end();
+            // });
         },
         show: function(){
             var self = this;
@@ -114,6 +111,29 @@ define([
                 self.ui.collectBtn.css("visibility", "hidden");
                 self.ui.insureMake.css("visibility", "hidden");
             }
+            var productId = self.getOption("productId")
+            if(self.productId == productId){
+                return;
+            }
+            self.productId = productId;   //获取产品ID
+            // console.log(self.productId);
+            //根据用户ID 和保险售卖ID查询数据
+            // self._initView = self.initView.bind(self);
+            //TODO 需要真实的接口和数据
+            var options =  {
+                "encryptedUserData": utils.userObj.id,
+                "salesPackageId": self.productId
+            };
+            LoadingCircle && LoadingCircle.start();
+            productDetailsModel.getProductInfo(options, self._initView, function(err){
+                console.log(err);
+                setTimeout(function(){
+                    MsgBox.alert("数据获取失败");
+                }, 350);
+                LoadingCircle && LoadingCircle.end();
+            });
+
+
         },
         pageIn:function(){
             var self = this;
@@ -226,9 +246,9 @@ define([
                     paymentStr += "/";
                 }
                 if(obj1.periodType == 1){
-                    if(!obj1.periodValue){
+                    // if(!obj1.periodValue ){
                         obj1.periodValue = "";
-                    }
+                    // }
                     paymentStr += obj1.periodValue + "趸交";
                 }
                 if(obj1.periodType == 2){
@@ -298,7 +318,7 @@ define([
 
             if(!productFeatureList || productFeatureList.length==0){
                 self.ui.productInsureFeature.hide();
-                console.log("没有附加险");
+                console.log("没有产品特色");
                 return;
             }else{
                 self.ui.productInsureFeature.show();
@@ -343,6 +363,8 @@ define([
                 var realTemp = dutyTemp.replace("{liabName}", obj.liabDesc).replace(/\{liabDesc\}/g, obj.liabDescProd);
                 dutyStr += realTemp;
             }
+            self.ui.dutyTitle.attr("class", "insure-duty-title");
+            self.ui.dutyContent.hide();
             self.ui.dutyContent.html(dutyStr);
         },
         /**
@@ -378,6 +400,8 @@ define([
                 }
                 self.ui.planContent.html(planStr);
             }
+            self.ui.planTitle.attr("class", "insure-plan-title");
+            self.ui.planContent.hide();
         },
         /**
          * 设置附加险
@@ -404,6 +428,9 @@ define([
                 var realTemp = subjoinTemp.replace("{salesProductName}", obj.attachProductName).replace(/\{productId\}/g, obj.attachId).replace(/\{salesProductId\}/g, obj.salesProductId).replace(/\{insType\}/g, obj.insType);
                 subjoinStr += realTemp;
             }
+            self.ui.subjoinTitle.attr("class", "insure-subjoin-title");
+            self.ui.subjoinContent.hide();
+
             self.ui.subjoinContent.html(subjoinStr);
         },
         /**
