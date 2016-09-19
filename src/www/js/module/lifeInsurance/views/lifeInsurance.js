@@ -12,6 +12,7 @@ define([
         forever: true,
         actualSearchWords: "", //搜索框对应搜索词
         companys: [],   //保险公司
+        maxScrollTop: 0,
         ui: {
             topTitle: "#top-title",
             back: "#top-title-left",
@@ -28,6 +29,7 @@ define([
             searchAdvancedScreening: "#search-advanced-screening",      //高级筛选
             searchInsuranceCompany: "#search-insurance-company",        //保险公司
             lifeInsuranceContent: "#life-insurance-content",            //寿险容器
+            lifeInsuranceInnerContent: "#life-insurance-inner-content", //寿险内部容器
             searchIcon: "#search-icon",                                 //搜索框的放大镜
             samplePremium: ".sample-premium",
             samplePremiumMessage: ".sample-premium-message"    
@@ -293,16 +295,19 @@ define([
         //渲染完模板后执行,此时当前page没有添加到document
         onRender : function(){
             // console.log("onRender...");
-            var options = {
+            // var options = {
 
-            };
-            this.ui.topRitleRight.css("background-image","url(images/history.png)");
+            // };
+            var self = this;
+            self.ui.topRitleRight.css("background-image","url(images/history.png)");
+            self._scrolling = self.scrolling.bind(self);
             // myCustomerModel.queryAgentCustomers(options, function(data){
             //     console.log(data);
             // }, function(error){
             //     console.log(error);
             // });
         },
+
 
         // 根据条件查找并加载数据
         loadData: function(){
@@ -462,10 +467,14 @@ define([
 
                         utils.isInitCompany = true;
                     }
-                    self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
+                    self.ui.lifeInsuranceInnerContent.html(lifeInsuranceContentHtml);
+                    //当前能滑到的最大距离
+                    self.ui.lifeInsuranceContent.get(0).scrollTop = 0;
+                    self.maxScrollTop = self.ui.lifeInsuranceInnerContent.get(0).offsetHeight - self.ui.lifeInsuranceContent.get(0).offsetHeight;
                 } else{
+                    self.ui.lifeInsuranceInnerContent = 0;
                     lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
-                    self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
+                    self.ui.lifeInsuranceInnerContent.html(lifeInsuranceContentHtml);
                     setTimeout(function(){
                         MsgBox.alert("数据获取失败");
                     }, 350);
@@ -473,8 +482,9 @@ define([
                 }
                 LoadingCircle && LoadingCircle.end();
             }, function(error){
+                self.ui.lifeInsuranceInnerContent = 0;
                 lifeInsuranceContentHtml = '<div id="browse-records-noting">没有找到您想找的产品</div>';
-                self.ui.lifeInsuranceContent.html(lifeInsuranceContentHtml);
+                self.ui.lifeInsuranceInnerContent.html(lifeInsuranceContentHtml);
                 setTimeout(function(){
                     MsgBox.alert("数据获取失败");
                 }, 350);
@@ -500,6 +510,8 @@ define([
                     utils.lifeInsuranceOptions.rightIds = [];       //选填，权益ID，来自高级过滤接口的返回值
                     utils.lifeInsuranceOptions.companyIds = []; //选填，公司ID，来自高级过滤接口的返回值
                     utils.lifeInsuranceOptions.sortOption = 1;     //选填，排序选项。2：按浏览量排序，3：按上架时间排序
+                    utils.lifeInsuranceOptions.startPos = 0;      //查询起始位置
+                    utils.lifeInsuranceOptions.pageSize = 10;      //每页查询多少条
                     utils.preSortOption = 1;
                     utils.advanceSaleTypeIds = [];
                     utils.advanceRightIds = [];
@@ -524,10 +536,24 @@ define([
             // }
 // console.log();
         },
+
+        scrolling: function(event){
+            // console.log(event.target.offsetHeight, event.target.scrollTop, event.target.children[0].offsetHeight);
+            // console.log("kjlaskjdl");
+            var self = this;
+            // console.log(this.maxScrollTop, event.target.scrollTop);
+            if((event.target.scrollTop + 100) > self.maxScrollTop){
+                console.log("加载，加载，加载！！！");
+            }
+
+        },
+
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
             // utils.toLogin();
+            var self = this;
             app.on("insurance:exit", this._goBackHandler,this);
+            self.ui.lifeInsuranceContent.scroll(self._scrolling);
         },
         _goBackHandler: function(){
             if(window.kbFinish){
