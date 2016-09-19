@@ -134,7 +134,9 @@
             "examPremOrder": null,    //选填，示例保费排序方式。asc:升序，desc: 降序
             "rightIds": [],       //选填，权益ID，来自高级过滤接口的返回值
             "companyIds": [], //选填，公司ID，来自高级过滤接口的返回值
-            "sortOption": 1     //选填，排序选项。2：按浏览量排序，3：按上架时间排序
+            "sortOption": 1,     //选填，排序选项。2：按浏览量排序，3：按上架时间排序
+            "startPos" : 0,      //查询起始位置
+            "pageSize" : 5       //每页查询多少条
         };
     //记录上次排序条件
     utils.preSortOption = 1;
