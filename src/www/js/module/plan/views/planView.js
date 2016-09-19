@@ -62,6 +62,7 @@ define([
             var self = this;
             console.log("utils.isShare="+utils.isShare);//todo
             //分享进入 顶部返回按钮 分享按钮需隐藏
+            alert("utils.isShare="+utils.isShare);
             if(utils.isShare){
                 self.ui.titleLeft.css("visibility","hidden");
                 self.ui.titleShare.css("visibility","hidden");
