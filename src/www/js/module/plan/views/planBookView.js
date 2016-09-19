@@ -27,6 +27,7 @@ define([
         interestDemonstration:{}, //利益演示数据列表 属性“1”低级  “2”中级  “3”高级
         isULProduct:"N",    //是否高级  高级显示“低 中 高”本档
         currLevel:"1",      //当前等级  “1”低级  “2”中级  “3”高级
+        advice:"", //推荐理由
 //        forever:true,
         ui:{
             //banner
@@ -81,6 +82,9 @@ define([
 
         show : function(planId){
             var self = this;
+            self.advice = "";
+            self.ui.planBannerName.html("");
+            self.ui.planBannerName.attr("data-advice","");
             //同一个计划书 数据无需刷新
             if(self.currPlanId == planId)return;
             //新计划书 置顶
@@ -156,6 +160,8 @@ define([
             self.initRights(self.planBook.rights);
             //增值服务
             self.initValueAdded(self.planBook.salesValueAdded,self.planBook.showValueAdded);
+            self.advice = plan.advice;
+            self.ui.planBannerName.attr("data-advice",self.advice);
             if(plan.showAdvice=="Y" && plan.advice != "")
             {
                 self.ui.commentCon.html(plan.advice);
