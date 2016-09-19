@@ -89,9 +89,9 @@ define([
         clickShareHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-            var name = this.ui.planMain.find(".plan-book-company").html()+"计划书演示";
+            var name = this.ui.planMain.find(".plan-book-company").html()+"-计划书演示";
             var advice = this.ui.planMain.find(".plan-book-company").attr("data-advice");
-            alert(name+","+advice);//todo
+            alert(name+","+advice+","+window.location.href);//todo
             if(name == "" || advice == ""){
                 MsgBox.alert("分享标题与描述不能为空!");
             }else{
@@ -102,7 +102,7 @@ define([
             var self = this;
             if(tabIndex == 1){
                 self.showPlan();
-            }else if(tabIndex == 2){s
+            }else if(tabIndex == 2){
                 self.showInsuranceConcept();
             }else if(tabIndex == 3){
                 self.showCompany();

@@ -4,7 +4,7 @@
 (function(window){
     var utils = {};
     window.utils = utils;
-    utils.isDebug = false;//true 原生   false 浏览器  todo
+    utils.isDebug = true;//true 原生   false 浏览器  todo
     utils.isShare = false;//是否分享链接进入
     //IOS顶部工具栏高度
     utils.toolHeight = 40;

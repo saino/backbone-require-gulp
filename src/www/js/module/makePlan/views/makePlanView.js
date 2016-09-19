@@ -1344,9 +1344,10 @@ define([
             plan.advice = self.ui.commentTxt.val();
             if(self.ui.incrementCheck.find(".increment-check").hasClass("increment-check-ck")){
                 plan.showAdvice = "Y";
-            }else{
-                plan.advice = "";
             }
+//            else{ //不管是否勾选 留言都要传 计划书分享描述要用 9.19 16:10
+//                plan.advice = "";
+//            }
             responseData.plan = plan;
             return responseData;
         },
