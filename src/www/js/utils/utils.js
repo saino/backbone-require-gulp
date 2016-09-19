@@ -4,14 +4,10 @@
 (function(window){
     var utils = {};
     window.utils = utils;
-    utils.isDebug = false;//true 原生   false 浏览器  todo
-    utils.isShare = false;//是否分享链接进入
     //IOS顶部工具栏高度
     utils.toolHeight = 40;
-    utils.userObj = {id:"mO9Ck8aUljOXBglrKYPu/1gd7T4nTzEFxN0+GruRM9JMCq8a8qRyTaWs7Sh2FpFemRJK6aVGIN7SOThIPHmwbamJKNrEMOsjBQloOj54UxDHBXYmpBSazn0lYxr1LcaTWtPGUGwP2pOXUwo79/4d6IuAy/CEUBIAEufB8NRO2xMxCtW4EiZxxF6VSzigsCXWOWSUcJbNct1igGjl4N/RfwULsNptX/MkfVR+QnppvTwbaU+V9JJ9TisLic14zAAxYoMg8V4ySrwAEtG6WjEoz4Ndm/1wOvgrjtrxwW3KVdGtNWs9ph85f0ejjWN5sAX6/lecd27hhDW60aOGPOhJYg=="};
-    if(utils.isDebug){
-        utils.userObj.id = "";
-    }
+   utils.userObj = {id:"mO9Ck8aUljOXBglrKYPu/1gd7T4nTzEFxN0+GruRM9JMCq8a8qRyTaWs7Sh2FpFemRJK6aVGIN7SOThIPHmwbamJKNrEMOsjBQloOj54UxDHBXYmpBSazn0lYxr1LcaTWtPGUGwP2pOXUwo79/4d6IuAy/CEUBIAEufB8NRO2xMxCtW4EiZxxF6VSzigsCXWOWSUcJbNct1igGjl4N/RfwULsNptX/MkfVR+QnppvTwbaU+V9JJ9TisLic14zAAxYoMg8V4ySrwAEtG6WjEoz4Ndm/1wOvgrjtrxwW3KVdGtNWs9ph85f0ejjWN5sAX6/lecd27hhDW60aOGPOhJYg=="};
+    // utils.userObj = {id:""};
     utils.serverConfig = {
         serverUrl: "http://210.13.77.75:8080"       //开发
 //        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
@@ -330,22 +326,16 @@
         return results;
     };
     /**
-     * 分享产品、计划书 （调原生）
+     * 分享产口 （调原生）
      * @param productName
      */
-    utils.shareProduct = function(title,des,url){
-        if(url.lastIndexOf("?") > 0){
-            url = url + "&isShare=1";
-        }else{
-            url = url + "?isShare=1";
-        }
+    utils.shareProduct = function(title,des,utl){
         if(device.ios()){
-            alert("IOS调用分享");//todo
             kbShareAction(title, des, url);
-        }else if(device.android()){//todo
-            alert("安卓调用分享"+","+title+","+des+","+url);//todo
+        }else{
             window.kbShare && window.kbShare.kbShareAction(title, des, url);
         }
+        // window.JsTest && window.JsTest.jsCallAndroid(productName);
     };
 
     /**
