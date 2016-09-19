@@ -4,7 +4,7 @@
 (function(window){
     var utils = {};
     window.utils = utils;
-    utils.isDebug = true;//true 原生   false 浏览器  todo
+    utils.isDebug = false;//true 原生   false 浏览器  todo
     utils.isShare = false;//是否分享链接进入
     //IOS顶部工具栏高度
     utils.toolHeight = 40;
@@ -17,6 +17,7 @@
 //        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
 //        serverUrl: "http://120.55.176.131:8080"  //外网测试环境
     };
+    utils.tempUser = {id:""};//监听用户ID，计划书分享用 add by guYY 9/19 20:22
 
     //进入寿险列表查询也是否需要重新加载数据
     utils.isLifeInsuranceRefresh = true;
@@ -335,15 +336,14 @@
      */
     utils.shareProduct = function(title,des,url){
         if(url.lastIndexOf("?") > 0){
-            url = url + "&isShare=1";
+            url = url + "&isShare=1&tempUser="+utils.userObj.id;
         }else{
-            url = url + "?isShare=1";
+            url = url + "?isShare=1&tempUser="+utils.userObj.id;
         }
         if(device.ios()){
-            alert("IOS调用分享");//todo
+            alert("IOS调用分享"+","+title+","+des+","+url);//todo
             kbShareAction(title, des, url);
-         }else if(device.android()){//todo
-            alert("安卓调用分享"+","+title+","+des+","+url);//todo
+        }else if(device.android()){ //todo
             window.kbShare && window.kbShare.kbShareAction(title, des, url);
         }
     };

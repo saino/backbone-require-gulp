@@ -60,9 +60,7 @@ define([
         },
         show:function(){
             var self = this;
-            console.log("utils.isShare="+utils.isShare);//todo
             //分享进入 顶部返回按钮 分享按钮需隐藏
-            alert("utils.isShare="+utils.isShare);
             if(utils.isShare){
                 self.ui.titleLeft.css("visibility","hidden");
                 self.ui.titleShare.css("visibility","hidden");
@@ -91,7 +89,6 @@ define([
             e.preventDefault();
             var name = this.ui.planMain.find(".plan-book-company").html()+"-计划书演示";
             var advice = this.ui.planMain.find(".plan-book-company").attr("data-advice");
-            alert(name+","+advice+","+window.location.href);//todo
             if(name == "" || advice == ""){
                 MsgBox.alert("分享标题与描述不能为空!");
             }else{
