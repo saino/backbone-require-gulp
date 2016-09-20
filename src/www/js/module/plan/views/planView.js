@@ -56,7 +56,23 @@ define([
 
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
-
+            var dom = $("#plan-cover");
+            var index = 0;
+            var iframe = document.createElement("iframe");
+            dom.append(iframe);
+            iframe.src = "planCover/index.html?text="+encodeURI("尊敬的xxx先生");
+            //iframe.setAttribute("data-text","jjjjjjjjjjjjjjjjjjjjjj");
+            $(iframe).css({
+                position: "absolute",
+                width:"100%",
+                height:"100%",
+                margin:"0",
+                padding:"0"
+            });
+            var timer = setTimeout(function(){
+                dom.remove();
+                clearTimeout(timer);
+            },6360)
         },
         show:function(){
             var self = this;
