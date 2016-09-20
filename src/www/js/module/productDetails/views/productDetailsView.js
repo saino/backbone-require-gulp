@@ -17,6 +17,7 @@ define([
         productId : "",         //售卖产品ID
         packageName: "",        //产品名称
         forever: true,
+        suggestReason: "",      //分享理由
         // forever: true,
         ui:{
             topCon : ".top-title",
@@ -161,7 +162,8 @@ define([
             }else if(data.isCollected == "N"){
                 self.ui.collectBtn.attr("class", "top-title-right-2")
             }
-
+            //分享理由
+            self.suggestReason = data.suggestReason;
             //设置用户信息
             self.packageName = data.packageName; //保险名称
             var organLogo =  utils.serverConfig.serverUrl + data.company.organLogo;    //公司logo
@@ -458,7 +460,8 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
-            utils.shareProduct(self.packageName, "分享了这个保险", window.location.href);
+            console.log(self.suggestReason);
+            utils.shareProduct(self.packageName, self.suggestReason, window.location.href);
             // MsgBox.alert("点击了分享保险");
             // var options = {
             //     "packageId": parseInt(self.productId),
