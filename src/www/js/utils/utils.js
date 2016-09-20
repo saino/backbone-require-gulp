@@ -4,7 +4,7 @@
 (function(window){
     var utils = {};
     window.utils = utils;
-    utils.isDebug = false;//true 原生   false 浏览器  todo
+    utils.isDebug = true;//true 原生   false 浏览器  todo
     utils.isShare = false;//是否分享链接进入
     //IOS顶部工具栏高度
     utils.toolHeight = 40;
@@ -333,7 +333,7 @@
         return results;
     };
     /**
-     * 分享产口 （调原生）
+     * 分享产品 （调原生）
      * @param productName
      */
     utils.shareProduct = function(title,des,url){
@@ -349,15 +349,35 @@
             window.kbShare && window.kbShare.kbShareAction(title, des, url);
         }
     };
-
+    //退出H5  return false表示访问原生报错
+    utils.toFinish = function(){
+        alert("退出");//todo
+        try{
+            if(device.ios()){
+                backAction();
+            }else{
+                if(window.kbFinish){
+                    window.kbFinish.toFinish();
+                }else{
+                    return false;
+                }
+            }
+            return true;
+        }catch(e){
+            return false;
+        }
+    }
     /**
      * 登录 （调原生）
-     * @param 
+     * @param
      */
     utils.toLogin = function(){
-        window.kbLogin && window.kbLogin.toLogin("0");
+        if(device.ios()){
+            kbLoginAction("0");
+        }else {
+            window.kbLogin && window.kbLogin.toLogin("0");
+        }
     };
-    
     utils.illusType = {
         1:"Sum Assured",2:"Accumulated Premium",3:"Annual Basic Premium",4:"Regular Topup Premium",5:"Annual Investment Premium",
         6:"Annual Invest Top-up",7:"COI",8:"Annual Admin Cost",9:"Total Charges Deducted",10:"Fund Net Value",11:"Basic Yearly Return",
