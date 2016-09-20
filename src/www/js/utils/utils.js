@@ -4,7 +4,7 @@
 (function(window){
     var utils = {};
     window.utils = utils;
-    utils.isDebug = true;//true 原生   false 浏览器  todo
+    utils.isDebug = false;//true 原生   false 浏览器  todo
     utils.isShare = false;//是否分享链接进入
     //IOS顶部工具栏高度
     utils.toolHeight = 40;
@@ -17,7 +17,6 @@
 //        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
 //        serverUrl: "http://120.55.176.131:8080"  //外网测试环境
     };
-    utils.tempUser = {id:""};//监听用户ID，计划书分享用 add by guYY 9/19 20:22
 
     //进入寿险列表查询也是否需要重新加载数据
     utils.isLifeInsuranceRefresh = true;
@@ -333,51 +332,32 @@
         return results;
     };
     /**
-     * 分享产品 （调原生）
+     * 分享产口 （调原生）
      * @param productName
      */
     utils.shareProduct = function(title,des,url){
         if(url.lastIndexOf("?") > 0){
-            url = url + "&isShare=1&tempUser="+utils.userObj.id;
+            url = url + "&isShare=1";
         }else{
-            url = url + "?isShare=1&tempUser="+utils.userObj.id;
+            url = url + "?isShare=1";
         }
         if(device.ios()){
-            alert("IOS调用分享"+","+title+","+des+","+url);//todo
+            alert("IOS调用分享");//todo
             kbShareAction(title, des, url);
-        }else if(device.android()){ //todo
+         }else if(device.android()){//todo
+            alert("安卓调用分享"+","+title+","+des+","+url);//todo
             window.kbShare && window.kbShare.kbShareAction(title, des, url);
         }
     };
-    //退出H5  return false表示访问原生报错
-    utils.toFinish = function(){
-        alert("退出");//todo
-        try{
-            if(device.ios()){
-                backAction();
-            }else{
-                if(window.kbFinish){
-                    window.kbFinish.toFinish();
-                }else{
-                    return false;
-                }
-            }
-            return true;
-        }catch(e){
-            return false;
-        }
-    }
+
     /**
      * 登录 （调原生）
-     * @param
+     * @param 
      */
     utils.toLogin = function(){
-        if(device.ios()){
-            kbLoginAction("0");
-        }else {
-            window.kbLogin && window.kbLogin.toLogin("0");
-        }
+        window.kbLogin && window.kbLogin.toLogin("0");
     };
+    
     utils.illusType = {
         1:"Sum Assured",2:"Accumulated Premium",3:"Annual Basic Premium",4:"Regular Topup Premium",5:"Annual Investment Premium",
         6:"Annual Invest Top-up",7:"COI",8:"Annual Admin Cost",9:"Total Charges Deducted",10:"Fund Net Value",11:"Basic Yearly Return",
