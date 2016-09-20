@@ -346,6 +346,7 @@ define([
                         var liabAmount2 = singleObj.libCalcType;
                         var liabilityList2Html = "";
                         var showStyle2 = 'style="display:none"';
+                        var needDiseaseIndi = singleObj.needDiseaseIndi;
                         if (needDiseaseIndi == "Y") {
                             showStyle2 = "";
                         }

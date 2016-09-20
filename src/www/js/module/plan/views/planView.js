@@ -92,7 +92,7 @@ define([
             if(name == "" || advice == ""){
                 MsgBox.alert("分享标题与描述不能为空!");
             }else{
-                utils.shareProduct(name,"分享计划",window.location.href);
+                utils.shareProduct(name,advice,window.location.href);
             }
         },
         changeMenuTab : function(tabIndex){
