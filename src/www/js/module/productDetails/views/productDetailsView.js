@@ -399,9 +399,12 @@ define([
                     planStr += realTemp;
                 }
                 self.ui.planContent.html(planStr);
+                self.ui.productInsurePlan.find(".insure-plan-title").show();
+                self.ui.productInsurePlan.show();
+                self.ui.planContent.hide();
             }
             self.ui.planTitle.attr("class", "insure-plan-title");
-            self.ui.planContent.hide();
+            
         },
         /**
          * 设置附加险
