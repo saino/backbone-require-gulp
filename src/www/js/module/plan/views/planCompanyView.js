@@ -19,7 +19,8 @@ define([
             "planCompanyCon":"#plan-company-content",
             "planCompanyLogo":"#plan-company-logo",
             "serverCompanyCon":".service-provider-content", //服务商内容区域
-            "underwriterCompanyCon":".underwriter-content"  //承保商内容区域
+            "underwriterCompanyCon":".underwriter-content",  //承保商内容区域
+            "serverCom":"#serverCom" //服务商 tab
         },
         events:{
             "tap .menu-item":"_clickMenuItemHandler"
@@ -80,6 +81,22 @@ define([
                 console.log("***********公司介绍数据************");
                 console.log(data);
                 self.companyInfoData = data;
+                //是否司内用户
+                self.companyInSide = false;
+                //daTongLogo属性有值表示司内用户
+                if(self.companyInfoData.daTongLogo && self.companyInfoData.daTongLogo.trim() != ""){
+                    self.companyInSide = true;
+                }
+                //如果不是司内用户 默认选中承保商 并隐藏服务端TAB
+                if(!self.companyInSide){
+                    self.currIndex = 1;
+                    self.ui.serverCom.css("display","none");
+                    self.ui.serverCom.siblings(".menu-item").css("width","100%");
+                }else{
+                    self.currIndex = 0;
+                    self.ui.serverCom.css("display","block");
+                    self.ui.serverCom.siblings(".menu-item").css("width","50%");
+                }
                 self.showCompany(self.currIndex);
             });
         }

@@ -209,17 +209,11 @@ define([
             utils.isLifeInsuranceRefresh = true;
             //是否初始化查询条件
             utils.isInitOption = true;
-            if(device.ios()){
-                backAction && backAction();
-            }else{
-                window.kbFinish && window.kbFinish.toFinish();
+
+            //返回
+            if(!utils.toFinish()){
+                app.goBack();
             }
-            // if(window.kbFinish){
-            //     window.kbFinish.toFinish();
-            // }else{
-            //     app.goBack();
-            // }
-            // app.goBack();
         },
 
         // 点击保险责任
@@ -642,9 +636,8 @@ define([
             self.ui.lifeInsuranceContent.scroll(self._scrolling);
         },
         _goBackHandler: function(){
-            if(window.kbFinish){
-                window.kbFinish.toFinish();
-            }else{
+            //退出H5 add by guYY 9.20 13:25
+            if(!utils.toFinish()){
                 app.goBack();
             }
         },

@@ -133,9 +133,8 @@ define([
         onBackBtnHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-            if(window.kbFinish){
-                window.kbFinish.toFinish();
-            }else{
+            //退出H5 add by guYY 9.20 13:25
+            if(!utils.toFinish()){
                 app.goBack();
             }
         },
@@ -222,9 +221,8 @@ define([
         },
         //物理返回
         _goBackHandler:function(){
-            if(window.kbFinish){
-                window.kbFinish.toFinish();
-            }else{
+            //退出H5 add by guYY 9.20 13:25
+            if(!utils.toFinish()){
                 app.goBack();
             }
         },

@@ -159,7 +159,7 @@ define([
             //保障概览
             self.initRights(self.planBook.rights);
             //增值服务
-            self.initValueAdded(self.planBook.salesValueAdded,self.planBook.showValueAdded);
+            self.initValueAdded(self.planBook.salesValueAdded,plan.showValueAdded);
             self.advice = plan.advice;
             self.ui.planBannerName.attr("data-advice",self.advice);
             if(plan.showAdvice=="Y" && plan.advice != "")
@@ -283,6 +283,7 @@ define([
         //增值服务
         initValueAdded:function(valueAddedList,showValueAdded){
             var tempHtml = "", self = this;
+            debugger;
             if(valueAddedList && valueAddedList.length > 0){
                 for(var i = 0; i < valueAddedList.length; i++){
                     tempHtml += '<div class="added-service-item"><div class="added-service-item-txt">'+valueAddedList[i].valueAddedName+'</div>' +

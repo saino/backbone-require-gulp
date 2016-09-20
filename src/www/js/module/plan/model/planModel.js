@@ -8,11 +8,11 @@ define([
         opt.url = "/ls/services/dt/planService/getPlanInfo";
         opt.type = "POST";
         var data = {};
-        var userId = utils.userObj.id;
-        if(!userId || userId == ""){
-            userId = utils.tempUser && utils.tempUser.id;
-        }
-        data.encryptedUserData = userId;
+//        var userId = utils.userObj.id; //不传
+//        if(!userId || userId == ""){
+//            userId = utils.tempUser && utils.tempUser.id;
+//        }
+//        data.encryptedUserData = userId;
         data.quotationId = planId;
         opt.data = data;
         opt.success = function(result){
