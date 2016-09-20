@@ -283,7 +283,6 @@ define([
         //增值服务
         initValueAdded:function(valueAddedList,showValueAdded){
             var tempHtml = "", self = this;
-            debugger;
             if(valueAddedList && valueAddedList.length > 0){
                 for(var i = 0; i < valueAddedList.length; i++){
                     tempHtml += '<div class="added-service-item"><div class="added-service-item-txt">'+valueAddedList[i].valueAddedName+'</div>' +

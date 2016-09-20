@@ -4,13 +4,110 @@
 (function(window){
     var utils = {};
     window.utils = utils;
-    utils.isDebug = true;//true 原生   false 浏览器  todo
+
+    utils.insurancePolicy = {
+                        planId:"100087",
+                        ageList:{"1":{
+                        gender:[1,0],
+                        amountLimit:{minAmount:1,maxAmount:100},//保额范围
+                        chargeList:[{    //交费期间1
+                            charge:{periodType:1,periodValue:3},
+                            coverageList:[
+                                {      //保障期间1
+                                    coverage:{periodType:2,periodValue:3},
+                                    payList:[ //领取年龄
+                                        {pay:{periodType:3,periodValue:3}},
+                                        {pay:{periodType:3,periodValue:1}},
+                                        {pay:{periodType:3,periodValue:2}},
+                                        {pay:{periodType:3,periodValue:4}}
+                                    ]
+                                },
+                                {      //保障期间2
+                                    coverage:{periodType:2,periodValue:2},
+                                    payList:[ //领取年龄
+                                        {pay:{periodType:3,periodValue:3}},
+                                        {pay:{periodType:3,periodValue:1}}
+                                    ]
+                                }
+                            ]
+                        },
+                            {             //交费期间2
+                                charge:{periodType:1,periodValue:2},
+                                coverageList:[
+                                    {      //保障期间1
+                                        coverage:{periodType:2,periodValue:1},
+                                        payList:[]
+                                    },
+                                    {      //保障期间2
+                                        coverage:{periodType:2,periodValue:5},
+                                        payList:[]
+                                    }
+                                ]
+                            }]},
+                 "2":{
+                        gender:[1], //只男
+                        amountLimit:{minAmount:1,maxAmount:100},//保额范围
+                        chargeList:[{   //交费期间1
+                            charge:{periodType:1,periodValue:3},
+                            coverageList:[
+                                {      //保障期间1
+                                    coverage:{periodType:2,periodValue:3},
+                                    payList:[ //领取年龄
+                                        {pay:{periodType:3,periodValue:3}},
+                                        {pay:{periodType:3,periodValue:1}},
+                                        {pay:{periodType:3,periodValue:2}},
+                                        {pay:{periodType:3,periodValue:4}}
+                                    ]
+                                },
+                                {      //保障期间2
+                                    coverage:{periodType:2,periodValue:2},
+                                    payList:[ //领取年龄
+                                        {pay:{periodType:3,periodValue:3}},
+                                        {pay:{periodType:3,periodValue:1}}
+                                    ]
+                                }
+                            ]
+                        },
+                        {             //交费期间2
+                            charge:{periodType:1,periodValue:2},
+                            coverageList:[
+                                {      //保障期间1
+                                    coverage:{periodType:2,periodValue:1},
+                                    payList:[]
+                                },
+                                {      //保障期间2
+                                    coverage:{periodType:2,periodValue:5},
+                                    payList:[]
+                                }
+                            ]
+                        },
+                        {             //交费期间3
+                            charge:{periodType:1,periodValue:2},
+                            coverageList:[
+                                {      //保障期间1
+                                    coverage:{periodType:2,periodValue:1},
+                                    payList:[]
+                                },
+                                {      //保障期间2
+                                    coverage:{periodType:2,periodValue:5},
+                                    payList:[]
+                                }
+                            ]
+                        }]}
+                        }
+                    };
+
+    utils.isDebug = false;//true 原生   false 浏览器  todo
+    var href = window.location.href;
+    if(href.indexOf("210.13.77.75/") >= 0){
+        utils.isDebug = true;
+    }
     utils.isShare = false;//是否分享链接进入
     //IOS顶部工具栏高度
     utils.toolHeight = 40;
     utils.userObj = {id:"mO9Ck8aUljOXBglrKYPu/1gd7T4nTzEFxN0+GruRM9JMCq8a8qRyTaWs7Sh2FpFemRJK6aVGIN7SOThIPHmwbamJKNrEMOsjBQloOj54UxDHBXYmpBSazn0lYxr1LcaTWtPGUGwP2pOXUwo79/4d6IuAy/CEUBIAEufB8NRO2xMxCtW4EiZxxF6VSzigsCXWOWSUcJbNct1igGjl4N/RfwULsNptX/MkfVR+QnppvTwbaU+V9JJ9TisLic14zAAxYoMg8V4ySrwAEtG6WjEoz4Ndm/1wOvgrjtrxwW3KVdGtNWs9ph85f0ejjWN5sAX6/lecd27hhDW60aOGPOhJYg=="};
     if(utils.isDebug){
-      utils.userObj.id = "";
+        utils.userObj.id = "";
     }
     utils.serverConfig = {
         serverUrl: "http://210.13.77.75:8080"       //开发
@@ -343,15 +440,13 @@
             url = url + "?isShare=1&tempUser="+utils.userObj.id;
         }
         if(device.ios()){
-            alert("IOS调用分享"+","+title+","+des+","+url);//todo
             kbShareAction(title, des, url);
-        }else if(device.android()){ //todo
+        }else if(device.android()){
             window.kbShare && window.kbShare.kbShareAction(title, des, url);
         }
     };
     //退出H5  return false表示访问原生报错
     utils.toFinish = function(){
-        alert("退出");//todo
         try{
             if(device.ios()){
                 backAction();
@@ -372,10 +467,15 @@
      * @param
      */
     utils.toLogin = function(){
-        if(device.ios()){
-            kbLoginAction("0");
-        }else {
-            window.kbLogin && window.kbLogin.toLogin("0");
+        try {
+            if (device.ios()) {
+                kbLoginAction("0");
+                return;
+            } else {
+                window.kbLogin && window.kbLogin.toLogin("0");
+            }
+        }catch(e){
+
         }
     };
     utils.illusType = {
