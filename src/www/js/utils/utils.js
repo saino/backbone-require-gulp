@@ -6,7 +6,7 @@
     window.utils = utils;
 
     utils.insurancePolicy = {
-                        planId:"100087",
+                        planId:"100009",
                         ageList:{"1":{
                         gender:[1,0],
                         amountLimit:{minAmount:1,maxAmount:100},//保额范围
