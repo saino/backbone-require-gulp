@@ -23,13 +23,15 @@ define([
         ui:{
            "topCon":"#top-title",
            "historyContent":"#history-main",
-            hotWordList : "#hot-word-list",
-            historyList : "#history-list",
-            btnClearHistory : "#clear-history",
-            searchInput : ".search-key",
-            btnSearch : ".search-btn",
-            hotWordCon: "#hot-word-con", //热搜词
-            historyCon: "#history-con" //历史记录容器
+            "hotWordList" : "#hot-word-list",         //热搜词容器
+            "hotWordInnerList": "#hot-word-inner-list",     //热搜词内部容器
+            "historyList" : "#history-list",
+
+            "btnClearHistory" : "#clear-history",
+            "searchInput" : ".search-key",
+            "btnSearch" : ".search-btn",
+            "hotWordCon": "#hot-word-con", //热搜词
+            "historyCon": "#history-con" //历史记录容器
         },
         events:{
             "tap #top-title-left-2":"_clickBackHandler",
@@ -37,7 +39,7 @@ define([
             "tap @ui.btnSearch" : "onBtnSearchHandler",
             "tap .history-item-del" : "onDeleteHistoryItemHandler",
             "tap @ui.hotWordCon": "clickHotWordConHandler",      //点击热搜词
-            "tap .history-item-nsearchInputme": "onHistoryItemName"       //点击历史收拾记录词
+            "tap .history-item-nsearchInputme": "onHistoryItemName",       //点击历史收拾记录词
             // "input @ui.searchInput": "onSearchInput"    //输入搜索词事件
         },
         // onSearchInput: function(event){
@@ -48,6 +50,9 @@ define([
         // },
         onRender:function(){
             var self = this;
+            var hotWordListWidth = $(window).width() - 60;
+            var hotWordInnerListWidth = hotWordListWidth - hotWordListWidth%205;
+            self.ui.hotWordInnerList.css("width", hotWordInnerListWidth+"px");
             if(device.ios()){
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
                 self.ui.historyContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
@@ -132,7 +137,7 @@ define([
                 var obj = list[i];
                 html += "<div class='hot-word-item'>"+obj.keyWords+"</div>";
             }
-            self.ui.hotWordList.html(html);
+            self.ui.hotWordInnerList.html(html);
         },
 
         initDefaultSearchWord : function(obj){

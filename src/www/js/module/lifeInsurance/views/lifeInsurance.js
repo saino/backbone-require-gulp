@@ -28,6 +28,7 @@ define([
 
             insuranceCompanyFloat: "#insurance-company-float",        //保险公司浮层
             insuranceCompanyContent: "#insurance-company-content",      //保险公司容器
+            insuranceCompanyInnerContent: "#insurance-company-inner-content", //保险公司内部容器
             // defaultSortContent: ".default-sort-content",
             searchText: "#search-text",                                 //搜索框
             searchAdvancedScreening: "#search-advanced-screening",      //高级筛选
@@ -152,9 +153,9 @@ define([
             event.preventDefault();
             var self = this;
             self.ui.insuranceCompanyFloat.show();
-
             if(utils.isInitCompany){
                 if(self.companys.length == 0){
+                    loadingCircle && loadingCircle.start();
                     lifeInsuranceModel.getCompanies(function(data){
                         console.log(data);
                         if(data.status == "0"){
@@ -164,11 +165,13 @@ define([
                                 insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
                             }
 
-                            self.ui.insuranceCompanyContent.html(insuranceCompanyNameHtml);
+                            self.ui.insuranceCompanyInnerContent.html(insuranceCompanyNameHtml);
                         } else {
                             console.log("数据返回错误", data.errorMessages)
                         }
+                        loadingCircle && loadingCircle.end();
                     }, function(error){
+                        loadingCircle && loadingCircle.end();
                         console.log("数据查询失败", error);
                     });
                 }
@@ -177,7 +180,7 @@ define([
                     for(var i=0; self.companys&&i<self.companys.length; i++){
                         insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
                     }
-                    self.ui.insuranceCompanyContent.html(insuranceCompanyNameHtml);
+                    self.ui.insuranceCompanyInnerContent.html(insuranceCompanyNameHtml);
                 }
                 //是否初始化保险公司
                 utils.isInitCompany = false;
@@ -303,6 +306,10 @@ define([
             var self = this;
             self.ui.topRitleRight.css("background-image","url(images/history.png)");
             self._scrolling = self.scrolling.bind(self);
+            var insuranceCompanyContentWidth = $(window).width() - 28;
+            var insuranceCompanyInnerContentWidth = insuranceCompanyContentWidth - insuranceCompanyContentWidth%175;
+            self.ui.insuranceCompanyInnerContent.css("width", insuranceCompanyInnerContentWidth+"px");
+            // console.log($(window).width() - 28);
             // myCustomerModel.queryAgentCustomers(options, function(data){
             //     console.log(data);
             // }, function(error){
@@ -394,7 +401,7 @@ define([
                             if(v){
                                 lifeInsuranceLabelMessageHtml += "、";
                             }else{
-                                lifeInsuranceLabelMessageHtml += "至";
+                                lifeInsuranceLabelMessageHtml += "为";        //取消以 至 开头  使用 为 代替
                             }
                             if(salesPackages[i].coveragePeriods[v].periodType == 1){
                                 lifeInsuranceLabelMessageHtml += "终身";
