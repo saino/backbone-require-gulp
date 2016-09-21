@@ -56,12 +56,15 @@ define([
 
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
+        },
+        show:function(){
+            var self = this;
+            //动画播放
             var dom = $("#plan-cover");
             var index = 0;
             var iframe = document.createElement("iframe");
             dom.append(iframe);
             iframe.src = "planCover/index.html?text="+encodeURI("尊敬的xxx先生");
-            //iframe.setAttribute("data-text","jjjjjjjjjjjjjjjjjjjjjj");
             $(iframe).css({
                 position: "absolute",
                 width:"100%",
@@ -72,10 +75,7 @@ define([
             var timer = setTimeout(function(){
                 dom.remove();
                 clearTimeout(timer);
-            },6360)
-        },
-        show:function(){
-            var self = this;
+            },6360);
             //分享进入 顶部返回按钮 分享按钮需隐藏
             if(utils.isShare){
                 self.ui.titleLeft.css("visibility","hidden");
