@@ -59,7 +59,8 @@ define([
                 for(var i = 0; i < self.companyInfoData.valueAddedList.length; i++){
                     var obj = self.companyInfoData.valueAddedList[i];
                     if(obj.valueAddedName && obj.valueAddedDesc){
-                        addServicePicHtml += '<div class="vip-increment-content vip-content"><div class="title">' + obj.valueAddedName + '</div><div class="vip-increment-content-main">'+obj.valueAddedDesc+'</div></div>';
+                        addServicePicHtml += '<div class="vip-increment-content vip-content"><div class="title">' + obj.valueAddedName + '</div><img style="width: 100%" src="'+(utils.serverConfig.serverUrl+obj.valueAddedDescPic)+'"/></div>';
+                        // addServicePicHtml += '<div class="vip-increment-content vip-content"><div class="title">' + obj.valueAddedName + '</div><div class="vip-increment-content-main">'+obj.valueAddedDesc+'</div></div>';
                     }
                 }
                 self.ui.underwriterCompanyCon.html(self.underwriterTpl({logoHtml:logoHtml,introHtml:companyDesc,addServicePicHtml:addServicePicHtml}));
