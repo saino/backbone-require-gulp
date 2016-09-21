@@ -334,7 +334,7 @@
 
     /*
      *把特殊符号%,替换"s百分号b"掉后，编码字符串，
-     *@parms : str	需要编码的字符串
+     *@parms : str  需要编码的字符串
      */
     utils.myEncodeURIComponent = function (str){
         var reStr = str;
@@ -349,7 +349,7 @@
     };
     /*
      *解码字符串后，把"s百分号b"替换成%
-     *@parms : str	需要解码的字符串
+     *@parms : str  需要解码的字符串
      */
     utils.myDecodeURIComponent = function (str){
         var reStr = str;
