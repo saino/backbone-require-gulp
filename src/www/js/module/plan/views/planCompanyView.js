@@ -5,8 +5,9 @@
 define([
     'common/base/base_view',
     'module/plan/model/planModel',
-    'text!module/plan/templates/planCompany.html'
-],function(BaseView, planModel, planCompanyTpl){
+    'text!module/plan/templates/planCompany.html',
+    'common/views/circle'
+],function(BaseView, planModel, planCompanyTpl, loadingCircle){
     var planCompanyView = BaseView.extend({
         id:"plan-company-container",
         template: _.template(planCompanyTpl),
@@ -78,6 +79,7 @@ define([
             self.ui.planCompanyCon.css({"height":(hei-70)+"px"});
 
             //查询服务商对象、承保商对象
+            loadingCircle && loadingCircle.start();
             planModel.getCompanyInfo(planId, function(data){
                 console.log("***********公司介绍数据************");
                 console.log(data);
@@ -99,6 +101,7 @@ define([
                     self.ui.serverCom.siblings(".menu-item").css("width","50%");
                 }
                 self.showCompany(self.currIndex);
+                loadingCircle && loadingCircle.end();
             });
         }
 
