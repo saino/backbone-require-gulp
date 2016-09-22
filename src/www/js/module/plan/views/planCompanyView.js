@@ -58,7 +58,7 @@ define([
                 var addServicePicHtml = "";
                 for(var i = 0; i < self.companyInfoData.valueAddedList.length; i++){
                     var obj = self.companyInfoData.valueAddedList[i];
-                    if(obj.valueAddedName && obj.valueAddedDesc){
+                    if(obj.valueAddedName && obj.valueAddedDescPic){
                         addServicePicHtml += '<div class="vip-increment-content vip-content"><div class="title">' + obj.valueAddedName + '</div><img style="width: 100%" src="'+(utils.serverConfig.serverUrl+obj.valueAddedDescPic)+'"/></div>';
                         // addServicePicHtml += '<div class="vip-increment-content vip-content"><div class="title">' + obj.valueAddedName + '</div><div class="vip-increment-content-main">'+obj.valueAddedDesc+'</div></div>';
                     }
