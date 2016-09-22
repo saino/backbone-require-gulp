@@ -14,12 +14,20 @@ define([
         template: _.template(queryTpl),
         ui:{
            "topCon":"#top-title",
-           "advanceQueryContent":"#advanceQuery-main",
-            productList : "#product-type-list",
-            rightsInfoList : "#rightsInfo-list",
-            companyList : "#company-list",
-            btnReset : "#btnReset",
-            btnConfirm : "#btnOk"
+           "advanceQueryContent":"#advanceQuery-main",    
+            "productList" : "#product-type-list",       //类别容器
+            "productTypeInnerList": "#product-type-inner-list",   //类别内部容器
+            
+            "rightsInfoList" : "#rightsInfo-list",      //保障容器
+            "rightsInfoInnerList": "#rightsInfo-inner-list",      //保障内部容器
+            "companyList" : "#company-list",            //公司容器
+            "companyInnerList": "#company-inner-list",          //公司内部容器
+            "btnReset" : "#btnReset",
+            "btnConfirm" : "#btnOk",
+            // "typeSamplePremium": "#product-type-inner-sample-premium",      //示例保费
+            "productTypeInnerSamplePremium": "#product-type-inner-sample-premium",  //示例保费内部容器
+            "typeItemSamplePremiumDesc": ".type-item-sample-premium-desc",  //示例保费从高到低
+            "typeItemSamplePremiumAsc": ".type-item-sample-premium-asc"    //示例保费从低到高
         },
         events:{
             "tap #top-title-left":"_clickBackHandler",
@@ -31,6 +39,16 @@ define([
         },
         onRender:function(){
             var self = this;
+            var outListWidth = $(window).width() - 60;
+            var innerListWidth = outListWidth - outListWidth%170;
+            self.ui.productTypeInnerList.css("width", innerListWidth+"px");
+            self.ui.productTypeInnerSamplePremium.css("width", innerListWidth+"px");
+            self.ui.rightsInfoInnerList.css("width", innerListWidth+"px");
+            self.ui.companyInnerList.css("width", innerListWidth+"px");
+            if(innerListWidth >= 640){
+                self.ui.typeItemSamplePremiumDesc.css("float", "left");
+                self.ui.typeItemSamplePremiumAsc.css("float", "right");
+            }
             if(device.ios()){
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
                 self.ui.advanceQueryContent.css("height","-webkit-calc(100% - "+(utils.toolHeight+85)+"px)");
@@ -61,7 +79,7 @@ define([
             var i, len = list.length, html = '';
             if(utils.advanceSaleTypeIds.length == 0){
                 html = '<div class="type-item type-all type-item-ck" data-premium="N">全部</div>';
-                self.ui.productList.find('.list-item').remove();
+                self.ui.productTypeInnerList.find('.list-item').remove();
                 for(i=0; i < len; i++){
                     var obj = list[i];
                     var isPremium = obj.ifFilterByPrem;
@@ -69,7 +87,7 @@ define([
                 }
             }else{
                 html = '<div class="type-item type-all" data-premium="N">全部</div>';
-                self.ui.productList.find('.list-item').remove();
+                self.ui.productTypeInnerList.find('.list-item').remove();
                 // console.log(list);
                 for(i=0; i < len; i++){
                     var obj = list[i];
@@ -88,16 +106,27 @@ define([
                 }
             }
             if(utils.advanceSaleTypeIds.length == 2){
+                self.ui.typeItemSamplePremiumDesc.show();
+                self.ui.typeItemSamplePremiumAsc.show();
+                self.ui.productTypeInnerSamplePremium.children().removeClass("type-item-ck");
                 if(utils.advanceSaleTypeIds[1] == "-1"){
-                    html += '<div style="display: block" class="type-item type-item-ck list-item type-sample-premium" data-id="-1">示例保费从高到低</div><div style="display: block;" class="type-item list-item type-sample-premium"  data-type="exprem" data-id="-100">示例保费从低到高</div>'
+                    self.ui.typeItemSamplePremiumDesc.addClass("type-item-ck");
+                    // html += '<div style="display: block" class="type-item type-item-ck list-item type-sample-premium" data-id="-1">示例保费从高到低</div><div style="display: block;" class="type-item list-item type-sample-premium"  data-type="exprem" data-id="-100">示例保费从低到高</div>'
                 }else{
-                    html += '<div style="display: block" class="type-item list-item type-sample-premium" data-id="-1">示例保费从高到低</div><div style="display: block;" class="type-item type-item-ck list-item type-sample-premium"  data-type="exprem" data-id="-100">示例保费从低到高</div>'
+                    self.ui.typeItemSamplePremiumAsc.addClass("type-item-ck");
+                    // html += '<div style="display: block" class="type-item list-item type-sample-premium" data-id="-1">示例保费从高到低</div><div style="display: block;" class="type-item type-item-ck list-item type-sample-premium"  data-type="exprem" data-id="-100">示例保费从低到高</div>'
                 }
             }else{
-                html += '<div class="type-item list-item type-sample-premium" data-id="-1">示例保费从高到低</div><div class="type-item list-item type-sample-premium"  data-type="exprem" data-id="-100">示例保费从低到高</div>'
+                self.ui.typeItemSamplePremiumDesc.hide();
+                self.ui.typeItemSamplePremiumAsc.hide();
+                self.ui.productTypeInnerSamplePremium.children().removeClass("type-item-ck");
+                // html += '<div class="type-item list-item type-sample-premium" data-id="-1">示例保费从高到低</div><div class="type-item list-item type-sample-premium"  data-type="exprem" data-id="-100">示例保费从低到高</div>'
   
             }
-            self.ui.productList.append(html);
+            self.ui.productTypeInnerList.append(html);
+            // console.log((len+1)*170/self.ui.productTypeInnerList.width());
+            var productTypeInnerListHeight = Math.ceil((len+1)*170/self.ui.productTypeInnerList.width()) * 76;
+            self.ui.productTypeInnerList.css("height", productTypeInnerListHeight+"px");
         },
 
         initRightsInfoList : function(list){
@@ -127,7 +156,7 @@ define([
                 }
             }
            
-            self.ui.rightsInfoList.append(html);
+            self.ui.rightsInfoInnerList.append(html);
         },
 
         initCompanyList : function(list){
@@ -169,7 +198,7 @@ define([
 
             self.ui.companyList.find('.list-item').remove();
 
-            self.ui.companyList.append(html);
+            self.ui.companyInnerList.append(html);
         },
 
         pageIn:function(){
@@ -192,6 +221,7 @@ define([
             self.ui.productList.find(".type-all").addClass("type-item-ck");
             self.ui.productList.find(".list-item").removeClass("type-item-ck");
             self.ui.productList.find(".type-sample-premium").hide();
+            self.ui.productTypeInnerSamplePremium.children().removeClass("type-item-ck");
             self.ui.rightsInfoList.find(".type-all").addClass("type-item-ck");
             self.ui.rightsInfoList.find(".list-item").removeClass("type-item-ck");
             self.ui.companyList.find(".type-all").addClass("type-item-ck");
@@ -251,6 +281,7 @@ define([
             utils.isInitCompany = true;
             utils.companyId = "all";
 
+
             app.goBack();
             // console.log(productLists);
             // console.log(infoLists);
@@ -278,16 +309,26 @@ define([
 
             var target  = e.target;
             var $target = $(target);
-            if($target.parent().attr("id") == "product-type-list"){
+            var pparent = $target.parent().parent();
+            if(pparent.attr("id") == "product-type-list"){
                 var isPremium = $target.attr("data-premium");
                 if(isPremium){
                     $target.parent().children().removeClass("type-item-ck");
 
                     if(isPremium == "Y"){
-                        $target.parent().find(".type-sample-premium").show();
+                        // console.log("显示示例保费");
+                        this.ui.typeItemSamplePremiumDesc.show();
+                        this.ui.typeItemSamplePremiumAsc.show();
+
+                        // this.ui.productTypeInnerSamplePremium.children().removeClass("type-item-ck");
+                        // $target.parent().find(".type-sample-premium").show();
                     }
                     if(isPremium == "N"){
-                        $target.parent().find(".type-sample-premium").hide();
+                        // console.log("隐藏示例保费");
+                        this.ui.typeItemSamplePremiumDesc.hide();
+                        this.ui.typeItemSamplePremiumAsc.hide();
+                        this.ui.productTypeInnerSamplePremium.children().removeClass("type-item-ck");
+                        // $target.parent().find(".type-sample-premium").hide();
                     }
 
                 }else{
@@ -297,17 +338,19 @@ define([
                 return;
             }
 
-
-            if(target.className.indexOf("type-item-ck")>=0 ){
-                $target.removeClass("type-item-ck");
-            }else{
-                $target.addClass("type-item-ck");
-                if(target.className.indexOf("type-all") >= 0){
-                    $target.parent().find(".list-item").removeClass("type-item-ck");
+            if(pparent.attr("id") == "rightsInfo-list" || pparent.attr("id") == "company-list"){
+                if(target.className.indexOf("type-item-ck")>=0 ){
+                    $target.removeClass("type-item-ck");
                 }else{
-                    $target.parent().find(".type-all").removeClass("type-item-ck");
+                    $target.addClass("type-item-ck");
+                    if(target.className.indexOf("type-all") >= 0){
+                        $target.parent().find(".list-item").removeClass("type-item-ck");
+                    }else{
+                        $target.parent().find(".type-all").removeClass("type-item-ck");
+                    }
                 }
             }
+    
         },
 
         //点击返回

@@ -23,10 +23,7 @@ define([
             "tap @ui.btnCall": "_clickBtnCall"
         },
         _clickBtnCall: function(event){
-            // console.log(this.model.attributes);
             var companyPhone = this.model.get("companyPhone");
-            // var aaa = this.model.attributes.companyPhone;
-            // console.log(number,aaa);
             window.open(companyPhone, "_blank");
         },
         initialize:function(){

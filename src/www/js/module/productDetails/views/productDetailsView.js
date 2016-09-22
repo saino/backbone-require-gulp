@@ -269,7 +269,7 @@ define([
             for(var j = 0; prdtTermCoverageList&&j<prdtTermCoverageList.length; j++){
                 var obj2 = prdtTermCoverageList[j];
                 if(j == 0){
-                    safeguardStr += "至";
+                    safeguardStr += "为";
                 }else{
                     safeguardStr += "、";
                 }

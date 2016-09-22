@@ -9,10 +9,25 @@
 #hot-word-con{width:-webkit-calc(100% - 28px); margin: 14px 14px 0 14px; box-shadow: 0 5px 5px 0 rgba(231,231,231,.75);
             padding:30px 16px 4px 16px;    background: #ffffff; overflow: hidden;
     .title{font-size: 3em; color: rgb(102, 102, 102); margin-bottom: 32px;}             
-    #hot-word-list{width:-webkit-calc(100% - 32px);
-        .hot-word-item{border-radius: 10px; background-color: rgb(230, 70, 76); height: 50px; line-height: 50px; float:left; padding:0 45px;  color: #ffffff;
-                    font-size: 2.6em; margin-right: 10px; margin-bottom: 26px;}
-     }
+    #hot-word-list{width:100%; }
+    #hot-word-inner-list{
+        margin: 0 auto;
+    }
+    .hot-word-item{    
+        border-radius: 10px;
+        background-color: #e6464c;
+        height: 50px;
+        line-height: 50px;
+        float: left;
+        color: #ffffff;
+        font-size: 2.6em;
+        margin-right: 10px;
+        margin-bottom: 26px;
+        width: 195px;
+        text-align: center;
+        overflow: hidden;
+    }
+    
 }
 //历史记录
 #history-con{ width:-webkit-calc(100% - 28px); margin:17px 14px; box-shadow: 0 5px 5px 0 rgba(231,231,231,.75);background: #ffffff; overflow: hidden;
@@ -33,18 +48,42 @@
 #advance-query-container{width:100%; height:100%; position:absolute; top:0; left:0; overflow: hidden; background:#f5f5f5;}
 #advanceQuery-main{
     .query-type1{margin-top:12px;}
-    .query-type{width:-webkit-calc(100% - 28px); margin:17px 14px 0px 14px;  box-shadow: 0 5px 5px 0 rgba(231,231,231,.75); padding:30px 17px; background:#ffffff;}
+    .query-type{width:-webkit-calc(100% - 28px); margin:17px 14px 0px 14px;  box-shadow: 0 5px 5px 0 rgba(231,231,231,.75); padding: 30px 6px 30px 16px; background:#ffffff;}
     .title{margin-bottom: 6px; font-size: 3em; color: rgb(102, 102, 102);} 
     .query-type-list{overflow: hidden;
-        .type-item{padding:0 58px; height:50px; float:left; line-height: 50px; margin-right: 10px; margin-top: 26px; font-size: 2.6em;color: rgb(102, 102, 102);
-                    background:#e4e0df; border-radius: 10px;}
+        .type-item{    height: 50px;
+    float: left;
+    line-height: 50px;
+    margin-right: 10px;
+    margin-top: 26px;
+    font-size: 2.6em;
+    color: #666666;
+    background: #e4e0df;
+    border-radius: 10px;
+    width: 160px;
+    text-align: center;
+    overflow: hidden;}
         .type-item-ck{color:#ffffff; background:#e39b2a;}
+    }
+    #product-type-inner-list, #rightsInfo-inner-list, #company-inner-list, #product-type-inner-sample-premium{
+        margin: 0 auto;
     }
     #btns{width:350px; height:70px; margin:52px auto;}
     .btnItem{width:170px; height:70px; border-radius: 10px; font-size: 3.4em;text-align: center; line-height: 70px; color:#ffffff;
       background: #e6454a; outline: none; border:none;-webkit-appearance: none;}
     #btnReset{background: #BABABA;}
 }
+
 .type-sample-premium{
-    display: none;
+    display: none; 
+    height: 50px;
+    line-height: 50px;
+    font-size: 2.6em;
+    color: #666666;
+    background: #e4e0df;
+    border-radius: 10px;
+    width: 320px;
+    text-align: center;
+    overflow: hidden;
+    margin: 26px auto 0;
 }
