@@ -64,7 +64,10 @@ define([
             var index = 0;
             var iframe = document.createElement("iframe");
             dom.append(iframe);
-            iframe.src = "planCover/index.html?text="+encodeURI("尊敬的xxx先生");
+            if(!utils.planHonorific || utils.planHonorific == ""){
+                utils.planHonorific = "尊敬的xxx先生";//TODO
+            }
+            iframe.src = "planCover/index.html?text="+encodeURI(utils.planHonorific);
             $(iframe).css({
                 position: "absolute",
                 width:"100%",
@@ -72,10 +75,10 @@ define([
                 margin:"0",
                 padding:"0"
             });
-            var timer = setTimeout(function(){
-                dom.remove();
-                clearTimeout(timer);
-            },6360);
+//            var timer = setTimeout(function(){
+//                dom.remove();
+//                clearTimeout(timer);
+//            },6360);
             //分享进入 顶部返回按钮 分享按钮需隐藏
             if(utils.isShare){
                 self.ui.titleLeft.css("visibility","hidden");
