@@ -21,6 +21,7 @@
 	"pref__general__FilterNonAnimatedElements":"false",
 	"expanded:images/klogo.png":"nil",
 	"gradientSwatches":"-webkit-radial-gradient(50% 50%, ellipse farthest-corner,rgba(81,44,139,1.00) 0%,rgba(255,255,255,1.00) 100%)",
+	"viewStartMs":"686.45642089844",
 	"pref__general__AutoKeyframePropertiesArmed":"true",
 	"expanded:images/t.png":"nil",
 	"symbol_stage":{
@@ -36,7 +37,7 @@
 			"timelineColor2":"0xcbbd71",
 			"timelineColor3":"0x7b7652",
 			"timelineColor":"0xeedf79",
-			"timelineTreeOpened":"false",
+			"timelineTreeOpened":"true",
 			"animationEnabled":"true"},
 		"dummyStageParentHeight":"1334px",
 		"element_${_Rectangle}":{
@@ -116,7 +117,7 @@
 	"expanded:images/logo.png":"nil",
 	"usedBOM":"false",
 	"nextElementColorIndex":"13",
-	"stage-Default Timeline_playhead_ms":"0",
+	"stage-Default Timeline_playhead_ms":"4360",
 	"stage-Default Timeline_mark_ms":"-1",
 	"TransitionIdCounter":"114",
 	"expanded:images/xint.png":"nil"}

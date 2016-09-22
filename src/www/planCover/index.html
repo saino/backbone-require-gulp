@@ -23,9 +23,7 @@
     var href = location.href;
     var text = href.split("?")[1].split("=")[1];
 //    var edge = AdobeEdge.getComposition("EDGE-21266243");
-//
 //    edge.symbolInstances[0].play()
-
     window.edgeLoadCallback = function(){
         if(AdobeEdge.getComposition){
             var edge = AdobeEdge.getComposition("EDGE-21266243");
@@ -36,5 +34,12 @@
             }
         }
     }
+    window.animateOverFn=function(){
+        var val=parent.document.getElementById("plan-cover");
+        setTimeout(function(){
+            val.remove();
+        },1000)
+    }
+
 </script>
 </html>

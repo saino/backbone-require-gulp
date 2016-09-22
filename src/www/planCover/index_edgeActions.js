@@ -100,6 +100,14 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
       });
       //Edge binding end
 
+      Symbol.bindTriggerAction(compId, symbolName, "Default Timeline", 4360, function(sym, e) {
+         if(window.animateOverFn){
+             window.animateOverFn();
+         }
+
+      });
+      //Edge binding end
+
    })("stage");
    //Edge symbol end:'stage'
 
