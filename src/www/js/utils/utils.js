@@ -99,7 +99,7 @@
 
     utils.isDebug = false;//true 原生   false 浏览器  todo
     var href = window.location.href;
-    if(href.indexOf("210.13.77.75/") >= 0){
+    if(href.indexOf("210.13.77.75") >= 0){
         utils.isDebug = true;
     }
     utils.isShare = false;//是否分享链接进入

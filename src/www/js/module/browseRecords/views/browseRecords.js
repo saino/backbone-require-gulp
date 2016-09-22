@@ -9,7 +9,8 @@ define([
     return BaseView.extend({
         id: "browseRecordsPage",
         template : _.template(tpl),
-        forever : false,
+        forever : true,
+        isReLoading: true,
 
         ui: {
             topTitle: "#top-title",
@@ -36,8 +37,9 @@ define([
             event.stopPropagation();
             event.preventDefault();
             var self = this;
+            var $target = $(event.target);
             // console.log(event.target);
-            if(event.target.getAttribute("class") == "insurance-product-delete"){
+            if($target.attr("class") == "insurance-product-delete"){   //点击删除
                 MsgBox.ask("你确定删除该条浏览记录吗？","bbbbbbb",function(type){
                     if(type == 2) { //确定  0=取消
                         // console.log("删除了");
@@ -74,6 +76,16 @@ define([
                         console.log("取消删除");
                     }
                 });
+                return;
+            }
+
+            // console.log($target.parents(".life-insurance-card"));
+            var lifeInsuranceCard = $target.parents(".insurance-product-card")[0];
+            if(lifeInsuranceCard){
+                var lifeInsuranceCardId = lifeInsuranceCard.getAttribute("data-id");
+                lifeInsuranceCardId = lifeInsuranceCardId || "null";
+                self.isReLoading = false;
+                app.navigate("in/productDetails/"+ lifeInsuranceCardId, {replace: true, trigger: true});
             }
         },
 
@@ -218,7 +230,10 @@ define([
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
                 self.ui.browseRecordsContent.css("height", "calc(100% - 84px - "+utils.toolHeight+"px)");
             }
-            self.loadData();
+            if(self.isReLoading){
+                self.loadData();
+            }
+            self.isReLoading = true;
         },
 
         pageIn: function(){

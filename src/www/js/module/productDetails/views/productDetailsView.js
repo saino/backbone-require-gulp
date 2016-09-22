@@ -237,9 +237,16 @@ define([
             //最低保额
             var minAmount = (amountLimit && amountLimit.minAmount);      //最低保额
             minAmount = minAmount == null ? "" : minAmount;
-            var limitUnit = (amountLimit && amountLimit.moneyId);      //保额单位
-            limitUnit = limitUnit == null ? "" : limitUnit;
-            self.ui.limitCoverage.text(minAmount+"元");
+            var limitUnit = (amountLimit && amountLimit.limitUnit);      //保额单位
+            var limitUnitStr = "";
+            if(limitUnit == "1"){
+                limitUnitStr = "元";
+            }
+            if(limitUnit == "2"){
+                limitUnitStr = "份";
+            }
+            // limitUnit = limitUnit == null ? "" : limitUnit;
+            self.ui.limitCoverage.text(minAmount+limitUnitStr);
             //交费期间
             var paymentStr = "";
             for(var i = 0; prdtTermChargeList&&i<prdtTermChargeList.length; i++){
@@ -449,7 +456,7 @@ define([
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = false;
             //是否初始化查询条件
-            utils.isInitOption = true;
+            // utils.isInitOption = true;
             app.goBack();
         },
         /**
