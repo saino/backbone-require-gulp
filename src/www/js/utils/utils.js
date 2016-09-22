@@ -143,7 +143,8 @@
     utils.AGE_3 = 3; //季
     utils.AGE_4 = 4; //月
     utils.AGE_5 = 5; //天
-
+    //当前计划书封面敬语
+    utils.planHonorific = "";
     //格式化金额
     utils.formatNumber = function(num){
         if(!num)
@@ -176,6 +177,96 @@
             str = value+"岁";
         }
         return str;
+    }
+    /**
+     * 根据两个交费期限比较交费时间长短 前者大等于后者返回1  小于返回0
+     * @param chargeType1   1趸交  2交value年  3交到value岁 4交终身
+     * @param chargeValue1
+     * @param chargeAge1
+     * @param chargeType2   1趸交  2交value年  3交到value岁 4交终身
+     * @param chargeValue2
+     * @param chargeAge2
+     */
+    utils.compareCharge = function(chargeType1,chargeValue1,chargeAge1,chargeType2,chargeValue2,chargeAge2){
+        var result = 0;
+        chargeAge1 = chargeAge1 || 0;
+        chargeAge2 = chargeAge2 || 0;
+        if(chargeType1 == 1){
+            if(chargeType2 == 1){
+                result = 1;
+            }else{
+                result = 0;
+            }
+        }else if(chargeType1 == 2){
+            var num1 = chargeValue1;
+            var num2 = chargeValue2;
+            if(chargeType2 == 1){
+                result = 1;
+            }else if(chargeType2 == 2){
+                result = num1 >= num2 ? 1:0;
+            }else if(chargeType2 == 3){
+                num2 = chargeValue2 - chargeAge2;
+                result = num1 >= num2 ? 1:0;
+            }else if(chargeType2 == 4){
+                result = 0;
+            }
+        }else if(chargeType1 == 3){
+            var num1 = chargeValue1 - chargeAge1;
+            var num2 = chargeValue2;
+            if(chargeType2 == 1){
+                result = 1;
+            }else if(chargeType2 == 2){
+                result = num1 >= num2 ? 1:0;
+            }else if(chargeType2 == 3){
+                num2 = chargeValue2 - chargeAge2;
+                result = num1 >= num2 ? 1:0;
+            }else if(chargeType2 == 4){
+                result = 0;
+            }
+        }else if(chargeType1 == 4){
+            result = 1;
+        }
+        return result;
+    }
+    /**
+     * 根据两个保障期限比较保障时间长短 前者大等于后者返回1  小于返回0
+     * @param coverageType1   1终身  2保value年  3保到value岁
+     * @param coverageValue1
+     * @param coverageAge1
+     * @param coverageType2   1终身  2保value年  3保到value岁
+     * @param coverageValue2
+     * @param coverageAge2
+     */
+    utils.compareCharge = function(coverageType1,coverageValue1,coverageAge1,coverageType2,coverageValue2,coverageAge2){
+        var result = 0;
+        coverageAge1 = coverageAge1 || 0;
+        coverageAge2 = coverageAge2 || 0;
+        if(coverageType1 == 1){
+            result = 1;
+        }else if(coverageType1 == 2){
+            var num1 = coverageValue1;
+            var num2 = coverageValue2;
+            if(coverageType2 == 1){
+                result = 0;
+            }else if(coverageType2 == 2){
+                result = num1 >= num2 ? 1:0;
+            }else if(coverageType2 == 3){
+                num2 = coverageValue2 - coverageAge2;
+                result = num1 >= num2 ? 1:0;
+            }
+        }else if(coverageType1 == 3){
+            var num1 = coverageValue1 - coverageAge1;
+            var num2 = coverageValue2;
+            if(coverageType2 == 1){
+                result = 0;
+            }else if(coverageType2 == 2){
+                result = num1 >= num2 ? 1:0;
+            }else if(coverageType2 == 3){
+                num2 = coverageValue2 - coverageAge2;
+                result = num1 >= num2 ? 1:0;
+            }
+        }
+        return result;
     }
     /**
      * 交费期限、保障期限
@@ -213,12 +304,12 @@
                 case 3:
                     str = "保到"+value+"岁";
                     break;
-                case 4:
-                    str = "保"+value+"个月";
-                    break;
-                case 5:
-                    str = "保"+value+"天";
-                    break;
+//                case 4:                   //不存在此类保障期限  by Guan Chao 9.21 16:47
+//                    str = "保"+value+"个月";
+//                    break;
+//                case 5:
+//                    str = "保"+value+"天";
+//                    break;
             }
         }
         return str;
