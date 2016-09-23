@@ -290,7 +290,7 @@ define([
 
         /**初始化**/
         initialize : function(){
-            console.log("2016.9.22 15:01");
+            console.log("2016.9.23 14:30");
         },
 
 
@@ -402,7 +402,7 @@ define([
                             if(v){
                                 lifeInsuranceLabelMessageHtml += "、";
                             }else{
-                                lifeInsuranceLabelMessageHtml += "为";        //取消以 至 开头  使用 为 代替
+                                lifeInsuranceLabelMessageHtml += "";        //取消以 至 开头  使用 为 代替
                             }
                             if(salesPackages[i].coveragePeriods[v].periodType == 1){
                                 lifeInsuranceLabelMessageHtml += "终身";

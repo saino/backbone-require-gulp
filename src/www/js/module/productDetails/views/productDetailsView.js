@@ -276,7 +276,7 @@ define([
             for(var j = 0; prdtTermCoverageList&&j<prdtTermCoverageList.length; j++){
                 var obj2 = prdtTermCoverageList[j];
                 if(j == 0){
-                    safeguardStr += "为";
+                    safeguardStr += "";
                 }else{
                     safeguardStr += "、";
                 }
