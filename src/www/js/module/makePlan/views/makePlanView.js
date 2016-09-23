@@ -1172,6 +1172,10 @@ define([
                         guaranteePeriodHtml += '<option data-type="' + prdtTermCoverageList[j].periodType + '" value="' + prdtTermCoverageList[j].periodValue + '">' + typeName + '</option>';
                     }
                 }
+                //如果主险交费下拉为趸交，移除豁免附加险
+                if(firstCharge.periodType == 1){
+                    self.removeWaiverRider();
+                }
             }
             if(plan.insType == 2) {//附加险
                 if (prdtTermCoverageList && prdtTermCoverageList.length > 0) {
@@ -1227,6 +1231,7 @@ define([
             self.ui.additionalPlanInput.find(".additional-item").each(function(){
                 var planId = $(this).data("productid");
                 var plan = self.getPlanById(planId);
+                if(!plan)return false;
                 var currAge = self.getCurSecAge(plan);
                 var isPackageProduct = plan.isPackageProduct;//组合计划
                 var firstCharge = null;
@@ -1386,6 +1391,8 @@ define([
             //如果当前是主险，重置附加险保障下拉
             if(plan.insType == 1){
                 self.changeRidersCoverage(firstCoverage);
+            }else if(plan.insType == 2){//附加险 需验证 组合需等于主险输入  非组合需小于主险
+                self.checkRiders(parent,plan,2);
             }
             e.stopPropagation();
             e.preventDefault();
@@ -2042,6 +2049,25 @@ define([
                 app.navigate("#in/additional/"+self.currProductId,{replace:true,trigger:true});
             }
         },
+        //移除豁免附加险
+        removeWaiverRider:function(){
+            var self = this;
+            self.ui.additionalPlanInput.find(".additional-item").each(function(){
+                var parent = $(this);
+                var productId = parent.data("productid");
+                var plan = self.getPlanById(productId);
+                if(plan.isWaiver == "Y"){
+                    var index = productId ? self.additionalIdArr.indexOf(productId) : -1;
+                    if (index >= 0) {
+                        self.additionalIdArr.splice(index, 1);
+                        self.delPlan(productId,2);
+                    }
+                    parent.slideUp(function () {
+                        parent.remove();
+                    });
+                }
+            })
+        },
         //点击删除附加险/主险
         delAdditionPlanHandler:function(e){
             var self  = this;
@@ -2187,14 +2213,28 @@ define([
         getChargeListByAge:function(plan,age){
             var ageLimitList = plan.ageLimitList || [];
             var chargeList = [];
+            var self = this;
             for(var i = 0; i < ageLimitList.length; i++){
                 if(age >= ageLimitList[i].minInsdAge && age <= ageLimitList[i].maxInsdAge){
                     var periodType = ageLimitList[i].chargePeriod || 0;
                     var periodValue = ageLimitList[i].chargeYear || 0;
-                    chargeList.push({periodType:periodType,periodValue:periodValue});
+                    if(!self.existsCharge(chargeList,{periodType: periodType, periodValue: periodValue})) {//已存在 不添加
+                        chargeList.push({periodType: periodType, periodValue: periodValue});
+                    }
                 }
             }
             return chargeList;
+        },
+        //数组内是否存在 交费期间/保障期间对象
+        existsCharge:function(chargeList,charge){
+            var exists = false;
+            for(var i = 0; i < chargeList.length; i++){
+                if(chargeList[i].periodType == charge.periodType && chargeList[i].periodValue == charge.periodValue){
+                    exists = true;
+                    break;
+                }
+            }
+            return exists;
         },
         /**
          * 根据年龄及交费选中项 获取保障列表
@@ -2204,6 +2244,7 @@ define([
          */
         getCoverageListByAge:function(plan,age,currCharge){
             var coverageList = [];
+            var self = this;
             var ageLimitList = plan.ageLimitList || [];
             if(!currCharge.periodType || !currCharge.periodValue)return coverageList;//交费下拉为空，保障自然也为空
             for(var i = 0; i < ageLimitList.length; i++){
@@ -2211,7 +2252,9 @@ define([
                     var periodType = ageLimitList[i].coveragePeriod || 0;
                     var periodValue = ageLimitList[i].coverageYear || 0;
                     if(ageLimitList[i].chargePeriod == currCharge.periodType && ageLimitList[i].chargeYear == currCharge.periodValue) {
-                        coverageList.push({periodType: periodType, periodValue: periodValue});
+                        if(!self.existsCharge(coverageList,{periodType: periodType, periodValue: periodValue})) {//已存在 不添加
+                            coverageList.push({periodType: periodType, periodValue: periodValue});
+                        }
                     }
                 }
             }

@@ -17,8 +17,8 @@
         utils.userObj.id = "";
     }
     utils.serverConfig = {
-//        serverUrl: "http://210.13.77.75:8080"       //开发
-        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
+        serverUrl: "http://210.13.77.75:8080"       //开发
+//        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
 //        serverUrl: "http://120.55.176.131:8080"      //外网测试环境
     };
     utils.tempUser = {id:""};//监听用户ID，计划书分享用 add by guYY 9/19 20:22
