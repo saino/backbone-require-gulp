@@ -290,6 +290,7 @@ define([
 
         /**初始化**/
         initialize : function(){
+            console.log("2016.9.22 15:01");
         },
 
 

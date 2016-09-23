@@ -4,99 +4,6 @@
 (function(window){
     var utils = {};
     window.utils = utils;
-
-    utils.insurancePolicy = {
-                        planId:"100009",
-                        ageList:{"1":{
-                        gender:[1,0],
-                        amountLimit:{minAmount:1,maxAmount:100},//保额范围
-                        chargeList:[{    //交费期间1
-                            charge:{periodType:1,periodValue:3},
-                            coverageList:[
-                                {      //保障期间1
-                                    coverage:{periodType:2,periodValue:3},
-                                    payList:[ //领取年龄
-                                        {pay:{periodType:3,periodValue:3}},
-                                        {pay:{periodType:3,periodValue:1}},
-                                        {pay:{periodType:3,periodValue:2}},
-                                        {pay:{periodType:3,periodValue:4}}
-                                    ]
-                                },
-                                {      //保障期间2
-                                    coverage:{periodType:2,periodValue:2},
-                                    payList:[ //领取年龄
-                                        {pay:{periodType:3,periodValue:3}},
-                                        {pay:{periodType:3,periodValue:1}}
-                                    ]
-                                }
-                            ]
-                        },
-                            {             //交费期间2
-                                charge:{periodType:1,periodValue:2},
-                                coverageList:[
-                                    {      //保障期间1
-                                        coverage:{periodType:2,periodValue:1},
-                                        payList:[]
-                                    },
-                                    {      //保障期间2
-                                        coverage:{periodType:2,periodValue:5},
-                                        payList:[]
-                                    }
-                                ]
-                            }]},
-                 "2":{
-                        gender:[1], //只男
-                        amountLimit:{minAmount:1,maxAmount:100},//保额范围
-                        chargeList:[{   //交费期间1
-                            charge:{periodType:1,periodValue:3},
-                            coverageList:[
-                                {      //保障期间1
-                                    coverage:{periodType:2,periodValue:3},
-                                    payList:[ //领取年龄
-                                        {pay:{periodType:3,periodValue:3}},
-                                        {pay:{periodType:3,periodValue:1}},
-                                        {pay:{periodType:3,periodValue:2}},
-                                        {pay:{periodType:3,periodValue:4}}
-                                    ]
-                                },
-                                {      //保障期间2
-                                    coverage:{periodType:2,periodValue:2},
-                                    payList:[ //领取年龄
-                                        {pay:{periodType:3,periodValue:3}},
-                                        {pay:{periodType:3,periodValue:1}}
-                                    ]
-                                }
-                            ]
-                        },
-                        {             //交费期间2
-                            charge:{periodType:1,periodValue:2},
-                            coverageList:[
-                                {      //保障期间1
-                                    coverage:{periodType:2,periodValue:1},
-                                    payList:[]
-                                },
-                                {      //保障期间2
-                                    coverage:{periodType:2,periodValue:5},
-                                    payList:[]
-                                }
-                            ]
-                        },
-                        {             //交费期间3
-                            charge:{periodType:1,periodValue:2},
-                            coverageList:[
-                                {      //保障期间1
-                                    coverage:{periodType:2,periodValue:1},
-                                    payList:[]
-                                },
-                                {      //保障期间2
-                                    coverage:{periodType:2,periodValue:5},
-                                    payList:[]
-                                }
-                            ]
-                        }]}
-                        }
-                    };
-
     utils.isDebug = false;//true 原生   false 浏览器
     var href = window.location.href;
     if(href.indexOf("210.13.77.75") >= 0){
@@ -143,8 +50,7 @@
     utils.AGE_3 = 3; //季
     utils.AGE_4 = 4; //月
     utils.AGE_5 = 5; //天
-    //当前计划书封面敬语
-    utils.planHonorific = "";
+
     //格式化金额
     utils.formatNumber = function(num){
         if(!num)
@@ -314,12 +220,12 @@
                 case 3:
                     str = "保到"+value+"岁";
                     break;
-//                case 4:                   //不存在此类保障期限  by Guan Chao 9.21 16:47
-//                    str = "保"+value+"个月";
-//                    break;
-//                case 5:
-//                    str = "保"+value+"天";
-//                    break;
+                case 4:
+                    str = "保"+value+"个月";
+                    break;
+                case 5:
+                    str = "保"+value+"天";
+                    break;
             }
         }
         return str;
