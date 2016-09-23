@@ -97,9 +97,9 @@
                         }
                     };
 
-    utils.isDebug = false;//true 原生   false 浏览器  todo
+    utils.isDebug = false;//true 原生   false 浏览器
     var href = window.location.href;
-    if(href.indexOf("210.13.77.75/") >= 0){
+    if(href.indexOf("210.13.77.75") >= 0){
         utils.isDebug = true;
     }
     utils.isShare = false;//是否分享链接进入
@@ -110,9 +110,9 @@
         utils.userObj.id = "";
     }
     utils.serverConfig = {
-        serverUrl: "http://210.13.77.75:8080"       //开发
-//        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
-//        serverUrl: "http://120.55.176.131:8080"  //外网测试环境
+//        serverUrl: "http://210.13.77.75:8080"       //开发
+        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
+//        serverUrl: "http://120.55.176.131:8080"      //外网测试环境
     };
     utils.tempUser = {id:""};//监听用户ID，计划书分享用 add by guYY 9/19 20:22
 
@@ -194,6 +194,16 @@
         if(chargeType1 == 1){
             if(chargeType2 == 1){
                 result = 1;
+            }else if(chargeType2 == 2){
+                if(chargeValue2 == 1)
+                    return 1;
+                else
+                    return 0;
+            }else if(chargeType2 == 3){
+                if(chargeValue2 - chargeAge2 <= 1)
+                    return 1;
+                else
+                    return 0;
             }else{
                 result = 0;
             }
@@ -237,7 +247,7 @@
      * @param coverageValue2
      * @param coverageAge2
      */
-    utils.compareCharge = function(coverageType1,coverageValue1,coverageAge1,coverageType2,coverageValue2,coverageAge2){
+    utils.compareCoverage = function(coverageType1,coverageValue1,coverageAge1,coverageType2,coverageValue2,coverageAge2){
         var result = 0;
         coverageAge1 = coverageAge1 || 0;
         coverageAge2 = coverageAge2 || 0;
@@ -616,4 +626,10 @@
         }
         utils.setLocalStorageObject(prototype, obj);
     };
+    //制作计划书 保额 保费 份数 默认取值范围
+    utils.defaultMinAmount = 1;
+    utils.defaultMaxAmount = 999999999;
+    //点击添加附加险时，传递的主险信息 及对应保人信息
+    utils.currMainPlanInfo = null;
+    utils.currMainPlanInsured = null
 })(window);

@@ -37,7 +37,7 @@ define([
             self.currProductId = self.getOption("productId");
             self.addedList = self.getOption("list") || [];
             LoadingCircle && LoadingCircle.start();
-            additionalModel.getRiders(self.currProductId,self.addedList, function(data){
+            additionalModel.getRiders(self.currProductId,self.addedList, utils.currMainPlanInfo,utils.currMainPlanInsured,function(data){
                 LoadingCircle && LoadingCircle.end();
                 self.initData(data);
                 console.log("*************附加险列表*************currProductId="+self.currProductId+",addedList="+self.addedList);
@@ -54,7 +54,7 @@ define([
             var html = "", i, len = self.additionalList.length;
             for(i=0; i<len;i++){
                 var obj = self.additionalList[i];
-                html += '<div class="additional-item" data-id="'+obj.attachId+'"><div class="content">'+obj.productName+'</div><div class="btnAdd">添加</div></div>'
+                html += '<div class="additional-item" data-id="'+obj.salesProductId+'"><div class="content">'+obj.salesProductName+'</div><div class="btnAdd">添加</div></div>'
             }
             if(len <= 0){
                 html += '<p class="no-data-p">该主险下还未添加附加险</p>';
@@ -80,7 +80,7 @@ define([
             if(!self.additionalList || self.additionalList.length <= 0)
                 return;
             for(var i = 0; i < self.additionalList.length; i++){
-                if(self.additionalList[i].attachId == id) {
+                if(self.additionalList[i].salesProductId == id) {
                     app.triggerMethod("common:add:additional",self.additionalList[i]);
                     app.goBack();
                     break;

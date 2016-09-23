@@ -65,7 +65,6 @@ define([
             self.productId = self.getOption("productId");   //精算产品ID
             self.salesProductId = self.getOption("salesProductId");     //销售产品ID
 
-            //TODO 需要真实的接口和数据
             LoadingCircle && LoadingCircle.start();
             attachDetailsModel.getRiderInfo(self.packageId, self.productId, self.salesProductId, function(data){
                 if(data.status == "0"){

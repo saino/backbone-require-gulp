@@ -43,6 +43,12 @@ define([
         mainPlanNum:0,          //主险个数
         mainPlanIdArr:[],           //主险ID数组
         additionalIdArr:[],         //附加险ID
+        insuredPlanIdArr:[],        //a类产品（第一被保人相关产品ID） 9/21 0:14
+        secInsuredPlanIdArr:[],    //b类产品（第二被保人相关产品ID） 9/21 0:14
+        policyPlanIdArr:[],    //c类产品（投保人相关产品ID） 9/21 0:14
+        insuredGender:"N",      //被保人性别，M：男，F：女，N：无关
+        secInsuredGender:"N",  //第二被保人性别，M：男，F：女，N：无关
+        policyGender:"N",       //投保人性别，M：男，F：女，N：无关
         currProductId:0,        //当前产品ID
         currCompany:{},         //当前计划书所属公司对象
         currPlanList:[],        //当前销售产品列表（主产品、附加产品）
@@ -67,6 +73,7 @@ define([
 
         totalFirstYearPrem:0,       //首年总保费
         valueadded:[],  //增值服务列表
+
         ui : {
             topTitleLeft : "#top-title-left",
             topCon : "#top-title",
@@ -89,6 +96,7 @@ define([
         },
         //事件添加
         events : {
+            "change #testSelect":"testHandler",
             "tap @ui.topTitleLeft": "clickTopTitleLeftHandler",
             "tap .property-radio-item":"clickRadioHandler",//点击单选按钮  通用
             "tap .duty-item-left":"clickLiabilityHandler",  //点击选中可选责任
@@ -103,7 +111,13 @@ define([
             "tap .additional-del":"delAdditionPlanHandler", //删除附加险
             "tap .import":"clickImportHandler",  //点击客户导入
             "change #send-sex":"changeSexHandler",
-            "tap .increment-item":"clickIncrementHandler"//点击查看增值服务详情
+            "tap .increment-item":"clickIncrementHandler",//点击查看增值服务详情
+            "change .insured-old":"changeOldHandler",  //年龄下拉更新 相关联动
+            "change .payment-period":"changeChargeHandler",  //交费期间下拉更新 相关联动
+            "change .guarantee-period":"changeCoverageHandler",  //保障期间下拉更新 相关联动
+            "blur .insured-sa":"blurInsuredSAHandler",  //保额输入框 变化
+            "blur .insured-premium":"blurInsuredPremiumHandler",  //保费输入框 变化
+            "blur .insured-unit":"blurInsuredUnitHandler"  //份数输入框 变化
         },
         /**初始化**/
         initialize : function(){
@@ -224,6 +238,13 @@ define([
                 self.ui.ideaCon.find(".accordion-list .idea-item:eq(0)").addClass("idea-item-ck");
             }
             self.ui.ideaCon.find(".accordion-list").slideUp();//默认收起
+            self.ui.firstInsured.find(".insured-name").focus();//加载完成 被保人获取焦点
+            //触发被保人、第二被保人、投保人 年龄下拉更新 触发联动
+            if(self.currPlanList.length > 0){
+                self.ui.firstInsured.find(".insured-old").change();
+                self.ui.secondInsured.find(".insured-old").change();
+                self.ui.policyHolder.find(".insured-old").change();
+            }
         },
         //添加删除险种后 数据重置
         resetAllInput:function(){
@@ -252,7 +273,13 @@ define([
             var firstInsuredHtml = "";
             firstInsuredHtml += self.insuredNameTpl({nameTxt:insured.name});
             firstInsuredHtml += self.insuredOldTpl({oldOptions:self.ageRangeOfLifeAssuredHtml});
-            firstInsuredHtml += self.insuredSexTpl();
+            if(self.insuredGender == "N"){
+                firstInsuredHtml += self.insuredSexTpl();
+            }else if(self.insuredGender == "M"){
+                firstInsuredHtml += self.insuredSexTpl_M();
+            }else if(self.insuredGender == "F"){
+                firstInsuredHtml += self.insuredSexTpl_F();
+            }
             if(self.hasJob){  //职位
                 firstInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
             }
@@ -273,7 +300,7 @@ define([
                 }
             }
             //赋值性别
-            if(insured.gender){
+            if(insured.gender && self.ui.firstInsured.find(".insured-sex .property-radio-item").size() > 1){
                 self.ui.firstInsured.find(".insured-sex").attr("data-val",insured.gender);
                 self.ui.firstInsured.find(".insured-sex .property-radio-item").removeClass("property-radio-item-ck");
                 if(insured.gender == "F"){//女士F
@@ -335,7 +362,13 @@ define([
             var secondInsuredHtml = "";
             secondInsuredHtml += self.insuredNameTpl({nameTxt:secInsured.name});
             secondInsuredHtml += self.insuredOldTpl({oldOptions:self.ageRangeSecondOfLifeAssuredHtml});
-            secondInsuredHtml += self.insuredSexTpl();
+            if(self.secInsuredGender == "N"){
+                secondInsuredHtml += self.insuredSexTpl();
+            }else if(self.secInsuredGender == "M"){
+                secondInsuredHtml += self.insuredSexTpl_M();
+            }else if(self.secInsuredGender == "F"){
+                secondInsuredHtml += self.insuredSexTpl_F();
+            }
             if(self.hasJob){  //职位
                 secondInsuredHtml += self.insuredOccupationsTpl({occupationOptions:self.occupationListHtml});
             }
@@ -356,7 +389,7 @@ define([
                 }
             }
             //赋值性别
-            if(secInsured.gender){
+            if(secInsured.gender && self.ui.secondInsured.find(".insured-sex .property-radio-item").size() > 1){
                 self.ui.secondInsured.find(".insured-sex").attr("data-val",secInsured.gender);
                 self.ui.secondInsured.find(".insured-sex .property-radio-item").removeClass("property-radio-item-ck");
                 if(secInsured.gender == "F"){//女士F
@@ -410,7 +443,13 @@ define([
             self.ui.policyHolder.css("display","block");
             var policyHolderHtml = "";
             policyHolderHtml += self.policyHolderOldTpl({oldOptions:self.ageRangeOfPolicyHolderHtml});
-            policyHolderHtml += self.policyHolderSexTpl();
+            if(self.policyGender == "N"){
+                policyHolderHtml += self.policyHolderSexTpl();
+            }else if(self.policyGender == "M"){
+                policyHolderHtml += self.policyHolderSexTpl_M();
+            }else if(self.policyGender == "F"){
+                policyHolderHtml += self.policyHolderSexTpl_F();
+            }
             self.ui.policyHolder.find(".insured-property").html(policyHolderHtml);
             //如果有年龄值
             if(proposer.age){
@@ -420,7 +459,7 @@ define([
                 }
             }
             //赋值性别
-            if(proposer.gender){
+            if(proposer.gender && self.ui.policyHolder.find(".insured-sex .property-radio-item").size() > 1){
                 self.ui.policyHolder.find(".insured-sex").attr("data-val",proposer.gender);
                 self.ui.policyHolder.find(".insured-sex .property-radio-item").removeClass("property-radio-item-ck");
                 if(proposer.gender == "F"){//女士F
@@ -457,6 +496,12 @@ define([
         insuredSexTpl: _.template('<div class="insured-property-item"><span>被保人性别：</span><div class="property-radio insured-sex" data-val="M">' +
                             '<div class="property-radio-item property-radio-item-ck" data-val="M"><span class="circle"><span class="circle-ck"></span></span>男</div>'+
                             '<div class="property-radio-item" data-val="F"><span class="circle"><span class="circle-ck"></span></span>女</div></div></div>'),
+        insuredSexTpl_M: _.template('<div class="insured-property-item"><span>被保人性别：</span><div class="property-radio insured-sex" data-val="M">' +
+            '<div class="property-radio-item property-radio-item-ck" data-val="M"><span class="circle"><span class="circle-ck"></span></span>男</div>'+
+            '</div></div>'),
+        insuredSexTpl_F: _.template('<div class="insured-property-item"><span>被保人性别：</span><div class="property-radio insured-sex" data-val="F">' +
+            '<div class="property-radio-item property-radio-item-ck" data-val="F"><span class="circle"><span class="circle-ck"></span></span>女</div>'+
+            '</div></div>'),
         insuredOccupationsTpl: _.template('<div class="insured-property-item"><span>被保人职业类别：</span>' +
                                     '<select class="property-input property-select insured-job"><%=occupationOptions %></select>' +
                                     '</div>'),
@@ -477,6 +522,16 @@ define([
                              '<div class="property-radio insured-sex" data-val="M"><div class="property-radio-item property-radio-item-ck" data-val="M">' +
                             '<span class="circle"><span class="circle-ck"></span></span>男</div>' +
                             '<div class="property-radio-item" data-val="F"><span class="circle"><span class="circle-ck"></span></span>女</div></div></div>'),
+        policyHolderSexTpl_M: _.template('<div class="insured-property-item"><span>投保人性别：</span>' +
+            '<div class="property-radio insured-sex" data-val="M">' +
+            '<div class="property-radio-item property-radio-item-ck" data-val="M">' +
+            '<span class="circle"><span class="circle-ck"></span></span>男</div>' +
+            '</div></div>'),
+        policyHolderSexTpl_F: _.template('<div class="insured-property-item"><span>投保人性别：</span>' +
+            '<div class="property-radio insured-sex" data-val="F"><div class="property-radio-item property-radio-item-ck" data-val="F">' +
+            '<span class="circle"><span class="circle-ck"></span></span>女</div>' +
+            '</div></div>'),
+
        dutyItemTpl: _.template('<div class="duty-item"><div class="duty-item-left" data-liabId="<%=liabId %>">' +
                             '<div class="duty-item-check"></div><div class="duty-item-name"><%=liabName %></div></div>' +
                             '<input class="duty-item-input" placeholder="请输入<%=inputText %>" type="number"/></div>'),
@@ -501,27 +556,12 @@ define([
            //可选责任列表
            var dutyHtml = "";
            var dutyShow = "";
-           if(plan.prdtTermChargeList && plan.prdtTermChargeList.length > 0){
-               for(var i = 0; i < plan.prdtTermChargeList.length; i++)
-               {
-                   var typeName = "";
-                   typeName = utils.getPeriodText(1,plan.prdtTermChargeList[i].periodType,plan.prdtTermChargeList[i].periodValue);
-                   paymentPeriodHtml += '<option data-type="'+plan.prdtTermChargeList[i].periodType+'" value="'+plan.prdtTermChargeList[i].periodValue+'">'+typeName+'</option>';
-               }
-           }
-           if(plan.prdtTermCoverageList && plan.prdtTermCoverageList.length > 0){
-               for(var j = 0; j < plan.prdtTermCoverageList.length; j++){
-                   var typeName = "";
-                   typeName = utils.getPeriodText(2,plan.prdtTermCoverageList[j].periodType,plan.prdtTermCoverageList[j].periodValue);
-                   guaranteePeriodHtml += '<option data-type="'+plan.prdtTermCoverageList[j].periodType+'" value="'+plan.prdtTermCoverageList[j].periodValue+'">'+typeName+'</option>';
-               }
-           }
            //档次下拉框   修改成后台取的9.12 12:05
            var benefitLevelHtml = "";
-           if(plan.benefitPlan && plan.benefitPlan.length > 0){
-               for(i = 0; i < plan.benefitPlan.length; i++){
-                   var num = plan.benefitPlan[i].benefitLevel || "";
-                   var levelName = plan.benefitPlan[i].levelDesc || "";
+           if(plan.benefitLevelList && plan.benefitLevelList.length > 0){
+               for(i = 0; i < plan.benefitLevelList.length; i++){
+                   var num = plan.benefitLevelList[i].benefitLevel || "";
+                   var levelName = plan.benefitLevelList[i].levelDesc || "";
                    benefitLevelHtml += '<option value="'+num+'">'+levelName+'</option>';
                }
            }
@@ -548,38 +588,22 @@ define([
             if(dutyHtml == ""){
                 dutyShow = 'style="display:none;"';
             }
-           //年金
+           //年金  初始化为空显示
            var annuityHtml = "";
            var showAnnuity = "style='display:none'";
            var isAnnuityProduct = plan.isAnnuityProduct;
            if(isAnnuityProduct == "Y"){
                showAnnuity = "";
-               if(plan.payPeriod && plan.payPeriod.length > 0){
-                   for(var i = 0;i < plan.payPeriod.length; i++){
-                       if(!plan.payPeriod[i])continue;
-                       var typeName = utils.getAnnuityText(plan.payPeriod[i].periodType,plan.payPeriod[i].periodValue);
-                       annuityHtml += '<option data-type="'+plan.payPeriod[i].periodType+'" value="'+plan.payPeriod[i].periodValue+'">'+typeName+'</option>';
-                   }
-                   //如果列表只有1个，也不显示，但值需要(改为只要1个就不显示12:07)
-//                   if(plan.payPeriod.length == 1 && (plan.payPeriod[0].periodType == "1" || plan.payPeriod[0].periodType == "4" || plan.payPeriod[0].periodType == "5")){
-                   if(plan.payPeriod.length == 1){
-                       showAnnuity = "style='display:none'";
-                   }
-               }
            }
+           var minAmount = utils.defaultMinAmount, maxAmount = utils.defaultMaxAmount; //保额、保费、份数区间限制
            if(plan.unitFlag == 6) {//保额
-               var minAmount = 1, maxAmount = 999999; //保额区间限制
-               if(plan.amountLimit){
-                   minAmount = plan.amountLimit.minAmount;
-                   maxAmount = plan.amountLimit.maxAmount;
-               }
                tempHtml = self.unitFlag1Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
-           }else if(plan.unitFlag == 7) {//保费
-               tempHtml = self.unitFlag2Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
+           }else if(plan.unitFlag == 7) {//保费区间需根据年龄加交费方式
+               tempHtml = self.unitFlag2Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
            }else if(plan.unitFlag == 1) {//份数
-               tempHtml = self.unitFlag3Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
+               tempHtml = self.unitFlag3Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
            }else if(plan.unitFlag == 3) {//份数 档次
-               tempHtml = self.unitFlag4Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
+               tempHtml = self.unitFlag4Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,minAmount:minAmount,maxAmount:maxAmount,benefitLevelHtml:benefitLevelHtml,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
            }else if(plan.unitFlag == 4) {//档次
                tempHtml = self.unitFlag5Tpl({insType:1,displayClass:displayClass,productId:plan.salesProductId,productName:plan.salesProductName,mainPlanName:plan.salesProductName,unitflag:plan.unitFlag,paymentPeriodHtml:paymentPeriodHtml,guaranteePeriodHtml:guaranteePeriodHtml,dutyHtml:dutyHtml,benefitLevelHtml:benefitLevelHtml,dutyShow:dutyShow,showAnnuity:showAnnuity,annuityHtml:annuityHtml,isAnnuity:isAnnuityProduct});
            }else{
@@ -596,31 +620,14 @@ define([
             var paymentPeriodHtml = "";
             //保障期限
             var guaranteePeriodHtml = "";
-//            //可选责任列表
-//            var dutyHtml = "";
-            var productId = isFromAdditionalList == 1 ? plan.attachId : plan.salesProductId;
-            var productName = isFromAdditionalList == 1 ? plan.productName : plan.salesProductName;
-            if(plan.prdtTermChargeList && plan.prdtTermChargeList.length > 0){
-                for(var i = 0; i < plan.prdtTermChargeList.length; i++)
-                {
-                    var typeName = "";
-                    typeName = utils.getPeriodText(1,plan.prdtTermChargeList[i].periodType,plan.prdtTermChargeList[i].periodValue);
-                    paymentPeriodHtml += '<option data-type="'+plan.prdtTermChargeList[i].periodType+'" value="'+plan.prdtTermChargeList[i].periodValue+'">'+typeName+'</option>';
-                }
-            }
-            if(plan.prdtTermCoverageList && plan.prdtTermCoverageList.length > 0){
-                for(var j = 0; j < plan.prdtTermCoverageList.length; j++){
-                    var typeName = "";
-                    typeName = utils.getPeriodText(2,plan.prdtTermCoverageList[j].periodType,plan.prdtTermCoverageList[j].periodValue);
-                    guaranteePeriodHtml += '<option data-type="'+plan.prdtTermCoverageList[j].periodType+'" value="'+plan.prdtTermCoverageList[j].periodValue+'">'+typeName+'</option>';
-                }
-            }
+            var productId =  plan.salesProductId;
+            var productName =  plan.salesProductName;
             //档次下拉框   修改成后台取的9.12 12:05
             var benefitLevelHtml = "";
-            if(plan.benefitPlan && plan.benefitPlan.length > 0){
-                for(i = 0; i < plan.benefitPlan.length; i++){
-                    var num = plan.benefitPlan[i].benefitLevel || "";
-                    var levelName = plan.benefitPlan[i].levelDesc || "";
+            if(plan.benefitLevelList && plan.benefitLevelList.length > 0){
+                for(i = 0; i < plan.benefitLevelList.length; i++){
+                    var num = plan.benefitLevelList[i].benefitLevel || "";
+                    var levelName = plan.benefitLevelList[i].levelDesc || "";
                     benefitLevelHtml += '<option value="'+num+'">'+levelName+'</option>';
                 }
             }
@@ -636,21 +643,9 @@ define([
             var isAnnuityProduct = plan.isAnnuityProduct;
             if(isAnnuityProduct == "Y"){
                 showAnnuity = "";
-                if(plan.payPeriod && plan.payPeriod.length > 0){
-                    for(var i = 0;i < plan.payPeriod.length; i++){
-                        if(!plan.payPeriod[i])continue;
-                        var typeName = utils.getAnnuityText(plan.payPeriod[i].periodType,plan.payPeriod[i].periodValue);
-                        annuityHtml += '<option data-type="'+plan.payPeriod[i].periodType+'" value="'+plan.payPeriod[i].periodValue+'">'+typeName+'</option>';
-                    }
-                    //如果列表只有1个，也不显示，但值需要（改后 只有一个的情况不显示）
-//                    if(plan.payPeriod.length == 1 && (plan.payPeriod[0].periodType == "1" || plan.payPeriod[0].periodType == "4" || plan.payPeriod[0].periodType == "5")){
-                    if(plan.payPeriod.length == 1){
-                        showAnnuity = "style='display:none'";
-                    }
-                }
             }
             if(plan.unitFlag == 6) { //保额
-                var minAmount = 1, maxAmount = 999999;
+                var minAmount = utils.defaultMinAmount, maxAmount = utils.defaultMaxAmount;
                 if(plan.amountLimit){
                     minAmount = plan.amountLimit.minAmount;
                     maxAmount = plan.amountLimit.maxAmount;
@@ -710,6 +705,33 @@ define([
             }
             tempHtml = self.calcResultTpl({headHtml:headHtml, tdHtml:tdHtml});
             return tempHtml;
+        },
+        //根据当前的产品列表设置 三类产品（被保人，第二被保人，投保人）交集性别选项
+        setGenderRange:function(){
+            var self = this;
+            self.insuredGender = "N";
+            self.secInsuredGender = "N";
+            self.policyGender = "N";
+            if(!self.currPlanList || self.currPlanList.length <= 0)
+                return false;
+            for(var i = 0; i < self.currPlanList.length; i++){
+                var plan = self.currPlanList[i];
+                if(!plan.ageLimitList || plan.ageLimitList.length <= 0)continue;
+                var gender = plan.ageLimitList[0].gender;
+                if(plan.pointToSecInsured == "Y"){//第二被保人
+                    if(gender != "N"){
+                        self.secInsuredGender = gender;
+                    }
+                }else if(plan.pointToPH == "Y"){//投保人
+                    if(gender != "N"){
+                        self.policyGender = gender;
+                    }
+                }else{
+                    if(gender != "N"){
+                        self.insuredGender = gender;
+                    }
+                }
+            }
         },
         //根据当前的险种产品列表（包括添加进来的附加险)设置 三类产品（被保人，第二被保人，投保人）年龄段对象
         setAgeRange:function(){
@@ -865,10 +887,18 @@ define([
             self.smokingType = 0;//和吸烟无关  1下拉框 2下拉框
             self.hasJob = false;//是否与被保人职业有关
             self.hasSocialInsure = false;//是否与被保人社保有关
+            //重置被保人、二被保人、投保人性别
+            self.insuredGender = "N";
+            self.secInsuredGender = "N";
+            self.policyGender = "N";
             if(!self.currPlanList)
                 self.currPlanList = [];
             self.setAgeRange(); //根据当前产品列表 重置年龄段对象 并拼接下拉Html
+            self.setGenderRange();//取性别交集 如A产品 男女  B产品男  则只能选男
             var mainPlanNum = 0;
+            self.secInsuredPlanIdArr = [];
+            self.insuredPlanIdArr = [];
+            self.policyPlanIdArr = [];
             //设置当前主险个数，
             for(var i = 0; i < self.currPlanList.length; i++){
                 if(self.currPlanList[i].insType == 1){
@@ -876,10 +906,13 @@ define([
                 }
                 if(self.currPlanList[i].pointToPH == "Y"){
                     self.hasPolicyHolder = true;
-                }
-                if(self.currPlanList[i].pointToSecInsured == "Y")//第二被保人
+                    self.policyPlanIdArr.push(self.currPlanList[i].salesProductId);
+                }else if(self.currPlanList[i].pointToSecInsured == "Y")//第二被保人
                 {
                     self.hasSecInsured = true;
+                    self.secInsuredPlanIdArr.push(self.currPlanList[i].salesProductId);
+                }else{
+                    self.insuredPlanIdArr.push(self.currPlanList[i].salesProductId);
                 }
                 if(self.smokingType == 0) {
                     self.smokingType = self.currPlanList[i].smokingIndi;
@@ -895,7 +928,7 @@ define([
             }
             //主险个数
             self.mainPlanNum = mainPlanNum;
-            //设置职位列表HTML、被保人年龄限制列表HTML，投保人年龄限制列表HTML
+            //设置职位下拉选项、吸烟下拉选项
             self.occupationListHtml = "";
             self.smokingListHtml = "";
             self.smokingList2Html = "";
@@ -914,15 +947,19 @@ define([
             var self = this;
             if(!self.currPlanList)
                 self.currPlanList = [];
+            obj.insType = 2;//附加险
             var tempHtml = self.getAdditionalPlanInputHtml(obj,1);
             if(tempHtml != "")
             {
-                self.additionalIdArr.push(obj.attachId);
+                self.additionalIdArr.push(obj.salesProductId);
             }
             self.ui.additionalPlanInput.append($(tempHtml));
             self.currPlanList.push(obj);
             //添加险种 重置 被保人、第二被保人、投保人
             self.resetAllInput();
+            //根据附加险类型取对应保人年龄
+            var age = self.getCurSecAge(obj);
+            self.resetPlanInput(self.ui.additionalPlanInput.find(".additional-item:last"),age);
         },
         //点击返回
         clickTopTitleLeftHandler: function(e){
@@ -977,6 +1014,424 @@ define([
             var target = $(e.target);
             var valueAddedId = target.data("id") || "null";
             app.navigate("in/increment/"+valueAddedId,{replace:true, trigger:true});
+        },
+        //年龄下拉更新
+        changeOldHandler:function(e){
+            var self = this;
+            var target = $(e.target);
+            var age = target.val();
+            //表示被保人年龄更新
+            if(target.parents(".first-insured").size() > 0){
+                //第一被保人相关的  主险main-insured-item 附加险 additional-item
+                self.ui.makePlanInput.find(".main-insured-item").each(function(){
+                    if(self.insuredPlanIdArr.indexOf($(this).data("productid")) >= 0){
+                        self.resetPlanInput($(this),age);
+                    }
+                })
+                //第一被保人相关的  主险main-insured-item 附加险 additional-item
+                self.ui.additionalPlanInput.find(".additional-item").each(function(){
+                    if(self.insuredPlanIdArr.indexOf($(this).data("productid")) >= 0){
+                        self.resetPlanInput($(this),age);
+                    }
+                })
+            }else if(target.parents(".second-insured").size() > 0){//第二被保人年龄更新
+                //第一被保人相关的  主险main-insured-item 附加险 additional-item
+                self.ui.makePlanInput.find(".main-insured-item").each(function(){
+                    if(self.secInsuredPlanIdArr.indexOf($(this).data("productid")) >= 0){
+                        self.resetPlanInput($(this),age);
+                    }
+                })
+                //第一被保人相关的  主险main-insured-item 附加险 additional-item
+                self.ui.additionalPlanInput.find(".additional-item").each(function(){
+                    if(self.secInsuredPlanIdArr.indexOf($(this).data("productid")) >= 0){
+                        self.resetPlanInput($(this),age);
+                    }
+                })
+            }else if(target.parents(".policy-holder").size() > 0){//第二被保人年龄更新
+                //第一被保人相关的  主险main-insured-item 附加险 additional-item
+                self.ui.makePlanInput.find(".main-insured-item").each(function(){
+                    if(self.policyPlanIdArr.indexOf($(this).data("productid")) >= 0){
+                        self.resetPlanInput($(this),age);
+                    }
+                });
+                //第一被保人相关的  主险main-insured-item 附加险 additional-item
+                self.ui.additionalPlanInput.find(".additional-item").each(function(){
+                    if(self.policyPlanIdArr.indexOf($(this).data("productid")) >= 0){
+                        self.resetPlanInput($(this),age);
+                    }
+                })
+            }
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        //根据产品ID 重置下拉选项 及保额/保费/份数范围
+        resetPlanInput:function(target,currAge){
+            var self = this;
+            var planId = target.data("productid");
+            var plan = self.getPlanById(planId);
+            if(!plan){
+                console.log("plan=null");
+                return;
+            }
+            //根据年龄 重置交费期间
+            var paymentPeriodHtml = "";
+            var isPackageProduct = plan.isPackageProduct;//是否组合计划
+            var prdtTermChargeList = self.getChargeListByAge(plan,currAge);
+            var firstCharge = null;//交费下拉第一个
+            if(plan.insType == 1) {//主险
+                if (prdtTermChargeList && prdtTermChargeList.length > 0) {
+                    firstCharge = prdtTermChargeList[0];
+                    for (var i = 0; i < prdtTermChargeList.length; i++) {
+                        var typeName = "";
+                        typeName = utils.getPeriodText(1, prdtTermChargeList[i].periodType, prdtTermChargeList[i].periodValue);
+                        paymentPeriodHtml += '<option data-type="' + prdtTermChargeList[i].periodType + '" value="' + prdtTermChargeList[i].periodValue + '">' + typeName + '</option>';
+                    }
+                }
+            }
+            if(plan.insType == 2) {//附加险
+                if (prdtTermChargeList && prdtTermChargeList.length > 0) {
+                    //根据当前是否计划内、当前选中主险交费方式 获取当前合适的选中项
+                    //主险选中年龄
+                    var mp = self.getFirstMainPlan();
+                    var mpAge = self.getCurSecAge(mp);
+                    //主险当前选中交费方式
+                    var type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".payment-period").find("option:selected").data("type");
+                    var value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".payment-period").find("option:selected").val();
+                    firstCharge = self.getSecCharge(isPackageProduct, mpAge, currAge, prdtTermChargeList, {periodType: type, periodValue: value});
+                    for (var i = 0; i < prdtTermChargeList.length; i++) {
+                        var typeName = "";
+                        typeName = utils.getPeriodText(1, prdtTermChargeList[i].periodType, prdtTermChargeList[i].periodValue);
+                        paymentPeriodHtml += '<option data-type="' + prdtTermChargeList[i].periodType + '" value="' + prdtTermChargeList[i].periodValue + '">' + typeName + '</option>';
+                    }
+                }
+            }
+            target.find(".payment-period").html($(paymentPeriodHtml));
+            if(firstCharge && firstCharge.periodType){
+                target.find(".payment-period").val(firstCharge.periodValue);
+            }else{
+                target.find(".payment-period").val(-1);
+            }
+            var minAmount = utils.defaultMinAmount, maxAmount = utils.defaultMaxAmount; //保额、保费、份数区间限制
+            if(plan.unitFlag == 6) {//保额
+               var amount = self.getAmountLimit(plan,currAge);
+               if(amount){
+                   minAmount = parseInt(amount.minAmount);
+                   maxAmount = parseInt(amount.maxAmount);
+               }
+               target.find(".insured-sa").attr("min",minAmount);
+               target.find(".insured-sa").attr("max",maxAmount);
+            }else if(plan.unitFlag == 7) {//保费区间需根据年龄加交费方式
+                var amount = self.getPremLimit(plan,currAge,firstCharge);
+                if(amount){
+                    minAmount = parseInt(amount.minInitialPrem);
+                    maxAmount = parseInt(amount.maxInitialPrem);
+                }
+                target.find(".insured-premium").attr("min",minAmount);
+                target.find(".insured-premium").attr("max",maxAmount);
+            }else if(plan.unitFlag == 1 || plan.unitFlag == 3) {//份数
+                var amount = self.getAmountLimit(plan,currAge);
+                if(amount){
+                    minAmount = parseInt(amount.minAmount);
+                    maxAmount = parseInt(amount.maxAmount);
+                }
+                target.find(".insured-unit").attr("min",minAmount);
+                target.find(".insured-unit").attr("max",maxAmount);
+            }
+            target.find(".payment-period").change();
+        },
+        //交费期间下拉更新
+        changeChargeHandler:function(e){
+            var self = this;
+            var target = $(e.target);
+            var planId;
+            var parent;
+            var guaranteePeriodHtml = "";
+            if(target.parents(".main-insured-item").size() > 0){
+                parent = target.parents(".main-insured-item");
+                planId = target.parents(".main-insured-item").data("productid");
+            }else{
+                parent = target.parents(".additional-item");
+                planId = target.parents(".additional-item").data("productid");
+            }
+            var plan = self.getPlanById(planId);
+            if(!plan){
+                return;
+            }
+            var isPackageProduct = plan.isPackageProduct;
+            var currAge = self.getCurSecAge(plan);
+            //选中交费期间
+            var firstCharge = {periodType:target.find("option:selected").attr("data-type"), periodValue:target.val()};//选中保费
+            var firstCoverage = null;//保障下拉第一个
+            var prdtTermCoverageList = self.getCoverageListByAge(plan, currAge, firstCharge);
+            if(plan.insType == 1) {//主险
+                if (prdtTermCoverageList && prdtTermCoverageList.length > 0) {
+                    firstCoverage = prdtTermCoverageList[0];
+                    for (var j = 0; j < prdtTermCoverageList.length; j++) {
+                        var typeName = "";
+                        typeName = utils.getPeriodText(2, prdtTermCoverageList[j].periodType, prdtTermCoverageList[j].periodValue);
+                        guaranteePeriodHtml += '<option data-type="' + prdtTermCoverageList[j].periodType + '" value="' + prdtTermCoverageList[j].periodValue + '">' + typeName + '</option>';
+                    }
+                }
+            }
+            if(plan.insType == 2) {//附加险
+                if (prdtTermCoverageList && prdtTermCoverageList.length > 0) {
+                    //根据当前是否计划内、当前选中主险交费方式 获取当前合适的选中项
+                    //主险选中年龄
+                    var mp = self.getFirstMainPlan();
+                    var mpAge = self.getCurSecAge(mp);
+                    //主险当前选中保障期间
+                    var type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").data("type");
+                    var value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").val();
+                    firstCoverage = self.getSecCoverage(isPackageProduct, mpAge, currAge, prdtTermCoverageList, {periodType: type, periodValue: value});
+                    for (var i = 0; i < prdtTermCoverageList.length; i++) {
+                        var typeName = "";
+                        typeName = utils.getPeriodText(2, prdtTermCoverageList[i].periodType, prdtTermCoverageList[i].periodValue);
+                        guaranteePeriodHtml += '<option data-type="' + prdtTermCoverageList[i].periodType + '" value="' + prdtTermCoverageList[i].periodValue + '">' + typeName + '</option>';
+                    }
+                }
+            }
+            parent.find(".guarantee-period").html($(guaranteePeriodHtml));
+            if(firstCoverage && firstCoverage.periodType){
+                parent.find(".guarantee-period").val(firstCoverage.periodValue);
+            }else{
+                parent.find(".guarantee-period").val(-1);
+            }
+            //如果销售方式 为保费，更新后仍须更新保费输入范围
+            if(plan.unitFlag == 7){//保费
+                var minAmount = utils.defaultMinAmount, maxAmount = utils.defaultMaxAmount;
+                var amount = self.getPremLimit(plan,currAge,firstCharge);
+                if(amount){
+                    minAmount = parseInt(amount.minInitialPrem);
+                    maxAmount = parseInt(amount.maxInitialPrem);
+                }
+                parent.find(".insured-premium").attr("min",minAmount);
+                parent.find(".insured-premium").attr("max",maxAmount);
+            }
+            parent.find(".guarantee-period").change();
+            //如果当前是主险，重置附加险交费下拉
+            if(plan.insType == 1){
+                self.changeRidersCharge(firstCharge);
+            }else if(plan.insType == 2){//附加险 需验证 组合需等于主险输入  非组合需小于主险
+                self.checkRiders(parent,plan,1);
+            }
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        /**
+         * 主险的交费期间下拉更新，重置所有附加险的交费下拉
+         * @param mainCharge 主险选中交费期间对象 {periodType:periodType,periodValue:periodValue}
+         */
+        changeRidersCharge:function(mainCharge){
+            var self = this;
+            //循环所有附加险
+            self.ui.additionalPlanInput.find(".additional-item").each(function(){
+                var planId = $(this).data("productid");
+                var plan = self.getPlanById(planId);
+                var currAge = self.getCurSecAge(plan);
+                var isPackageProduct = plan.isPackageProduct;//组合计划
+                var firstCharge = null;
+                var paymentPeriodHtml = "";
+                if(plan && plan.isWaiver && plan.isWaiver != "Y") { //如果计划存在 并且不是豁免产品
+                    //此处逻辑同函数changeChargeHandler下 附加险交费列表重置片段
+                    var prdtTermChargeList = self.getChargeListByAge(plan, currAge);
+                    if (prdtTermChargeList && prdtTermChargeList.length > 0) {
+                        //根据当前是否计划内、当前选中主险交费方式 获取当前合适的选中项
+                        //主险选中年龄
+                        var mp = self.getFirstMainPlan();
+                        var mpAge = self.getCurSecAge(mp);
+                        //主险当前选中交费方式
+                        firstCharge = self.getSecCharge(isPackageProduct, mpAge, currAge, prdtTermChargeList, mainCharge);
+                        for (var i = 0; i < prdtTermChargeList.length; i++) {
+                            var typeName = "";
+                            typeName = utils.getPeriodText(1, prdtTermChargeList[i].periodType, prdtTermChargeList[i].periodValue);
+                            paymentPeriodHtml += '<option data-type="' + prdtTermChargeList[i].periodType + '" value="' + prdtTermChargeList[i].periodValue + '">' + typeName + '</option>';
+                        }
+                    }
+                    $(this).find(".payment-period").html($(paymentPeriodHtml));
+                    if(firstCharge && firstCharge.periodType){
+                        $(this).find(".payment-period").val(firstCharge.periodValue);
+                    }else{
+                        $(this).find(".payment-period").val(-1);
+                    }
+                    $(this).find(".payment-period").change();
+                }
+            });
+        },
+        /**
+         * 验证当前附加险交费期间 保障期间
+         * 如果是组合计划 需等于主险输入
+         * 如果非组合计划 需小于等于主险输入
+         * @param parent 附加险项html对象
+         * @param plan 产品数据对象
+         * @param periodType 1验证交费  2验证保障   （必传，因数初始化设置附加险下拉时也会触发验证，此时保障还没初始化，验证保障必错，而初始化时验证无疑不妥）
+         */
+        checkRiders:function(parent,plan,periodType){
+            //当前主险选中年龄
+            var self = this;
+            var mp = self.getFirstMainPlan();
+            var mpAge = self.getCurSecAge(mp);
+            var currAge = self.getCurSecAge(plan);
+            var isPackageProduct = plan.isPackageProduct;//是否组合计划
+            //主险当前选中保障期间
+            var type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".payment-period").find("option:selected").data("type");
+            var value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".payment-period").find("option:selected").val();
+            if(periodType == 2){
+                type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").data("type");
+                value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").val();
+            }
+            //验证交费期间项
+            if(periodType == 1){
+                var periodType = parent.find(".payment-period").find("option:selected").data("type");
+                var periodValue = parent.find(".payment-period").find("option:selected").val();
+                if(isPackageProduct == "Y"){
+                    if(value != periodValue){
+//                        MsgBox.alert(errorMsg.makePlanMsg12);//不好提示
+                        parent.find(".payment-period").val(value);
+                        return;
+                    }
+                }else{
+                    if(utils.compareCharge(type,value,mpAge,periodType,periodValue,currAge) == 0){
+//                        MsgBox.alert(errorMsg.makePlanMsg13);//不好提示
+                        parent.find(".payment-period option").each(function(){
+                            var tempType = $(this).data("type");
+                            var tempValue = $(this).attr("value");
+                            if(utils.compareCharge(type,value,mpAge,tempType,tempValue,currAge) == 1){
+                                parent.find(".payment-period").val(tempValue);
+                                return false;
+                            }
+                        });
+                        return;
+                    }
+                }
+            }else if(periodType == 2){//验证保障期间项
+                var periodType = parent.find(".guarantee-period").find("option:selected").data("type");
+                var periodValue = parent.find(".guarantee-period").find("option:selected").val();
+                if(isPackageProduct == "Y"){
+                    if(value != periodValue){
+                        parent.find(".guarantee-period").val(value);
+                        return;
+                    }
+                }else{
+                    if(utils.compareCoverage(type,value,mpAge,periodType,periodValue,currAge) == 0){
+                        parent.find(".guarantee-period option").each(function(){
+                            var tempType = $(this).data("type");
+                            var tempValue = $(this).attr("value");
+                            if(utils.compareCoverage(type,value,mpAge,tempType,tempValue,currAge) == 1){
+                                parent.find(".guarantee-period").val(tempValue);
+                                return false;
+                            }
+                        });
+                        return;
+                    }
+                }
+            }
+        },
+        /**
+         * 主险的保障期间下拉更新，重置所有附加险的保障期间下拉
+         * @param mainCoverage
+         */
+        changeRidersCoverage:function(mainCoverage){
+            var self = this;
+            //循环所有附加险
+            self.ui.additionalPlanInput.find(".additional-item").each(function(){
+               //直接触发所有附加险交费下拉更新事件
+                $(this).find(".payment-period").change();
+            });
+        },
+        //保障更新
+        changeCoverageHandler:function(e){
+            var self = this;
+            var target = $(e.target);
+            var planId;
+            var parent;
+            var annuityHtml = "";
+            if(target.parents(".main-insured-item").size() > 0){
+                parent = target.parents(".main-insured-item");
+                planId = target.parents(".main-insured-item").data("productid");
+            }else{
+                parent = target.parents(".additional-item");
+                planId = target.parents(".additional-item").data("productid");
+            }
+            var plan = self.getPlanById(planId);
+            if(!plan){
+                return;
+            }
+            var currAge = self.getCurSecAge(plan);
+            var isAnnuityProduct = plan.isAnnuityProduct;//是否年金产品
+            var showAnnuity = "";//是否显示年金下拉框
+            var firstCharge = {periodType: parent.find(".payment-period").find("option:selected").attr("data-type"), periodValue: parent.find(".payment-period").val()};//选中保费
+            var firstCoverage = {periodType: target.find("option:selected").attr("data-type"), periodValue: target.val()};//选中保障期间
+            //是年金产品
+            if(isAnnuityProduct == "Y") {
+                var payPeriod = self.getPayListByAge(plan, currAge, firstCharge, firstCoverage);
+                if (payPeriod && payPeriod.length > 0) {
+                    for (var i = 0; i < payPeriod.length; i++) {
+                        if (!payPeriod[i])continue;
+                        var typeName = utils.getAnnuityText(payPeriod[i].periodType, payPeriod[i].periodValue);
+                        annuityHtml += '<option data-type="' + payPeriod[i].periodType + '" value="' + payPeriod[i].periodValue + '">' + typeName + '</option>';
+                    }
+                    //如果列表只有1个，也不显示，但值需要(改为只要1个就不显示12:07)
+//                   if(plan.payPeriod.length == 1 && (plan.payPeriod[0].periodType == "1" || plan.payPeriod[0].periodType == "4" || plan.payPeriod[0].periodType == "5")){
+                    if (payPeriod.length == 1) {
+                        showAnnuity = "style='display:none'";
+                    }
+                }
+                parent.find(".annuity").html($(annuityHtml));
+                if(showAnnuity != ""){
+                    parent.find(".annuity").parents(".insured-property-item").css("display","none");
+                }else{
+                    parent.find(".annuity").parents(".insured-property-item").css("display","block");
+                }
+            }
+            //如果当前是主险，重置附加险保障下拉
+            if(plan.insType == 1){
+                self.changeRidersCoverage(firstCoverage);
+            }
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        //保额输入框失去焦点
+        blurInsuredSAHandler:function(e){
+            var target = $(e.target);
+            var max = parseFloat(target.attr("max") || 0);
+            var min = parseFloat(target.attr("min") || 0);
+            var val = parseFloat(target.val());
+            if(isNaN(val)){
+                MsgBox.alert(errorMsg.makePlanMsg5);
+            }else if(val < min || val > max){
+                MsgBox.alert("保额区间"+min+"~"+max);
+            }else{
+                return;
+            }
+            target.focus();
+        },
+        //保费输入框失去焦点
+        blurInsuredPremiumHandler:function(e){
+            var target = $(e.target);
+            var max = parseFloat(target.attr("max") || 0);
+            var min = parseFloat(target.attr("min") || 0);
+            var val = target.val() && parseFloat(target.val());
+            if(val < min || val > max){
+                MsgBox.alert("保费区间"+min+"~"+max);
+                target.focus();
+            }
+        },
+        //份数输入框失去焦点
+        blurInsuredUnitHandler:function(e){
+            var target = $(e.target);
+            var max = parseInt(target.attr("max") || 0);
+            var min = parseInt(target.attr("min") || 0);
+            var val = parseFloat(target.val());
+            if(isNaN(val)){
+                MsgBox.alert(errorMsg.makePlanMsg8);
+            }else if(!utils.isPositiveNum(val)){
+                MsgBox.alert(errorMsg.makePlanMsg9);
+            }else if(val < min || val > max){
+                MsgBox.alert("份数区间"+min+"~"+max);
+            }else{
+                return;
+            }
+            target.focus();
         },
         getValueAddedById:function(id){
             var self = this;
@@ -1101,25 +1556,20 @@ define([
                 mainCoverage.productId = $(this).data("productid");
                 mainCoverage.unitFlag = $(this).data("unitflag");
                 mainCoverage.sa = $(this).find(".insured-sa").val();
-                var pName = $(this).data("productname");
+                var pName = "主险";//$(this).data("productname"); //暂时默认只一个主险，这里显示名字意思不大 一个主险时也看不到名字，无法定位
                 if(mainCoverage.sa == ""){
                     validateErrMsg = pName+errorMsg.makePlanMsg5;
                     self.focusInput = $(this).find(".insured-sa");
                     return false;
                 }
                 if(mainCoverage.sa){
-                    var max = parseInt($(this).find(".insured-sa").attr("max"));
-                    var min = parseInt($(this).find(".insured-sa").attr("min"));
-                   if(parseInt(mainCoverage.sa) < min){
-                       validateErrMsg = pName+"保额不得小于"+min;
+                    var max = parseFloat($(this).find(".insured-sa").attr("max"));
+                    var min = parseFloat($(this).find(".insured-sa").attr("min"));
+                   if(parseFloat(mainCoverage.sa) < min || parseFloat(mainCoverage.sa) > max){
+                       validateErrMsg = pName+"保额区间"+min+"~"+max;
                        self.focusInput = $(this).find(".insured-sa");
                        return false;
                    }
-                    if(parseInt(mainCoverage.sa) > max){
-                        validateErrMsg = pName+"保额不得大于"+max;
-                        self.focusInput = $(this).find(".insured-sa");
-                        return false;
-                    }
                 }
                 //保额需验证最小值 最大值
                 mainCoverage.premium = $(this).find(".insured-premium").val();
@@ -1127,6 +1577,15 @@ define([
                     validateErrMsg = pName+errorMsg.makePlanMsg6;
                     self.focusInput = $(this).find(".insured-premium");
                     return false;
+                }
+                if(mainCoverage.premium){
+                    var max = parseFloat($(this).find(".insured-premium").attr("max"));
+                    var min = parseFloat($(this).find(".insured-premium").attr("min"));
+                    if(parseFloat(mainCoverage.premium) < min || parseFloat(mainCoverage.premium) > max){
+                        validateErrMsg = pName+"保费区间"+min+"~"+max;
+                        self.focusInput = $(this).find(".insured-premium");
+                        return false;
+                    }
                 }
                 mainCoverage.unit = $(this).find(".insured-unit").val();
                 if(mainCoverage.unit == ""){
@@ -1138,6 +1597,15 @@ define([
                     validateErrMsg = pName+errorMsg.makePlanMsg9;
                     self.focusInput = $(this).find(".insured-unit");
                     return false;
+                }
+                if(mainCoverage.unit){
+                    var max = parseInt($(this).find(".insured-unit").attr("max"));
+                    var min = parseInt($(this).find(".insured-unit").attr("min"));
+                    if(parseInt(mainCoverage.unit) < min || parseInt(mainCoverage.unit) > max){
+                        validateErrMsg = pName+"份数区间"+min+"~"+max;
+                        self.focusInput = $(this).find(".insured-unit");
+                        return false;
+                    }
                 }
                 mainCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
                 //为null表示 有此下拉选项 但无值
@@ -1234,15 +1702,10 @@ define([
                         return false;
                     }
                     if (riderCoverage.sa) {
-                        var max = parseInt($(this).find(".insured-sa").attr("max"));
-                        var min = parseInt($(this).find(".insured-sa").attr("min"));
-                        if (parseInt(riderCoverage.sa) < min) {
-                            validateErrMsg = rName + "保额不得小于" + min;
-                            self.focusInput = $(this).find(".insured-sa");
-                            return false;
-                        }
-                        if (parseInt(riderCoverage.sa) > max) {
-                            validateErrMsg = rName + "保额不得大于" + max;
+                        var max = parseFloat($(this).find(".insured-sa").attr("max"));
+                        var min = parseFloat($(this).find(".insured-sa").attr("min"));
+                        if (parseFloat(riderCoverage.sa) < min || parseFloat(riderCoverage.sa) > max) {
+                            validateErrMsg = rName + "保额区间" + min+"~"+max;
                             self.focusInput = $(this).find(".insured-sa");
                             return false;
                         }
@@ -1252,6 +1715,15 @@ define([
                         validateErrMsg = rName + errorMsg.makePlanMsg6;
                         self.focusInput = $(this).find(".insured-premium");
                         return false;
+                    }
+                    if (riderCoverage.premium) {
+                        var max = parseFloat($(this).find(".insured-premium").attr("max"));
+                        var min = parseFloat($(this).find(".insured-premium").attr("min"));
+                        if (parseFloat(riderCoverage.premium) < min || parseFloat(riderCoverage.premium) > max) {
+                            validateErrMsg = rName + "保费区间" + min+"~"+max;
+                            self.focusInput = $(this).find(".insured-premium");
+                            return false;
+                        }
                     }
                     riderCoverage.unit = $(this).find(".insured-unit").val();
                     if (riderCoverage.unit == "") {
@@ -1263,6 +1735,15 @@ define([
                         validateErrMsg = rName + errorMsg.makePlanMsg9;
                         self.focusInput = $(this).find(".insured-unit");
                         return false;
+                    }
+                    if (riderCoverage.unit) {
+                        var max = parseFloat($(this).find(".insured-unit").attr("max"));
+                        var min = parseFloat($(this).find(".insured-unit").attr("min"));
+                        if (parseFloat(riderCoverage.unit) < min || parseFloat(riderCoverage.unit) > max) {
+                            validateErrMsg = rName + "份数区间" + min+"~"+max;
+                            self.focusInput = $(this).find(".insured-unit");
+                            return false;
+                        }
                     }
                     riderCoverage.benefitlevel = $(this).find(".insured-benefitlevel").val();
                     //为null表示 有此下拉选项 但无值
@@ -1345,6 +1826,9 @@ define([
             if(self.ui.incrementCheck.find(".increment-check").hasClass("increment-check-ck")){
                 plan.showAdvice = "Y";
             }
+            if(plan.advice == ""){//输入为空 不显示留言  必须从此处返回N，保障计划页如果空会返回默认推荐理由 分享用。
+                plan.showAdvice = "N";
+            }
 //            else{ //不管是否勾选 留言都要传 计划书分享描述要用 9.19 16:10
 //                plan.advice = "";
 //            }
@@ -1405,6 +1889,7 @@ define([
                 LoadingCircle && LoadingCircle.end();
                 if(!data.quotationId)
                     data.quotationId = "null";
+                utils.planHonorific = "尊敬的"+responseData.plan.proposer.name+(responseData.plan.proposer.gender=="F"?"女士":"先生");
                 app.navigate("in/plan/"+data.quotationId,{replace:true, trigger:true})
             },function(err){
                 LoadingCircle && LoadingCircle.end();
@@ -1416,6 +1901,139 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            //取第一个主险
+            var target = self.ui.makePlanInput.find(".main-insured-item:eq(0)");
+            //点击添加附加险 验证主险输入项
+            utils.currMainPlanInfo = [];//重置
+            utils.currMainPlanInsured = null;//重置
+            var mainCoverage = {};//主险对象
+            mainCoverage.productId = target.data("productid");
+            mainCoverage.unitFlag = target.data("unitflag");
+            mainCoverage.sa = target.find(".insured-sa").val();
+            var insured = {};//对应保人（三种之一）对应的个人信息
+            var mainPlan = self.getPlanById(mainCoverage.productId);
+            var pName = "主险";//target.data("productname");
+            if(mainCoverage.sa == ""){
+                MsgBox.alert(pName+errorMsg.makePlanMsg5);
+                target.find(".insured-sa").focus();
+                return;
+            }
+            if(mainCoverage.sa){
+                var max = parseInt(target.find(".insured-sa").attr("max"));
+                var min = parseInt(target.find(".insured-sa").attr("min"));
+                if(parseInt(mainCoverage.sa) < min || parseInt(mainCoverage.sa) > max){
+                    MsgBox.alert(pName+"保额区间"+min+"~"+max);
+                    target.find(".insured-sa").focus();
+                    return;
+                }
+            }
+            //保费需验证最小值 最大值
+            mainCoverage.premium = target.find(".insured-premium").val();
+            if(mainCoverage.premium == ""){
+                MsgBox.alert(pName+errorMsg.makePlanMsg6);
+                target.find(".insured-premium").focus();
+                return;
+            }
+            if(mainCoverage.premium){
+                var max = parseInt(target.find(".insured-premium").attr("max"));
+                var min = parseInt(target.find(".insured-premium").attr("min"));
+                if(parseInt(mainCoverage.premium) < min || parseInt(mainCoverage.premium) > max){
+                    MsgBox.alert(pName+"保费区间"+min+"~"+max);
+                    target.find(".insured-premium").focus();
+                    return;
+                }
+            }
+            mainCoverage.unit = target.find(".insured-unit").val();
+            if(mainCoverage.unit == ""){
+                MsgBox.alert(pName+errorMsg.makePlanMsg7);
+                target.find(".insured-unit").focus();
+                return;
+            }
+            if(mainCoverage.unit && !utils.isPositiveNum(mainCoverage.unit)){
+                MsgBox.alert(pName+errorMsg.makePlanMsg9);
+                target.find(".insured-unit").focus();
+                return;
+            }
+            if(mainCoverage.unit){
+                var max = parseInt(target.find(".insured-unit").attr("max"));
+                var min = parseInt(target.find(".insured-unit").attr("min"));
+                if(parseInt(mainCoverage.unit) < min || parseInt(mainCoverage.unit) > max){
+                    MsgBox.alert(pName+"份数区间"+min+"~"+max);
+                    target.find(".insured-unit").focus();
+                    return;
+                }
+            }
+            mainCoverage.benefitlevel = target.find(".insured-benefitlevel").val();
+            //为null表示 有此下拉选项 但无值
+            if(mainCoverage.benefitlevel == null && typeof mainCoverage.benefitlevel == "object"){
+                MsgBox.alert(pName+errorMsg.makePlanMsg8);
+                target.find(".insured-benefitlevel").focus();
+                return;
+            }else{
+                //存在档次时，如果份数=null,赋值=1   *****重要****
+                if(!mainCoverage.unit || isNaN(mainCoverage.unit)){
+                    mainCoverage.unit = 1;
+                }
+            }
+
+            //交费期限
+            var chargePeriod = {};
+            var type = target.find(".payment-period").find("option:selected").data("type");
+            chargePeriod.periodType = type;
+            chargePeriod.periodValue = parseInt(target.find(".payment-period").find("option:selected").val());
+            mainCoverage.chargePeriod = chargePeriod;
+            if(target.find(".payment-period").size() > 0 && isNaN(chargePeriod.periodValue)){
+                MsgBox.alert(pName+errorMsg.makePlanMsg4);
+                target.find(".payment-period").focus();
+                return;
+            }
+            //保障期限
+            var  coveragePeriod = {};
+            type = target.find(".guarantee-period").find("option:selected").data("type");
+            coveragePeriod.periodType = type;
+            coveragePeriod.periodValue = parseInt(target.find(".guarantee-period").find("option:selected").val());
+            mainCoverage.coveragePeriod = coveragePeriod;
+            if(target.find(".guarantee-period").size() > 0 && isNaN(coveragePeriod.periodValue)){
+                MsgBox.alert(pName+errorMsg.makePlanMsg3);
+                target.find(".guarantee-period").focus();
+                return;
+            }
+            //年金领取时间 判断是否函年金选项
+            if(target.data("annuity") == "Y") {
+                var payPeriod = {};
+                type = target.find(".annuity").find("option:selected").data("type");
+                payPeriod.periodType = type;
+                payPeriod.periodValue = parseInt(target.find(".annuity").find("option:selected").val());
+                mainCoverage.payPeriod = payPeriod;
+                if (target.find(".annuity").size() > 0 && isNaN(payPeriod.periodValue)) {
+                    MsgBox.alert(pName + errorMsg.makePlanMsg11);
+                    target.find(".annuity").focus();
+                    return;
+                }
+            }else {
+                mainCoverage.payPeriod = null;
+            }
+            var targetInsured;
+            if(mainPlan.pointToSecInsured == "Y"){
+                targetInsured = self.ui.secondInsured;
+            }else if(mainPlan.pointToPH == "Y"){
+                targetInsured = self.ui.policyHolder;
+            }else{
+                targetInsured = self.ui.firstInsured;
+            }
+            insured.age = targetInsured.find(".insured-old").val();
+            insured.gender = targetInsured.find(".insured-sex").attr("data-val");
+            if(mainPlan.pointToPH == "Y"){
+                insured.name = self.ui.sendName.val();
+            }else {
+                insured.name = targetInsured.find(".insured-name").val();
+                insured.jobCateId = targetInsured.find(".insured-job").val();//职位
+                insured.socialInsuranceIndi = targetInsured.find(".insured-social").attr("data-val");//社保
+                insured.smoking = targetInsured.find(".insured-smoking").val();//吸烟
+            }
+            utils.currMainPlanInfo.push(mainCoverage);
+            utils.currMainPlanInsured = insured;
+
             var exitsAdditionalIds = self.additionalIdArr.join(",");
             if(exitsAdditionalIds != "") {
                 exitsAdditionalIds = utils.myEncodeURIComponent(exitsAdditionalIds);
@@ -1486,12 +2104,6 @@ define([
             for(var i = 0; self.currPlanList.length; i++){
                 var pType = self.currPlanList[i].insType;
                 var pId = self.currPlanList[i].salesProductId;
-                //如何存在attchId 表示为附加险
-                var attachId = self.currPlanList[i].attachId;
-                if(attachId){
-                    pId = attachId;
-                    pType = 2;
-                }
                 if(pId == productId && pType == type){
                     self.currPlanList.splice(i,1);
                     has = true;
@@ -1533,6 +2145,173 @@ define([
                     }
                 });
             }
+        },
+        //从当前险种列表获取第一个主险对象(组合附件险依赖主险 默认依赖第一个)暂时也只有一个主险
+        getFirstMainPlan:function(){
+            var self = this;
+            for(var i = 0;i < self.currPlanList.length; i++){
+                if(self.currPlanList[i].insType == 1){
+                    return self.currPlanList[i];
+                }
+            }
+            return null;
+        },
+        //根据ID获取产品对象
+        getPlanById:function(id){
+            var self = this;
+            for(var i = 0;i < self.currPlanList.length; i++){
+                if(self.currPlanList[i].salesProductId == id){
+                    return self.currPlanList[i];
+                }
+            }
+            return null;
+        },
+        //根据产品类型获取对应被保人（、第二被保人、投保人）当前年龄
+        getCurSecAge:function(plan){
+            var currAge = 0;
+            var self = this;
+            if(plan.pointToSecInsured == "Y"){
+                currAge = self.ui.secondInsured.find(".insured-old").val();
+            }else if(plan.pointToPH == "Y"){
+                currAge = self.ui.policyHolder.find(".insured-old").val();
+            }else{
+                currAge = self.ui.firstInsured.find(".insured-old").val();
+            }
+            return currAge;
+        },
+        /**
+         * 根据年龄获取当前年龄下交费列表
+         * @param plan
+         * @param age
+         */
+        getChargeListByAge:function(plan,age){
+            var ageLimitList = plan.ageLimitList || [];
+            var chargeList = [];
+            for(var i = 0; i < ageLimitList.length; i++){
+                if(age >= ageLimitList[i].minInsdAge && age <= ageLimitList[i].maxInsdAge){
+                    var periodType = ageLimitList[i].chargePeriod || 0;
+                    var periodValue = ageLimitList[i].chargeYear || 0;
+                    chargeList.push({periodType:periodType,periodValue:periodValue});
+                }
+            }
+            return chargeList;
+        },
+        /**
+         * 根据年龄及交费选中项 获取保障列表
+         * @param plan
+         * @param currAge
+         * @param currCharge
+         */
+        getCoverageListByAge:function(plan,age,currCharge){
+            var coverageList = [];
+            var ageLimitList = plan.ageLimitList || [];
+            if(!currCharge.periodType || !currCharge.periodValue)return coverageList;//交费下拉为空，保障自然也为空
+            for(var i = 0; i < ageLimitList.length; i++){
+                if(age >= ageLimitList[i].minInsdAge && age <= ageLimitList[i].maxInsdAge){
+                    var periodType = ageLimitList[i].coveragePeriod || 0;
+                    var periodValue = ageLimitList[i].coverageYear || 0;
+                    if(ageLimitList[i].chargePeriod == currCharge.periodType && ageLimitList[i].chargeYear == currCharge.periodValue) {
+                        coverageList.push({periodType: periodType, periodValue: periodValue});
+                    }
+                }
+            }
+            return coverageList;
+        },
+        /**
+         * 根据年龄及交费选中项保障选中项  获取年金列表
+         * @param plan
+         * @param currAge
+         * @param currCharge
+         */
+        getPayListByAge:function(plan,age,currCharge,currCoverage){
+            var ageLimitList = plan.ageLimitList || [];
+            var payList = [];
+            if(!currCharge.periodType || !currCharge.periodValue || !currCoverage.periodType || !currCoverage.periodValue)return payList;//交费下拉为空，保障自然也为空
+            for(var i = 0; i < ageLimitList.length; i++){
+                if(age >= ageLimitList[i].minInsdAge && age <= ageLimitList[i].maxInsdAge){
+                    var periodType = ageLimitList[i].payPeriod || 0;
+                    var periodValue = ageLimitList[i].payYear || 0;
+                    if(ageLimitList[i].chargePeriod == currCharge.periodType && ageLimitList[i].chargeYear == currCharge.periodValue) {
+                        if(ageLimitList[i].coveragePeriod == currCoverage.periodType && ageLimitList[i].coverageYear == currCoverage.periodValue) {
+                            payList.push({periodType: periodType, periodValue: periodValue});
+                        }
+                    }
+                }
+            }
+            return payList;
+        },
+        //获取保额、份数范围对象
+        getAmountLimit:function(plan,age){
+            var amountLimitList = plan.amountLimitList || [];
+            for(var i = 0; i < amountLimitList.length; i++){
+                if(age >= amountLimitList[i].minAge && age <= amountLimitList[i].maxAge){
+                    return amountLimitList[i];
+                }
+            }
+            return null;
+        },
+        //获取保费范围对象
+        getPremLimit:function(plan,age,firstCharge){
+            var premLimitList = plan.premLimitList || [];
+            for(var i = 0; i < premLimitList.length; i++){
+                if(age >= premLimitList[i].minAge && age <= premLimitList[i].maxAge){
+                    if(firstCharge && firstCharge.periodType){
+                        if(firstCharge.periodType == premLimitList[i].chargePeriod && firstCharge.periodValue == premLimitList[i].chargeYear) {
+                            return premLimitList[i];
+                        }
+                    }else{
+                        return premLimitList[i];
+                    }
+                }
+            }
+            return null;
+        },
+        /**
+         * 附加险交费期限默认选中项
+         * 根据 是否组合计划 主险选中交费项  从交费列表里 选中一个默认选中项
+         * 如果是组合计划 附加险交费期间=主险交费期间
+         * 如果不是组合计划 附加险交费期间<=主险交费期间
+         * @param isPackageProduct  是否组合计划 Y  N
+         * @param mpAge 当前主险对象保人年龄
+         * @param currAge 当前附加险保人年龄
+         * @param chargeList 当前列表
+         * @param mainCharge 主险选中项
+         */
+        getSecCharge:function(isPackageProduct,mpAge,currAge,chargeList,mainCharge){
+            if(!chargeList || chargeList.length <= 0)
+                return null;
+            if(isPackageProduct == "Y"){
+                return mainCharge;
+            }
+            for(var i = 0; i < chargeList.length; i++){
+                var charge = chargeList[i];
+                if(utils.compareCharge(mainCharge.periodType, mainCharge.periodValue,mpAge,charge.periodType,charge.periodValue,currAge) == 1){
+                    return charge;
+                }
+            }
+            return null;
+        },
+        /**
+         * 附加险交费期限默认选中项
+         * @param isPackageProduct   是否组合计划 主险选中保障项  从可选保障期间列表里 选中一个默认选中项
+         * @param mpAge 主险年龄
+         * @param currAge 当前附加险年龄
+         * @param coverageList 可选保障期间列表
+         * @param mainCoverage  主险选中保障期间对象
+         */
+        getSecCoverage:function(isPackageProduct,mpAge,currAge,coverageList,mainCoverage){
+            if(!coverageList || coverageList.length <= 0)
+                return null;
+            if(isPackageProduct == "Y"){
+                return mainCoverage;
+            }
+            for(var i = 0; i < coverageList.length; i++){
+                var coverage = coverageList[i];
+                if(utils.compareCoverage(mainCoverage.periodType, mainCoverage.periodValue,mpAge,coverage.periodType,coverage.periodValue,currAge) == 1){
+                    return coverage;
+                }
+            }
+            return null;
         },
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){

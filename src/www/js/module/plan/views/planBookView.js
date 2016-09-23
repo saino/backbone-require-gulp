@@ -415,11 +415,13 @@ define([
         clickClauseHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-//            var self = this;
-//            var target = $(e.target);
-//            if(target.data("id")){
-                app.navigate("in/clauseList",{trigger:true, replace:true});
-//            }
+            //如果只有单个产品 直接指向条款详情、多个指向产品列表
+             if(utils.productInfoList && utils.productInfoList.length == 1){
+                 var id = utils.productInfoList[0].productId;
+                 app.navigate("in/clause/"+id,{trigger:true,replace:true});
+            }else{
+                 app.navigate("in/clauseList",{trigger:true, replace:true});
+             }
         },
         //滑动条滑动
         changeRandeHandler:function(e){

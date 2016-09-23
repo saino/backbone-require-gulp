@@ -15,6 +15,8 @@
     errorMsg.makePlanMsg9 = "份数必须整数";//前缀加产品名称
     errorMsg.makePlanMsg10 = "不能删除最后一款产品～如需修改请重新选择计划/产品";
     errorMsg.makePlanMsg11 = "年金领取时间不能为空，请录入！";
+    errorMsg.makePlanMsg12 = "组合附加险交费期限必须等于主险交费期限";
+    errorMsg.makePlanMsg13 = "附加险交费期限必须小于等于主险交费期限";
 
 })(window);
 //define([], function(){

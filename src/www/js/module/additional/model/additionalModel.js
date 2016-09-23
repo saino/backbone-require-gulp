@@ -9,8 +9,15 @@ define([], function () {
     };
 
     var p = AdditionalModel.prototype;
-
-    p.getRiders = function(packageId, addedList, cb_ok, cb_err){
+    /**
+     * 获取附加险列表
+     * @param packageId 计划书ID
+     * @param addedList 已添加附加险ID
+     * @param currMainPlanInfo 主险对象
+     * @param cb_ok
+     * @param cb_err
+     */
+    p.getRiders = function(packageId, addedList,currMainPlanInfo,currMainPlanInsured, cb_ok, cb_err){
         var opt = {};
         opt.url = "/ls/services/dt/planService/getRiders";
         opt.type = "POST";
@@ -19,6 +26,8 @@ define([], function () {
         if(addedList.length>0) {
             data.addedRiderIds = addedList;
         }
+        data.mainCoverages = currMainPlanInfo;
+        data.insured = currMainPlanInsured;
         opt.data = data;//JSON.stringify(data);
         opt.success = function(result){
             if(result.status == 0) {
