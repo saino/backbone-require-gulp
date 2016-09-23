@@ -15,6 +15,7 @@ define([
         ui: {
             topTitle: "#top-title",
             back: "#top-title-left",
+            topTitleCenter: "#top-title-center",
             detailsDescriptionContent: "#details-description-content",
             detailsDescriptionName1: "#details-description-name1",
             detailsDescriptionRuleName1: ".details-description-rule-name1",
@@ -69,7 +70,8 @@ define([
             var self = this;
             var productId = parseInt(self.getOption("detailsDescriptionId"));
             var organId = parseInt(self.getOption("organId"));
-            self.ui.detailsDescriptionName1.html(utils.productName); 
+            // self.ui.detailsDescriptionName1.html(utils.productName); 
+            self.ui.topTitleCenter.html(utils.productName);
             LoadingCircle && LoadingCircle.start();
             detailsDescriptionModel.getRuleInfo(productId, organId, function(data){
                 console.log(data);
