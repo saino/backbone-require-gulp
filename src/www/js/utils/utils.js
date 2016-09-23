@@ -4,100 +4,7 @@
 (function(window){
     var utils = {};
     window.utils = utils;
-
-    utils.insurancePolicy = {
-                        planId:"100009",
-                        ageList:{"1":{
-                        gender:[1,0],
-                        amountLimit:{minAmount:1,maxAmount:100},//保额范围
-                        chargeList:[{    //交费期间1
-                            charge:{periodType:1,periodValue:3},
-                            coverageList:[
-                                {      //保障期间1
-                                    coverage:{periodType:2,periodValue:3},
-                                    payList:[ //领取年龄
-                                        {pay:{periodType:3,periodValue:3}},
-                                        {pay:{periodType:3,periodValue:1}},
-                                        {pay:{periodType:3,periodValue:2}},
-                                        {pay:{periodType:3,periodValue:4}}
-                                    ]
-                                },
-                                {      //保障期间2
-                                    coverage:{periodType:2,periodValue:2},
-                                    payList:[ //领取年龄
-                                        {pay:{periodType:3,periodValue:3}},
-                                        {pay:{periodType:3,periodValue:1}}
-                                    ]
-                                }
-                            ]
-                        },
-                            {             //交费期间2
-                                charge:{periodType:1,periodValue:2},
-                                coverageList:[
-                                    {      //保障期间1
-                                        coverage:{periodType:2,periodValue:1},
-                                        payList:[]
-                                    },
-                                    {      //保障期间2
-                                        coverage:{periodType:2,periodValue:5},
-                                        payList:[]
-                                    }
-                                ]
-                            }]},
-                 "2":{
-                        gender:[1], //只男
-                        amountLimit:{minAmount:1,maxAmount:100},//保额范围
-                        chargeList:[{   //交费期间1
-                            charge:{periodType:1,periodValue:3},
-                            coverageList:[
-                                {      //保障期间1
-                                    coverage:{periodType:2,periodValue:3},
-                                    payList:[ //领取年龄
-                                        {pay:{periodType:3,periodValue:3}},
-                                        {pay:{periodType:3,periodValue:1}},
-                                        {pay:{periodType:3,periodValue:2}},
-                                        {pay:{periodType:3,periodValue:4}}
-                                    ]
-                                },
-                                {      //保障期间2
-                                    coverage:{periodType:2,periodValue:2},
-                                    payList:[ //领取年龄
-                                        {pay:{periodType:3,periodValue:3}},
-                                        {pay:{periodType:3,periodValue:1}}
-                                    ]
-                                }
-                            ]
-                        },
-                        {             //交费期间2
-                            charge:{periodType:1,periodValue:2},
-                            coverageList:[
-                                {      //保障期间1
-                                    coverage:{periodType:2,periodValue:1},
-                                    payList:[]
-                                },
-                                {      //保障期间2
-                                    coverage:{periodType:2,periodValue:5},
-                                    payList:[]
-                                }
-                            ]
-                        },
-                        {             //交费期间3
-                            charge:{periodType:1,periodValue:2},
-                            coverageList:[
-                                {      //保障期间1
-                                    coverage:{periodType:2,periodValue:1},
-                                    payList:[]
-                                },
-                                {      //保障期间2
-                                    coverage:{periodType:2,periodValue:5},
-                                    payList:[]
-                                }
-                            ]
-                        }]}
-                        }
-                    };
-
-    utils.isDebug = false;//true 原生   false 浏览器  todo
+    utils.isDebug = false;//true 原生   false 浏览器
     var href = window.location.href;
     if(href.indexOf("210.13.77.75") >= 0){
         utils.isDebug = true;
@@ -110,9 +17,9 @@
         utils.userObj.id = "";
     }
     utils.serverConfig = {
-        serverUrl: "http://210.13.77.75:8080"       //开发
-//        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
-//        serverUrl: "http://120.55.176.131:8080"  //外网测试环境
+//        serverUrl: "http://210.13.77.75:8080"       //开发
+        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
+//        serverUrl: "http://120.55.176.131:8080"      //外网测试环境
     };
     utils.tempUser = {id:""};//监听用户ID，计划书分享用 add by guYY 9/19 20:22
 
@@ -176,6 +83,106 @@
             str = value+"岁";
         }
         return str;
+    }
+    /**
+     * 根据两个交费期限比较交费时间长短 前者大等于后者返回1  小于返回0
+     * @param chargeType1   1趸交  2交value年  3交到value岁 4交终身
+     * @param chargeValue1
+     * @param chargeAge1
+     * @param chargeType2   1趸交  2交value年  3交到value岁 4交终身
+     * @param chargeValue2
+     * @param chargeAge2
+     */
+    utils.compareCharge = function(chargeType1,chargeValue1,chargeAge1,chargeType2,chargeValue2,chargeAge2){
+        var result = 0;
+        chargeAge1 = chargeAge1 || 0;
+        chargeAge2 = chargeAge2 || 0;
+        if(chargeType1 == 1){
+            if(chargeType2 == 1){
+                result = 1;
+            }else if(chargeType2 == 2){
+                if(chargeValue2 == 1)
+                    return 1;
+                else
+                    return 0;
+            }else if(chargeType2 == 3){
+                if(chargeValue2 - chargeAge2 <= 1)
+                    return 1;
+                else
+                    return 0;
+            }else{
+                result = 0;
+            }
+        }else if(chargeType1 == 2){
+            var num1 = chargeValue1;
+            var num2 = chargeValue2;
+            if(chargeType2 == 1){
+                result = 1;
+            }else if(chargeType2 == 2){
+                result = num1 >= num2 ? 1:0;
+            }else if(chargeType2 == 3){
+                num2 = chargeValue2 - chargeAge2;
+                result = num1 >= num2 ? 1:0;
+            }else if(chargeType2 == 4){
+                result = 0;
+            }
+        }else if(chargeType1 == 3){
+            var num1 = chargeValue1 - chargeAge1;
+            var num2 = chargeValue2;
+            if(chargeType2 == 1){
+                result = 1;
+            }else if(chargeType2 == 2){
+                result = num1 >= num2 ? 1:0;
+            }else if(chargeType2 == 3){
+                num2 = chargeValue2 - chargeAge2;
+                result = num1 >= num2 ? 1:0;
+            }else if(chargeType2 == 4){
+                result = 0;
+            }
+        }else if(chargeType1 == 4){
+            result = 1;
+        }
+        return result;
+    }
+    /**
+     * 根据两个保障期限比较保障时间长短 前者大等于后者返回1  小于返回0
+     * @param coverageType1   1终身  2保value年  3保到value岁
+     * @param coverageValue1
+     * @param coverageAge1
+     * @param coverageType2   1终身  2保value年  3保到value岁
+     * @param coverageValue2
+     * @param coverageAge2
+     */
+    utils.compareCoverage = function(coverageType1,coverageValue1,coverageAge1,coverageType2,coverageValue2,coverageAge2){
+        var result = 0;
+        coverageAge1 = coverageAge1 || 0;
+        coverageAge2 = coverageAge2 || 0;
+        if(coverageType1 == 1){
+            result = 1;
+        }else if(coverageType1 == 2){
+            var num1 = coverageValue1;
+            var num2 = coverageValue2;
+            if(coverageType2 == 1){
+                result = 0;
+            }else if(coverageType2 == 2){
+                result = num1 >= num2 ? 1:0;
+            }else if(coverageType2 == 3){
+                num2 = coverageValue2 - coverageAge2;
+                result = num1 >= num2 ? 1:0;
+            }
+        }else if(coverageType1 == 3){
+            var num1 = coverageValue1 - coverageAge1;
+            var num2 = coverageValue2;
+            if(coverageType2 == 1){
+                result = 0;
+            }else if(coverageType2 == 2){
+                result = num1 >= num2 ? 1:0;
+            }else if(coverageType2 == 3){
+                num2 = coverageValue2 - coverageAge2;
+                result = num1 >= num2 ? 1:0;
+            }
+        }
+        return result;
     }
     /**
      * 交费期限、保障期限
@@ -525,4 +532,10 @@
         }
         utils.setLocalStorageObject(prototype, obj);
     };
+    //制作计划书 保额 保费 份数 默认取值范围
+    utils.defaultMinAmount = 1;
+    utils.defaultMaxAmount = 999999999;
+    //点击添加附加险时，传递的主险信息 及对应保人信息
+    utils.currMainPlanInfo = null;
+    utils.currMainPlanInsured = null
 })(window);

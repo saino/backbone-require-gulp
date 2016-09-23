@@ -69,15 +69,6 @@ define([
                 self.ui.personalCustomerMain.css({height: "calc(100% - " + height + "px)"});
                 self.ui.customerFilter.css({height: "calc(100% - " + height + "px)", top : height + "px"});
             }, 0);
-            // //TODO 需要真实的接口和数据
-            // personalCustomerModel.getCustomerItemList(self.currentUserId,  function(data){
-            //     var list = data.customerItemList;
-            //     self.initListData = list;
-            //     self.initView(list);
-            // }, function(err){
-            //     console.log(err);
-            // });
-
         },
         loadData: function(options){
             var self = this;
@@ -147,7 +138,6 @@ define([
          */
         initView : function(data){
             var self = this;
-            //TODO 以下为模拟的数据，需要调试的，会有细微的改动
             var list = data;
             self.currentListData = list;
             var customerItemStr = "";
@@ -216,7 +206,6 @@ define([
          */
         customerSearchOperation: function (text) {
             var self = this;
-            //TODO 具体搜索,需要实现
             var data = self.searchNameOrPhoneNumber(text);
             self.initView(data);
         },

@@ -6,8 +6,9 @@ define([
     'common/base/base_view',
     'text!module/personalPlan/templates/personalPlan.html',
     'module/personalPlan/model/personalPlanModel',
+    'common/views/circle',
     "msgbox"
-], function (BaseView, Tpl, personalPlanModel, MsgBox) {
+], function (BaseView, Tpl, personalPlanModel,loadingCircle, MsgBox) {
     var planItemTemp = '<div class="personal-plan-item" data-id="{planId}">' +
         '<div class="personal-plan-item-title">' +
         '<div class="personal-plan-item-name"><img class="avatar-icon" src="./images/plan/icon12.png" /><span>{applicantName}</span></div>' +
@@ -54,14 +55,17 @@ define([
                 var height = self.ui.topCon.outerHeight(true) + self.ui.planSearchContainer.height();
                 self.ui.personalPlanMain.css({height: "calc(100% - " + height + "px)"});
             }, 0)
-            //TODO 需要真实的接口和数据
+            console.log("查询我的计划书列表")
+            LoadingCircle && LoadingCircle.start();
             personalPlanModel.getPlanItemList(function(data){
+                LoadingCircle && LoadingCircle.end();
                 console.log(data);
                 var list = data.planCardList;
                 self.initListData = list;
                 self.initView(list);
             }, function(err){
-                console.log(err);
+                LoadingCircle && LoadingCircle.end();
+                console.log("计划书列表查询失败"+err);
             });
 
         },
@@ -147,6 +151,8 @@ define([
             setTimeout(function(){
                 target.css("opacity","1")
             },30);
+            //TODO 暂写死
+            utils.planHonorific = "尊敬的***先生";
             app.navigate("in/plan/"+id,{trigger:true,replace:true});
         },
         /**
@@ -250,6 +256,7 @@ define([
         },
         close:function(){
             var self = this;
+            LoadingCircle && LoadingCircle.end();
             self.remove();
             app.off("personalPlan:exit", self._goBackHandler,this);
             if(MsgBox && MsgBox.isShow()) {

@@ -86,19 +86,6 @@ define([
             // console.log(self.productId);
             //根据用户ID 和保险售卖ID查询数据
             self._initView = self.initView.bind(self);
-            //TODO 需要真实的接口和数据
-            // var options =  {
-            //     "encryptedUserData": utils.userObj.id,
-            //     "salesPackageId": self.productId
-            // };
-            // LoadingCircle && LoadingCircle.start();
-            // productDetailsModel.getProductInfo(options, self._initView, function(err){
-            //     console.log(err);
-            //     setTimeout(function(){
-            //         MsgBox.alert("数据获取失败");
-            //     }, 350);
-            //     LoadingCircle && LoadingCircle.end();
-            // });
         },
         show: function(){
             var self = this;
@@ -120,7 +107,6 @@ define([
             // console.log(self.productId);
             //根据用户ID 和保险售卖ID查询数据
             // self._initView = self.initView.bind(self);
-            //TODO 需要真实的接口和数据
             var options =  {
                 "encryptedUserData": utils.userObj.id,
                 "salesPackageId": self.productId
