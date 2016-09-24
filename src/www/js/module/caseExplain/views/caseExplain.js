@@ -42,7 +42,7 @@ define([
         	var self = this;
  			if(device.ios()){
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
-                self.ui.caseExplainContent.css("height", "calc(100% - 84px - "+utils.toolHeight+"px)");
+                self.ui.caseExplainContent.css("height", "-webkit-calc(100% - 84px - "+utils.toolHeight+"px)");
             }
         	if(utils.caseExplain){
                 var imgHtml = "";

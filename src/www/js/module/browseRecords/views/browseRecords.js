@@ -228,7 +228,7 @@ define([
             var self = this;
             if(device.ios()){
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
-                self.ui.browseRecordsContent.css("height", "calc(100% - 84px - "+utils.toolHeight+"px)");
+                self.ui.browseRecordsContent.css("height", "-webkit-calc(100% - 84px - "+utils.toolHeight+"px)");
             }
             if(self.isReLoading){
                 self.loadData();

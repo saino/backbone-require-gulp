@@ -66,8 +66,8 @@ define([
             }
             setTimeout(function(){
                 var height = self.ui.topCon.outerHeight(true) + self.ui.customerSearchContainer.outerHeight(true);
-                self.ui.personalCustomerMain.css({height: "calc(100% - " + height + "px)"});
-                self.ui.customerFilter.css({height: "calc(100% - " + height + "px)", top : height + "px"});
+                self.ui.personalCustomerMain.css({height: "-webkit-calc(100% - " + height + "px)"});
+                self.ui.customerFilter.css({height: "-webkit-calc(100% - " + height + "px)", top : height + "px"});
             }, 0);
         },
         loadData: function(options){

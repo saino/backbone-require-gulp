@@ -44,7 +44,7 @@ define([
             }
             setTimeout(function(){
                 var height = self.ui.topCon.outerHeight(true);
-                self.ui.personalCollectMain.css({height: "calc(100% - " + height + "px)"});
+                self.ui.personalCollectMain.css({height: "-webkit-calc(100% - " + height + "px)"});
             }, 0);
 
         },

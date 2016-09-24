@@ -58,7 +58,7 @@ define([
             }
             setTimeout(function(){
                 var height = self.ui.topCon.outerHeight(true) + self.ui.attachDetailsTitle.height();
-                self.ui.attachDetailsMain.css({height: "calc(100% - " + height + "px)"});
+                self.ui.attachDetailsMain.css({height: "-webkit-calc(100% - " + height + "px)"});
             }, 0)
 
             self.packageId = self.getOption("packageId");   //产品卡ID

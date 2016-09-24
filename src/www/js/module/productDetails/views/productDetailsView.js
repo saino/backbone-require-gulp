@@ -50,6 +50,7 @@ define([
         },
         events:{
             "tap @ui.backBtn":"onBackBtnHandler",
+            "tap .top-title-left":"onBackBtnHandler2",
             "tap @ui.shareBtn":"onShareInsureHandler",      //分享保险
             "tap @ui.collectBtn":"onCollectInsureHandler",        //收藏保险
             "tap @ui.dutyTitleBtn":"onToggleDutyContentHandler",
@@ -58,7 +59,7 @@ define([
             "tap @ui.planContent" :  "onGoToPlanItemHandler",
             "tap @ui.subjoinTitleBtn":"onToggleSubjoinContentHandler",
             "tap @ui.subjoinContent" : "onGoToSubjoinItemHandler",
-            "tap @ui.insureMake" : "onGoToInsureMakeHandler",        //去制作
+            "tap .product-insure-make" : "onGoToInsureMakeHandler",        //去制作
             "tap @ui.productCompanyLogo": "onDetailsInfoTopHandler"            //去公司详情
         },
 
@@ -79,7 +80,7 @@ define([
             }
             setTimeout(function(){
                 var height = self.ui.topCon.outerHeight(true);
-                self.ui.productDetailsMain.css({height: "calc(100% - " + height + "px)"});
+                self.ui.productDetailsMain.css({height: "-webkit-calc(100% - " + height + "px)"});
             }, 0)
 
             // self.productId = self.getOption("productId");   //获取产品ID
@@ -436,9 +437,20 @@ define([
          * @param e
          */
         onBackBtnHandler:function(e){
+            alert("点击返回1"); //todo
             e.stopPropagation();
             e.preventDefault();
 
+            //进入寿险列表查询也是否需要重新加载数据
+            utils.isLifeInsuranceRefresh = false;
+            //是否初始化查询条件
+            // utils.isInitOption = true;
+            app.goBack();
+        },
+        onBackBtnHandler2:function(e){ //todo del
+            alert("点击返回2");
+            e.stopPropagation();
+            e.preventDefault();
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = false;
             //是否初始化查询条件

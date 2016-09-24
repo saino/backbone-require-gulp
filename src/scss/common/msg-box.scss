@@ -11,7 +11,7 @@
     height: 230px;//原250
     margin: 0 auto;
     position: relative;
-    top: calc(50% - 123px);
+    top: -webkit-calc(50% - 123px);
 
     .app-msg-box-title{
 //      margin-top: 47px;

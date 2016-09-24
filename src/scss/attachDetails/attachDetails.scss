@@ -27,7 +27,7 @@
     .top-title-center {
         float: left;
         height: 84px;
-        width: calc(100% - 276px);
+        width: -webkit-calc(100% - 276px);
         text-align: center;
         color: #000;
         font-size: 3.4em;
@@ -64,13 +64,6 @@
             padding-left: 34px;
             font-size: 3.4em;
             color: #333;
-            //.attach-item-title span:first-child{
-            //    display: inline-block;
-            //    width: calc(100% - 99px);
-            //    overflow: hidden;
-            //    white-space: nowrap;
-            //    text-overflow: ellipsis;
-            //}
             .pull-icon-big{
                 float: right;
                 height: 100%;
@@ -106,13 +99,6 @@
         color: #333;
         margin-top: 12px;
         background: #fff;
-        //.attach-next-item span:first-child{
-        //    display: inline-block;
-        //    width: calc(100% - 99px);
-        //    overflow: hidden;
-        //    white-space: nowrap;
-        //    text-overflow: ellipsis;
-        //}
         .pull-icon-next-big {
             float: right;
             height: 100%;

@@ -96,7 +96,7 @@ define([
             var self = this;
             if(device.ios()){
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
-                self.ui.detailsDescriptionContent.css("height", "calc(100% - 84px - "+utils.toolHeight+"px)");
+                self.ui.detailsDescriptionContent.css("height", "-webkit-calc(100% - 84px - "+utils.toolHeight+"px)");
             }
             self.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 details-description-rule-name-selected");
             self.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2");

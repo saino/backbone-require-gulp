@@ -73,6 +73,7 @@ define([
         },
         //点击寿险容器
         clickLifeInsuranceContentHandler: function(event){
+            alert("点击寿险列表项");//todo
             event.stopPropagation();
             event.preventDefault();
             var $target = $(event.target);
@@ -305,7 +306,7 @@ define([
 
             // };
             var self = this;
-            self.ui.topRitleRight.css("background-image","url(images/history.png)");
+            self.ui.topRitleRight.css({"background-image":"url(images/history.png)","background-repeat":"no-repeat"});
             self._scrolling = self.scrolling.bind(self);
             var insuranceCompanyContentWidth = $(window).width() - 28;
             var insuranceCompanyInnerContentWidth = insuranceCompanyContentWidth - insuranceCompanyContentWidth%175;
@@ -574,7 +575,7 @@ define([
             var self = this;
             if(device.ios()){
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
-                self.ui.lifeInsuranceContent.css("height", "calc(100% - 255px - "+utils.toolHeight+"px)");
+                self.ui.lifeInsuranceContent.css("height", "-webkit-calc(100% - 255px - "+utils.toolHeight+"px)");
             }
             //TODO
             if(utils.isLifeInsuranceRefresh){

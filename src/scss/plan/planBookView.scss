@@ -33,7 +33,7 @@
 
   .plan-book-date{
     margin : 14px auto 0 auto;
-    width: calc(100% - 60px);
+    width: -webkit-calc(100% - 60px);
     height: 258px;
     background: url("../images/plan/imageBg2.png") no-repeat center;
     background-size: 100%;
@@ -82,8 +82,8 @@
     .sexAndAge{
       position: absolute;
       display: inline-block;
-      left:calc(50% - 60px);
-      top:calc(50% - 60px);
+      left:-webkit-calc(50% - 60px);
+      top:-webkit-calc(50% - 60px);
       width:120px;
       height: 120px;
       text-align:center;
@@ -446,7 +446,7 @@
       }
 
       .input-range{
-        width: calc(100% - 196px);
+        width: -webkit-calc(100% - 196px);
       }
 
       .btn-range-reduce{

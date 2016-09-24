@@ -53,7 +53,7 @@
 
 .screening-condition-name{
   float: left;
-  margin-left: calc(50% - 71px);
+  margin-left: -webkit-calc(50% - 71px);
 }
 .search-arrow{
   float: left;
@@ -64,9 +64,9 @@
 }
 #life-insurance-content{
   margin: 17px auto;
-  width: calc(100% - 28px);
+  width: -webkit-calc(100% - 28px);
   border-radius: 4px;
-  height: calc(100% - 255px);
+  height: -webkit-calc(100% - 255px);
   overflow-x:hidden;
   overflow-y: scroll;
   padding-bottom: 17px;
@@ -100,7 +100,7 @@
   background: url("../images/new.png") no-repeat center;
 }
 .life-insurance-name-title{
-  width: calc(100% - 12px);
+  width: -webkit-calc(100% - 12px);
   border-bottom: 2px solid #dddddd;
   margin: 0 auto;
   padding-left: 30px;
@@ -125,7 +125,7 @@
 .life-insurance-look-pv{
   position: relative;
   height: 42px;
-  width: calc(100% - 12px);
+  width: -webkit-calc(100% - 12px);
   border-bottom: 2px solid #dddddd;
 }
 
@@ -163,9 +163,9 @@
   position: relative;
   background: #fff;
   height: 950px;
-  width: calc(100% - 28px);
+  width: -webkit-calc(100% - 28px);
   margin: 0 auto;
-  top: calc(50% - 475px);
+  top: -webkit-calc(50% - 475px);
   border-radius: 10px;
 }
 #insurance-company-title{
@@ -216,7 +216,7 @@
     display: block;
     float: left;
     height: 98px;
-    width: calc(100% - 70px);
+    width: -webkit-calc(100% - 70px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap

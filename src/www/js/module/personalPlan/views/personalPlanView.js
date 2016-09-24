@@ -9,7 +9,7 @@ define([
     'common/views/circle',
     "msgbox"
 ], function (BaseView, Tpl, personalPlanModel,loadingCircle, MsgBox) {
-    var planItemTemp = '<div class="personal-plan-item" data-id="{planId}">' +
+    var planItemTemp = '<div class="personal-plan-item" data-id="{planId}" data-proposer="{proposerName}" data-gender="{proposerGender}">' +
         '<div class="personal-plan-item-title">' +
         '<div class="personal-plan-item-name"><img class="avatar-icon" src="./images/plan/icon12.png" /><span>{applicantName}</span></div>' +
         '<span class="personal-plan-item-date">{itemDate}</span>' +
@@ -26,6 +26,7 @@ define([
         id:"personal-plan-container",
 //        currentListData : [],     //当前计划书数据的列表
         initListData : [],      //初始化的
+        forever:true,
         ui:{
             topCon : ".top-title",
             backBtn : ".top-title-left", //点击返回
@@ -38,7 +39,6 @@ define([
         events:{
             "tap @ui.backBtn":"onBackBtnHandler",
             "tap @ui.clearBtn": "onClearPlanHandler",      //清空计划书
-            "tap @ui.personalPlanMain": "onDeletePlanItemHandler",      //清空计划书
             "tap @ui.planSearchBtn": "onPlanSearchBtnHandler",      //搜索计划书
             "input @ui.planSearchTxt": "onPlanSearchInputHandler",      //输入内容实时搜索
             "tap .personal-plan-item":"clickPlanHandler"  //点击查看计划书详情-保障计划
@@ -53,7 +53,7 @@ define([
             }
             setTimeout(function(){
                 var height = self.ui.topCon.outerHeight(true) + self.ui.planSearchContainer.height();
-                self.ui.personalPlanMain.css({height: "calc(100% - " + height + "px)"});
+                self.ui.personalPlanMain.css({height: "-webkit-calc(100% - " + height + "px)"});
             }, 0)
             console.log("查询我的计划书列表")
             LoadingCircle && LoadingCircle.start();
@@ -65,7 +65,7 @@ define([
                 self.initView(list);
             }, function(err){
                 LoadingCircle && LoadingCircle.end();
-                console.log("计划书列表查询失败"+err);
+                console.log("计划书列表查询失败,"+err);
             });
 
         },
@@ -87,6 +87,8 @@ define([
                     var applicantName = "投保人：" + obj.phName; //投保人名称
                     var planId = obj.quotationId;
                     var planName = obj.packageName;    //计划书名称
+                    var proposerName = obj.proposer ?(obj.proposer.name || ""):"";
+                    var gender = obj.proposer?(obj.proposer.gender || "M"):"M";
                     var chargePeriod = obj.mainCoverage.chargePeriod;        //交费期限
                     var chargePeriodStr = utils.getPeriodText(1, chargePeriod.periodType, chargePeriod.periodValue);
                     var coveragePeriod = obj.mainCoverage.coveragePeriod;    //保障期限
@@ -98,7 +100,9 @@ define([
                     var realItemTemp = planItemTemp.replace("{applicantName}", applicantName).replace("{itemDate}", date)
                         .replace("{planName}", planName).replace("{recognizeeInfo}", recognizeeInfo)
                         .replace("{costInfo}", costInfo).replace("{dataId}", objectId)
-                        .replace("{planId}",planId);
+                        .replace("{planId}",planId)
+                        .replace("{proposerGender}",gender)
+                        .replace("{proposerName}",proposerName);
                     planItemStr += realItemTemp;
                 }
                 self.ui.personalPlanMain.html(planItemStr);
@@ -142,17 +146,21 @@ define([
             e.preventDefault();
             var self = this;
             var target = $(e.target);
-            if(!target.hasClass(".personal-plan-item")){
+            if(target.hasClass("personal-plan-item-delete")){//删除单项
+                self.onDeletePlanItemHandler(target.parents(".personal-plan-item"));
+                return;
+            }
+            if(!target.hasClass("personal-plan-item")){
                 target = target.parents(".personal-plan-item");
             }
-
             var id = target.data("id")||"null";
             target.css("opacity",".5")
             setTimeout(function(){
                 target.css("opacity","1")
             },30);
-            //TODO 暂写死
-            utils.planHonorific = "尊敬的***先生";
+            var proposerName = target.data("proposer");
+            var gender = target.data("gender")=="F"?"女士":"先生";
+            utils.planHonorific = "尊敬的"+proposerName+""+gender;
             app.navigate("in/plan/"+id,{trigger:true,replace:true});
         },
         /**
@@ -207,17 +215,13 @@ define([
          * 点击删除单条计划书
          * @param e
          */
-        onDeletePlanItemHandler:function(e){
-            e.stopPropagation();
-            e.preventDefault();
+        onDeletePlanItemHandler:function(parent){
             var self = this;
             //删除单条计划书
-            var target = e.target;
-            var $target = $(target);
-            var dataId = $target.attr("data-id");
-            var parent = "";
+            var dataId = parent.attr("data-id");
+//            var parent = "";
             if (dataId){
-                parent = $target.parent();
+//                parent = target.parent();
                 if (parent) {
                     MsgBox.ask("你确定要删除该计划书吗？","",function(type){
                         if(type == 2) { //确定  0=取消
@@ -257,7 +261,7 @@ define([
         close:function(){
             var self = this;
             LoadingCircle && LoadingCircle.end();
-            self.remove();
+//            self.remove(); //update by guYY 此处什么意思？这样会导致无法常驻页面
             app.off("personalPlan:exit", self._goBackHandler,this);
             if(MsgBox && MsgBox.isShow()) {
                 MsgBox.clear();

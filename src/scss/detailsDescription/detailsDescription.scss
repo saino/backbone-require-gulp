@@ -6,7 +6,7 @@
 }
 #details-description-content{
   position: relative;
-  height: calc(100% - 84px);
+  height: -webkit-calc(100% - 84px);
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -34,7 +34,7 @@
   margin-bottom: 17px;
 }
 #details-description-rule{
-  width: calc(100% - 28px);
+  width: -webkit-calc(100% - 28px);
   margin: 0 auto;
   background: #fff;
 }

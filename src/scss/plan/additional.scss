@@ -37,7 +37,7 @@ box-shadow: 0 5px 5px 0 rgba(231,231,231,.75);}
 }
 #term-search-text{
     height: 70px;
-    width: calc(100% - 80px);
+    width: -webkit-calc(100% - 80px);
     margin: 0 auto;
     font-size: 3.0em;
     color: #a2a2a2;

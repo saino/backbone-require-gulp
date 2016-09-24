@@ -56,11 +56,19 @@ define([
 
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
+            var self = this;
+            self.shareName = this.ui.planMain.find(".plan-book-company").html()+"-计划书演示";
+            self.shareAdvice = this.ui.planMain.find(".plan-book-company").attr("data-advice");
+            console.log("pageIn planView");
         },
         show:function(){
             var self = this;
             //动画播放
             var dom = $("#plan-cover");
+            if(!dom || dom.length <= 0) {
+                self.ui.menuTab.after('<div id="plan-cover"></div>');
+                dom = $("#plan-cover");
+            }
             var index = 0;
             var iframe = document.createElement("iframe");
             dom.append(iframe);
@@ -106,12 +114,11 @@ define([
         clickShareHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
-            var name = this.ui.planMain.find(".plan-book-company").html()+"-计划书演示";
-            var advice = this.ui.planMain.find(".plan-book-company").attr("data-advice");
-            if(name == "" || advice == ""){
+            var self = this;
+            if(!self.shareName || self.shareName == "" || !self.shareAdvice || self.shareAdvice == ""){
                 MsgBox.alert("分享标题与描述不能为空!");
             }else{
-                utils.shareProduct(name,advice,window.location.href);
+                utils.shareProduct(self.shareName,self.shareAdvice,window.location.href);
             }
         },
         changeMenuTab : function(tabIndex){

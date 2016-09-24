@@ -190,7 +190,7 @@ define([
                 self.ui.commentTxt.val("");
             }
             //初始化根据险种列表初始化 被保人、第二被保人、投保人 输入
-            self.resetAllInput();
+            self.resetAllInput(true);
             if(data.company && data.company.organLogo){
                 self.ui.planInfoCon.css("background",'url("'+(utils.serverConfig.serverUrl+data.company.organLogo)+'") no-repeat right 30px center #fff');
             }
@@ -246,20 +246,21 @@ define([
                 self.ui.policyHolder.find(".insured-old").change();
             }
         },
-        //添加删除险种后 数据重置
-        resetAllInput:function(){
+        //添加删除险种后 数据重置  clearVal是否清除被保人（二被保人，投投人）原始值
+        resetAllInput:function(clearVal){
             var self = this;
             self.setRelevantProperty();
-            self.renderInsured();
-            self.renderSecondInsured();
-            self.renderPolicyHolder();
+            self.renderInsured(clearVal);
+            self.renderSecondInsured(clearVal);
+            self.renderPolicyHolder(clearVal);
         },
         /**
          * 根据全局属性，渲染被保人输入框
          * 吸烟类型smokingType,职业hasJob，社保hasSocialInsure
          * ageRangeOfLifeAssuredHtml 被保人年龄段
+         * clearVal 是否清除原始值
           */
-        renderInsured:function(){
+        renderInsured:function(clearVal){
             var self = this;
             //如果原始有值，需取出再赋值
             var insured = {};
@@ -271,7 +272,11 @@ define([
             insured.smoking = self.ui.firstInsured.find(".insured-smoking").val();//吸烟
 
             var firstInsuredHtml = "";
-            firstInsuredHtml += self.insuredNameTpl({nameTxt:insured.name});
+            if(clearVal){
+                firstInsuredHtml += self.insuredNameTpl({nameTxt:""});
+            }else {
+                firstInsuredHtml += self.insuredNameTpl({nameTxt: insured.name});
+            }
             firstInsuredHtml += self.insuredOldTpl({oldOptions:self.ageRangeOfLifeAssuredHtml});
             if(self.insuredGender == "N"){
                 firstInsuredHtml += self.insuredSexTpl();
@@ -292,6 +297,7 @@ define([
                 firstInsuredHtml += self.insuredSocialTpl();
             }
             self.ui.firstInsured.find(".insured-property").html(firstInsuredHtml);
+            if(clearVal)return;
             //如果有年龄值
             if(insured.age){
                 self.ui.firstInsured.find(".insured-old").val(insured.age);
@@ -339,8 +345,9 @@ define([
          * hasSecInsured是否存在第二被保人
          * 吸烟类型smokingType,职业hasJob，社保hasSocialInsure
          * ageRangeSecondOfLifeAssuredHtml 第二被保人年龄段
+         * clearVal 是否清除原始值
          */
-        renderSecondInsured:function(){
+        renderSecondInsured:function(clearVal){
             var self = this;
             //如果无第二被保人相关，直接隐藏 并清除属性项
             if(!self.hasSecInsured){
@@ -360,7 +367,11 @@ define([
 
             //拼接第二被保人
             var secondInsuredHtml = "";
-            secondInsuredHtml += self.insuredNameTpl({nameTxt:secInsured.name});
+            if(clearVal){
+                secondInsuredHtml += self.insuredNameTpl({nameTxt:""});
+            }else {
+                secondInsuredHtml += self.insuredNameTpl({nameTxt:secInsured.name});
+            }
             secondInsuredHtml += self.insuredOldTpl({oldOptions:self.ageRangeSecondOfLifeAssuredHtml});
             if(self.secInsuredGender == "N"){
                 secondInsuredHtml += self.insuredSexTpl();
@@ -381,6 +392,7 @@ define([
                 secondInsuredHtml += self.insuredSocialTpl();
             }
             self.ui.secondInsured.find(".insured-property").html(secondInsuredHtml);
+            if(clearVal)return;
             //如果有年龄值
             if(secInsured.age){
                 self.ui.secondInsured.find(".insured-old").val(secInsured.age);
@@ -426,8 +438,9 @@ define([
         /**
          * hasPolicyHolder 是否存在投保人
          * ageRangeOfPolicyHolderHtml 投保人年龄段
+         * * clearVal 是否清除原始值
          */
-        renderPolicyHolder:function(){
+        renderPolicyHolder:function(clearVal){
             var self = this;
             //是否显示投保人
             if(!self.hasPolicyHolder){
@@ -451,6 +464,7 @@ define([
                 policyHolderHtml += self.policyHolderSexTpl_F();
             }
             self.ui.policyHolder.find(".insured-property").html(policyHolderHtml);
+            if(clearVal)return;
             //如果有年龄值
             if(proposer.age){
                 self.ui.policyHolder.find(".insured-old").val(proposer.age);
@@ -956,7 +970,7 @@ define([
             self.ui.additionalPlanInput.append($(tempHtml));
             self.currPlanList.push(obj);
             //添加险种 重置 被保人、第二被保人、投保人
-            self.resetAllInput();
+            self.resetAllInput(false);
             //根据附加险类型取对应保人年龄
             var age = self.getCurSecAge(obj);
             self.resetPlanInput(self.ui.additionalPlanInput.find(".additional-item:last"),age);
@@ -1410,7 +1424,7 @@ define([
             }else{
                 return;
             }
-            target.focus();
+//            target.focus();
         },
         //保费输入框失去焦点
         blurInsuredPremiumHandler:function(e){
@@ -1420,7 +1434,7 @@ define([
             var val = target.val() && parseFloat(target.val());
             if(val < min || val > max){
                 MsgBox.alert("保费区间"+min+"~"+max);
-                target.focus();
+//                target.focus();
             }
         },
         //份数输入框失去焦点
@@ -1438,7 +1452,7 @@ define([
             }else{
                 return;
             }
-            target.focus();
+//            target.focus();
         },
         getValueAddedById:function(id){
             var self = this;
@@ -2137,7 +2151,7 @@ define([
                 }
             }
             if(has){//险种列表有变化 需重置 被保人、第二被保人、投保人
-                self.resetAllInput();
+                self.resetAllInput(false);
             }
         },
         //点击客户导入
