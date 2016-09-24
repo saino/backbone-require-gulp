@@ -73,7 +73,7 @@ define([
 
         totalFirstYearPrem:0,       //首年总保费
         valueadded:[],  //增值服务列表
-
+        mouseLock:false, //按钮锁
         ui : {
             topTitleLeft : "#top-title-left",
             topCon : "#top-title",
@@ -979,6 +979,12 @@ define([
         clickTopTitleLeftHandler: function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             //返回重置当前产品计划ID，返回进入重置所有
             this.currProductId = 0;
             app.goBack();
@@ -989,6 +995,11 @@ define([
             e.preventDefault();
             var target = $(event.target);
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             if(!target.hasClass("property-radio-item"))return;
             if(target.hasClass("property-radio-item-ck")){
                 return;
@@ -1025,6 +1036,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.target);
             var valueAddedId = target.data("id") || "null";
             app.navigate("in/increment/"+valueAddedId,{replace:true, trigger:true});
@@ -1469,6 +1485,12 @@ define([
         clickLiabilityHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.currentTarget);
             target.toggleClass("duty-item-left-ck");
         },
@@ -1476,6 +1498,12 @@ define([
         clickDutyTipHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.currentTarget);
             if(target.hasClass("duty-open")){ //点击收起
                 target.removeClass("duty-open").addClass("duty-stop");
@@ -1490,6 +1518,12 @@ define([
         clickCheckHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.target);
             target.toggleClass("increment-check-ck");
         },
@@ -1498,6 +1532,12 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var target = $(e.target);
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             if(target.hasClass("first-year-open")){//点击展开
                 target.removeClass("first-year-open").addClass("first-year-stop");
                 target.siblings(".first-year-table").slideDown();
@@ -1510,6 +1550,12 @@ define([
         clickAccordionHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.target);
             if(target.hasClass("title-stop")){//点击收起
                 target.removeClass("title-stop").addClass("title-open");
@@ -1860,6 +1906,12 @@ define([
         clickIdeaItemHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.currentTarget);
             target.addClass("idea-item-ck");
             target.siblings().removeClass("idea-item-ck");
@@ -1869,6 +1921,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var responseData = self.getPlanByInput();
             if(!responseData)return;
             console.log("*********计算保费 请求数据**********");
@@ -1897,6 +1954,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var responseData = self.getPlanByInput();
             if(!responseData)return;
             if(!self.isCalcOver){
@@ -1922,6 +1984,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             //取第一个主险
             var target = self.ui.makePlanInput.find(".main-insured-item:eq(0)");
             //点击添加附加险 验证主险输入项
@@ -2084,9 +2151,14 @@ define([
         },
         //点击删除附加险/主险
         delAdditionPlanHandler:function(e){
-            var self  = this;
             e.stopPropagation();
             e.preventDefault();
+            var self  = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.target);
             if(!target.hasClass("additional-del"))return;
             //1主险（不能全部删除，得留 一个）  2附加险
@@ -2159,6 +2231,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var type = 1;//第一被保人   2第二被保人
             var target = $(e.target);
             if(target.parents(".second-insured").size() > 0){

@@ -17,6 +17,7 @@ define([
         pageIndex: 0,   //下次要查询第几页
         pageSize: 5,    //每页查询多少条数据 
         isLoading: false,   //是否真正加载数据
+        mouseLock:false, //按钮锁
         ui: {
             topTitle: "#top-title",
             back: "#top-title-left",
@@ -60,12 +61,24 @@ define([
         clickTopRitleRightHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             app.navigate("home/browseRecords", {replace: true, trigger: true});
         },
         //点击示例保费的例子
         clickSampleHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var $target = $(e.target);
             $target.parent().find(".sample-premium-message").toggle();
             // this.ui.samplePremiumMessage.hide();
@@ -75,6 +88,12 @@ define([
         clickLifeInsuranceContentHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var $target = $(event.target);
             var lifeInsuranceCard = $target.parents(".life-insurance-card")[0];
             if(lifeInsuranceCard){
@@ -89,6 +108,11 @@ define([
             event.stopPropagation();
             event.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = event.target;
             if(target.getAttribute("class") == "insurance-company-name"){
 
@@ -124,6 +148,11 @@ define([
             event.stopPropagation();
             event.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             // utils.lifeInsuranceOptions.searchWords = self.ui.searchText.attr("value") || self.ui.searchText.attr("placeholder") || "";
             utils.lifeInsuranceOptions.searchWords = self.actualSearchWords || "";
             
@@ -152,6 +181,11 @@ define([
             event.stopPropagation();
             event.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             self.ui.insuranceCompanyFloat.show();
             if(utils.isInitCompany){
                 if(self.companys.length == 0){
@@ -191,7 +225,12 @@ define([
         clickSearchAdvancedScreeningHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
-
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             app.navigate("in/advanceQuery", {replace: true, trigger: true});
         },
 
@@ -199,7 +238,12 @@ define([
         clickSearchTextHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
-
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             app.navigate("in/search", {replace: true, trigger: true});
         },
 
@@ -207,7 +251,12 @@ define([
         clickBackHandler: function (event) {
             event.stopPropagation();
             event.preventDefault();
-
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = true;
             //是否初始化查询条件
@@ -223,8 +272,13 @@ define([
         clickProductInsureDutyHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
-
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
+
             var target = event.target;
             var $target = $(target);
             var parent = null;
@@ -252,7 +306,12 @@ define([
         clickSearchDefaultSortHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
-
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             this.ui.defaultSortLayoutFloat.show();
 
         },
@@ -261,6 +320,11 @@ define([
             event.stopPropagation();
             event.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
 
             //self.ui.defaultSortLayoutFloat.hidden();
 
@@ -305,7 +369,8 @@ define([
 
             // };
             var self = this;
-            self.ui.topRitleRight.css({"background-image":"url(images/history.png)","background-repeat":"no-repeat"});
+//            self.ui.topRitleRight.css({"background-image":"url(images/history.png)","background-repeat":"no-repeat"});
+            self.ui.topRitleRight.css({"background":'url("images/history.png") no-repeat center'});
             self._scrolling = self.scrolling.bind(self);
             var insuranceCompanyContentWidth = $(window).width() - 28;
             var insuranceCompanyInnerContentWidth = insuranceCompanyContentWidth - insuranceCompanyContentWidth%175;
@@ -341,7 +406,7 @@ define([
                 if(data.status == "0"){  
                     var salesPackages = data.salesPackages;
                     if(data.defaultSearchWords){
-                        // console.log('sssss');
+                        //todo 阿里云 guyy
                         self.ui.searchText.attr("placeholder", data.defaultSearchWords.hotKeyWords);
                         self.actualSearchWords = data.defaultSearchWords.actualSearchWords;
                     }
@@ -574,7 +639,7 @@ define([
             var self = this;
             if(device.ios()){
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
-                self.ui.lifeInsuranceContent.css("height", "-webkit-calc(100% - 255px - "+utils.toolHeight+"px)");
+                self.ui.lifeInsuranceContent.css({"height": "-webkit-calc(100% - "+(255+utils.toolHeight)+"px)","height": "calc(100% - "+(255+utils.toolHeight)+"px)"});
             }
             //TODO
             if(utils.isLifeInsuranceRefresh){
@@ -640,6 +705,7 @@ define([
         pageIn : function(){
             // utils.toLogin();
             var self = this;
+//            alert(self.$el.height()+","+self.ui.lifeInsuranceContent.height());//todo 周一看一下 安卓VIVO手机无法滚动的问题
             app.on("insurance:exit", this._goBackHandler,this);
             self.ui.lifeInsuranceContent.scroll(self._scrolling);
         },

@@ -146,7 +146,7 @@ define([
             if(utils.searchText){
                 self.ui.searchInput.attr("value", utils.searchText);
             }
-
+            //todo 阿里云 guyy
             self.ui.searchInput.attr("placeholder", obj.hotKeyWords);
             
         },
