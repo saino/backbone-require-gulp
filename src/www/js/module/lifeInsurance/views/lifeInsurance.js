@@ -73,7 +73,6 @@ define([
         },
         //点击寿险容器
         clickLifeInsuranceContentHandler: function(event){
-            alert("点击寿险列表项");//todo
             event.stopPropagation();
             event.preventDefault();
             var $target = $(event.target);

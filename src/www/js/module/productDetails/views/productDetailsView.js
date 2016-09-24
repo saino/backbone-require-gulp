@@ -49,8 +49,7 @@ define([
             productCompanyLogo: ".product-company-logo"   //公司logo
         },
         events:{
-            "tap @ui.backBtn":"onBackBtnHandler",
-            "tap .top-title-left":"onBackBtnHandler2",
+            "tap .top-title-left":"onBackBtnHandler",
             "tap @ui.shareBtn":"onShareInsureHandler",      //分享保险
             "tap @ui.collectBtn":"onCollectInsureHandler",        //收藏保险
             "tap @ui.dutyTitleBtn":"onToggleDutyContentHandler",
@@ -437,18 +436,6 @@ define([
          * @param e
          */
         onBackBtnHandler:function(e){
-            alert("点击返回1"); //todo
-            e.stopPropagation();
-            e.preventDefault();
-
-            //进入寿险列表查询也是否需要重新加载数据
-            utils.isLifeInsuranceRefresh = false;
-            //是否初始化查询条件
-            // utils.isInitOption = true;
-            app.goBack();
-        },
-        onBackBtnHandler2:function(e){ //todo del
-            alert("点击返回2");
             e.stopPropagation();
             e.preventDefault();
             //进入寿险列表查询也是否需要重新加载数据
@@ -465,7 +452,6 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
-            console.log(self.suggestReason);
             utils.shareProduct(self.packageName, self.suggestReason, window.location.href);
             // MsgBox.alert("点击了分享保险");
             // var options = {
