@@ -7,7 +7,7 @@ var server = express();
 server.use(express.static(__dirname+'/src/www'));
 try {
     // 监听端口
-    server.listen(8020,function () {
+    server.listen(8090,function () {
         //if (process.env.NODE_ENV === 'development') {
         console.log('%s listening at %s', server.name, server.url);
         //}
