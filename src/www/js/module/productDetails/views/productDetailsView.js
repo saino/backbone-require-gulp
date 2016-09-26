@@ -66,6 +66,9 @@ define([
         onDetailsInfoTopHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             this.companyId = this.companyId || "null";
             app.navigate("in/companyIntro/" + this.companyId, {replace : true, trigger : true});
         },
@@ -438,6 +441,9 @@ define([
         onBackBtnHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = false;
             //是否初始化查询条件
@@ -451,6 +457,9 @@ define([
         onShareInsureHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             utils.shareProduct(self.packageName, self.suggestReason, window.location.href);
             // MsgBox.alert("点击了分享保险");
@@ -479,6 +488,9 @@ define([
         onCollectInsureHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(!utils.userObj.id || utils.userObj.id == ""){
                 utils.toLogin();
@@ -533,6 +545,9 @@ define([
         onToggleDutyContentHandler : function(e) {
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             self.ui.dutyTitle.toggleClass("on");
             self.ui.dutyTitle.next().slideToggle(function(){
@@ -551,6 +566,9 @@ define([
         onToggleDutyItemSummaryHandler : function(event) {
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             var target = event.target;
             var $target = $(target);
@@ -578,6 +596,9 @@ define([
         onTogglePlanContentHandler : function(e) {
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             self.ui.planTitle.toggleClass("on");
             self.ui.planTitle.next().slideToggle(function(){
@@ -596,6 +617,9 @@ define([
         onGoToPlanItemHandler : function(e) {
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             var target = e.target;
             var $target = $(target);
@@ -629,6 +653,9 @@ define([
         onToggleSubjoinContentHandler : function(e) {
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             self.ui.subjoinTitle.toggleClass("on");
             self.ui.subjoinTitle.next().slideToggle(function(){
@@ -647,6 +674,9 @@ define([
         onGoToSubjoinItemHandler : function(e) {
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             var target = e.target;
             var $target = $(target);
@@ -680,6 +710,9 @@ define([
         onGoToInsureMakeHandler : function(e) {
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             self.productId = self.productId || "null";
             if(!utils.userObj.id || utils.userObj.id == ""){

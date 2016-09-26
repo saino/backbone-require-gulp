@@ -28,6 +28,9 @@ define([
         clickBackHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
             app.goBack();
         },
@@ -36,6 +39,9 @@ define([
         clickDeleteHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             var $target = $(event.target);
             // console.log(event.target);
@@ -93,6 +99,9 @@ define([
         clickDeleteAllHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
             var self = this;
             console.log(self.ui.browseRecordsContent.find(".insurance-product-card").length);

@@ -51,6 +51,22 @@
     utils.AGE_4 = 4; //月
     utils.AGE_5 = 5; //天
 
+    //clickLock
+    utils.isClickLock = false;
+    utils.clickLock = function(){
+        setTimeout(function(){
+            utils.isClickLock = false;
+            console.log("openLock");
+        },300);
+        if(utils.isClickLock){
+            console.log("isLocked");
+            return true;
+        }else{
+            utils.isClickLock = true;
+            return false;
+        }
+    }
+
     //格式化金额
     utils.formatNumber = function(num){
         if(!num)

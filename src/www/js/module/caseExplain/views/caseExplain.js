@@ -24,6 +24,9 @@ define([
 		clickTopTitleHandler: function(event){
 			event.stopPropagation();
 			event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 			app.goBack();
 
 		},

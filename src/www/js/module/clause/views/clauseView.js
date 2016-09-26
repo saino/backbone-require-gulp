@@ -38,6 +38,9 @@ define([
             var self = this;
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
              utils.shareProduct(utils.productName+".PDF","保险详情条款", self.pdfUrl);
 
@@ -46,6 +49,9 @@ define([
         clickClauseBtnDownloadHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             // console.log(utils.serverConfig.serverUrl+self.pdfUrl);
             window.open(utils.serverConfig.serverUrl+self.pdfUrl, "_blank", "Download");
@@ -55,6 +61,9 @@ define([
         inputTextHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             if(this.ui.termSearchText[0].value){
                 this.ui.termTextClear.show();
             }else{
@@ -64,12 +73,18 @@ define([
         clickTermTextClearHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             this.ui.termSearchText[0].value = "";
             this.ui.termTextClear.hide();
         },
         clickTermSearchIconHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var keyWord = this.ui.termSearchText[0].value;
             if(keyWord){
                 console.log("搜索"+keyWord);
@@ -129,6 +144,9 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             app.goBack();
         },
         close:function(){

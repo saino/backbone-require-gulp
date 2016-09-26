@@ -106,7 +106,7 @@ define([
                         }
                         insuranceProductCardHtml += equityLabelHtml;
                         insuranceProductCardHtml +=     '</div>' +
-                                                        '<div class="insurance-product-delete"> </div>' +
+                                                        '<div class="insurance-product-delete button"> </div>' +
                                                     '</div>';
                     }
                     if(!insuranceProductCard.length){
@@ -133,6 +133,9 @@ define([
         onBackBtnHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             //退出H5 add by guYY 9.20 13:25
             if(!utils.toFinish()){
                 app.goBack();
@@ -145,6 +148,9 @@ define([
         onClearCollectHandler:function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(!(self.ui.personalCollectMain.find(".insurance-product-card").length)){
                 MsgBox.alert("收藏记录为空");
@@ -181,6 +187,9 @@ define([
         onDeleteCollectItemHandler:function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(event.target.getAttribute("class") == "insurance-product-delete"){
                 MsgBox.ask("你确定删除该条收藏的产品吗？","bbbbbbb",function(type){

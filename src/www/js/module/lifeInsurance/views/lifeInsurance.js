@@ -61,6 +61,9 @@ define([
         clickTopRitleRightHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -73,6 +76,9 @@ define([
         clickSampleHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -88,6 +94,9 @@ define([
         clickLifeInsuranceContentHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -107,6 +116,9 @@ define([
         clickInsuranceCompanyFloatHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -147,6 +159,9 @@ define([
         clickSearchIconHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -180,6 +195,9 @@ define([
         clickSearchInsuranceCompanyHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -225,6 +243,9 @@ define([
         clickSearchAdvancedScreeningHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -238,6 +259,9 @@ define([
         clickSearchTextHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -251,6 +275,9 @@ define([
         clickBackHandler: function (event) {
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -272,6 +299,9 @@ define([
         clickProductInsureDutyHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -306,6 +336,9 @@ define([
         clickSearchDefaultSortHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -319,6 +352,9 @@ define([
         clickDefaultSortLayoutFloatHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;

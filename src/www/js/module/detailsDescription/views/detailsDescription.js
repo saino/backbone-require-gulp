@@ -32,12 +32,18 @@ define([
         clickBackHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
             app.goBack();
         },
         clickDetailsDescriptionRuleName1Handler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
             this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 button details-description-rule-name-selected");
             this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2 button");
@@ -49,6 +55,9 @@ define([
         clickDetailsDescriptionRuleName2Handler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
             this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2 button details-description-rule-name-selected");
             this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 button");

@@ -23,6 +23,9 @@ define([
             "tap @ui.btnCall": "_clickBtnCall"
         },
         _clickBtnCall: function(event){
+            if(utils.clickLock()){
+                return;
+            }
             var companyPhone = this.model.get("companyPhone");
             window.open(companyPhone, "_blank");
         },
@@ -47,6 +50,9 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             app.goBack();
         },
         close:function(){

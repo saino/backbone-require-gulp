@@ -41,6 +41,9 @@ define([
         onPersonalCustomerMainHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             var $target = $(event.target);
             var customerObj = {};
@@ -170,6 +173,9 @@ define([
         onBackBtnHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             app.goBack();
         },
         /**
@@ -188,6 +194,9 @@ define([
         onCustomerSearchBtnHandler :function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             var text = self.ui.customerSearchTxt.val();
             // if (text){
@@ -216,6 +225,9 @@ define([
         onCustomerFilterBtnHandler : function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var target = e.target;
             var $target = $(target);
             var dataTo = $target.attr("data-to");

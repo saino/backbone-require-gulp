@@ -82,6 +82,9 @@ define([
         clickHotWordConHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
             var sefl = this;
 
@@ -161,6 +164,9 @@ define([
         onBtnSearchHandler : function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
             var self = this;
             var keywords = self.ui.searchInput.val();
@@ -195,6 +201,9 @@ define([
         onHistoryItemName: function(event){
             event.stopPropagation();
             event.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var searchWords = event.target.innerHTML;
 
             utils.lifeInsuranceOptions.searchWords = searchWords;
@@ -227,6 +236,9 @@ define([
         onDeleteHistoryItemHandler : function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             var target = $(e.currentTarget);
             var searchWords = target.parent().find(".history-item-name").html();
@@ -258,7 +270,9 @@ define([
         onClearHistoryHandler : function(e){
             e.stopPropagation();
             e.preventDefault();
-
+            if(utils.clickLock()){
+                return;
+            }
             var self = this;
             LoadingCircle && LoadingCircle.start();
             searchModel.clearSearchHistory("", function(data){
@@ -279,6 +293,9 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = false;
             //是否初始化查询条件

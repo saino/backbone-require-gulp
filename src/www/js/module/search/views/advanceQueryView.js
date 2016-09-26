@@ -216,6 +216,9 @@ define([
         onResetClickHandler : function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
             var self = this;
             self.ui.productList.find(".type-all").addClass("type-item-ck");
@@ -234,6 +237,9 @@ define([
         onConfirmClickHandler : function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
             var self = this;
             var productLists = [], infoLists = [], companyLists = [];
@@ -306,7 +312,9 @@ define([
         onListClickHandler : function(e){
             e.stopPropagation();
             e.preventDefault();
-
+            if(utils.clickLock()){
+                return;
+            }
             var target  = e.target;
             var $target = $(target);
             var pparent = $target.parent().parent();
@@ -357,6 +365,9 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
 
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = false;
