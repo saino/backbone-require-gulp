@@ -85,7 +85,7 @@ define([
 
             var sefl = this;
 
-            if(event.target.getAttribute("class") == "hot-word-item"){
+            if(event.target.getAttribute("class") == "hot-word-item button"){
                 utils.lifeInsuranceOptions.searchWords = event.target.innerHTML || "";
                 //进入寿险列表查询也是否需要重新加载数据
                 utils.isLifeInsuranceRefresh = true;
@@ -135,7 +135,7 @@ define([
             });
             for(i = 0; i < len; i++){
                 var obj = list[i];
-                html += "<div class='hot-word-item'>"+obj.keyWords+"</div>";
+                html += "<div class='hot-word-item button'>"+obj.keyWords+"</div>";
             }
             self.ui.hotWordInnerList.html(html);
         },
