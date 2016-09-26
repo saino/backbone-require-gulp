@@ -55,7 +55,7 @@ define([
             var html = "", i, len = self.additionalList.length;
             for(i=0; i<len;i++){
                 var obj = self.additionalList[i];
-                html += '<div class="additional-item" data-id="'+obj.salesProductId+'"><div class="content">'+obj.salesProductName+'</div><div class="btnAdd">添加</div></div>'
+                html += '<div class="additional-item" data-id="'+obj.salesProductId+'"><div class="content">'+obj.salesProductName+'</div><div class="btnAdd button">添加</div></div>'
             }
             if(len <= 0){
                 html += '<p class="no-data-p">该主险下还未添加附加险</p>';

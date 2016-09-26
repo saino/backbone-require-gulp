@@ -78,6 +78,10 @@ define([
                 self.mouseLock = false;
             },300);
             var target = $(e.target);
+            target.css("opacity",".5")
+            setTimeout(function(){
+                target.css("opacity","1")
+            },30);
             var id = target.data("id") || "null";
             app.navigate("in/clause/"+id,{trigger:true,replace:true});
         }
