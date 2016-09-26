@@ -143,7 +143,6 @@ define([
 
         showCompany : function(){
             var self = this;
-            debugger;
             self.planCompanyView = new planCompanyView();
             self.getRegion("planMain").show(self.planCompanyView);
             self.planCompanyView.setHeight(self.ui.planMain[0].offsetHeight, self.planId);
@@ -195,6 +194,9 @@ define([
             if(MsgBox && MsgBox.isShow()){
                 MsgBox.clear();
             }
+            //返回 切换到保障计划页
+            self.currTab = 1;
+            self.changeMenuTab(1);
             app.off("plan:exit", self._goBackHandler,this);
         },
         /*点击事件不可以重复点*/

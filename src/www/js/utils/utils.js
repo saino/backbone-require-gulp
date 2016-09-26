@@ -462,11 +462,13 @@
         }else{
             url = url + "?isShare=1&tempUser="+utils.userObj.id;
         }
-        if(device.ios()){
-            kbShareAction(title, des, url);
-        }else if(device.android()){
-            window.kbShare && window.kbShare.kbShareAction(title, des, url);
-        }
+        try {
+            if (device.ios()) {
+                kbShareAction(title, des, url);
+            } else if (device.android()) {
+                window.kbShare && window.kbShare.kbShareAction(title, des, url);
+            }
+        }catch(e){}
     };
     //退出H5  return false表示访问原生报错
     utils.toFinish = function(){
