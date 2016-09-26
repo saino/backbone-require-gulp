@@ -1332,6 +1332,7 @@ define([
                     if(value != periodValue){
 //                        MsgBox.alert(errorMsg.makePlanMsg12);//不好提示
                         parent.find(".payment-period").val(value);
+//                        parent.find(".payment-period").change();
                         return;
                     }
                 }else{
@@ -1342,6 +1343,7 @@ define([
                             var tempValue = $(this).attr("value");
                             if(utils.compareCharge(type,value,mpAge,tempType,tempValue,currAge) == 1){
                                 parent.find(".payment-period").val(tempValue);
+//                                parent.find(".payment-period").change();
                                 return false;
                             }
                         });
