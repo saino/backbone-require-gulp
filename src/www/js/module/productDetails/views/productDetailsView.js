@@ -49,7 +49,7 @@ define([
             productCompanyLogo: ".product-company-logo"   //公司logo
         },
         events:{
-            "tap .top-title-left":"onBackBtnHandler",
+            "tap @ui.backBtn":"onBackBtnHandler",
             "tap @ui.shareBtn":"onShareInsureHandler",      //分享保险
             "tap @ui.collectBtn":"onCollectInsureHandler",        //收藏保险
             "tap @ui.dutyTitleBtn":"onToggleDutyContentHandler",
