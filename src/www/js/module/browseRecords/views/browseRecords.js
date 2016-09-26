@@ -196,7 +196,7 @@ define([
                         }
                         insuranceProductCardHtml += equityLabelHtml;
                         insuranceProductCardHtml +=     '</div>' +
-                                                        '<div class="insurance-product-delete"> </div>' +
+                                                        '<div class="insurance-product-delete button"> </div>' +
                                                     '</div>';
                     }
                     if(!insuranceProductCard.length){

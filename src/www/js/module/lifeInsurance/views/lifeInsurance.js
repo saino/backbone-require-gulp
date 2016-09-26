@@ -114,10 +114,10 @@ define([
                 self.mouseLock = false;
             },300);
             var target = event.target;
-            if(target.getAttribute("class") == "insurance-company-name"){
+            if(target.getAttribute("class") == "insurance-company-name button"){
 
-                self.ui.insuranceCompanyContent.find(".insurance-company-name-selected").attr("class", "insurance-company-name");
-                target.setAttribute("class", "insurance-company-name insurance-company-name-selected");
+                self.ui.insuranceCompanyContent.find(".insurance-company-name-selected").attr("class", "insurance-company-name button");
+                target.setAttribute("class", "insurance-company-name button insurance-company-name-selected");
                 utils.companyId = target.getAttribute("data-id");
                 if(utils.companyId == "all"){
                     utils.lifeInsuranceOptions.companyIds = utils.advancedCompanyId;
@@ -194,9 +194,9 @@ define([
                         console.log(data);
                         if(data.status == "0"){
                             self.companys = data.company;
-                            var insuranceCompanyNameHtml = '<div class="insurance-company-name insurance-company-name-selected" data-id="all">全部</div>';
+                            var insuranceCompanyNameHtml = '<div class="insurance-company-name button insurance-company-name-selected" data-id="all">全部</div>';
                             for(var i=0; self.companys&&i<self.companys.length; i++){
-                                insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
+                                insuranceCompanyNameHtml += '<div class="insurance-company-name button" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
                             }
 
                             self.ui.insuranceCompanyInnerContent.html(insuranceCompanyNameHtml);
@@ -210,9 +210,9 @@ define([
                     });
                 }
                 else{
-                    var insuranceCompanyNameHtml = '<div class="insurance-company-name  insurance-company-name-selected" data-id="all">全部</div>';
+                    var insuranceCompanyNameHtml = '<div class="insurance-company-name button  insurance-company-name-selected" data-id="all">全部</div>';
                     for(var i=0; self.companys&&i<self.companys.length; i++){
-                        insuranceCompanyNameHtml += '<div class="insurance-company-name" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
+                        insuranceCompanyNameHtml += '<div class="insurance-company-name button" data-id="'+self.companys[i].listId+'">'+ self.companys[i].abbrName +'</div>';
                     }
                     self.ui.insuranceCompanyInnerContent.html(insuranceCompanyNameHtml);
                 }
@@ -438,7 +438,7 @@ define([
                                                             '<div class="life-insurance-label-name">示例保费：</div>'+
                                                             // '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem +'</div>'+
                                                             '<div class="life-insurance-label-message">'+ salesPackages[i].examPrem + '元'+
-                                                                '<img class="sample-premium" src="./images/tip.png"/>'+
+                                                                '<img class="sample-premium button" src="./images/tip.png"/>'+
                                                                 '<div class="sample-premium-message"><img class="sample-tip-icon" src="./images/tipIcon.png">30岁，男性，20年交，保额10万的示例保费</div>'+
             
                                                             '</div>'+
@@ -518,7 +518,7 @@ define([
                         lifeInsuranceContentHtml += '<div class="product-insure-duty">'+
                                                         '<div class="insure-duty-title">'+
                                                             '<span>保险责任</span>'+        
-                                                            '<span class="pull-icon-big"></span>'+
+                                                            '<span class="pull-icon-big button"></span>'+
                                                         '</div>'+
                                                         '<div class="insure-duty-content">';
                         var insureDutyItemHtml = "";
@@ -526,7 +526,7 @@ define([
                             insureDutyItemHtml += '<div class="insure-duty-item">'+
                                                     '<div class="duty-item-title">'+
                                                         '<span class="duty-item-title-span">'+salesPackages[i].liabilities[k].liabDesc+'</span>'+
-                                                        '<span class="pull-icon-small"></span>'+
+                                                        '<span class="pull-icon-small button"></span>'+
                                                     '</div>'+
                                                     '<div class="duty-item-content">'+salesPackages[i].liabilities[k].liabDescProd+'</div>'+
                                                   '</div>';

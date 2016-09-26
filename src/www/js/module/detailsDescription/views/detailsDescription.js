@@ -39,8 +39,8 @@ define([
             event.stopPropagation();
             event.preventDefault();
 
-            this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 details-description-rule-name-selected");
-            this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2");
+            this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 button details-description-rule-name-selected");
+            this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2 button");
             if(this.descriptionData){
                 this.ui.detailsDescriptionRuleContent.html(this.descriptionData.productUnderwritingRule);
             }
@@ -50,8 +50,8 @@ define([
             event.stopPropagation();
             event.preventDefault();
 
-            this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2 details-description-rule-name-selected");
-            this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1");
+            this.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2 button details-description-rule-name-selected");
+            this.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 button");
             if(this.descriptionData){
                 this.ui.detailsDescriptionRuleContent.html(this.descriptionData.companyUnderwritingRule);
             }
@@ -98,8 +98,8 @@ define([
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
                 self.ui.detailsDescriptionContent.css("height", "-webkit-calc(100% - 84px - "+utils.toolHeight+"px)");
             }
-            self.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 details-description-rule-name-selected");
-            self.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2");
+            self.ui.detailsDescriptionRuleName1.attr("class","details-description-rule-name1 button details-description-rule-name-selected");
+            self.ui.detailsDescriptionRuleName2.attr("class","details-description-rule-name2 button");
         },
 
         pageIn: function(){
