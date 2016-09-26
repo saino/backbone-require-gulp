@@ -27,6 +27,7 @@ define([
 //        currentListData : [],     //当前计划书数据的列表
         initListData : [],      //初始化的
         forever:true,
+        mouseLock:false, //鼠标锁
         ui:{
             topCon : ".top-title",
             backBtn : ".top-title-left", //点击返回
@@ -118,6 +119,12 @@ define([
         onBackBtnHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             //退出H5 add by guYY 9.20 13:25
             if(!utils.toFinish()){
                 app.goBack();
@@ -137,6 +144,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var text = self.ui.planSearchTxt.val();
             self.planSearchOperation(text);
         },
@@ -145,6 +157,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.target);
             if(target.hasClass("personal-plan-item-delete")){//删除单项
                 self.onDeletePlanItemHandler(target.parents(".personal-plan-item"));
@@ -170,6 +187,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var text = self.ui.planSearchTxt.val();
             if (text){
                 self.planSearchOperation(text);
@@ -191,6 +213,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             //有子项的时候
             if (self.initListData.length > 0) {
                 //清空，我的所有计划书

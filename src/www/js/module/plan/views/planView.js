@@ -18,6 +18,7 @@ define([
         _mouseLock : false,
         forever : true,
         currTab:1,
+        mouseLock:false,//按钮锁
         ui : {
             "topCon":"#top-title",
             "titleLeft":"#top-title-left",
@@ -63,6 +64,17 @@ define([
         },
         show:function(){
             var self = this;
+            if(utils.isShare){
+                self.ui.titleLeft.css("visibility","hidden");
+                self.ui.titleShare.css("visibility","hidden");
+            }else{
+                self.ui.titleLeft.css("visibility","visible");
+                self.ui.titleShare.css("visibility","visible");
+            }
+            var tempPlanId = self.getOption("planId");
+            app.on("plan:exit", this._goBackHandler,this);
+            if(self.planId == tempPlanId)
+                return;
             //动画播放
             var dom = $("#plan-cover");
             if(!dom || dom.length <= 0) {
@@ -83,27 +95,18 @@ define([
                 margin:"0",
                 padding:"0"
             });
-//            var timer = setTimeout(function(){
-//                dom.remove();
-//                clearTimeout(timer);
-//            },6360);
-            //分享进入 顶部返回按钮 分享按钮需隐藏
-            if(utils.isShare){
-                self.ui.titleLeft.css("visibility","hidden");
-                self.ui.titleShare.css("visibility","hidden");
-            }else{
-                self.ui.titleLeft.css("visibility","visible");
-                self.ui.titleShare.css("visibility","visible");
-            }
-            var tempPlanId = self.getOption("planId");
-            app.on("plan:exit", this._goBackHandler,this);
-            if(self.planId == tempPlanId)
-                return;
             self.planId = tempPlanId;
             self.changeMenuTab(self.currTab);
         },
         onTabClickHandler : function(e){
+            e.stopPropagation();
+            e.preventDefault();
             var self = this, target  = e.currentTarget;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var tabIndex = target.dataset.id;
             if(tabIndex){
                 self.currTab = tabIndex;
@@ -115,6 +118,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             if(!self.shareName || self.shareName == "" || !self.shareAdvice || self.shareAdvice == ""){
                 MsgBox.alert("分享标题与描述不能为空!");
             }else{
@@ -135,6 +143,7 @@ define([
 
         showCompany : function(){
             var self = this;
+            debugger;
             self.planCompanyView = new planCompanyView();
             self.getRegion("planMain").show(self.planCompanyView);
             self.planCompanyView.setHeight(self.ui.planMain[0].offsetHeight, self.planId);
@@ -158,6 +167,11 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             //点击返回时 清理本地缓存
             if(self.planId) {
                 utils.delLocalStorageObject("planObject", self.planId);

@@ -11,6 +11,7 @@ define([
     var DiseaseView = BaseView.extend({
         template: _.template(DiseaseTpl),
         id:"disease-container",
+        mouseLock:false, //鼠标锁
         ui:{
             "topCon":"#top-title",
             "diseaseContent":"#disease-main",
@@ -39,6 +40,12 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             app.goBack();
         },
         close:function(){

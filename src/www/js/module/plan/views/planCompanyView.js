@@ -27,6 +27,7 @@ define([
             "tap .menu-item":"_clickMenuItemHandler"
         },
         initialize:function(){
+            console.log("plancompany initialize");
             this.showCompany(0);//默认显示服务商
         },
         _clickMenuItemHandler:function(e){
@@ -76,6 +77,7 @@ define([
             //hei为所放容易高度  - 70(切换tab高度) - 139（logo高度）
             var self = this;
             self.inited = true;
+            console.log("plancompany setHeight");
             self.ui.planCompanyCon.css({"height":(hei-70)+"px"});
 
             //查询服务商对象、承保商对象

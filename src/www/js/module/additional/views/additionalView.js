@@ -14,6 +14,7 @@ define([
         id:"additional-container",
         currProductId:0,        //当前产品计划书ID
         additionalList:[], //附加险列表
+        mouseLock:false, //按钮锁
         ui:{
             "topCon":"#top-title",
             "btnBack":"#top-title-left", //点击返回
@@ -65,6 +66,12 @@ define([
         onItemClickHandler : function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = e.currentTarget;
             var parent = $(target).parent().get(0);
             if(parent){
@@ -92,6 +99,12 @@ define([
         _clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             app.goBack();
         },
         close:function(){

@@ -9,6 +9,7 @@ define([
     var clauseListView = BaseView.extend({
         id:"clause-list-container",
         template : _.template(tpl),
+        mouseLock:false, //按钮锁
         ui: {
             "topCon": "#top-title",
             "mainCon":"#clause-list-main"
@@ -59,11 +60,23 @@ define([
         clickBackHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             app.goBack();
         },
         clickItemHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.target);
             var id = target.data("id") || "null";
             app.navigate("in/clause/"+id,{trigger:true,replace:true});
