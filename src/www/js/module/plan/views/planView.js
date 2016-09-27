@@ -60,7 +60,9 @@ define([
             var self = this;
             self.shareName = this.ui.planMain.find(".plan-book-company").html()+"-计划书演示";
             self.shareAdvice = this.ui.planMain.find(".plan-book-company").attr("data-advice");
-            console.log("pageIn planView");
+            self.proposerName = this.ui.planMain.find(".plan-book-company").attr("proposerName");
+            self.proposerGender = this.ui.planMain.find(".plan-book-company").attr("proposerGender");
+
         },
         show:function(){
             var self = this;
@@ -83,9 +85,10 @@ define([
             }
             var index = 0;
             var iframe = document.createElement("iframe");
+            iframe.style.border = "none";
             dom.append(iframe);
             if(!utils.planHonorific || utils.planHonorific == ""){
-                utils.planHonorific = "尊敬的xxx先生";//TODO
+                utils.planHonorific = "尊敬的xxx先生";
             }
             iframe.src = "planCover/index.html?text="+encodeURI(utils.planHonorific);
             $(iframe).css({
@@ -126,7 +129,8 @@ define([
             if(!self.shareName || self.shareName == "" || !self.shareAdvice || self.shareAdvice == ""){
                 MsgBox.alert("分享标题与描述不能为空!");
             }else{
-                utils.shareProduct(self.shareName,self.shareAdvice,window.location.href);
+//                utils.shareProduct(self.shareName,self.shareAdvice,window.location.href);
+                utils.sharePlan(self.shareName,self.shareAdvice,window.location.href,self.proposerName,self.proposerGender);
             }
         },
         changeMenuTab : function(tabIndex){

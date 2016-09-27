@@ -88,8 +88,8 @@ define([
                     var applicantName = "投保人：" + obj.phName; //投保人名称
                     var planId = obj.quotationId;
                     var planName = obj.packageName;    //计划书名称
-                    var proposerName = obj.proposer ?(obj.proposer.name || ""):"";
-                    var gender = obj.proposer?(obj.proposer.gender || "M"):"M";
+                    var proposerName = obj.phName || "";
+                    var gender = obj.phGender || "M";
                     var chargePeriod = obj.mainCoverage.chargePeriod;        //交费期限
                     var chargePeriodStr = utils.getPeriodText(1, chargePeriod.periodType, chargePeriod.periodValue);
                     var coveragePeriod = obj.mainCoverage.coveragePeriod;    //保障期限

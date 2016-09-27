@@ -139,10 +139,18 @@ define([
         //根据计划书对象 渲染页面
         renderData:function(data){
             var self = this;
+            var proposerName = "";
+            var proposerGender = "先生";
             self.planBook = data.planInfo;
             self.productInfoList = self.planBook.productInfoList;
             utils.productInfoList = self.productInfoList;
             var plan = self.planBook.plan;
+            if(plan){
+                proposerName = plan.proposer.name;
+                proposerGender = plan.proposer.gender == "F"?"女士":"先生";
+            }
+            self.ui.planBannerName.attr("proposerName",proposerName);
+            self.ui.planBannerName.attr("proposerGender",proposerGender);
             self.ui.planBannerName.html(self.planBook.packageName);
             self.initBannerData(plan);
             self.initInsuredData(plan);
@@ -547,7 +555,7 @@ define([
             var self = this;
             self.ui.rangeInput.val(num);
             self.ui.ageSelect.val(num);
-            self.ui.yearTitle.html("第"+num+"保单年度");
+            self.ui.yearTitle.html("第"+(num+1)+"保单年度");
             var list = [];
             if(self.interestDemonstration[self.currLevel]){
                 list = self.interestDemonstration[self.currLevel][num+""] || [];

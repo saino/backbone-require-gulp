@@ -463,7 +463,6 @@ define([
             proposer.name = self.ui.sendName.val();
             proposer.age = self.ui.policyHolder.find(".insured-old").val();
             proposer.gender = self.ui.policyHolder.find(".insured-sex").attr("data-val");
-
             self.ui.policyHolder.css("display","block");
             var policyHolderHtml = "";
             policyHolderHtml += self.policyHolderOldTpl({oldOptions:self.ageRangeOfPolicyHolderHtml});
@@ -1691,6 +1690,9 @@ define([
             proposer.name = self.ui.sendName.val();
             proposer.age = self.ui.policyHolder.find(".insured-old").val();
             proposer.gender = self.ui.policyHolder.find(".insured-sex").attr("data-val");
+            if(!proposer.gender){
+                proposer.gender = self.ui.sendSex.val() == 0?"M":"F";
+            }
             plan.proposer = proposer;
 
             //主险数据
@@ -2199,7 +2201,6 @@ define([
             }
             utils.currMainPlanInfo.push(mainCoverage);
             utils.currMainPlanInsured = insured;
-        debugger;
             var exitsAdditionalIds = self.additionalIdArr.join(",");
             if(exitsAdditionalIds != "") {
                 exitsAdditionalIds = utils.myEncodeURIComponent(exitsAdditionalIds);

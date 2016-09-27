@@ -453,6 +453,23 @@
         return results;
     };
     /**
+     * 分享计划书
+     * @param title
+     * @param des
+     * @param url
+     * @param name
+     * @param gender  先生、女士
+     */
+    utils.sharePlan = function(title,des,url,name,gender){
+        if(url.lastIndexOf("?") > 0){
+            url = url + "&proposerName="+name+"&proposerGender="+gender;
+        }else{
+            url = url + "?proposerName="+name+"&proposerGender="+gender;
+        }
+        utils.shareProduct(title,des,url);
+    }
+    /**
+     *
      * 分享产品 （调原生）
      * @param productName
      */
