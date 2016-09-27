@@ -39,6 +39,9 @@
 
     //输入的搜索词
     utils.searchText = "";
+    //查找时的搜索词
+    utils.toSearchText = "";
+
     //案例说明的图片地址
     utils.caseExplain = [];
     //当前增值服务详情对象

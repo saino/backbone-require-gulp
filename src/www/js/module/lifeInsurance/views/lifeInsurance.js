@@ -170,7 +170,8 @@ define([
             },300);
             // utils.lifeInsuranceOptions.searchWords = self.ui.searchText.attr("value") || self.ui.searchText.attr("placeholder") || "";
             utils.lifeInsuranceOptions.searchWords = self.actualSearchWords || "";
-            
+            utils.toSearchText = "";
+            self.ui.searchText.attr("value", "");
             utils.advanceSaleTypeIds = [];
             utils.advanceRightIds = [];
             utils.companyId = "all";
@@ -444,6 +445,8 @@ define([
                     if(data.defaultSearchWords){
                         //todo 阿里云 guyy
                         self.ui.searchText.attr("placeholder", data.defaultSearchWords.hotKeyWords);
+                        // console.log("")
+                        self.ui.searchText.attr("value", utils.toSearchText);
                         self.actualSearchWords = data.defaultSearchWords.actualSearchWords;
                     }
 
@@ -526,7 +529,7 @@ define([
                             lifeInsuranceLabelMessageHtml = "未知";
                         }
                         lifeInsuranceContentHtml += '<div class="life-insurance-label">'+
-                                                        '<div class="life-insurance-label-name">保障期间：</div>'+
+                                                        '<div class="life-insurance-label-name">保障期限：</div>'+
                                                         '<div class="life-insurance-label-message">'+lifeInsuranceLabelMessageHtml+'</div>'+
                                                     '</div>';
 
@@ -553,7 +556,7 @@ define([
                                                     '</div>';
                         lifeInsuranceContentHtml += '<div class="product-insure-duty">'+
                                                         '<div class="insure-duty-title">'+
-                                                            '<span>保险责任</span>'+        
+                                                            '<span>主要保险责任</span>'+        
                                                             '<span class="pull-icon-big button"></span>'+
                                                         '</div>'+
                                                         '<div class="insure-duty-content">';
@@ -676,6 +679,9 @@ define([
             if(device.ios()){
                 self.ui.topTitle.css("padding-top",utils.toolHeight+"px");
                 self.ui.lifeInsuranceContent.css({"height": "-webkit-calc(100% - "+(255+utils.toolHeight)+"px)","height": "calc(100% - "+(255+utils.toolHeight)+"px)"});
+            }
+            if(utils.searchText){
+
             }
             //TODO
             if(utils.isLifeInsuranceRefresh){

@@ -39,7 +39,7 @@ define([
             "tap @ui.btnSearch" : "onBtnSearchHandler",
             "tap .history-item-del" : "onDeleteHistoryItemHandler",
             "tap @ui.hotWordCon": "clickHotWordConHandler",      //点击热搜词
-            "tap .history-item-nsearchInputme": "onHistoryItemName",       //点击历史收拾记录词
+            "tap .history-item-name": "onHistoryItemName",       //点击历史收拾记录词
             // "input @ui.searchInput": "onSearchInput"    //输入搜索词事件
         },
         // onSearchInput: function(event){
@@ -90,6 +90,7 @@ define([
 
             if(event.target.getAttribute("class") == "hot-word-item button"){
                 utils.lifeInsuranceOptions.searchWords = event.target.innerHTML || "";
+                utils.toSearchText = event.target.innerHTML || "";
                 //进入寿险列表查询也是否需要重新加载数据
                 utils.isLifeInsuranceRefresh = true;
 
@@ -171,6 +172,7 @@ define([
             var self = this;
             var keywords = self.ui.searchInput.val();
             utils.searchText = keywords;
+            utils.toSearchText = keywords;
             if(keywords == "" && self.defaultSearchWordObj){
                 keywords = self.defaultSearchWordObj.actualSearchWords;
             }
@@ -204,9 +206,11 @@ define([
             if(utils.clickLock()){
                 return;
             }
+            console.log("lllllllllll");
             var searchWords = event.target.innerHTML;
 
             utils.lifeInsuranceOptions.searchWords = searchWords;
+            utils.toSearchText = searchWords;
             //进入寿险列表查询也是否需要重新加载数据
             utils.isLifeInsuranceRefresh = true;
 

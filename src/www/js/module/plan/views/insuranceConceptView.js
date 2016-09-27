@@ -57,27 +57,27 @@ define([
                         pw.remove(5);
                         pw.remove(4);
                         self.ui.allPageNum.html(6);
-                    }
-                    if(data.listId==3 || data.listId==4 || data.listId==5 || data.listId==8 || data.listId==12){
+                    }else if(data.listId==3 || data.listId==4 || data.listId==5 || data.listId==8 || data.listId==12){
                         console.log("中端风险");
                         pw.remove(7);
                         pw.remove(6);
                         pw.remove(3);
                         pw.remove(2);
                         self.ui.allPageNum.html(6);
-                    }
-                    if(data.listId==6 || data.listId==9){
+                    }else if(data.listId==6 || data.listId==9){
                         console.log("高端风险");
                         pw.remove(5);
                         pw.remove(4);
                         pw.remove(3);
                         pw.remove(2);                
                         self.ui.allPageNum.html(6);
-                    }
-                    if(data.listId==10){
+                    }else if(data.listId==10){
                         console.log("通用风险");
                         self.ui.allPageNum.html(10);
 
+                    }else{
+                        console.log("通用风险");
+                        self.ui.allPageNum.html(10);
                     }
                 }
                 self.url = data.spritDescPic;
