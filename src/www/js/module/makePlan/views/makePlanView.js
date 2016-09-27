@@ -1129,6 +1129,10 @@ define([
                 }
             }
             if(plan.insType == 2) {//附加险
+                var isOneYear = false;//是否豁免险或一年期产品，如果是 即使是组合计划 也不需要跟主险一致
+                if(plan.isWaiver == "Y" || self.isOneYearPlan(plan)){
+                    isOneYear = true;
+                }
                 if (prdtTermChargeList && prdtTermChargeList.length > 0) {
                     //根据当前是否计划内、当前选中主险交费方式 获取当前合适的选中项
                     //主险选中年龄
@@ -1137,7 +1141,7 @@ define([
                     //主险当前选中交费方式
                     var type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".payment-period").find("option:selected").data("type");
                     var value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".payment-period").find("option:selected").val();
-                    firstCharge = self.getSecCharge(isPackageProduct, mpAge, currAge, prdtTermChargeList, {periodType: type, periodValue: value});
+                    firstCharge = self.getSecCharge(isPackageProduct, mpAge, currAge, prdtTermChargeList, {periodType: type, periodValue: value},isOneYear);
                     for (var i = 0; i < prdtTermChargeList.length; i++) {
                         var typeName = "";
                         typeName = utils.getPeriodText(1, prdtTermChargeList[i].periodType, prdtTermChargeList[i].periodValue);
@@ -1200,7 +1204,7 @@ define([
             var isPackageProduct = plan.isPackageProduct;
             var currAge = self.getCurSecAge(plan);
             //选中交费期间
-            var firstCharge = {periodType:target.find("option:selected").attr("data-type"), periodValue:target.val()};//选中保费
+            var firstCharge = {periodType:target.find("option:selected").attr("data-type"), periodValue:target.val()};//选中交费
             var firstCoverage = null;//保障下拉第一个
             var prdtTermCoverageList = self.getCoverageListByAge(plan, currAge, firstCharge);
             if(plan.insType == 1) {//主险
@@ -1216,8 +1220,20 @@ define([
                 if(firstCharge.periodType == 1){
                     self.removeWaiverRider();
                 }
+                //必须在里面
+                parent.find(".guarantee-period").html($(guaranteePeriodHtml));
+                if(firstCoverage && firstCoverage.periodType){
+                    parent.find(".guarantee-period").val(firstCoverage.periodValue);
+                }else{
+                    parent.find(".guarantee-period").val(-1);
+                }
+                parent.find(".guarantee-period").change();
             }
-            if(plan.insType == 2) {//附加险
+            if(plan.insType == 2 && self.checkRiders(parent,plan,1)) { //附加险
+                var isOneYear = false;//是否豁免险或一年期产品，如果是 即使是组合计划 也不需要跟主险一致
+                if(plan.isWaiver == "Y" || self.isOneYearPlan(plan)){
+                    isOneYear = true;
+                }
                 if (prdtTermCoverageList && prdtTermCoverageList.length > 0) {
                     //根据当前是否计划内、当前选中主险交费方式 获取当前合适的选中项
                     //主险选中年龄
@@ -1226,19 +1242,21 @@ define([
                     //主险当前选中保障期间
                     var type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").data("type");
                     var value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").val();
-                    firstCoverage = self.getSecCoverage(isPackageProduct, mpAge, currAge, prdtTermCoverageList, {periodType: type, periodValue: value});
+                    firstCoverage = self.getSecCoverage(isPackageProduct, mpAge, currAge, prdtTermCoverageList, {periodType: type, periodValue: value},isOneYear);
                     for (var i = 0; i < prdtTermCoverageList.length; i++) {
                         var typeName = "";
                         typeName = utils.getPeriodText(2, prdtTermCoverageList[i].periodType, prdtTermCoverageList[i].periodValue);
                         guaranteePeriodHtml += '<option data-type="' + prdtTermCoverageList[i].periodType + '" value="' + prdtTermCoverageList[i].periodValue + '">' + typeName + '</option>';
                     }
                 }
-            }
-            parent.find(".guarantee-period").html($(guaranteePeriodHtml));
-            if(firstCoverage && firstCoverage.periodType){
-                parent.find(".guarantee-period").val(firstCoverage.periodValue);
-            }else{
-                parent.find(".guarantee-period").val(-1);
+                //必须在里面
+                parent.find(".guarantee-period").html($(guaranteePeriodHtml));
+                if(firstCoverage && firstCoverage.periodType){
+                    parent.find(".guarantee-period").val(firstCoverage.periodValue);
+                }else{
+                    parent.find(".guarantee-period").val(-1);
+                }
+                parent.find(".guarantee-period").change();
             }
             //如果销售方式 为保费，更新后仍须更新保费输入范围
             if(plan.unitFlag == 7){//保费
@@ -1251,13 +1269,13 @@ define([
                 parent.find(".insured-premium").attr("min",minAmount);
                 parent.find(".insured-premium").attr("max",maxAmount);
             }
-            parent.find(".guarantee-period").change();
             //如果当前是主险，重置附加险交费下拉
             if(plan.insType == 1){
                 self.changeRidersCharge(firstCharge);
-            }else if(plan.insType == 2){//附加险 需验证 组合需等于主险输入  非组合需小于主险
-                self.checkRiders(parent,plan,1);
             }
+//            else if(plan.insType == 2){//附加险 需验证 组合需等于主险输入  非组合需小于主险
+//                self.checkRiders(parent,plan,1);
+//            }
             e.stopPropagation();
             e.preventDefault();
         },
@@ -1276,7 +1294,9 @@ define([
                 var isPackageProduct = plan.isPackageProduct;//组合计划
                 var firstCharge = null;
                 var paymentPeriodHtml = "";
+                var isOneYear = true;//是否豁免险或一年期产品
                 if(plan && plan.isWaiver && plan.isWaiver != "Y" && !self.isOneYearPlan(plan)) { //如果计划存在 并且不是豁免产品 并且不是一年期产品
+                    isOneYear = false;
                     //此处逻辑同函数changeChargeHandler下 附加险交费列表重置片段
                     var prdtTermChargeList = self.getChargeListByAge(plan, currAge);
                     if (prdtTermChargeList && prdtTermChargeList.length > 0) {
@@ -1285,7 +1305,7 @@ define([
                         var mp = self.getFirstMainPlan();
                         var mpAge = self.getCurSecAge(mp);
                         //主险当前选中交费方式
-                        firstCharge = self.getSecCharge(isPackageProduct, mpAge, currAge, prdtTermChargeList, mainCharge);
+                        firstCharge = self.getSecCharge(isPackageProduct, mpAge, currAge, prdtTermChargeList, mainCharge,isOneYear);
                         for (var i = 0; i < prdtTermChargeList.length; i++) {
                             var typeName = "";
                             typeName = utils.getPeriodText(1, prdtTermChargeList[i].periodType, prdtTermChargeList[i].periodValue);
@@ -1320,30 +1340,26 @@ define([
             //主险当前选中保障期间
             var type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".payment-period").find("option:selected").data("type");
             var value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".payment-period").find("option:selected").val();
-            if(periodType == 2){
-                type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").data("type");
-                value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").val();
-            }
+//            if(periodType == 2){
+            var coverage_type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").data("type");
+            var coverage_value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").val();
+//            }
             //验证交费期间项
             if(periodType == 1){
                 var periodType = parent.find(".payment-period").find("option:selected").data("type");
                 var periodValue = parent.find(".payment-period").find("option:selected").val();
                 if(isPackageProduct == "Y" && !self.isOneYearPlan(plan)){//update 9.26
                     if(value != periodValue){
-//                        MsgBox.alert(errorMsg.makePlanMsg12);//不好提示
                         parent.find(".payment-period").val(value);
-//                        parent.find(".payment-period").change();
-                        return;
+                        return false;
                     }
                 }else{
                     if(utils.compareCharge(type,value,mpAge,periodType,periodValue,currAge) == 0){
-//                        MsgBox.alert(errorMsg.makePlanMsg13);//不好提示
                         parent.find(".payment-period option").each(function(){
                             var tempType = $(this).data("type");
                             var tempValue = $(this).attr("value");
                             if(utils.compareCharge(type,value,mpAge,tempType,tempValue,currAge) == 1){
                                 parent.find(".payment-period").val(tempValue);
-//                                parent.find(".payment-period").change();
                                 return false;
                             }
                         });
@@ -1354,16 +1370,16 @@ define([
                 var periodType = parent.find(".guarantee-period").find("option:selected").data("type");
                 var periodValue = parent.find(".guarantee-period").find("option:selected").val();
                 if(isPackageProduct == "Y" && !self.isOneYearPlan(plan)){//update 9.26
-                    if(value != periodValue){
-                        parent.find(".guarantee-period").val(value);
-                        return;
+                    if(coverage_value != periodValue){
+                        parent.find(".guarantee-period").val(coverage_value);
+                        return false;
                     }
                 }else{
-                    if(utils.compareCoverage(type,value,mpAge,periodType,periodValue,currAge) == 0){
+                    if(utils.compareCoverage(coverage_type,coverage_value,mpAge,periodType,periodValue,currAge) == 0){
                         parent.find(".guarantee-period option").each(function(){
                             var tempType = $(this).data("type");
                             var tempValue = $(this).attr("value");
-                            if(utils.compareCoverage(type,value,mpAge,tempType,tempValue,currAge) == 1){
+                            if(utils.compareCoverage(coverage_type,coverage_value,mpAge,tempType,tempValue,currAge) == 1){
                                 parent.find(".guarantee-period").val(tempValue);
                                 return false;
                             }
@@ -1372,6 +1388,7 @@ define([
                     }
                 }
             }
+            return true;
         },
         /**
          * 主险的保障期间下拉更新，重置所有附加险的保障期间下拉
@@ -1381,8 +1398,14 @@ define([
             var self = this;
             //循环所有附加险
             self.ui.additionalPlanInput.find(".additional-item").each(function(){
-               //直接触发所有附加险交费下拉更新事件
-                $(this).find(".payment-period").change();
+                //手动更新主险保障时，只需判断需要一致的附加险  重置保障选项
+                var planId = $(this).data("productid");
+                var plan = self.getPlanById(planId);
+                if(plan && plan.isPackageProduct && !self.isOneYearPlan(plan)){
+                    var type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").data("type");
+                    var value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").val();
+                    $(this).find(".guarantee-period").val(value);
+                }
             });
         },
         //保障更新
@@ -2241,10 +2264,16 @@ define([
                     }
                 });
             }else if(insType == 2) {
+                //获取附加险ID
+                var parent = $(e.target).parents(".additional-item");
+                var additionalId = parseInt(parent.data("productid"));//待删除附加险ID
+                var additional = self.getPlanById(additionalId);
+                if(additional.attachCompulsory && additional.attachCompulsory == 1){
+                    MsgBox.alert("该附加险不可删除","");
+                    return;
+                }
                 MsgBox.ask("确定删除该附加险吗？", "", function (type) {
                     if (type == 2) { //确定  0=取消
-                        var parent = $(e.target).parents(".additional-item");
-                        var additionalId = parseInt(parent.data("productid"));//待删除附加险ID
                         var index = additionalId ? self.additionalIdArr.indexOf(additionalId) : -1;
                         if (index >= 0) {
                             self.additionalIdArr.splice(index, 1);
@@ -2465,11 +2494,12 @@ define([
          * @param currAge 当前附加险保人年龄
          * @param chargeList 当前列表
          * @param mainCharge 主险选中项
+         * @param isOneYear true /false 是否豁免险或一年期产品，如果是 即使是组合计划产品 也不需要跟主险保持一致
          */
-        getSecCharge:function(isPackageProduct,mpAge,currAge,chargeList,mainCharge){
+        getSecCharge:function(isPackageProduct,mpAge,currAge,chargeList,mainCharge,isOneYear){
             if(!chargeList || chargeList.length <= 0)
                 return null;
-            if(isPackageProduct == "Y"){
+            if(isPackageProduct == "Y" && !isOneYear){
                 return mainCharge;
             }
             for(var i = 0; i < chargeList.length; i++){
@@ -2487,11 +2517,12 @@ define([
          * @param currAge 当前附加险年龄
          * @param coverageList 可选保障期间列表
          * @param mainCoverage  主险选中保障期间对象
+         * @param isOneYear true /false 是否豁免险或一年期产品，如果是 即使是组合计划产品 也不需要跟主险保持一致
          */
-        getSecCoverage:function(isPackageProduct,mpAge,currAge,coverageList,mainCoverage){
+        getSecCoverage:function(isPackageProduct,mpAge,currAge,coverageList,mainCoverage,isOneYear){
             if(!coverageList || coverageList.length <= 0)
                 return null;
-            if(isPackageProduct == "Y"){
+            if(isPackageProduct == "Y" && !isOneYear){
                 return mainCoverage;
             }
             for(var i = 0; i < coverageList.length; i++){

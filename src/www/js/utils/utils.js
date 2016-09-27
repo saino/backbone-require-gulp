@@ -234,10 +234,10 @@
                     str = "终身";//保终身  改为终身 9.11 20:56
                     break;
                 case 2:
-                    str = "保"+value+"年";
+                    str = value+"年"; //保20年改为20年  9/27 12:12
                     break;
                 case 3:
-                    str = "保到"+value+"岁";
+                    str = "至"+value+"周岁";//保到20岁 改为 至20周岁  9/27 12:12
                     break;
                 case 4:
                     str = "保"+value+"个月";
