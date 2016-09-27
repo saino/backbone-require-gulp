@@ -385,8 +385,8 @@ define([
                 maxAge = Math.max(parseInt(key), maxAge);
             }
 
-            minAge = self.insuredAge + minAge;
-            maxAge =  self.insuredAge + maxAge;
+            minAge = self.insuredAge + (minAge-1);//update 9/27 12:47
+            maxAge =  self.insuredAge + (maxAge-1);
             var ageHtml = "";
             if(minAge != maxAge) {
                 //初始化年龄段下拉
@@ -403,7 +403,7 @@ define([
             var self = this;
             self.interestDemonstration = illusMap||{};
             self.initInterestAgeList(illusMap||{});
-            self.setRangeValue(1);//初始化第一年度信息
+            self.setRangeValue(0);//初始化第一年度信息
         },
         getProductName:function(id){
             var self = this;
@@ -540,7 +540,7 @@ define([
             target.addClass("plan-level-item-ck");
             target.siblings(".plan-level-item").removeClass("plan-level-item-ck");
             self.currLevel = target.data("level");
-            self.setRangeValue(1);
+            self.setRangeValue(0);
         },
         //当前第num年度
         setRangeValue : function(num){
