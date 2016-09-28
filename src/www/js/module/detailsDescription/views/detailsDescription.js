@@ -80,7 +80,7 @@ define([
             var productId = parseInt(self.getOption("detailsDescriptionId"));
             var organId = parseInt(self.getOption("organId"));
             // self.ui.detailsDescriptionName1.html(utils.productName); 
-            self.ui.topTitleCenter.html(utils.productName);
+            // self.ui.topTitleCenter.html(utils.productName);
             LoadingCircle && LoadingCircle.start();
             detailsDescriptionModel.getRuleInfo(productId, organId, function(data){
                 console.log(data);
