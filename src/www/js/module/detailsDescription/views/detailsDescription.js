@@ -80,13 +80,24 @@ define([
             var productId = parseInt(self.getOption("detailsDescriptionId"));
             var organId = parseInt(self.getOption("organId"));
             // self.ui.detailsDescriptionName1.html(utils.productName); 
-            self.ui.topTitleCenter.html(utils.productName);
+            // self.ui.topTitleCenter.html(utils.productName);
             LoadingCircle && LoadingCircle.start();
             detailsDescriptionModel.getRuleInfo(productId, organId, function(data){
                 console.log(data);
                 if(data.status == "0"){
                     self.descriptionData = data;
                     self.ui.detailsDescriptionRuleContent.html(self.descriptionData.productUnderwritingRule);
+
+
+                    //为不同用户权限做区分而准备
+                    // if(true){
+                    //     self.ui.detailsDescriptionRuleName1.css({"width": "100%"});
+                    //     self.ui.detailsDescriptionRuleName2.hide();
+                    // }else{
+                    //     self.ui.detailsDescriptionRuleName1.css({"width": "50%"});
+                    //     self.ui.detailsDescriptionRuleName2.show();
+                    // }
+
                 }else{
                     setTimeout(function(){
                         MsgBox.alert("数据获取失败");

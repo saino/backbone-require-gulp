@@ -18,6 +18,7 @@ define([
         pageSize: 5,    //每页查询多少条数据 
         isLoading: false,   //是否真正加载数据
         mouseLock:false, //按钮锁
+        isCanLoad: true,
         ui: {
             topTitle: "#top-title",
             back: "#top-title-left",
@@ -325,9 +326,15 @@ define([
             if(parent){
                 parent.next().slideToggle(function(){
                     if(event.pageY > 1000 && parent.next().css("display") == "block"){
+                        self.isCanLoad = false;
                         self.ui.lifeInsuranceContent.animate({
                             scrollTop: self.ui.lifeInsuranceContent.scrollTop() + 350
-                        }, 600);
+                        }, 600, function(){
+                            // console.log("xxx");
+                            setTimeout(function(){
+                                self.isCanLoad = true;
+                            }, 100);
+                        });
 
                     }
                 });
@@ -728,7 +735,9 @@ define([
             // console.log(event.target.offsetHeight, event.target.scrollTop, event.target.children[0].offsetHeight);
             // console.log("kjlaskjdl");
             var self = this;
-
+            if(!self.isCanLoad){
+                return;
+            }
             if(self.preScrollTop && (event.target.scrollTop - self.preScrollTop > 0)){
                 // self.preScrollTop
                 // console.log("上滑，加载", event.target.scrollTop - self.preScrollTop);
