@@ -256,14 +256,15 @@
             color: #666;
             font-size: 3.4em;
             text-align: center;
-            text-indent: 107px;
+            text-indent: 86px;
             box-sizing: border-box;
             border-bottom: 2px solid #ddd;
             font-weight: bold;
             .pull-icon-big {
                 float: right;
                 height: 100%;
-                width: 107px;
+                width: 70px;
+                margin-right: 16px;
                 background: url("../images/insurance/down-big.png") no-repeat center;
             }
         }
