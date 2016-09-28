@@ -10,13 +10,14 @@ define([], function () {
 
     var p = DetailsDescriptionModel.prototype;
 
-    p.getRuleInfo = function(productId, organId, cb_ok, cb_err){
+    p.getRuleInfo = function(userData, productId, organId, cb_ok, cb_err){
         var opt = {};
         opt.url = "/ls/services/dt/productService/getRuleInfo";
         opt.type = "POST";
         var data = {};
         data.productId = productId;
         data.organId = organId;
+        data.encryptedUserData = userData;
         opt.data = data;
         opt.success = function(result){
             if(result.status == 0) {

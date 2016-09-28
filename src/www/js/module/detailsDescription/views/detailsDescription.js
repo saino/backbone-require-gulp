@@ -79,10 +79,11 @@ define([
             var self = this;
             var productId = parseInt(self.getOption("detailsDescriptionId"));
             var organId = parseInt(self.getOption("organId"));
+            var userData = utils.userObj.id || null;
             // self.ui.detailsDescriptionName1.html(utils.productName); 
             // self.ui.topTitleCenter.html(utils.productName);
             LoadingCircle && LoadingCircle.start();
-            detailsDescriptionModel.getRuleInfo(productId, organId, function(data){
+            detailsDescriptionModel.getRuleInfo(userData, productId, organId, function(data){
                 console.log(data);
                 if(data.status == "0"){
                     self.descriptionData = data;
@@ -90,13 +91,13 @@ define([
 
 
                     //为不同用户权限做区分而准备
-                    // if(true){
-                    //     self.ui.detailsDescriptionRuleName1.css({"width": "100%"});
-                    //     self.ui.detailsDescriptionRuleName2.hide();
-                    // }else{
-                    //     self.ui.detailsDescriptionRuleName1.css({"width": "50%"});
-                    //     self.ui.detailsDescriptionRuleName2.show();
-                    // }
+                    if(self.descriptionData.companyUnderwritingRule){
+                        self.ui.detailsDescriptionRuleName1.css({"width": "50%"});
+                        self.ui.detailsDescriptionRuleName2.show();
+                    }else{
+                        self.ui.detailsDescriptionRuleName1.css({"width": "100%"});
+                        self.ui.detailsDescriptionRuleName2.hide();
+                    }
 
                 }else{
                     setTimeout(function(){

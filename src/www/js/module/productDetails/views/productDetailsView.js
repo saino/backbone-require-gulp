@@ -159,7 +159,7 @@ define([
             var totalVisitCount = data.totalVisitCount; //总PV数
             self.initInfoView(self.packageName, organLogo, totalVisitCount);
             //设置投保条件
-            var amountLimit = data.amountLimit; //保额限制
+            var amountLimit = data.saPremInfo; //保额限制
             var ageRange = data.ageRange; //年龄区间
             var prdtTermChargeList = data.prdtTermChargeList; //费用期间
             var prdtTermCoverageList = data.prdtTermCoverageList; //保障期间
@@ -223,19 +223,27 @@ define([
             maxAge = maxAge == null ? "" : maxAge;
             // var maxAgeUnit = ageRange.maxUnit;  //最小年龄单位
             self.ui.insureAge.text(minAge+minAgeUnitStr+"-"+maxAge+maxAgeUnitStr);
-            //最低保额
-            var minAmount = (amountLimit && amountLimit.minAmount);      //最低保额
-            minAmount = minAmount == null ? "" : minAmount;
-            var limitUnit = (amountLimit && amountLimit.limitUnit);      //保额单位
-            var limitUnitStr = "";
-            if(limitUnit == "1"){
-                limitUnitStr = "元";
-            }
-            if(limitUnit == "2"){
-                limitUnitStr = "份";
-            }
+            // //最低保额
+            // var minAmount = (amountLimit && amountLimit.minAmount);      //最低保额
+            // minAmount = minAmount == null ? "" : minAmount;
+            // var limitUnit = (amountLimit && amountLimit.limitUnit);      //保额单位
+            // var limitUnitStr = "";
+            // if(limitUnit == "1"){
+            //     limitUnitStr = "元";
+            // }
+            // if(limitUnit == "2"){
+            //     limitUnitStr = "份";
+            // }
             // limitUnit = limitUnit == null ? "" : limitUnit;
-            self.ui.limitCoverage.text(minAmount+limitUnitStr);
+            // console.log(amountLimit);
+            // amountLimit = "lksjdksjdkjk";
+            if(amountLimit){
+                // console.log(amountLimit);
+                self.ui.limitCoverage.text(amountLimit);
+                self.ui.limitCoverage.parent().show();
+            }else{
+                self.ui.limitCoverage.parent().hide();
+            }
             //交费期间
             var paymentStr = "";
             for(var i = 0; prdtTermChargeList&&i<prdtTermChargeList.length; i++){

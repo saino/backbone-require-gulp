@@ -43,7 +43,7 @@ define([
                 return;
             }
 
-             utils.shareProduct(utils.productName+".PDF","保险详情条款", self.pdfUrl);
+            utils.shareProduct(utils.productName+".PDF","保险详情条款", self.pdfUrl);
 
         },
         //点击下载按钮
@@ -134,7 +134,12 @@ define([
                 return;
             }
             this.pdfUrl = data.pdfUrl;
-            this.ui.clauseFile.html(data.salesProductName+".PDF");
+            if(this.pdfUrl){
+                this.ui.clauseFile.html(data.salesProductName+".PDF");
+                this.ui.clauseFile.show();
+            }else{
+               this.ui.clauseFile.hide(); 
+            }
             this.ui.infoDiv.html(data.itemDesc);
         },
 

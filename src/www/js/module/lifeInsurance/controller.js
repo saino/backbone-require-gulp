@@ -1,5 +1,5 @@
 define([
-    'module/lifeInsurance/views/lifeInsurance'
+    'module/lifeInsurance/views/lifeInsurance',
 ], function(lifeInsuranceView){
     return {
         lifeInsurance: function(){
