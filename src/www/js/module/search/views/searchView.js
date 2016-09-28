@@ -206,7 +206,7 @@ define([
             if(utils.clickLock()){
                 return;
             }
-            console.log("lllllllllll");
+            // console.log("lllllllllll");
             var searchWords = event.target.innerHTML;
 
             utils.lifeInsuranceOptions.searchWords = searchWords;

@@ -353,9 +353,9 @@ define([
         clickDefaultSortLayoutFloatHandler: function(event){
             event.stopPropagation();
             event.preventDefault();
-            if(utils.clickLock()){
-                return;
-            }
+            // if(utils.clickLock()){
+            //     return;
+            // }
             var self = this;
             if(self.mouseLock)return;
             self.mouseLock = true;
@@ -367,9 +367,9 @@ define([
 
             var target = event.target;
             var $target = $(target);
-            if($target.attr("class") == "default-sort-item"){
-                self.ui.defaultSortLayoutFloat.find(".default-sort-item-selected").attr("class", "default-sort-item");
-                $target.attr("class","default-sort-item default-sort-item-selected");
+            if($target.attr("class") == "default-sort-item button"){
+                self.ui.defaultSortLayoutFloat.find(".default-sort-item-selected").attr("class", "default-sort-item button");
+                $target.attr("class","default-sort-item button default-sort-item-selected");
 
                 if(target.innerHTML == "推荐排序" || target.innerHTML == "默认排序"){
                     utils.lifeInsuranceOptions.sortOption = 1;
