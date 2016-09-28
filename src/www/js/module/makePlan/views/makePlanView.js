@@ -136,6 +136,9 @@ define([
                 self.ui.makePlanMain.css("height","-webkit-calc(100% - "+(85+utils.toolHeight)+"px)");
             }
         },
+        show:function(){
+            app.on("makePlan:exit", this._goBackHandler,this);
+        },
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
             var self = this;
@@ -148,6 +151,7 @@ define([
             }
             //返回进入 或进入不同产品计划书 重置输入
             if(self.currProductId == 0 || self.currProductId != tempProductId){
+                console.log("*****************************重置*****************************");
                 self.currProductId = tempProductId;
                 self.resetPro();
                 self.resetUI();
@@ -181,6 +185,8 @@ define([
             //计算结果清空
             self.ui.calcResultCon.find(".first-year-table").remove();
             self.ui.totalFirstYearPremium.html("");
+            self.ui.sendName.val("");
+            self.ui.sendSex.val("0");
         },
         //根据数据初始化UI
         initializeUI:function(data){
@@ -984,20 +990,6 @@ define([
             //根据附加险类型取对应保人年龄
             var age = self.getCurSecAge(obj);
             self.resetPlanInput(self.ui.additionalPlanInput.find(".additional-item:last"),age);
-        },
-        //点击返回
-        clickTopTitleLeftHandler: function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            var self = this;
-            if(self.mouseLock)return;
-            self.mouseLock = true;
-            setTimeout(function(){
-                self.mouseLock = false;
-            },300);
-            //返回重置当前产品计划ID，返回进入重置所有
-            this.currProductId = 0;
-            app.goBack();
         },
         //点击单选框
         clickRadioHandler:function(e){
@@ -2549,10 +2541,32 @@ define([
             }
             return num == 0;
         },
+        //物理返回
+        _goBackHandler:function(){
+            var self = this;
+            self.clickTopTitleLeftHandler(null);
+        },
+        //点击返回
+        clickTopTitleLeftHandler: function(e){
+            if(e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            var self = this;
+            if(self.mouseLock)return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
+            //返回重置当前产品计划ID，返回进入重置所有
+            self.currProductId = 0;
+            app.goBack();
+        },
         /**页面关闭时调用，此时不会销毁页面**/
         close : function(){
             var self = this;
             self._mouseLock = false;
+            app.off("makePlan:exit", self._goBackHandler,this);
             LoadingCircle && LoadingCircle.end();
         },
 
