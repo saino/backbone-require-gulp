@@ -250,10 +250,10 @@ define([
                     paymentStr += obj1.periodValue + "趸交";
                 }
                 if(obj1.periodType == 2){
-                    paymentStr += obj1.periodValue + "年交";
+                    paymentStr += obj1.periodValue + "年";
                 }
                 if(obj1.periodType == 3){
-                    paymentStr += obj1.periodValue + "周岁";
+                    paymentStr += "至" + obj1.periodValue + "周岁";
                 }
                 if(obj1.periodType == 4){
                     paymentStr += "终身";
@@ -276,7 +276,7 @@ define([
                     safeguardStr += obj2.periodValue + "年";
                 }
                 if(obj2.periodType == 3){
-                    safeguardStr += obj2.periodValue + "周岁";
+                    safeguardStr += "至" + obj2.periodValue + "周岁";
                 }
                 if(obj2.periodType == 4){
                     safeguardStr += obj2.periodValue + "月";

@@ -13,6 +13,7 @@ define([
         template: _.template(ClauseTpl),
         id:"clause-container",
         pdfUrl: "",
+        salesProductName: "",
         ui:{
             "topCon":"#top-title",
             "btnBack":"#top-title-left", //点击返回
@@ -133,7 +134,7 @@ define([
                 return;
             }
             this.pdfUrl = data.pdfUrl;
-            this.ui.clauseFile.html(utils.productName+".PDF");
+            this.ui.clauseFile.html(data.salesProductName+".PDF");
             this.ui.infoDiv.html(data.itemDesc);
         },
 

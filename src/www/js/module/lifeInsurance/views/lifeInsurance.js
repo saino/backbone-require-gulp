@@ -391,7 +391,7 @@ define([
 
         /**初始化**/
         initialize : function(){
-            console.log("2016.9.26 19:20");
+            console.log("2016.9.28 18:00");
         },
 
 
@@ -515,7 +515,7 @@ define([
                                 lifeInsuranceLabelMessageHtml += salesPackages[i].coveragePeriods[v].periodValue + "年";
                             }
                             if(salesPackages[i].coveragePeriods[v].periodType == 3){
-                                lifeInsuranceLabelMessageHtml += salesPackages[i].coveragePeriods[v].periodValue + "周岁";
+                                lifeInsuranceLabelMessageHtml += "至" + salesPackages[i].coveragePeriods[v].periodValue + "周岁";
                             }
                             if(salesPackages[i].coveragePeriods[v].periodType == 4){
                                 lifeInsuranceLabelMessageHtml += salesPackages[i].coveragePeriods[v].periodValue + "月";
