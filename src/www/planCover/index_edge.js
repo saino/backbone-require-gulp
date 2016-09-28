@@ -34,7 +34,7 @@ var symbols = {
             },
             {
                 id: 'Text',
-                display: 'block',
+                display: 'none',
                 type: 'text',
                 rect: ['194px', '1055px','391px','68px','auto', 'auto'],
                 opacity: 1,
@@ -118,7 +118,7 @@ var symbols = {
                 ["style", "top", '1055px'],
                 ["style", "overflow", 'visible'],
                 ["style", "height", '68px'],
-                ["style", "display", 'block'],
+                ["style", "display", 'none'],
                 ["style", "width", '565px']
             ],
             "${_xin}": [
@@ -175,7 +175,7 @@ var symbols = {
                 { id: "eid17", tween: [ "transform", "${_Group2}", "scaleY", '0.72', { fromValue: '0.77'}], position: 800, duration: 80, easing: "easeOutSine" },
                 { id: "eid27", tween: [ "transform", "${_Group2}", "scaleY", '0.44', { fromValue: '0.72'}], position: 1920, duration: 1560, easing: "easeOutSine" },
                 { id: "eid120", tween: [ "style", "${_Text}", "left", '183px', { fromValue: '183px'}], position: 0, duration: 0 },
-                { id: "eid79", tween: [ "style", "${_Text}", "display", 'block', { fromValue: 'block'}], position: 0, duration: 0 },
+                { id: "eid79", tween: [ "style", "${_Text}", "display", 'none', { fromValue: 'none'}], position: 0, duration: 0 },
                 { id: "eid111", tween: [ "transform", "${_tCopy}", "scaleX", '0.45', { fromValue: '0.45'}], position: 2840, duration: 0 },
                 { id: "eid112", tween: [ "transform", "${_tCopy}", "scaleX", '1', { fromValue: '0.45'}], position: 2960, duration: 520 },
                 { id: "eid7", tween: [ "transform", "${_Group2}", "scaleX", '0.77', { fromValue: '4.7'}], position: 0, duration: 800, easing: "easeOutSine" },

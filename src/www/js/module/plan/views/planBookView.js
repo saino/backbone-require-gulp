@@ -555,10 +555,10 @@ define([
             var self = this;
             self.ui.rangeInput.val(num);
             self.ui.ageSelect.val(num);
-            self.ui.yearTitle.html("第"+(num+1)+"保单年度");
+            self.ui.yearTitle.html("第"+parseInt(parseInt(num)+1)+"保单年度");
             var list = [];
             if(self.interestDemonstration[self.currLevel]){
-                list = self.interestDemonstration[self.currLevel][num+""] || [];
+                list = self.interestDemonstration[self.currLevel][(parseInt(num)+1)+""] || [];
             }
             var demoHtml = "";
             if(list && list.length > 0) {
