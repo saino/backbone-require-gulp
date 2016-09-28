@@ -28,7 +28,7 @@ function clickAndroidReturn(){
             app.triggerMethod("plan:exit");	//退出制作计划书
         }else if(url.lastIndexOf("in/personalCollect") > 0){
             app.triggerMethod("personalCollect:exit");	//退出制作计划书
-        }else if(url.lastIndexOf("in/makePlan")){
+        }else if(url.lastIndexOf("in/makePlan") > 0){
             app.triggerMethod("makePlan:exit");
         }else{
            backApp();	//直接返回

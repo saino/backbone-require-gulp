@@ -448,6 +448,7 @@
       .input-range{
         width: -webkit-calc(100% - 196px);
         border:none;
+        outline: none;
       }
 
       .btn-range-reduce{
@@ -536,6 +537,8 @@ input[type="range"] {
   width: 400px;
   -webkit-appearance: none;
   height: 4px;
+  border:none;
+  outline: none;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -543,4 +546,6 @@ input[type="range"]::-webkit-slider-thumb {
   height: 60px;
   width: 60px;
   background: url("../images/common/range-thumb.png") no-repeat center;
+  border:none;
+  outline: none;
 }
