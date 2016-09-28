@@ -17,7 +17,7 @@
         utils.userObj.id = "";
     }
     utils.serverConfig = {
-        serverUrl: "http://210.13.77.75:8080"       //开发
+        serverUrl: "http://210.13.77.75:8080"       //外网开发环境
 //        serverUrl: "http://172.25.13.166:8080"       //内网开发环境
 //        serverUrl: "http://120.55.176.131:8080"      //外网测试环境
     };
