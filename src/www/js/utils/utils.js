@@ -532,8 +532,8 @@
         29:"GMIB Amount",30:"Annual Withdraw Amount",31:"Annual Recurring Top-up",32:"Adhoc Topup",33:"Adhoc Topup Investment Part",34:"Fund Management Fee",
         35:"Total Fund Value",36:"Accumulated Topup",37:"Accumulated Cash Bonus",38:"Accumulated Reversionary Bonus",39:"Accumulated Survival Benefit",
         40:"生存金",41:"投保人豁免利益",42:"被保人豁免利益",43:"全残保险金",44:"残疾保险金",45:"轻症保险金",46:"重疾保险金",47:"疾病末期保险金",
-        48:"特定疾病保险金",49:"医疗保险金",50:"万能账户",51:"疾病身故保险金",52:"护理保险金",53:"特定重疾保险金",54:"身故保险金-rider",55:"生存金-rider",
-        56:"投保人豁免利益-rider",57:"投保人豁免利益-rider",58:"残疾保险金-rider",59:"医疗保险金-rider",60:"被保人豁免利益-rider"
+        48:"特定疾病保险金",49:"医疗保险金",50:"万能账户",51:"疾病身故保险金",52:"护理保险金",53:"特定重疾保险金",54:"身故保险金MAX",55:"轻症保险金MAX",
+        56:"特定疾病保险金MAX",57:"重疾保险金MAX",58:"残疾保险金MAX",59:"疾病终末期保险金MAX",60:"护理保险金MAX",61:"医疗保险金MAX"
     };
     /*localStorage 取出对象*/
     utils.getLocalStorageObject = function(prototype){
