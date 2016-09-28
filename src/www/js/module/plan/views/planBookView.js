@@ -323,56 +323,23 @@ define([
                     liabCateList[i].simpleLiabList = [];
                 }
                 for(var j =0 ; j < liabCateList[i].simpleLiabList.length; j++){
-                    var obj = liabCateList[i].simpleLiabList[j];
-                    if(multiProduct) {
-                        //只有是1时，参与计算，才有amount。否则取liabCalcMethod描述
-                        var libCalcType = obj.libCalcMethod;
-                        var liabilityList2Html = "";
-                        var totalAmount = "";
-                        var rightClass = "";
-                        if (libCalcType == 1) {
-                            totalAmount = utils.formatNumber(obj.totalAmount);
-                            rightClass = "item-right-mr88"; //显示金额时需距离右边88px
-                        }
-                        for (var k = 0; k < obj.liabList.length; k++) {
-                            var itemObj = obj.liabList[k];
-                            var liabAmount = itemObj.libCalcType;
-                            var packageId = itemObj.packageId ? itemObj.packageId : 0;
-                            var needDiseaseIndi = itemObj.needDiseaseIndi;
-                            var showStyle = 'style="display:none"';
-                            if (needDiseaseIndi == "Y") {
-                                showStyle = "";
-                            }
-                            if (libCalcType == 1) {
-                                rightClass = "item-right-mr88"; //显示金额时需距离右边88px
-                                liabAmount = utils.formatNumber(itemObj.liabAmount);
-                            }
-                            var libId = itemObj.liabId ? itemObj.liabId : 0;
-                            var productId = itemObj.productId ? itemObj.productId : 0;
-                            liabilityList2Html += self.planLiabilityItemItemTpl({liabDisplayName: itemObj.liabDisplayName, showStyle: showStyle, liabAmount: liabAmount, libDescQuote: itemObj.libDescQuote, rightClass: rightClass, packageId: packageId, productId: productId, libId: libId,multiProductClass:""});
-                        }
-                        liabilityListHtml += self.planLiabilityItemTpl({liabDisplayName:obj.liabDisplayName,totalAmount:totalAmount,liabilityList2Html:liabilityList2Html, rightClass: rightClass});
-                    }else{
-                        var singleObj = obj.liabList[0];//单个产品取第一个
-                        var libCalcType2 = singleObj.libCalcMethod;
-                        var liabAmount2 = singleObj.libCalcType;
-                        var liabilityList2Html = "";
-                        var showStyle2 = 'style="display:none"';
-                        var needDiseaseIndi = singleObj.needDiseaseIndi;
-                        if (needDiseaseIndi == "Y") {
-                            showStyle2 = "";
-                        }
-                        var rightClass2 = "";
-                        if (libCalcType2 == 1) {
-                            rightClass2 = "item-right-mr88"; //显示金额时需距离右边88px
-                            liabAmount2 = utils.formatNumber(singleObj.liabAmount);
-                        }
-                        var packageId2 = singleObj.packageId ? singleObj.packageId : 0;
-                        var libId2 = singleObj.liabId ? singleObj.liabId : 0;
-                        var productId2 = singleObj.productId ? singleObj.productId : 0;
-                       liabilityListHtml += self.planLiabilityItemItemTpl({liabDisplayName: singleObj.liabDisplayName, showStyle: showStyle2, liabAmount: liabAmount2, libDescQuote: singleObj.libDescQuote, rightClass: rightClass2, packageId: packageId2, productId: productId2, libId: libId2,multiProductClass:"info-btn-div-single"});
+                    var singleObj = liabCateList[i].simpleLiabList[j];
+                    var libCalcType = singleObj.libCalcMethod;
+                    var liabAmount = singleObj.libCalcType;
+                    var showStyle = 'style="display:none"';
+                    var needDiseaseIndi = singleObj.needDiseaseIndi;
+                    if (needDiseaseIndi == "Y") {
+                        showStyle = "";
                     }
-
+                    var rightClass = "";
+                    if (libCalcType == 1) {
+                        rightClass = "item-right-mr88"; //显示金额时需距离右边88px
+                        liabAmount = utils.formatNumber(singleObj.liabAmount);
+                    }
+                    var packageId = singleObj.packageId ? singleObj.packageId : 0;
+                    var libId = singleObj.liabId ? singleObj.liabId : 0;
+                    var productId = singleObj.productId ? singleObj.productId : 0;
+                    liabilityListHtml += self.planLiabilityItemItemTpl({liabDisplayName: singleObj.liabDisplayName, showStyle: showStyle, liabAmount: liabAmount, libDescQuote: singleObj.libDescQuote, rightClass: rightClass, packageId: packageId, productId: productId, libId: libId});
                 }
                 //列表为空，大类也不显示
                 if(liabilityListHtml.trim().length > 0){
