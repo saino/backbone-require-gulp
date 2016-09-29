@@ -28,6 +28,7 @@ define([
         isULProduct:"N",    //是否高级  高级显示“低 中 高”本档
         currLevel:"1",      //当前等级  “1”低级  “2”中级  “3”高级
         advice:"", //推荐理由
+        mouseLock:false, //按钮锁
 //        forever:true,
         ui:{
             //banner
@@ -404,6 +405,13 @@ define([
         clickClauseHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             //如果只有单个产品 直接指向条款详情、多个指向产品列表
              if(utils.productInfoList && utils.productInfoList.length == 1){
                  var id = utils.productInfoList[0].productId;
@@ -417,19 +425,38 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             self.setRangeValue($(e.target).val());
         },
         //年龄段下拉框
         changeSelectHandler:function(e){
-            var self = this;
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             self.setRangeValue(self.ui.ageSelect.val());
         },
         //点击病种
         clickDiseaseHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.target);
             var packageId = 0, productId = 0, libId = 0;
             packageId = target.data("packageid");
@@ -442,6 +469,12 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var val = parseInt(self.ui.rangeInput.val()) + 1;
             if(val > self.ui.rangeInput.attr("max"))
                 val = self.ui.rangeInput.attr("max")
@@ -452,6 +485,12 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var val = parseInt(self.ui.rangeInput.val()) - 1;
             if(val < self.ui.rangeInput.attr("min"))
                 val = self.ui.rangeInput.attr("min")
@@ -461,6 +500,13 @@ define([
         clickShowValueAddedHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.target),self = this;
             var valueAddedId = target.data("id") || "null";
             app.navigate("in/increment/"+valueAddedId,{replace:true, trigger:true});
@@ -479,6 +525,13 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var target = $(e.target);
+            var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             target.toggleClass("down");
             if(target.hasClass("down")){//点击展开
                 target.siblings("#calcResultTable").slideUp();
@@ -492,6 +545,12 @@ define([
             e.preventDefault();
             var target = $(e.target);
             var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             target.toggleClass("down");
             if(target.hasClass("down")){//收起
                 self.ui.liabilityList.slideUp();
@@ -504,6 +563,14 @@ define([
             e.stopPropagation();
             e.preventDefault();
             var target = $(e.target);
+            var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
+            console.log(1111);
             if(!target.hasClass("item-right-btn")){
                 target = target.find(".item-right-btn");
             }
@@ -518,6 +585,13 @@ define([
         clickLevenHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            var self = this;
+            if(self.mouseLock)
+                return;
+            self.mouseLock = true;
+            setTimeout(function(){
+                self.mouseLock = false;
+            },300);
             var target = $(e.target), self = this;
             if(target.hasClass("plan-level-item-ck")){
                 return;

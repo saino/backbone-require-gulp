@@ -199,9 +199,11 @@ define([
             if(MsgBox && MsgBox.isShow()){
                 MsgBox.clear();
             }
-            //返回 切换到保障计划页
-            self.currTab = 1;
-            self.changeMenuTab(1);
+            if(self.currTab != 1) {
+                //返回 切换到保障计划页
+                self.currTab = 1;
+                self.changeMenuTab(1);
+            }
             app.off("plan:exit", self._goBackHandler,this);
         },
         /*点击事件不可以重复点*/

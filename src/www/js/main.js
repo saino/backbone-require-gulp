@@ -186,7 +186,12 @@ require([
         if(utils.isDebug){
             utils.userObj.id = getParameter(window.location.href, "encryptedUserData");
         }
-        utils.planHonorific = "尊敬的"+getParameter(window.location.href, "proposerName")+""+getParameter(window.location.href, "proposerGender");
+        var proposerName = getParameter(window.location.href, "proposerName");
+        var proposerGender = getParameter(window.location.href, "proposerGender");
+        //需要解码
+        proposerName = utils.myDecodeURIComponent(proposerName);
+        proposerGender = utils.myDecodeURIComponent(proposerGender);
+        utils.planHonorific = "尊敬的"+proposerName+""+proposerGender;
         var isShare = getParameter(window.location.href, "isShare");
         if(isShare && isShare == 1){
             utils.isShare = true;
