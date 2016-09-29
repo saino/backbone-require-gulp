@@ -101,6 +101,9 @@ define([
             self.ui.planDemo.css("display","none");
             var planFromLocalStory = utils.getLocalStorageValue("planObject",planId);
             var planIllusFromLocalStory = utils.getLocalStorageValue("planObjectIllus",planId);//利益演示部份
+            self.ui.planLevel.find(".plan-level-item:eq(0)").html('低档');
+            self.ui.planLevel.find(".plan-level-item:eq(1)").html('中档');
+            self.ui.planLevel.find(".plan-level-item:eq(2)").html('高档');
             //初始化基本数据，先判断缓存，没有则取服务器
             if(planFromLocalStory){
                 console.log("*********保障计划 缓存数据**********");
@@ -196,6 +199,11 @@ define([
             self.insuredAge = data.mainAssuredAge;//被保人年龄
             if(self.isULProduct == "Y"){
                 self.ui.planLevel.css("display","block");
+                //显示第个档次的费率illusRate
+                var illusRate = data.illusRate;
+                self.ui.planLevel.find(".plan-level-item:eq(0)").html('低档<br/>'+illusRate["1"]);
+                self.ui.planLevel.find(".plan-level-item:eq(1)").html('中档<br/>'+illusRate["2"]);
+                self.ui.planLevel.find(".plan-level-item:eq(2)").html('高档<br/>'+illusRate["3"]);
                 self.currLevel = "1";
             }else{
                 self.ui.planLevel.css("display","none");
@@ -570,7 +578,6 @@ define([
             setTimeout(function(){
                 self.mouseLock = false;
             },300);
-            console.log(1111);
             if(!target.hasClass("item-right-btn")){
                 target = target.find(".item-right-btn");
             }

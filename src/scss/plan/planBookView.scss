@@ -383,8 +383,9 @@
     .plan-level-item{
       width:138px; height:105px; float:left; margin-right: 54px;
       background: #E4E0DF; text-align: center;
-      line-height: 54px; border-radius: 8px;
+     border-radius: 8px;
       margin-top: 28px;
+      padding:20px;
     }
     .plan-level-item:last-child{margin-right: 0;}
     .plan-level-item-ck{background: #D7464C; color:#fff; text-align: center;}
