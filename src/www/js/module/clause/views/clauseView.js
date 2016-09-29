@@ -136,9 +136,9 @@ define([
             this.pdfUrl = data.pdfUrl;
             if(this.pdfUrl){
                 this.ui.clauseFile.html(data.salesProductName+".PDF");
-                this.ui.clauseFile.show();
+                this.ui.clauseFile.parent().show();
             }else{
-               this.ui.clauseFile.hide(); 
+               this.ui.clauseFile.parent().hide(); 
             }
             this.ui.infoDiv.html(data.itemDesc);
         },
