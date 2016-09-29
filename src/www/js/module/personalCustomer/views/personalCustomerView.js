@@ -6,8 +6,9 @@ define([
     'common/base/base_view',
     'text!module/personalCustomer/templates/personalCustomer.html',
     'module/personalCustomer/model/personalCustomerModel',
-    "msgbox"
-], function (BaseView, Tpl, personalCustomerModel, MsgBox) {
+    "msgbox",
+    'common/views/circle'
+], function (BaseView, Tpl, personalCustomerModel, MsgBox, loadingCircle) {
     var customerItemTemp = '<div class="personal-customer-item">'+
         '<div class="personal-customer-item-title" id={data-filter}>{data-filter}</div>'+
         '<div class="personal-customer-item-content">'+
@@ -18,8 +19,8 @@ define([
         template: _.template(Tpl),
         id:"personal-customer-container",
         currentUserId: "",     //当前用户ID
-        initListData : [],     //初始化数据列表
-        currentListData : [],     //当前用户数据的列表
+        initListData : null,     //初始化数据列表
+        currentListData : null,     //当前用户数据的列表
         optionType: "",   //路由参数类型
         ui:{
             topCon : ".top-title",
@@ -33,7 +34,7 @@ define([
         events:{
             "tap @ui.backBtn":"onBackBtnHandler",
             "tap @ui.customerSearchBtn": "onCustomerSearchBtnHandler",      //搜索按钮
-            // "input @ui.customerSearchTxt": "onCustomerSearchInputHandler",      //输入内容实时搜索
+            "input @ui.customerSearchTxt": "onCustomerSearchInputHandler",      //输入内容实时搜索
             "tap @ui.customerFilter": "onCustomerFilterBtnHandler"     , //过滤定位
             "tap @ui.personalCustomerMain": "onPersonalCustomerMainHandler"     //点击客户容器
         },
@@ -73,50 +74,86 @@ define([
                 self.ui.customerFilter.css({height: "-webkit-calc(100% - " + height + "px)", top : height + "px"});
             }, 0);
         },
+
+        renderCustomerData: function(customers){
+            var self = this;
+            var customersArry = new Array(26);
+            for(key in customers){
+                customersArry[key.charCodeAt() - 65] = customers[key];
+            }
+            var customerItemStr = "";
+            for(var i=0; i<customersArry.length; i++){
+                if(customersArry[i]){
+                    var obj = customersArry[i];
+                    var key = String.fromCharCode(i+65);
+                    var customerItems = "";
+                    for(var j=0; j<obj.length; j++){
+                        customerItems += '<p data-type="customer" data-name="'+obj[j].name+'" data-gender="'+obj[j].gender+'" data-age="'+obj[j].age+'">'+obj[j].name+'</p>';
+                    }
+                    var realItemTemp = "";
+                    if(obj.length){
+                        realItemTemp = customerItemTemp.replace(/\{data-filter\}/g, key)
+                        .replace("{customerItems}", customerItems);
+                    }
+                    customerItemStr += realItemTemp;
+                }
+                    // console.log(String.fromCharCode(i+65),customersArry[i]);
+            }
+            if(customersArry.length == 0){
+                customerItemStr = '<div class="plan-item-noting">暂无用户数据</div>';
+            }
+            self.ui.personalCustomerMain.html(customerItemStr);
+        },
+
         loadData: function(options){
             var self = this;
             // console.log(options,"sssss");
+            LoadingCircle && LoadingCircle.start();
             personalCustomerModel.queryAgentCustomers(options, function(data){
                 console.log(data);
                 if(data.status == "0"){
                     var customers = data.customers;
+                    self.initListData = customers
+                    self.renderCustomerData(customers);
                     // var customers = {"A": [{"id": 0, "name": "A0", "age": 19, "gender": "女"}, {"id": 1, "name": "A1", "age": 19, "gender": "女"}, {"id": 2, "name": "A2", "age": 19, "gender": "女"}], "B": [{"id": 3, "name": "B3", "age": 19, "gender": "女"}], "S": [{"id": 4, "name": "S4", "age": 19, "gender": "女"}], "H": [{"id": 5, "name": "H5", "age": 19, "gender": "女"}, {"id": 6, "name": "H6", "age": 19, "gender": "女"}, {"id": 7, "name": "H7", "age": 19, "gender": "女"}], "E": [{"id": 8, "name": "E8", "age": 19, "gender": "女"},{"id": 9, "name": "E9", "age": 19, "gender": "女"}]};
 
-                    var customersArry = new Array(26);
-                    for(key in customers){
-                        customersArry[key.charCodeAt() - 65] = customers[key];
-                    }
-                    var customerItemStr = "";
-                    for(var i=0; i<customersArry.length; i++){
-                        if(customersArry[i]){
-                            var obj = customersArry[i];
-                            var key = String.fromCharCode(i+65);
-                            var customerItems = "";
-                            for(var j=0; j<obj.length; j++){
-                                customerItems += '<p data-type="customer" data-name="'+obj[j].name+'" data-gender="'+obj[j].gender+'" data-age="'+obj[j].age+'">'+obj[j].name+'</p>';
-                            }
-                            var realItemTemp = "";
-                            if(obj.length){
-                                realItemTemp = customerItemTemp.replace(/\{data-filter\}/g, key)
-                                .replace("{customerItems}", customerItems);
-                            }
-                            customerItemStr += realItemTemp;
-                        }
-                            // console.log(String.fromCharCode(i+65),customersArry[i]);
-                    }
-                    if(customersArry.length == 0){
-                        customerItemStr = '<div class="plan-item-noting">暂无用户数据</div>';
-                    }
-                    self.ui.personalCustomerMain.html(customerItemStr);
+                    // var customersArry = new Array(26);
+                    // for(key in customers){
+                    //     customersArry[key.charCodeAt() - 65] = customers[key];
+                    // }
+                    // var customerItemStr = "";
+                    // for(var i=0; i<customersArry.length; i++){
+                    //     if(customersArry[i]){
+                    //         var obj = customersArry[i];
+                    //         var key = String.fromCharCode(i+65);
+                    //         var customerItems = "";
+                    //         for(var j=0; j<obj.length; j++){
+                    //             customerItems += '<p data-type="customer" data-name="'+obj[j].name+'" data-gender="'+obj[j].gender+'" data-age="'+obj[j].age+'">'+obj[j].name+'</p>';
+                    //         }
+                    //         var realItemTemp = "";
+                    //         if(obj.length){
+                    //             realItemTemp = customerItemTemp.replace(/\{data-filter\}/g, key)
+                    //             .replace("{customerItems}", customerItems);
+                    //         }
+                    //         customerItemStr += realItemTemp;
+                    //     }
+                    //         // console.log(String.fromCharCode(i+65),customersArry[i]);
+                    // }
+                    // if(customersArry.length == 0){
+                    //     customerItemStr = '<div class="plan-item-noting">暂无用户数据</div>';
+                    // }
+                    // self.ui.personalCustomerMain.html(customerItemStr);
                 }else{
                     customerItemStr = '<div class="plan-item-noting">暂无用户数据</div>';
                     self.ui.personalCustomerMain.html(customerItemStr);
                     console.log("数据返回错误", data);
                 }
+                LoadingCircle && LoadingCircle.end();
             }, function(error){
                 customerItemStr = '<div class="plan-item-noting">暂无用户数据</div>';
                 self.ui.personalCustomerMain.html(customerItemStr);
                 console.log("数据查询异常", error);
+                LoadingCircle && LoadingCircle.end();
             });
         },
 
@@ -139,33 +176,33 @@ define([
          * 初始化界面的动态数据
          * @param data
          */
-        initView : function(data){
-            var self = this;
-            var list = data;
-            self.currentListData = list;
-            var customerItemStr = "";
-            if (list.length > 0){
-                for (var i = 0; i < list.length; i++){
-                    var obj = list[i];
-                    var key = "";
-                    var values = [];
-                    for(key in obj){
-                        values = obj[key];
-                    }
-                    var customerItems = "";
-                    for(var j = 0; j < values.length; j++){
-                        customerItems += '<p>'+values[j][0]+'</p>'
-                    }
-                    var realItemTemp = customerItemTemp.replace(/\{data-filter\}/g, key)
-                        .replace("{customerItems}", customerItems);
-                    customerItemStr += realItemTemp;
-                }
-                self.ui.personalCustomerMain.html(customerItemStr);
-            }else{
-                self.ui.personalCustomerMain.html('<div class="plan-item-noting">暂无浏览记录</div>');
-            }
+        // initView : function(data){
+        //     var self = this;
+        //     var list = data;
+        //     self.currentListData = list;
+        //     var customerItemStr = "";
+        //     if (list.length > 0){
+        //         for (var i = 0; i < list.length; i++){
+        //             var obj = list[i];
+        //             var key = "";
+        //             var values = [];
+        //             for(key in obj){
+        //                 values = obj[key];
+        //             }
+        //             var customerItems = "";
+        //             for(var j = 0; j < values.length; j++){
+        //                 customerItems += '<p>'+values[j][0]+'</p>'
+        //             }
+        //             var realItemTemp = customerItemTemp.replace(/\{data-filter\}/g, key)
+        //                 .replace("{customerItems}", customerItems);
+        //             customerItemStr += realItemTemp;
+        //         }
+        //         self.ui.personalCustomerMain.html(customerItemStr);
+        //     }else{
+        //         self.ui.personalCustomerMain.html('<div class="plan-item-noting">暂无浏览记录</div>');
+        //     }
             
-        },
+        // },
         /**
          * 点击返回
          * @param e
@@ -179,14 +216,15 @@ define([
             app.goBack();
         },
         /**
-         *搜索按钮点击事件
+         *搜索框输入事件
          */
         onCustomerSearchInputHandler :function(e){
             var self = this;
             var text = self.ui.customerSearchTxt.val();
-            if (text){
+            // if (text){
+                // console.log(text);
                 self.customerSearchOperation(text);
-            }
+            // }
         },
         /**
          *搜索按钮点击事件
@@ -202,21 +240,26 @@ define([
             // if (text){
             //     self.customerSearchOperation(text);
             // }
-            console.log(text);
-            var options = { 
-                "name": text,
-                "queryAll": false,
-                "encryptedUserData": utils.userObj.id,
-            };
-            self.loadData(options);
+            // console.log(text);
+            if(self.initListData){
+                self.customerSearchOperation(text);
+            }else{
+                var options = { 
+                    "name": text,
+                    "queryAll": false,
+                    "encryptedUserData": utils.userObj.id,
+                };
+                self.loadData(options);
+            }
+          
         },
         /**
          *具体搜索实现函数
          */
         customerSearchOperation: function (text) {
             var self = this;
-            var data = self.searchNameOrPhoneNumber(text);
-            self.initView(data);
+            self.currentListData = self.searchNameOrPhoneNumber(text);
+            self.renderCustomerData(self.currentListData);
         },
         /**
          * 定位快捷标题
@@ -242,21 +285,35 @@ define([
          */
         searchNameOrPhoneNumber : function(text){
             var self = this;
-            var results = [];
-            for(var i = 0; i < self.initListData.length; i++){
-                var obj = self.initListData[i];
-                var valus = [];
-                for(var key in obj){
-                    valus = obj[key];
-                }
-                for(var j = 0; j < valus.length; j++){
-                    var tem = valus[j];
-                    if(tem.toString().indexOf(text) > -1) {
-                        results.push(obj);
-                        break;
+            var results = {};
+
+            for(key in self.initListData){
+                // console.log(key, self.initListData[key]);
+                results[key] = [];
+
+                for(var i=0; i<self.initListData[key].length; i++){
+                    if(self.initListData[key][i]&&(self.initListData[key][i].name.indexOf(text)>=0)){
+                        results[key].push(self.initListData[key][i]);
                     }
                 }
+
             }
+            // console.log(results);
+
+            // for(var i = 0; i < self.initListData.length; i++){
+            //     var obj = self.initListData[i];
+            //     var valus = [];
+            //     for(var key in obj){
+            //         valus = obj[key];
+            //     }
+            //     for(var j = 0; j < valus.length; j++){
+            //         var tem = valus[j];
+            //         if(tem.toString().indexOf(text) > -1) {
+            //             results.push(obj);
+            //             break;
+            //         }
+            //     }
+            // }
             return results;
         },
         close:function(){

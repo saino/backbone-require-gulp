@@ -45,7 +45,7 @@ define([
             var self = this;
             var $target = $(event.target);
             // console.log(event.target);
-            if($target.attr("class") == "insurance-product-delete"){   //点击删除
+            if($target.attr("class") == "insurance-product-delete button"){   //点击删除
                 MsgBox.ask("你确定删除该条浏览记录吗？","bbbbbbb",function(type){
                     if(type == 2) { //确定  0=取消
                         // console.log("删除了");

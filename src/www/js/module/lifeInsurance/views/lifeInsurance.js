@@ -209,7 +209,7 @@ define([
             self.ui.insuranceCompanyFloat.show();
             if(utils.isInitCompany){
                 if(self.companys.length == 0){
-                    loadingCircle && loadingCircle.start();
+                    LoadingCircle && LoadingCircle.start();
                     lifeInsuranceModel.getCompanies(function(data){
                         console.log(data);
                         if(data.status == "0"){
@@ -223,9 +223,9 @@ define([
                         } else {
                             console.log("数据返回错误", data.errorMessages)
                         }
-                        loadingCircle && loadingCircle.end();
+                        LoadingCircle && LoadingCircle.end();
                     }, function(error){
-                        loadingCircle && loadingCircle.end();
+                        LoadingCircle && LoadingCircle.end();
                         console.log("数据查询失败", error);
                     });
                 }
@@ -604,9 +604,9 @@ define([
                     }else{                                         //本页没有加载到数据
                         
                         if(isAdd){
-                            MsgBox.alert("没有更多产品了", "", function(){
+                            // MsgBox.alert("没有更多产品了", "", function(){
                                 self.isLoading = false;
-                            });
+                            // });
                             lifeInsuranceContentHtml = "";
                         }else{
                             self.isLoading = false;

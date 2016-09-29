@@ -239,7 +239,9 @@ define([
             // amountLimit = "lksjdksjdkjk";
             if(amountLimit){
                 // console.log(amountLimit);
-                self.ui.limitCoverage.text(amountLimit);
+                // console.log();
+                // amountLimit = '<span style="color: #666;">最低保额:</span>1万元';
+                self.ui.limitCoverage.html(amountLimit);
                 self.ui.limitCoverage.parent().show();
             }else{
                 self.ui.limitCoverage.parent().hide();

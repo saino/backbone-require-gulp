@@ -6,8 +6,9 @@ define([
     'common/base/base_view',
     'text!module/personalCollect/templates/personalCollect.html',
     'module/personalCollect/model/personalCollectModel',
-    "msgbox"
-], function (BaseView, Tpl, personalCollectModel, MsgBox) {
+    "msgbox",
+    'common/views/circle'
+], function (BaseView, Tpl, personalCollectModel, MsgBox, loadingCircle) {
     var collectItemTemp = '<div class="personal-collect-item">'+
         '<div class="personal-collect-item-title" >{insuranceName}</div>'+  //保险名称
         '<div class="personal-collect-item-content" >'+
@@ -23,6 +24,8 @@ define([
         currentUserId: "",     //当前用户ID
         initListData : [],      //初始化数据
         currentListData : [],     //当前收藏数据的列表
+        forever : true,
+        isReLoading: true,
         ui:{
             topCon : ".top-title",
             backBtn : ".top-title-left", //点击返回
@@ -51,7 +54,10 @@ define([
         pageIn:function(){
             var self = this;
             app.on("personalCollect:exit",self._goBackHandler,this);
-            self.loadData();
+            if(self.isReLoading){
+                self.loadData();
+            }
+            self.isReLoading = true;
         },
 
         loadData: function(){
@@ -59,6 +65,8 @@ define([
             var options = {
                 "encryptedUserData": utils.userObj.id
             }
+            // console.log(loadingCircle,"ssss");
+            LoadingCircle && LoadingCircle.start();
             personalCollectModel.getCollectedProductList(options, function(data){
                 console.log(data);
                 if(data.status == "0"){
@@ -119,11 +127,13 @@ define([
                     MsgBox.alert("获取数据失败");
                     console.log("数据返回错误", data);
                 }
+                LoadingCircle && LoadingCircle.end();
             }, function(error){
                 var insuranceProductCardHtml = '<div id="browse-records-noting">暂无收藏的产品</div>';
                 self.ui.personalCollectMain.html(insuranceProductCardHtml);
                 MsgBox.alert("获取数据失败");
                 console.log("数据查询失败", error);
+                LoadingCircle && LoadingCircle.end();
             });
         },
         /**
@@ -162,6 +172,7 @@ define([
                     var options = {
                         "encryptedUserData": utils.userObj.id,
                     };
+                    LoadingCircle && LoadingCircle.start();
                     personalCollectModel.deleteCollectProduct(options, function(data){
                         console.log(data);
                         if(data.status == "0"){
@@ -170,9 +181,11 @@ define([
                             console.log("删除失败",data);
                             MsgBox.alert("删除失败");
                         }
+                        LoadingCircle && LoadingCircle.end();
                     }, function(error){
                         MsgBox.alert("删除失败");
                         console.log("删除失败",error);
+                        LoadingCircle && LoadingCircle.end();
                     });
                 }
                 if(type == 0) {
@@ -191,16 +204,18 @@ define([
                 return;
             }
             var self = this;
-            if(event.target.getAttribute("class") == "insurance-product-delete"){
+            var $target = $(event.target);
+            if($target.attr("class") == "insurance-product-delete button"){
                 MsgBox.ask("你确定删除该条收藏的产品吗？","bbbbbbb",function(type){
                     if(type == 2) { //确定  0=取消
                         // console.log("删除了");
-                        var parent = $(event.target).parent();
+                        var parent = $target.parent();
                         var  packageId = parseInt(parent.attr("data-id"));
                         var options = {
                             "encryptedUserData": utils.userObj.id,
                             "packageId": packageId,
                         };
+                        LoadingCircle && LoadingCircle.start();
                         personalCollectModel.deleteCollectProduct(options, function(data){
                             console.log(data);
                             if(data.status == "0"){
@@ -215,9 +230,11 @@ define([
                                 MsgBox.alert("删除失败");
                                 console.log("删除失败");
                             }
+                            LoadingCircle && LoadingCircle.end();
                         }, function(error){
                             MsgBox.alert("删除失败");
                             console.log("删除失败");
+                            LoadingCircle && LoadingCircle.end();
                         });
                   
 
@@ -226,6 +243,14 @@ define([
                         console.log("取消删除");
                     }
                 });
+                return;
+            }
+            var lifeInsuranceCard = $target.parents(".insurance-product-card")[0];
+            if(lifeInsuranceCard){
+                var lifeInsuranceCardId = lifeInsuranceCard.getAttribute("data-id");
+                lifeInsuranceCardId = lifeInsuranceCardId || "null";
+                self.isReLoading = false;
+                app.navigate("in/productDetails/"+ lifeInsuranceCardId, {replace: true, trigger: true});
             }
         },
         //物理返回
@@ -236,6 +261,14 @@ define([
             }
         },
         close:function(){
+            // var self = this;
+            // self.remove();
+            // app.off("personalCollect:exit",self._goBackHandler,this);
+            // if(MsgBox && MsgBox.isShow()) {
+            //     MsgBox.clear();
+            // }
+        },
+        onDestroy: function(){
             var self = this;
             self.remove();
             app.off("personalCollect:exit",self._goBackHandler,this);
