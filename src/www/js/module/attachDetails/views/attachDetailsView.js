@@ -119,6 +119,10 @@ define([
         onBackBtnHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
+
             app.goBack();
         },
         /**
@@ -128,6 +132,10 @@ define([
         onAttachDetailsMainHandler:function(e){
             e.stopPropagation();
             e.preventDefault();
+            if(utils.clickLock()){
+                return;
+            }
+
             var self = this;
             var target = e.target;
             var $target = $(target);

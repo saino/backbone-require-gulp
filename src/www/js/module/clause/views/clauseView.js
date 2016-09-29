@@ -33,7 +33,7 @@ define([
             "tap @ui.termTextClear": "clickTermTextClearHandler",
             "tap @ui.termSearchIcon": "clickTermSearchIconHandler",
             "tap @ui.clauseBtnDownload": "clickClauseBtnDownloadHandler",
-            "tap @ui.topTitleRight": "clickTopTitleRight"
+            "tap @ui.topTitleRight1": "clickTopTitleRight"
         },
         clickTopTitleRight: function(event){
             var self = this;
@@ -42,8 +42,8 @@ define([
             if(utils.clickLock()){
                 return;
             }
-
-            utils.shareProduct(utils.productName+".PDF","保险详情条款", self.pdfUrl);
+            // console.log(self.salesProductName+".PDF","保险详情条款", utils.serverConfig.serverUrl+self.pdfUrl)
+            utils.shareProduct(self.salesProductName+".PDF","保险详情条款", utils.serverConfig.serverUrl+self.pdfUrl);
 
         },
         //点击下载按钮
@@ -133,12 +133,18 @@ define([
                 this.ui.infoDiv.html("");
                 return;
             }
+            this.salesProductName = data.salesProductName;
             this.pdfUrl = data.pdfUrl;
             if(this.pdfUrl){
                 this.ui.clauseFile.html(data.salesProductName+".PDF");
-                this.ui.clauseFile.parent().show();
-            }else{
-               this.ui.clauseFile.parent().hide(); 
+                if(device.ios()){
+                    this.ui.topTitleRight1.show();
+                }else{
+                    this.ui.clauseFile.parent().show();
+                }
+            }else{      
+                this.ui.clauseFile.parent().hide(); 
+                this.ui.topTitleRight1.hide();
             }
             this.ui.infoDiv.html(data.itemDesc);
         },
