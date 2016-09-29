@@ -256,10 +256,17 @@ define([
                 }
                 for(i = 0; i < plan.riderCoverages.length; i++){
                     var item = plan.riderCoverages[i];
+                    var tempSA = "-", tempPrem = "-";
+                    if(item.sa != 0){
+                        tempSA = utils.formatNumber(item.sa);
+                    }
+                    if(item.firstYearPrem != 0){
+                        tempPrem = utils.formatNumber(item.firstYearPrem);
+                    }
                     var productName = self.getProductName(item.productId);
                     tempHtml += '<div class="type-td" data-id="'+item.productId+'"><span>'+productName+'</span>' +
-                        '<span>'+utils.formatNumber(item.sa)+'</span><span>'+utils.getPeriodText(2,item.coveragePeriod.periodType,item.coveragePeriod.periodValue)+'</span>' +
-                        '<span>'+utils.getPeriodText(1,item.chargePeriod.periodType,item.chargePeriod.periodValue)+'</span><span>'+utils.formatNumber(item.firstYearPrem)+'</span></div>'
+                        '<span>'+tempSA+'</span><span>'+utils.getPeriodText(2,item.coveragePeriod.periodType,item.coveragePeriod.periodValue)+'</span>' +
+                        '<span>'+utils.getPeriodText(1,item.chargePeriod.periodType,item.chargePeriod.periodValue)+'</span><span>'+tempPrem+'</span></div>'
                 }
             }
             self.ui.calcResultTable.html($(tempHtml));
@@ -334,7 +341,10 @@ define([
                     var rightClass = "";
                     if (libCalcType == 1) {
                         rightClass = "item-right-mr88"; //显示金额时需距离右边88px
-                        liabAmount = utils.formatNumber(singleObj.liabAmount);
+                        liabAmount = "";
+                        if(parseFloat(singleObj.liabAmount) > 0){
+                            liabAmount = utils.formatNumber(singleObj.liabAmount);
+                        }
                     }
                     var packageId = singleObj.packageId ? singleObj.packageId : 0;
                     var libId = singleObj.liabId ? singleObj.liabId : 0;

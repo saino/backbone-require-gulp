@@ -168,7 +168,7 @@ define([
                 });
             }
         },
-        //打开不同计划书，全局属性重置
+        //重新加载制作计划书页，全局属性重置
         resetPro:function(){
             var self = this;
             self.mainPlanIdArr.length = 0;
@@ -183,10 +183,16 @@ define([
             var self = this;
             self.initializeUI({});
             //计算结果清空
-            self.ui.calcResultCon.find(".first-year-table").remove();
-            self.ui.totalFirstYearPremium.html("");
+            self.clearCalcResult();
             self.ui.sendName.val("");
             self.ui.sendSex.val("0");
+        },
+        //清除计算结果
+        clearCalcResult:function(){
+            var self = this;
+            self.ui.calcResultCon.find(".first-year-table").remove();
+            self.ui.totalFirstYearPremium.html("");
+            self.isCalcOver = false;
         },
         //根据数据初始化UI
         initializeUI:function(data){
@@ -728,10 +734,17 @@ define([
                 '<th width="20%">交费期限</th><th width="20%">首年保费</th></tr>';
             var tdHtml = "";
             for(var i = 0; i < self.coveragePrems.length; i++){
-                tdHtml += '<tr><td>'+self.coveragePrems[i].productName+'</td> <td>'+utils.formatNumber(self.coveragePrems[i].sa)+'</td> <td>'+
+                var tempSA = "-", tempPrem = "-";
+                if(self.coveragePrems[i].sa != 0){
+                    tempSA = utils.formatNumber(self.coveragePrems[i].sa);
+                }
+                if(self.coveragePrems[i].firstYearPrem != 0){
+                    tempPrem = utils.formatNumber(self.coveragePrems[i].firstYearPrem);
+                }
+                tdHtml += '<tr><td>'+self.coveragePrems[i].productName+'</td> <td>'+tempSA+'</td> <td>'+
                     utils.getPeriodText(2,self.coveragePrems[i].coveragePeriod.periodType,self.coveragePrems[i].coveragePeriod.periodValue)+'</td> <td>'+
                     utils.getPeriodText(1,self.coveragePrems[i].chargePeriod.periodType,self.coveragePrems[i].chargePeriod.periodValue)+'</td> <td>'+
-                    utils.formatNumber(self.coveragePrems[i].firstYearPrem)+'</td> </tr>';
+                    tempPrem+'</td> </tr>';
             }
             tempHtml = self.calcResultTpl({headHtml:headHtml, tdHtml:tdHtml});
             return tempHtml;
@@ -990,6 +1003,8 @@ define([
             //根据附加险类型取对应保人年龄
             var age = self.getCurSecAge(obj);
             self.resetPlanInput(self.ui.additionalPlanInput.find(".additional-item:last"),age);
+            //添加附加险后，清空计算结果，重新计算
+            self.clearCalcResult();
         },
         //点击单选框
         clickRadioHandler:function(e){
@@ -1494,7 +1509,11 @@ define([
             if(isNaN(val)){
                 MsgBox.alert(errorMsg.makePlanMsg5);
             }else if(val < min || val > max){
-                MsgBox.alert("保额区间"+min+"~"+max);
+                if(max >= utils.alertMaxAmount){
+                    MsgBox.alert("保额必须大于" + min);
+                }else {
+                    MsgBox.alert("保额区间" + min + "~" + max);
+                }
             }else{
                 //判断当前文本框 为主险保额，且对应保险saEqual值为Y，同步显示附加险保额 并保持一致
                 //如果当前为附加险保额，并saEqufal值为Y，纠结其与主险保额保持一致
@@ -1518,8 +1537,11 @@ define([
             var min = parseFloat(target.attr("min") || 0);
             var val = target.val() && parseFloat(target.val());
             if(val < min || val > max){
-                MsgBox.alert("保费区间"+min+"~"+max);
-//                target.focus();
+                if(max >= utils.alertMaxAmount){
+                    MsgBox.alert("保费必须大于" + min);
+                }else {
+                    MsgBox.alert("保费区间" + min + "~" + max);
+                }
             }
         },
         //份数输入框失去焦点
@@ -1705,7 +1727,11 @@ define([
                     var max = parseFloat($(this).find(".insured-sa").attr("max"));
                     var min = parseFloat($(this).find(".insured-sa").attr("min"));
                    if(parseFloat(mainCoverage.sa) < min || parseFloat(mainCoverage.sa) > max){
-                       validateErrMsg = pName+"保额区间"+min+"~"+max;
+                       if(max >= utils.alertMaxAmount){
+                           validateErrMsg = pName+"保额必须大于"+min;
+                       }else {
+                           validateErrMsg = pName+"保额区间"+min+"~"+max;
+                       }
                        self.focusInput = $(this).find(".insured-sa");
                        return false;
                    }
@@ -1721,7 +1747,11 @@ define([
                     var max = parseFloat($(this).find(".insured-premium").attr("max"));
                     var min = parseFloat($(this).find(".insured-premium").attr("min"));
                     if(parseFloat(mainCoverage.premium) < min || parseFloat(mainCoverage.premium) > max){
-                        validateErrMsg = pName+"保费区间"+min+"~"+max;
+                        if(max >= utils.alertMaxAmount){
+                            validateErrMsg = pName+"保费必须大于"+min;
+                        }else {
+                            validateErrMsg = pName+"保费区间"+min+"~"+max;
+                        }
                         self.focusInput = $(this).find(".insured-premium");
                         return false;
                     }
@@ -1844,7 +1874,11 @@ define([
                         var max = parseFloat($(this).find(".insured-sa").attr("max"));
                         var min = parseFloat($(this).find(".insured-sa").attr("min"));
                         if (parseFloat(riderCoverage.sa) < min || parseFloat(riderCoverage.sa) > max) {
-                            validateErrMsg = rName + "保额区间" + min+"~"+max;
+                            if(max >= utils.alertMaxAmount){
+                                validateErrMsg = rName + "保额必须大于" + min;
+                            }else{
+                                validateErrMsg = rName + "保额区间" + min+"~"+max;
+                            }
                             self.focusInput = $(this).find(".insured-sa");
                             return false;
                         }
@@ -1859,7 +1893,11 @@ define([
                         var max = parseFloat($(this).find(".insured-premium").attr("max"));
                         var min = parseFloat($(this).find(".insured-premium").attr("min"));
                         if (parseFloat(riderCoverage.premium) < min || parseFloat(riderCoverage.premium) > max) {
-                            validateErrMsg = rName + "保费区间" + min+"~"+max;
+                            if(max >= utils.alertMaxAmount){
+                                validateErrMsg = rName + "保费必须大于" + min;
+                            }else {
+                                validateErrMsg = rName + "保费区间" + min + "~" + max;
+                            }
                             self.focusInput = $(this).find(".insured-premium");
                             return false;
                         }
@@ -2082,7 +2120,11 @@ define([
                 var max = parseInt(target.find(".insured-sa").attr("max"));
                 var min = parseInt(target.find(".insured-sa").attr("min"));
                 if(parseInt(mainCoverage.sa) < min || parseInt(mainCoverage.sa) > max){
-                    MsgBox.alert(pName+"保额区间"+min+"~"+max);
+                    if(max >= utils.alertMaxAmount){
+                        MsgBox.alert(pName+"保额必须大于"+min);
+                    }else{
+                        MsgBox.alert(pName+"保额区间"+min+"~"+max);
+                    }
                     target.find(".insured-sa").focus();
                     return;
                 }
@@ -2098,7 +2140,11 @@ define([
                 var max = parseInt(target.find(".insured-premium").attr("max"));
                 var min = parseInt(target.find(".insured-premium").attr("min"));
                 if(parseInt(mainCoverage.premium) < min || parseInt(mainCoverage.premium) > max){
-                    MsgBox.alert(pName+"保费区间"+min+"~"+max);
+                    if(max >= utils.alertMaxAmount){
+                        MsgBox.alert(pName+"保费必须大于"+min);
+                    }else{
+                        MsgBox.alert(pName+"保费区间"+min+"~"+max);
+                    }
                     target.find(".insured-premium").focus();
                     return;
                 }
@@ -2301,6 +2347,8 @@ define([
             }
             if(has){//险种列表有变化 需重置 被保人、第二被保人、投保人
                 self.resetAllInput(false);
+                //删除主险，附加险后，清空计算结果，重新计算
+                self.clearCalcResult();
             }
         },
         //点击客户导入

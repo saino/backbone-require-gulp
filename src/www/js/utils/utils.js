@@ -573,6 +573,7 @@
     //制作计划书 保额 保费 份数 默认取值范围
     utils.defaultMinAmount = 1;
     utils.defaultMaxAmount = 999999999;
+    utils.alertMaxAmount = 99999999;
     //点击添加附加险时，传递的主险信息 及对应保人信息
     utils.currMainPlanInfo = null;
     utils.currMainPlanInsured = null
