@@ -257,15 +257,22 @@ define([
             if(plan.mainCoverages && plan.mainCoverages.length > 0){
                 for(var i = 0; i < plan.mainCoverages.length; i++){
                     var item = plan.mainCoverages[i];
+                    var tempSA = "--", tempPrem = "--";
+                    if(item.sa != 0){
+                        tempSA = utils.formatNumber(item.sa);
+                    }
+                    if(item.firstYearPrem != 0){
+                        tempPrem = utils.formatNumber(item.firstYearPrem);
+                    }
                     var productName = self.getProductName(item.productId);
                     tempHtml += '<div class="type-td" data-id="'+item.productId+'"><span>'+productName+'</span>' +
-                        '<span>'+utils.formatNumber(item.sa)+'</span><span>'+utils.getPeriodText(2,item.coveragePeriod.periodType,item.coveragePeriod.periodValue)+'</span>' +
-                        '<span>'+utils.getPeriodText(1,item.chargePeriod.periodType,item.chargePeriod.periodValue)+'</span><span>'+utils.formatNumber(item.firstYearPrem)+'</span></div>'
+                        '<span>'+tempSA+'</span><span>'+utils.getPeriodText(2,item.coveragePeriod.periodType,item.coveragePeriod.periodValue)+'</span>' +
+                        '<span>'+utils.getPeriodText(1,item.chargePeriod.periodType,item.chargePeriod.periodValue)+'</span><span>'+tempPrem+'</span></div>'
 
                 }
                 for(i = 0; i < plan.riderCoverages.length; i++){
                     var item = plan.riderCoverages[i];
-                    var tempSA = "-", tempPrem = "-";
+                    var tempSA = "--", tempPrem = "--";
                     if(item.sa != 0){
                         tempSA = utils.formatNumber(item.sa);
                     }

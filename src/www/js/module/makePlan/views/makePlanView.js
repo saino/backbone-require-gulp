@@ -734,7 +734,7 @@ define([
                 '<th width="20%">交费期限</th><th width="20%">首年保费</th></tr>';
             var tdHtml = "";
             for(var i = 0; i < self.coveragePrems.length; i++){
-                var tempSA = "-", tempPrem = "-";
+                var tempSA = "--", tempPrem = "--";
                 if(self.coveragePrems[i].sa != 0){
                     tempSA = utils.formatNumber(self.coveragePrems[i].sa);
                 }
