@@ -128,11 +128,11 @@ define([
                 self.mouseLock = false;
             },300);
             if(!self.shareName || self.shareName == ""){
+                MsgBox.alert("分享标题不能为空!");
+            }else{
                 if(!self.shareAdvice){
                     self.shareAdvice = "";
                 }
-                MsgBox.alert("分享标题不能为空!");
-            }else{
                 utils.sharePlan(self.shareName,self.shareAdvice,window.location.href,self.proposerName,self.proposerGender);
             }
         },

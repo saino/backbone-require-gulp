@@ -464,6 +464,8 @@
      * @param gender  先生、女士
      */
     utils.sharePlan = function(title,des,url,name,gender){
+        name = utils.myEncodeURIComponent(name);
+        gender = utils.myEncodeURIComponent(gender);
         if(url.lastIndexOf("?") > 0){
             url = url + "&proposerName="+name+"&proposerGender="+gender;
         }else{
