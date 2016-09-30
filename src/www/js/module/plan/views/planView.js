@@ -58,10 +58,10 @@ define([
         //页间动画已经完成，当前page已经加入到document
         pageIn : function(){
             var self = this;
-            self.shareName = this.ui.planMain.find(".plan-book-company").html()+"-计划书演示";
-            self.shareAdvice = this.ui.planMain.find(".plan-book-company").attr("data-advice");
-            self.proposerName = this.ui.planMain.find(".plan-book-company").attr("proposerName");
-            self.proposerGender = this.ui.planMain.find(".plan-book-company").attr("proposerGender");
+            self.shareName = self.ui.planMain.find(".plan-book-company").html()+"-计划书演示";
+            self.shareAdvice = self.ui.planMain.find(".plan-book-company").attr("data-advice");
+            self.proposerName = self.ui.planMain.find(".plan-book-company").attr("proposerName");
+            self.proposerGender = self.ui.planMain.find(".plan-book-company").attr("proposerGender");
 
         },
         show:function(){
@@ -127,10 +127,12 @@ define([
             setTimeout(function(){
                 self.mouseLock = false;
             },300);
-            if(!self.shareName || self.shareName == "" || !self.shareAdvice || self.shareAdvice == ""){
-                MsgBox.alert("分享标题与描述不能为空!");
+            if(!self.shareName || self.shareName == ""){
+                if(!self.shareAdvice){
+                    self.shareAdvice = "";
+                }
+                MsgBox.alert("分享标题不能为空!");
             }else{
-//                utils.shareProduct(self.shareName,self.shareAdvice,window.location.href);
                 utils.sharePlan(self.shareName,self.shareAdvice,window.location.href,self.proposerName,self.proposerGender);
             }
         },

@@ -59,7 +59,7 @@ define([
         hasSocialInsure:false,   //是否与被保人吸烟有关
         smokingList1:[{id:1,name:"不吸烟-超优体"},{id:2,name:"不吸烟-优选体"},{id:3,name:"不吸烟-优标体"},{id:4,name:"不吸烟-标准体"},{id:5,name:"吸烟-次选体"},{id:6,name:"吸烟-次标准体"}],  //吸烟smokingType=1时有效
         smokingList2:[{id:"N",name:"不吸烟"},{id:"Y",name:"吸烟"}],  //吸烟smokingType=2时有效
-        occupationList:[{name:"1",id:1},{name:"2",id:2},{name:"3",id:3},{name:"4",id:4},{name:"5",id:5},{name:"6",id:6}],      //职业类别
+        occupationList:[{name:"1",id:1},{name:"2",id:2},{name:"3",id:3},{name:"4",id:4}],      //职业类别
         occupationListHtml:"",//职位列表html
         smokingListHtml:"",//吸烟类型=1列表html
         smokingList2Html:"",//吸烟类型=2列表html
