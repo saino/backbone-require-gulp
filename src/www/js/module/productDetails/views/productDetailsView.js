@@ -506,6 +506,7 @@ define([
                 utils.toLogin();
                 return;
             }
+            console.log("xxxxxxxxx");
             var $target = $(e.target);
             var options = {
                 "encryptedUserData": utils.userObj.id,
