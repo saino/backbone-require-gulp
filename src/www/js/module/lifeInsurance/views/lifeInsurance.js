@@ -169,10 +169,12 @@ define([
             setTimeout(function(){
                 self.mouseLock = false;
             },300);
+            var searchWords = self.ui.searchText.attr("value");
+            // if(searchWords)
             // utils.lifeInsuranceOptions.searchWords = self.ui.searchText.attr("value") || self.ui.searchText.attr("placeholder") || "";
-            utils.lifeInsuranceOptions.searchWords = self.actualSearchWords || "";
-            utils.toSearchText = "";
-            self.ui.searchText.attr("value", "");
+            utils.lifeInsuranceOptions.searchWords = searchWords ? searchWords : self.actualSearchWords || "";
+            utils.toSearchText = searchWords;
+            // self.ui.searchText.attr("value", "");
             utils.advanceSaleTypeIds = [];
             utils.advanceRightIds = [];
             utils.companyId = "all";

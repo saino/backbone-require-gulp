@@ -65,6 +65,7 @@
             console.log("isLocked");
             return true;
         }else{
+            console.log("noLocked");
             utils.isClickLock = true;
             return false;
         }

@@ -40,14 +40,23 @@ define([
             "tap .history-item-del" : "onDeleteHistoryItemHandler",
             "tap @ui.hotWordCon": "clickHotWordConHandler",      //点击热搜词
             "tap .history-item-name": "onHistoryItemName",       //点击历史收拾记录词
-            // "input @ui.searchInput": "onSearchInput"    //输入搜索词事件
+            "input @ui.searchInput": "onSearchInput"    //输入搜索词事件
         },
-        // onSearchInput: function(event){
-        //     event.stopPropagation();
-        //     event.preventDefault();
-        //     console.log(this.ui.searchInput[0].value);
+        onSearchInput: function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            var self = this;
+            var value = this.ui.searchInput[0].value;
 
-        // },
+            if(value){
+                self.ui.btnSearch.css("background-image", "url(../images/redSearch.png)");
+                console.log("放大镜变红");
+            }else{
+                self.ui.btnSearch.css("background-image", "url(../images/search.png)");
+                console.log("放大镜变灰");
+            }
+
+        },
         onRender:function(){
             var self = this;
             var hotWordListWidth = $(window).width() - 60;
@@ -149,6 +158,9 @@ define([
             self.defaultSearchWordObj = obj;
             if(utils.searchText){
                 self.ui.searchInput.attr("value", utils.searchText);
+                self.ui.btnSearch.css("background-image", "url(../images/redSearch.png)");
+            }else{
+                self.ui.btnSearch.css("background-image", "url(../images/search.png)");
             }
             //todo 阿里云 guyy
             self.ui.searchInput.attr("placeholder", obj.hotKeyWords);
