@@ -47,6 +47,7 @@ define([
             btnRangeAdd : ".btn-range-add",
             rangeInput : ".input-range",
             calcResultTable:"#calcResultTable", //计算结果显示容器
+            featureImgCon:".plan-book-product",//产品特色包含标题的大容器
             featureImgList:"#featureImgList",  //产品特色容器
             guaranteeList:".guarantee-list",  //保障概览容器
             valueAddedCon:".plan-added-service",//增值服务区域
@@ -104,6 +105,7 @@ define([
             self.ui.planLevel.find(".plan-level-item:eq(0)").html('低档');
             self.ui.planLevel.find(".plan-level-item:eq(1)").html('中档');
             self.ui.planLevel.find(".plan-level-item:eq(2)").html('高档');
+            self.ui.featureImgCon.css("display","none");
             //初始化基本数据，先判断缓存，没有则取服务器
             if(planFromLocalStory){
                 console.log("*********保障计划 缓存数据**********");
@@ -290,12 +292,17 @@ define([
         //初始化
         initFeature:function(featureList){
             var imgHtml = '', self = this;
+            var isExists = false;
             if(featureList && featureList.length>0){
                 for(var i = 0; i <featureList.length; i++){
                     if(featureList[i].featurePic) {
+                        isExists = true;
                         imgHtml += '<img src="'+(utils.serverConfig.serverUrl+ featureList[i].featurePic)+'" alt="" class="featureImg" data-id="' + featureList[0].listId + '"/>';
                     }
                 }
+            }
+            if(isExists){
+                self.ui.featureImgCon.css("display","block");
             }
             self.ui.featureImgList.html($(imgHtml));
         },

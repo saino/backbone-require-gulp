@@ -1248,6 +1248,7 @@ define([
                     //主险当前选中保障期间
                     var type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").data("type");
                     var value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").val();
+                    //如果约定的值没有选项，默认选中最后一位  update by guYY 2016.10.1 11:16
                     firstCoverage = self.getSecCoverage(isPackageProduct, mpAge, currAge, prdtTermCoverageList, {periodType: type, periodValue: value},isOneYear);
                     for (var i = 0; i < prdtTermCoverageList.length; i++) {
                         var typeName = "";
@@ -1411,6 +1412,10 @@ define([
                     var type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").data("type");
                     var value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").val();
                     $(this).find(".guarantee-period").val(value);
+                    //如果附加险下拉项没有跟主险保障一致的选项，则取最大下拉项 update by guYY 2016.10.1 10:58
+                    if(!$(this).find(".guarantee-period").val()){
+                        $(this).find(".guarantee-period option:last").attr("selected","selected");
+                    }
                 }
             });
         },
@@ -1462,9 +1467,11 @@ define([
             //如果当前是主险，重置附加险保障下拉
             if(plan.insType == 1){
                 self.changeRidersCoverage(firstCoverage);
-            }else if(plan.insType == 2){//附加险 需验证 组合需等于主险输入  非组合需小于主险
-                self.checkRiders(parent,plan,2);
             }
+            //保障期间选项不做验证，新需求，如果按规则的选项不存在 取最大保障期间  update by guYY 2016/10/1 12:00
+//            else if(plan.insType == 2){//附加险 需验证 组合需等于主险输入  非组合需小于主险
+//                self.checkRiders(parent,plan,2);
+//            }
             e.stopPropagation();
             e.preventDefault();
         },
@@ -2526,7 +2533,7 @@ define([
             return null;
         },
         /**
-         * 附加险交费期限默认选中项
+         * 交费期限默认选中项
          * 根据 是否组合计划 主险选中交费项  从交费列表里 选中一个默认选中项
          * 如果是组合计划 附加险交费期间=主险交费期间
          * 如果不是组合计划 附加险交费期间<=主险交费期间
@@ -2552,27 +2559,42 @@ define([
             return null;
         },
         /**
-         * 附加险交费期限默认选中项
+         * 保障期限默认选中项
          * @param isPackageProduct   是否组合计划 主险选中保障项  从可选保障期间列表里 选中一个默认选中项
          * @param mpAge 主险年龄
          * @param currAge 当前附加险年龄
          * @param coverageList 可选保障期间列表
          * @param mainCoverage  主险选中保障期间对象
          * @param isOneYear true /false 是否豁免险或一年期产品，如果是 即使是组合计划产品 也不需要跟主险保持一致
+         *  //如果约定的值没有选项，默认选中最后一位 update by guYY 2016.10.1 11:16
          */
         getSecCoverage:function(isPackageProduct,mpAge,currAge,coverageList,mainCoverage,isOneYear){
+            var returnCoverage = null;
             if(!coverageList || coverageList.length <= 0)
-                return null;
+                return returnCoverage;
+            //取主险一样的值 ，判断如果下拉项coverageList没有取最大项
             if(isPackageProduct == "Y" && !isOneYear){
-                return mainCoverage;
-            }
-            for(var i = 0; i < coverageList.length; i++){
-                var coverage = coverageList[i];
-                if(utils.compareCoverage(mainCoverage.periodType, mainCoverage.periodValue,mpAge,coverage.periodType,coverage.periodValue,currAge) == 1){
-                    return coverage;
+                for(var i = 0; i < coverageList.length; i++){
+                    if(coverageList[i].periodType == mainCoverage.periodType && coverageList[i].periodValue == mainCoverage.periodValue)
+                    {
+                        returnCoverage = mainCoverage;
+                        break;
+                    }
+                }
+            }else {
+                for (var i = 0; i < coverageList.length; i++) {
+                    var coverage = coverageList[i];
+                    if (utils.compareCoverage(mainCoverage.periodType, mainCoverage.periodValue, mpAge, coverage.periodType, coverage.periodValue, currAge) == 1) {
+                        returnCoverage = coverage;
+                        break;
+                    }
                 }
             }
-            return null;
+            //取列表coverageList最大值，已排好序，直接取最后一个
+            if(returnCoverage == null){
+                returnCoverage = coverageList[coverageList.length-1];
+            }
+            return returnCoverage;
         },
         /**
          * 是否一年期产品

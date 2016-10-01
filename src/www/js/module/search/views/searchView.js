@@ -49,10 +49,10 @@ define([
             var value = this.ui.searchInput[0].value;
 
             if(value){
-                self.ui.btnSearch.css("background-image", "url(../images/redSearch.png)");
+                self.ui.btnSearch.css("background-image", "url(images/redSearch.png)");
                 console.log("放大镜变红");
             }else{
-                self.ui.btnSearch.css("background-image", "url(../images/search.png)");
+                self.ui.btnSearch.css("background-image", "url(images/search.png)");
                 console.log("放大镜变灰");
             }
 
@@ -158,9 +158,9 @@ define([
             self.defaultSearchWordObj = obj;
             if(utils.searchText){
                 self.ui.searchInput.attr("value", utils.searchText);
-                self.ui.btnSearch.css("background-image", "url(../images/redSearch.png)");
+                self.ui.btnSearch.css("background-image", "url(images/redSearch.png)");
             }else{
-                self.ui.btnSearch.css("background-image", "url(../images/search.png)");
+                self.ui.btnSearch.css("background-image", "url(images/search.png)");
             }
             //todo 阿里云 guyy
             self.ui.searchInput.attr("placeholder", obj.hotKeyWords);
