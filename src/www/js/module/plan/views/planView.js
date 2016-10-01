@@ -49,7 +49,7 @@ define([
         //渲染完模板后执行,此时当前page没有添加到document
         onRender : function(){
             var self = this;
-            if(device.ios()){
+            if(device.ios() && !utils.isShare){
                 self.ui.topCon.css("padding-top",utils.toolHeight+"px");
                 self.ui.planMain.css("height","-webkit-calc(100% - "+(183+utils.toolHeight)+"px)");
             }
@@ -69,6 +69,9 @@ define([
             if(utils.isShare){
                 self.ui.titleLeft.css("visibility","hidden");
                 self.ui.titleShare.css("visibility","hidden");
+                //如果分享打开 ，顶部留空去掉 update by guYY 2016/10/1
+                self.ui.topCon.css("padding-top","0px");
+                self.ui.planMain.css("height","-webkit-calc(100% - 183px)");
             }else{
                 self.ui.titleLeft.css("visibility","visible");
                 self.ui.titleShare.css("visibility","visible");

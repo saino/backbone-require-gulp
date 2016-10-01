@@ -98,7 +98,7 @@ define([
                     self.ui.serverCom.css("display","none");
                     self.ui.serverCom.siblings(".menu-item").css("width","100%");
                 }else{
-                    self.currIndex = 0;
+                    self.currIndex = 1; //默认都选中承保商 10/1
                     self.ui.serverCom.css("display","block");
                     self.ui.serverCom.siblings(".menu-item").css("width","50%");
                 }

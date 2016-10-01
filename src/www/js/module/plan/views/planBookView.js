@@ -263,7 +263,10 @@ define([
                     if(item.sa != 0){
                         tempSA = utils.formatNumber(item.sa);
                     }
-                    if(item.firstYearPrem != 0){
+                    //displayPremIndi 是否显示保费，Y或N标识  =N --表示
+                    if(!item.displayPremIndi)
+                        item.displayPremIndi = "Y";
+                    if(item.firstYearPrem != 0 && item.displayPremIndi == "Y"){
                         tempPrem = utils.formatNumber(item.firstYearPrem);
                     }
                     var productName = self.getProductName(item.productId);
@@ -278,7 +281,10 @@ define([
                     if(item.sa != 0){
                         tempSA = utils.formatNumber(item.sa);
                     }
-                    if(item.firstYearPrem != 0){
+                    //displayPremIndi 是否显示保费，Y或N标识  =N --表示
+                    if(!item.displayPremIndi)
+                        item.displayPremIndi = "Y";
+                    if(item.firstYearPrem != 0 && item.displayPremIndi == "Y"){
                         tempPrem = utils.formatNumber(item.firstYearPrem);
                     }
                     var productName = self.getProductName(item.productId);

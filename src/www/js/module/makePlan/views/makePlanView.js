@@ -738,7 +738,10 @@ define([
                 if(self.coveragePrems[i].sa != 0){
                     tempSA = utils.formatNumber(self.coveragePrems[i].sa);
                 }
-                if(self.coveragePrems[i].firstYearPrem != 0){
+                //displayPremIndi 是否显示保费，Y或N标识  =N --表示
+                if(!self.coveragePrems[i].displayPremIndi)
+                    self.coveragePrems[i].displayPremIndi = "Y";
+                if(self.coveragePrems[i].firstYearPrem != 0 && self.coveragePrems[i].displayPremIndi == "Y"){
                     tempPrem = utils.formatNumber(self.coveragePrems[i].firstYearPrem);
                 }
                 tdHtml += '<tr><td>'+self.coveragePrems[i].productName+'</td> <td>'+tempSA+'</td> <td>'+
@@ -1191,8 +1194,11 @@ define([
         },
         //交费期间下拉更新
         changeChargeHandler:function(e){
+            e.stopPropagation();
+            e.preventDefault();
             var self = this;
             var target = $(e.target);
+//            alert(target.val());//todo del
             var planId;
             var parent;
             var guaranteePeriodHtml = "";
@@ -1283,8 +1289,6 @@ define([
 //            else if(plan.insType == 2){//附加险 需验证 组合需等于主险输入  非组合需小于主险
 //                self.checkRiders(parent,plan,1);
 //            }
-            e.stopPropagation();
-            e.preventDefault();
         },
         /**
          * 主险的交费期间下拉更新，重置所有附加险的交费下拉
@@ -1358,6 +1362,7 @@ define([
                 if(isPackageProduct == "Y" && !self.isOneYearPlan(plan)){//update 9.26
                     if(value != periodValue){
                         parent.find(".payment-period").val(value);
+//                        alert("Y="+parent.find(".payment-period").val());//todo del
                         return false;
                     }
                 }else{
