@@ -4,7 +4,7 @@
 (function(window){
     var utils = {};
     window.utils = utils;
-    utils.isDebug = true;//true 原生   false 浏览器
+    utils.isDebug = true;//true 原生   faplse 浏览器
     var href = window.location.href;
 //    if(href.indexOf("210.13.77.75") >= 0){
 //        utils.isDebug = true;
