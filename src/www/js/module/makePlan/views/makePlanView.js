@@ -2112,7 +2112,7 @@ define([
             setTimeout(function(){
                 self.mouseLock = false;
             },300);
-            $("#hiddenInput").focus();//触发其他选项的blur事件 验证
+            $("#hiddenInput").focus();//触发其他选项的blur事件 验证  hiddenRadio 不可为input,手机会触发弹出键盘
             var responseData = self.getPlanByInput();
             if(!responseData)return;
             console.log("*********计算保费 请求数据**********");
@@ -2146,7 +2146,7 @@ define([
             setTimeout(function(){
                 self.mouseLock = false;
             },300);
-            $("#hiddenInput").focus();//触发其他选项的blur事件 验证
+            $("#hiddenInput").focus();//触发其他选项的blur事件 验证  hiddenRadio 不可为input,手机会触发弹出键盘
             var responseData = self.getPlanByInput();
             if(!responseData)return;
             if(!self.isCalcOver){
@@ -2470,18 +2470,17 @@ define([
                 }
             }
             //年龄 判断下拉选项是否允许该值 age
-            var exists = false;
-            target.find(".insured-old option").each(function(e){
-                if($(this).attr("value") == obj.age){
-                    $(this).attr("selected",true);
-                    exists = true;
-                    return false;
-                }
-            });
-            //如果下拉列表不存在客户年龄选项，默认重置到0
-            if(!exists){
-                target.find(".insured-old").get(0).selectedIndex = 0;
+            var oldIndex = 0;
+            if(obj.age) {
+                target.find(".insured-old option").each(function (index) {
+                    if (parseInt($(this).attr("value")) == obj.age) {
+                        oldIndex = index;
+                        return false;
+                    }
+                });
             }
+            //如果下拉列表不存在客户年龄选项，默认重置到0
+            target.find(".insured-old").get(0).selectedIndex = oldIndex;
         },
         //从当前险种列表获取第一个主险对象(组合附件险依赖主险 默认依赖第一个)暂时也只有一个主险
         getFirstMainPlan:function(){
