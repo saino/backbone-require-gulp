@@ -115,6 +115,8 @@
      */
     utils.compareCharge = function(chargeType1,chargeValue1,chargeAge1,chargeType2,chargeValue2,chargeAge2){
         var result = 0;
+        chargeValue1 = parseInt(chargeValue1);
+        chargeValue2 = parseInt(chargeValue2);
         chargeAge1 = chargeAge1 || 0;
         chargeAge2 = chargeAge2 || 0;
         if(chargeType1 == 1){
@@ -175,6 +177,8 @@
      */
     utils.compareCoverage = function(coverageType1,coverageValue1,coverageAge1,coverageType2,coverageValue2,coverageAge2){
         var result = 0;
+        coverageValue1 = parseInt(coverageValue1);
+        coverageValue2 = parseInt(coverageValue2);
         coverageAge1 = coverageAge1 || 0;
         coverageAge2 = coverageAge2 || 0;
         if(coverageType1 == 1){

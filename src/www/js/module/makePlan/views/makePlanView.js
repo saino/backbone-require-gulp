@@ -113,6 +113,8 @@ define([
             "change #send-sex":"changeSexHandler",
             "tap .increment-item":"clickIncrementHandler",//点击查看增值服务详情
             "change .insured-old":"changeOldHandler",  //年龄下拉更新 相关联动
+            "blur .payment-period":"blurChargeHandler",  //交费期间下拉更新 相关联动
+            "blur .guarantee-period":"blurCoverageHandler",  //保障期间下拉更新 相关联动
             "change .payment-period":"changeChargeHandler",  //交费期间下拉更新 相关联动
             "change .guarantee-period":"changeCoverageHandler",  //保障期间下拉更新 相关联动
             "blur .insured-sa":"blurInsuredSAHandler",  //保额输入框 变化
@@ -1190,15 +1192,40 @@ define([
                 target.find(".insured-unit").attr("min",minAmount);
                 target.find(".insured-unit").attr("max",maxAmount);
             }
-            target.find(".payment-period").change();
+            if(device.ios()) {
+                target.find(".payment-period").blur();
+            }else{
+                target.find(".payment-period").change();
+            }
+        },
+        //只IOS监听blur有效
+        blurChargeHandler:function(e){
+            var self = this;
+            if(device.ios()){
+                self.changeChargeHandler(e,1);
+            }else{
+                return;
+            }
+        },
+        //只IOS监听blur有效
+        blurCoverageHandler:function(e){
+            var self = this;
+            if(device.ios()){
+                self.changeCoverageHandler(e,1);
+            }else{
+                return;
+            }
         },
         //交费期间下拉更新
-        changeChargeHandler:function(e){
+        changeChargeHandler:function(e,type){
             e.stopPropagation();
             e.preventDefault();
             var self = this;
+            //IOS走blur事件，change事件不响应
+            if(device.ios() && type != 1){
+                return;
+            }
             var target = $(e.target);
-//            alert(target.val());//todo del
             var planId;
             var parent;
             var guaranteePeriodHtml = "";
@@ -1239,9 +1266,15 @@ define([
                 }else{
                     parent.find(".guarantee-period").val(-1);
                 }
-                parent.find(".guarantee-period").change();
+                if(device.ios()) {
+                    parent.find(".guarantee-period").blur();
+                }else{
+                    parent.find(".guarantee-period").change();
+                }
             }
             if(plan.insType == 2 && self.checkRiders(parent,plan,1)) { //附加险
+                firstCharge = {periodType:target.find("option:selected").attr("data-type"), periodValue:target.val()};//选中交费
+                prdtTermCoverageList = self.getCoverageListByAge(plan, currAge, firstCharge);
                 var isOneYear = false;//是否豁免险或一年期产品，如果是 即使是组合计划 也不需要跟主险一致
                 if(plan.isWaiver == "Y" || self.isOneYearPlan(plan)){
                     isOneYear = true;
@@ -1269,10 +1302,14 @@ define([
                 }else{
                     parent.find(".guarantee-period").val(-1);
                 }
-                parent.find(".guarantee-period").change();
+                if(device.ios()) {
+                    parent.find(".guarantee-period").blur();
+                }else{
+                    parent.find(".guarantee-period").change();
+                }
             }
             //如果销售方式 为保费，更新后仍须更新保费输入范围
-            if(plan.unitFlag == 7){//保费
+            if(plan.unitFlag == 7 && firstCharge){//保费
                 var minAmount = utils.defaultMinAmount, maxAmount = utils.defaultMaxAmount;
                 var amount = self.getPremLimit(plan,currAge,firstCharge);
                 if(amount){
@@ -1296,11 +1333,13 @@ define([
          */
         changeRidersCharge:function(mainCharge){
             var self = this;
-            //循环所有附加险
+            //循环所有附加险  验证取回交费选项时，如果没下拉选项，直接返回
             self.ui.additionalPlanInput.find(".additional-item").each(function(){
                 var planId = $(this).data("productid");
                 var plan = self.getPlanById(planId);
-                if(!plan)return false;
+                if(!plan)return;
+                if($(this).find(".payment-period option").size() <= 0)
+                    return;
                 var currAge = self.getCurSecAge(plan);
                 var isPackageProduct = plan.isPackageProduct;//组合计划
                 var firstCharge = null;
@@ -1329,7 +1368,11 @@ define([
                     }else{
                         $(this).find(".payment-period").val(-1);
                     }
-                    $(this).find(".payment-period").change();
+                    if(device.ios()) {
+                        $(this).find(".payment-period").blur();
+                    }else{
+                        $(this).find(".payment-period").change();
+                    }
                 }
             });
         },
@@ -1362,7 +1405,6 @@ define([
                 if(isPackageProduct == "Y" && !self.isOneYearPlan(plan)){//update 9.26
                     if(value != periodValue){
                         parent.find(".payment-period").val(value);
-//                        alert("Y="+parent.find(".payment-period").val());//todo del
                         return false;
                     }
                 }else{
@@ -1375,8 +1417,8 @@ define([
                                 return false;
                             }
                         });
-                        return;
                     }
+                    return true;
                 }
             }else if(periodType == 2){//验证保障期间项
                 var periodType = parent.find(".guarantee-period").find("option:selected").data("type");
@@ -1396,8 +1438,9 @@ define([
                                 return false;
                             }
                         });
-                        return;
+
                     }
+                    return true;
                 }
             }
             return true;
@@ -1413,20 +1456,32 @@ define([
                 //手动更新主险保障时，只需判断需要一致的附加险  重置保障选项
                 var planId = $(this).data("productid");
                 var plan = self.getPlanById(planId);
+                if(!plan)return;
+                //此处为验证而非填充下拉选项，如果无下拉值 则返回
+                if($(this).find(".guarantee-period option").size() <= 0)
+                    return;
                 if(plan && plan.isPackageProduct && !self.isOneYearPlan(plan)){
                     var type = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").data("type");
                     var value = self.ui.makePlanInput.find(".main-insured-item:eq(0)").find(".guarantee-period").find("option:selected").val();
                     $(this).find(".guarantee-period").val(value);
                     //如果附加险下拉项没有跟主险保障一致的选项，则取最大下拉项 update by guYY 2016.10.1 10:58
                     if(!$(this).find(".guarantee-period").val()){
-                        $(this).find(".guarantee-period option:last").attr("selected","selected");
+                        //兼容各手机的赋值方式
+                        var len =  $(this).find(".guarantee-period option").size() - 1;
+                        if(len >= 0) {
+                            $(this).find(".guarantee-period").get(0).selectedIndex = len;
+                        }
                     }
                 }
             });
         },
         //保障更新
-        changeCoverageHandler:function(e){
+        changeCoverageHandler:function(e,type){
             var self = this;
+            //IOS走blur事件，change事件不响应
+            if(device.ios() && type != 1){
+                return;
+            }
             var target = $(e.target);
             var planId;
             var parent;
@@ -1474,9 +1529,18 @@ define([
                 self.changeRidersCoverage(firstCoverage);
             }
             //保障期间选项不做验证，新需求，如果按规则的选项不存在 取最大保障期间  update by guYY 2016/10/1 12:00
-//            else if(plan.insType == 2){//附加险 需验证 组合需等于主险输入  非组合需小于主险
-//                self.checkRiders(parent,plan,2);
-//            }
+            else if(plan.insType == 2){//附加险 需验证 组合需等于主险输入  非组合需小于主险
+                self.checkRiders(parent,plan,2);
+                //验证完了没值 需要重新设置最大值
+                if(!parent.find(".guarantee-period").val()){
+//                    parent.find(".guarantee-period option:last").attr("selected","selected"); //ios不行 安卓小不行 三星可以
+                    //兼容各手机的赋值方式
+                    var len =  parent.find(".guarantee-period option").size() - 1;
+                    if(len >= 0) {
+                        parent.find(".guarantee-period").get(0).selectedIndex = len;
+                    }
+                }
+            }
             e.stopPropagation();
             e.preventDefault();
         },
@@ -2048,6 +2112,7 @@ define([
             setTimeout(function(){
                 self.mouseLock = false;
             },300);
+            $("#hiddenInput").focus();//触发其他选项的blur事件 验证
             var responseData = self.getPlanByInput();
             if(!responseData)return;
             console.log("*********计算保费 请求数据**********");
@@ -2081,6 +2146,7 @@ define([
             setTimeout(function(){
                 self.mouseLock = false;
             },300);
+            $("#hiddenInput").focus();//触发其他选项的blur事件 验证
             var responseData = self.getPlanByInput();
             if(!responseData)return;
             if(!self.isCalcOver){
@@ -2232,16 +2298,16 @@ define([
                 mainCoverage.payPeriod = null;
             }
             var targetInsured;
-            if(mainPlan.pointToSecInsured == "Y"){
+            if(mainPlan && mainPlan.pointToSecInsured == "Y"){
                 targetInsured = self.ui.secondInsured;
-            }else if(mainPlan.pointToPH == "Y"){
+            }else if(mainPlan && mainPlan.pointToPH == "Y"){
                 targetInsured = self.ui.policyHolder;
             }else{
                 targetInsured = self.ui.firstInsured;
             }
             insured.age = targetInsured.find(".insured-old").val();
             insured.gender = targetInsured.find(".insured-sex").attr("data-val");
-            if(mainPlan.pointToPH == "Y"){
+            if(mainPlan && mainPlan.pointToPH == "Y"){
                 insured.name = self.ui.sendName.val();
             }else {
                 insured.name = targetInsured.find(".insured-name").val();
@@ -2266,6 +2332,7 @@ define([
                 var parent = $(this);
                 var productId = parent.data("productid");
                 var plan = self.getPlanById(productId);
+                if(!plan)return;
                 if(plan.isWaiver == "Y"){
                     var index = productId ? self.additionalIdArr.indexOf(productId) : -1;
                     if (index >= 0) {
@@ -2390,14 +2457,30 @@ define([
                 target = self.ui.firstInsured;
             }
             target.find(".insured-name").val(obj.name);
-            if(target.find(".insured-sex").attr("data-val") != obj.gender) {
-                target.find(".insured-sex").attr("data-val", obj.gender);
-                target.find(".insured-sex .property-radio-item").each(function(){
-                    $(this).removeClass("property-radio-item-ck");
-                    if($(this).attr("data-val") == obj.gender){
-                        $(this).addClass("property-radio-item-ck");
-                    }
-                });
+            //性别合法
+            if(obj.gender && (obj.gender == "M" || obj.gender == "F")) {
+                if (target.find(".insured-sex").attr("data-val") != obj.gender) {
+                    target.find(".insured-sex").attr("data-val", obj.gender);
+                    target.find(".insured-sex .property-radio-item").each(function () {
+                        $(this).removeClass("property-radio-item-ck");
+                        if ($(this).attr("data-val") == obj.gender) {
+                            $(this).addClass("property-radio-item-ck");
+                        }
+                    });
+                }
+            }
+            //年龄 判断下拉选项是否允许该值 age
+            var exists = false;
+            target.find(".insured-old option").each(function(e){
+                if($(this).attr("value") == obj.age){
+                    $(this).attr("selected",true);
+                    exists = true;
+                    return false;
+                }
+            });
+            //如果下拉列表不存在客户年龄选项，默认重置到0
+            if(!exists){
+                target.find(".insured-old").get(0).selectedIndex = 0;
             }
         },
         //从当前险种列表获取第一个主险对象(组合附件险依赖主险 默认依赖第一个)暂时也只有一个主险
@@ -2424,6 +2507,7 @@ define([
         getCurSecAge:function(plan){
             var currAge = 0;
             var self = this;
+            if(!plan)return currAge;
             if(plan.pointToSecInsured == "Y"){
                 currAge = self.ui.secondInsured.find(".insured-old").val();
             }else if(plan.pointToPH == "Y"){

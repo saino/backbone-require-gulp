@@ -67,6 +67,10 @@ define([
                 }
                 self.ui.underwriterCompanyCon.html(self.underwriterTpl({logoHtml:logoHtml,introHtml:companyDesc,addServicePicHtml:addServicePicHtml}));
                 self.ui.underwriterCompanyCon.addClass("content-ck");
+                //奇葩安卓字体偏大 update by guYY　10/2 11；58
+                if(!device.ios()){
+                    self.ui.underwriterCompanyCon.find(".intro").css("font-size","14px");
+                }
             }
             if(companyLogo){
                 self.ui.planCompanyLogo.html('<img src="' + (utils.serverConfig.serverUrl+ companyLogo) +'" alt="">');

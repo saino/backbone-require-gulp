@@ -97,7 +97,7 @@ define([
             self.insuredAge = 0;
             self.ui.yearTitle.html("");
             self.ui.valueAddedCon.css("display","none");
-            self.ui.planMessage.css("display","none");
+            self.ui.planMessage.addClass("plan-message-hide");
             //利益演示默认隐藏，请求成功再显示
             self.ui.planDemo.css("display","none");
             var planFromLocalStory = utils.getLocalStorageValue("planObject",planId);
@@ -177,10 +177,14 @@ define([
             if(plan.showAdvice=="Y" && plan.advice != "")
             {
                 self.ui.commentCon.html(plan.advice);
-                self.ui.planMessage.css("display","block");
+                //只隐藏标题跟留言框 update by guYY 10/2
+//                self.ui.planMessage.css("display","block");
+                self.ui.planMessage.removeClass("plan-message-hide");
             }else{
                 self.ui.commentCon.html("");
-                self.ui.planMessage.css("display","none");
+                //只隐藏标题跟留言框 update by guYY 10/2
+//                self.ui.planMessage.css("display","none");
+                self.ui.planMessage.addClass("plan-message-hide");
             }
             //初始化责任列表
             self.initLiability(self.planBook.planLiability);
@@ -226,7 +230,12 @@ define([
                 firstInsured = data.insureds[0];
             }
             if(firstInsured){
-                self.ui.panBannerTitle.html(firstInsured.name+"的计划书");
+                if(!firstInsured.age)firstInsured.age=0;
+                if(parseInt(firstInsured.age) <= 14){
+                    self.ui.panBannerTitle.html(firstInsured.name + "小朋友的计划书");
+                }else {
+                    self.ui.panBannerTitle.html(firstInsured.name + "的计划书");
+                }
             }
         },
         /***
