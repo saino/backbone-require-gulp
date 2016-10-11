@@ -19,6 +19,7 @@ define([
         isLoading: false,   //是否真正加载数据
         mouseLock:false, //按钮锁
         isCanLoad: true,
+        dataFinish:false,//数据加载完成  add by guYY 10/10 11:17
         ui: {
             topTitle: "#top-title",
             back: "#top-title-left",
@@ -433,7 +434,6 @@ define([
         // 根据条件查找并加载数据
         loadData: function(isAdd){
             var self = this;
-
             if(self.isLoading){      //如果已经正在加载则返回
                 return;         
             }
@@ -442,8 +442,13 @@ define([
             if(!isAdd){         //如果不是追加查询，则重置查询位置
                 self.pageIndex = 0;
                 utils.lifeInsuranceOptions.startPos = 0;
+                self.dataFinish = false;//update by guYY 10/10 11:15
             }
-
+            //数据加载完毕 停止加载 update by guYY 10/10 11:15
+            if(self.dataFinish){
+                self.isLoading = false;
+                return;
+            }
             console.log(utils.lifeInsuranceOptions);
             LoadingCircle && LoadingCircle.start();
             lifeInsuranceModel.getLifeInsuranceCard(utils.lifeInsuranceOptions, function(data){
@@ -595,16 +600,18 @@ define([
 
 
 
-
-
                     //下一次要加载的页数
                     if(salesPackages && salesPackages.length){     //如果本页加载到了数据，则默认还有下一页
-                        self.pageIndex++;
-
+                        //如果大于等于每页个数，表示还有下一页 update by guYY 10/10 15:46
+                        if(salesPackages.length >= self.pageSize) {
+                            self.pageIndex++;
+                        }else{
+                            self.dataFinish = true; //否则表示加载结束 update by guYY 10/10 15:46
+                        }
                         self.isLoading = false;
 
                     }else{                                         //本页没有加载到数据
-                        
+                        self.dataFinish = true;   // 数据为NULL表示加载结束 update by guYY 10/10 15:46
                         if(isAdd){
                             // MsgBox.alert("没有更多产品了", "", function(){
                                 self.isLoading = false;
@@ -748,7 +755,7 @@ define([
                     self.loadData(true);
                 }
             }else{
-                // console.log("下滑，不加载", event.target.scrollTop - self.preScrollTop);
+//                console.log("下滑，不加载", event.target.scrollTop - self.preScrollTop);
             }
             self.preScrollTop = event.target.scrollTop;
 
