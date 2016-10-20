@@ -75,7 +75,7 @@ gulp.task('_copyCss', function () {
 });
 
 gulp.task('_copyJs', function () {
-    return gulp.src(["src/www/js/lib/require/require.js"], {base: 'src/www/js'})
+    return gulp.src(["src/www/js/lib/require/require.js","src/www/js/config.js"], {base: 'src/www/js'})
         .pipe(gulp.dest(destDir + "/js"));
 });
 /**

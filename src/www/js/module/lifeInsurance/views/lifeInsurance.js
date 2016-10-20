@@ -457,7 +457,6 @@ define([
                 if(data.status == "0"){  
                     var salesPackages = data.salesPackages;
                     if(data.defaultSearchWords){
-                        //todo 阿里云 guyy
                         self.ui.searchText.attr("placeholder", data.defaultSearchWords.hotKeyWords);
                         // console.log("")
                         self.ui.searchText.attr("value", utils.toSearchText);

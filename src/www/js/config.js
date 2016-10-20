@@ -1,0 +1,1 @@
+window.cfgServerUrl = "http://210.13.77.75:8080";
